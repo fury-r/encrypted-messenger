@@ -1,0 +1,19 @@
+{
+  "name": "messager-broker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "fury (Rajeev Dessai)",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@types/kafkajs": "^1.9.0",
+    "kafkajs": "^2.2.4",
+    "npm-hook-receiver": "^1.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  }
+}

@@ -1,0 +1,96 @@
+*.iml
+.gradle
+local.properties
+.idea/caches
+.idea/libraries
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+/frontend/local.properties
+/frontend/.idea
+frontend/.tmp
+frontend/caches
+frontend/daemon
+frontend/native
+frontend/wrapper
+frontend/error.log
+
+.idea
+*.jks
+*.keystore
+frontend/app/google-services.json
+
+.DS_Store
+/frontend/build
+/frontend/captures
+.externalNativeBuild
+.cxx
+local.properties
+/frontend/output.json
+
+
+
+
+backend/firebase/firebase.json
+middleware/node_modules/
+middeware/npm-debug.log
+middeware/yarn-error.log
+
+# build output
+middeware/dist/
+middeware/build/
+middeware/out/
+
+# runtime data
+middeware/pids/
+middeware/logs/
+middeware/*.pid
+middeware/*.log
+
+# environment variables
+middeware/.env
+middeware/.env.local
+middeware/.env.*.local
+
+# IDE and editor files
+middeware/.idea/
+middeware/.vscode/
+middeware/*.swp
+middeware/*.swo
+middeware/.DS_Store
+
+# test coverage
+middeware/coverage/
+
+# package locks
+/middleware/yarn.lock
+/middleware/package-lock.json
+
+
+
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+backend/*.o
+backend/*.a
+backend/*.so
+
+# Folders
+backend/_obj
+backend/_test
+backend/build
+backend/dist
+
+# Files
+backend/*.exe
+backend/*.test
+backend/*.prof
+backend/*.test-infra.log
+backend/*.coverage
+backend/*.coverprofile
+backend/*.out
+
+node_modules
+npm-debug.log
+
+package-lock.json
+backend/utils/authToken.go

@@ -1,0 +1,27 @@
+syntax = "proto3";
+option go_package = "/pb";
+option java_package = "com.services";
+
+import "login.proto";
+import "register.proto";
+import "otp.proto";
+import "contact.proto";
+import "message.proto";
+import "auth.proto";
+// import "hello.proto";
+import "user.proto";
+import "keyexchange.proto";
+service Services{
+        rpc Login(LoginRequest) returns (LoginResponse) {}
+        rpc Register(RegisterRequest) returns (RegisterResponse) {}
+        rpc Otp(OtpRequest) returns (OtpResponse) {}
+        rpc ValidateContacts(ContactsList) returns (ContactsList) {}
+        rpc Send (Event) returns (Event) {}
+        rpc messageUpdate(MessageUpdateRequest) returns (MessageUpdateResponse) {}
+        rpc VerifyToken(AuthRequest) returns (AuthResponse) {}
+        rpc savePubKey(User) returns (User) {}
+        rpc handShake(PubKeyExchange) returns (PubKeyExchange) {}
+        // rpc SayHello (HelloRequest) returns (HelloReply) {}
+    
+
+}

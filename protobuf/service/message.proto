@@ -1,0 +1,81 @@
+syntax="proto3";
+
+
+option go_package="/pb";
+option java_package = "com.services";
+
+
+message MessageInfo{
+    string sender=1;
+    string messageId=2;
+    string text=3;
+    string reciever=4;
+    string contentType=5;
+    string timestamp=6;
+    bool deliverStatus=7;
+    bool readStatus=8;
+}
+
+enum MessageType {
+    INSERT=0;
+    UPDATE=1;
+    
+}
+message MessageRequest{
+    MessageInfo message=1;
+    MessageType type=2; 
+    string token=3;
+
+}
+message MessageResponse{
+    MessageInfo message=1;
+    MessageType type=2; 
+
+}
+
+
+// message MessageResponse{
+//     MessageInfo message=1;
+//     bool deliverStatus=2;
+//     bool readStatus=3;
+//     string token=4;
+
+// }
+
+
+message MessageUpdateRequest{
+    string sender=1;
+    string reciever=2;
+    string messageId=3;
+    bool deliverStatus=4;
+    bool readStatus=5;
+    string token=6;
+
+}
+
+message MessageUpdateResponse{
+    string sender=1;
+    string reciever=2;
+    string messageId=3;
+    bool deliverStatus=4;
+    bool readStatus=5;
+}
+
+enum EventType {
+MESSAGE=0;
+HANDSHAKE=1;
+DETAILS_UPDATE=2;
+TYPE_UPDATE=3;
+STATUS_UPDATE=4;
+
+
+
+    
+}
+
+message Event{
+    EventType type=1;
+    string token=2;
+    MessageRequest message=3;
+    
+}

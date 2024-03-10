@@ -1,0 +1,26 @@
+syntax="proto3";
+
+option go_package = "/pb";
+option java_package = "com.services";
+// service OtpService {
+//     rpc Otp(OtpRequest) returns (OtpResponse) {}
+// }
+
+message OtpRequest {
+   string otp = 1;
+  optional  string email = 2;
+   optional string phoneNumber=3;
+}
+message currentUser{
+  string token=1;
+  string email=2;
+  string phoneNumber=3;
+  string uuid=4;
+}
+message OtpResponse {
+
+  optional  currentUser message = 2;
+  optional   string error = 3;
+  
+
+}

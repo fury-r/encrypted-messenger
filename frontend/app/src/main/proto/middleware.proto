@@ -1,0 +1,20 @@
+syntax="proto3";
+
+package com.middleware;
+option java_package = "com.fury.messenger.middlewaregrpc";
+option java_multiple_files = true;
+option java_outer_classname = "MiddlewareGrpc";
+service Middleware {
+    rpc Ping(PingRequest) returns (PingResponse);
+ 
+}
+
+message PingRequest {
+    string message = 1;
+}
+message PingResponse {
+    string message = 1;
+}
+
+
+// protoc --proto_path=../protobuf     --plugin=protoc-gen-grpc-kotlin=/usr/local/bin/protoc-gen-grpc-kotlin-1.3.0-jdk8.jar  --kotlin_out=./app/src/main/java   --java_out=./app/src/main/java     --grpc-kotlin_out=./app/src/main/java     ../protobuf/middleware/middleware.proto

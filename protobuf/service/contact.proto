@@ -1,0 +1,22 @@
+syntax="proto3";
+option java_package = "com.services";
+
+option go_package="/pb";
+
+message Contact{
+    string id=1;
+    string name=2;
+    string phoneNumber=3;
+    optional string countryCode=4;
+    optional  string profilePicture=5;
+    optional bool isVerified=6;
+    optional  string uuid=7;
+    optional  string pubKey=8;
+
+}
+
+
+message ContactsList{
+    repeated Contact contacts=1;
+    string token=2;
+}

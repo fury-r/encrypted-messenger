@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+message PingRequest {
+    string message = 1;
+}
+message PingResponse {
+    string message = 1;
+}

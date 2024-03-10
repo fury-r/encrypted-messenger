@@ -1,0 +1,8 @@
+{
+    "DockerRun.DisableDockerrc": true,
+    "protoc": {
+        "options": [
+            "--proto_path=../"
+        ]
+    }
+}

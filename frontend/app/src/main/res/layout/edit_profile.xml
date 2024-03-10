@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:gravity="start"
+    android:background="@color/dark_500"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/ImageView01"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_centerInParent="true"
+
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:elevation="15dp"
+        app:cardCornerRadius="100dp">
+
+        <ImageView
+            android:id="@+id/profilePicture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:background="@color/grey_500"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_person_white_24dp" />
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_gravity="bottom"
+            android:gravity="end"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/uploadBtn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+
+                android:layout_gravity="end"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/round_button"
+                android:drawableTop="@drawable/ic_add_black_24dp"
+                android:elevation="10dp"
+                android:gravity="center" />
+        </FrameLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <EditText
+        android:id="@+id/usename"
+        android:layout_width="260dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/ImageView01"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/inputfield"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:padding="5dp"
+        android:text="Name"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button" />
+
+</RelativeLayout>
