@@ -254,7 +254,7 @@ try{
                             }
                         }
                     }
-                    CurrentUser.getPhoneNumber()?.let { channel.basicConsume(it, consumer) }
+                    getPhoneNumber()?.let { channel.basicConsume(it, consumer) }
 
                 }
             }

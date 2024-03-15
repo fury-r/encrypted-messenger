@@ -1,5 +1,6 @@
 package com.fury.messenger.main
 
+//import com.fury.messenger.middlewaregrpc.MiddlewareGrpc
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -20,14 +21,11 @@ import com.fury.messenger.R
 import com.fury.messenger.data.db.DBHelper
 import com.fury.messenger.data.db.model.Contact
 import com.fury.messenger.data.helper.contact.Contacts
-
 import com.fury.messenger.data.helper.user.CurrentUser
 import com.fury.messenger.editprofile.EditProfile
 import com.fury.messenger.rsa.RSA.initRSA
-//import com.fury.messenger.middlewaregrpc.MiddlewareGrpc
 import com.fury.messenger.ui.login.LoginActivity
 import com.fury.messenger.utils.TokenManager
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -40,9 +38,7 @@ class MainActivity: AppCompatActivity() {
 
     private lateinit var adapter:UserAdapter
     private lateinit var recentAdapter: RecentAdapter
-    private lateinit var mAuth: FirebaseAuth
     private  lateinit var db:SQLiteOpenHelper
-    private lateinit var contacts:ArrayList<Contact>
     private   var hasReadContactPermission:Boolean=false
     private   var hasStoragePermission:Boolean=false
     private  lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
