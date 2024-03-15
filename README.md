@@ -39,6 +39,12 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
 - Install Node.js for running the middleware.
 - Ensure Go is installed for the backend server.
 
+### Dependecies for proto
+- Backend:
+
+``sh
+ go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+``
 
 
 ### Installation
