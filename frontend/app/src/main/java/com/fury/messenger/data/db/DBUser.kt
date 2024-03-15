@@ -3,16 +3,18 @@ package com.fury.messenger.data.db
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
-import android.database.Cursor
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
-import android.provider.ContactsContract
 import android.util.Log
-import com.fury.messenger.data.helper.contact.Contact
+import com.fury.messenger.data.db.model.Contact
+import com.fury.messenger.data.db.model.ContactsModel
 import com.fury.messenger.data.helper.mutex.MutexLock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.transactions.transaction
 
 object DBUser {
 
@@ -31,27 +33,15 @@ object DBUser {
 
     const val SQL_DELETE_QUERY="DROP TABLE IF EXISTS ${TableInfo.TABLE_NAME}"
     object   TableInfo:BaseColumns{
-        const val TABLE_NAME="User"
+        const val TABLE_NAME="Contact"
         const val COLUMN_ITEM_NUMBER="number"
         const val COLUMN_ITEM_COUNTRY_CODE="country_code"
-        const val  COLUMN_ITEM_NAME="name"
+        const val  COLUMN_ITEM_NAME="Contact"
         const val COLUMN_ITEM_BIO="bio"
         const val COLUMN_ITEM_PUB_KEY="pub_key"
         const val COLUMN_ITEM_PROFILE_PIC="profile_pic"
         const val COLUMN_ITEM_IS_VERIFIED="is_verified"
 
-
-    }
-    private fun insertData(
-        COLUMN_ITEM_NUMBER:String,COLUMN_ITEM_NAME:String?="",COLUMN_ITEM_BIO:String?="",
-        COLUMN_ITEM_PROFILE_PIC:String?="",COLUMN_ITEM_IS_VERIFIED:Boolean?=false
-    ):String{
-        return "("+
-                "${COLUMN_ITEM_NUMBER.toString()?:" " },"+
-                "${COLUMN_ITEM_NAME.toString()?:"z "},"+
-                "${COLUMN_ITEM_BIO.toString()?:" z"},"+
-                "${COLUMN_ITEM_PROFILE_PIC.toString()?:" z"},"+
-                "$COLUMN_ITEM_IS_VERIFIED )"
 
     }
 
@@ -63,54 +53,26 @@ object DBUser {
         }
         MutexLock.setDbLock(true)
         val db=dbHelper.writableDatabase
-        db.beginTransaction()
-        try{
-            val columns = arrayOf<String>(TableInfo.COLUMN_ITEM_NUMBER)
-            val selection: String = TableInfo.COLUMN_ITEM_NUMBER + " =?"
-            val limit = "1"
-            for( contact in data.filter { contact->
-                contact.getPhoneNumber()!=null
+
+        transaction {
+            for( contact in data.filter {
+                true
             }){
-                val selectionArgs = arrayOf<String>(contact.getPhoneNumber())
+                ContactsModel.insert {
 
-                val contentValues=ContentValues()
-                contentValues.put(TableInfo.COLUMN_ITEM_NUMBER,contact.getPhoneNumber())
-                contentValues.put(TableInfo.COLUMN_ITEM_COUNTRY_CODE,contact.getCountryCode().toString()?:"")
-
-
-                contentValues.put(TableInfo.COLUMN_ITEM_BIO,"")
-                contentValues.put(TableInfo.COLUMN_ITEM_PROFILE_PIC,contact.getImage().toString()?:"")
-                contentValues.put(TableInfo.COLUMN_ITEM_PUB_KEY,contact.getPubKey()?:"")
-
-                contentValues.put(TableInfo.COLUMN_ITEM_IS_VERIFIED,contact.getIsVerified()
-                )
-                val updatedRows = db.update(
-                    TableInfo.TABLE_NAME,
-                    contentValues,
-                    selection,
-                    selectionArgs
-                )
-
-                if (updatedRows == 0) {
-                    // No rows updated, perform an insert
-                    contentValues.put(TableInfo.COLUMN_ITEM_NAME, contact.getName())
-                    db.insert(TableInfo.TABLE_NAME, null, contentValues)
+                    it[name]=contact.name!!
+                    it[phoneNumber]=contact.phoneNumber
+                    it[pubKey]= contact.pubKey
+                    it[uuid]=contact.uuid!!
+                    it[countryCode]=contact.countryCode
+                    it[chatPrivateKey]=contact.chatPrivateKey
+                    it[chatPublickey]=contact.chatPublickey
+                    it[image]=contact.image
+                    it[isVerified]=true
                 }
-
-
             }
-            db.setTransactionSuccessful()
-        }catch (e:Exception){
-            e.printStackTrace()
-
         }
 
-        finally {
-            db.endTransaction()
-            MutexLock.setDbLock(false)
-
-        }
-        db.close()
 
     }
     }
@@ -128,79 +90,54 @@ object DBUser {
         db.close()
     }
     @SuppressLint("Range")
-   suspend  fun getData(dbHelper: SQLiteOpenHelper):ArrayList<Contact>{
-        val contactList: ArrayList<Contact> = arrayListOf<Contact>()
-        while (MutexLock.getDbLock()){
-            delay(1000)
-        }
-        MutexLock.setDbLock(true)
-        val db=dbHelper.readableDatabase
+   suspend  fun getUserWithPhoneNumber(phoneNumber: String): Contact {
+            val contact=ContactsModel.selectAll().where{ContactsModel.phoneNumber eq phoneNumber}.limit(0).map {
+                Contact(
+                    it[ContactsModel.id].toString(),
+                    it[ContactsModel.name],
+                    it[ContactsModel.phoneNumber],
+                    it[ContactsModel.image],
+                    it[ContactsModel.pubKey],
+                    it[ContactsModel.chatPublickey],
+                    it[ContactsModel.chatPrivateKey],
+                    it[ContactsModel.countryCode],
+                    it[ContactsModel.isVerified],
+                    it[ContactsModel.uuid]
 
-        val  query="Select * FROM ${TableInfo.TABLE_NAME}"
-        val result=db.rawQuery(query,null)
-        if(result.moveToFirst()){
-            do{
-                val contact=Contact(result.getString(result.getColumnIndex(BaseColumns._ID)),result.getString(result.getColumnIndex(TableInfo.COLUMN_ITEM_NAME)),result.getString(result.getColumnIndex(TableInfo.COLUMN_ITEM_NUMBER)),"")
-                contact.setCountryCode(result.getString(result.getColumnIndex(TableInfo.COLUMN_ITEM_COUNTRY_CODE)))
-                contact.setIsVerified(result.getString(result.getColumnIndex(TableInfo.COLUMN_ITEM_IS_VERIFIED))=="1")
-                contactList.add(contact)
-            }while (result.moveToNext())
-        }
-        result.close()
-        db.close()
-        MutexLock.setDbLock(false)
-        return  contactList
+                )
+            }
+        return contact[0]
     }
     @SuppressLint("Range")
-    fun getDataByPubKey(dbHelper: SQLiteOpenHelper, pubKey:String):Contact?{
-        val db=dbHelper.readableDatabase
+    fun getDataByPubKey( pubKey:String):Contact?{
+        val contact=ContactsModel.selectAll().where{ContactsModel.pubKey eq pubKey}.limit(0).map {
+            Contact(
+                it[ContactsModel.id].toString(),
+                it[ContactsModel.name],
+                it[ContactsModel.phoneNumber],
+                it[ContactsModel.image],
+                it[ContactsModel.pubKey],
+                it[ContactsModel.chatPublickey],
+                it[ContactsModel.chatPrivateKey],
+                it[ContactsModel.countryCode],
+                it[ContactsModel.isVerified],
+                it[ContactsModel.uuid]
 
-        val cursor=db.query(TableInfo.TABLE_NAME, arrayOf(TableInfo.COLUMN_ITEM_PUB_KEY), TableInfo.COLUMN_ITEM_PUB_KEY+"=?",
-            arrayOf(pubKey),null,null,null,"1"
-        )
-
-        if(cursor.count>0){
-            while (cursor.moveToNext()){
-                val contact=Contact(cursor.getString(cursor.getColumnIndex(BaseColumns._ID)),cursor.getString(cursor.getColumnIndex(TableInfo.COLUMN_ITEM_NAME)),cursor.getString(cursor.getColumnIndex(TableInfo.COLUMN_ITEM_NUMBER)),"")
-                contact.setCountryCode(cursor.getString(cursor.getColumnIndex(TableInfo.COLUMN_ITEM_COUNTRY_CODE)))
-                contact.setIsVerified(cursor.getString(cursor.getColumnIndex(TableInfo.COLUMN_ITEM_IS_VERIFIED)).toBoolean())
-                return contact
-            }
+            )
         }
-        cursor.close()
-
-        db.close()
-
-    return null
+        return contact[0]
     }
     @SuppressLint("Range")
-    suspend fun  getDataByPhoneNumber(dbHelper: SQLiteOpenHelper, phoneNumber:String):Contact?{
+    suspend fun  getDataByPhoneNumber(dbHelper: SQLiteOpenHelper, phoneNumber:String): Contact {
 
-        val db=dbHelper.readableDatabase
-        val selectionArgs = arrayOf<String>(phoneNumber)
+    return ContactsModel.selectAll().where{ContactsModel.phoneNumber eq phoneNumber}.limit(1).map { it }[0] as Contact
+    }
 
-        val columns = arrayOf<String>(TableInfo.COLUMN_ITEM_NUMBER)
-        val selection: String = TableInfo.COLUMN_ITEM_NUMBER + " =?"
-        val  query="Select * FROM ${TableInfo.TABLE_NAME} where ${TableInfo.COLUMN_ITEM_NUMBER}=${phoneNumber}"
-        val cursor=db.rawQuery(query,null)
-//        val cursor:Cursor =  db.query(TableInfo.TABLE_NAME, columns, selection, selectionArgs, null, null, null, "1");
-
-        Log.d("found",cursor.count.toString())
-
-        if(cursor.count>0){
-            while (cursor.moveToNext()){
-
-
-                Log.d("IndexedDB",cursor.getString(cursor.getColumnIndex(TableInfo.COLUMN_ITEM_PUB_KEY)))
-                val contact=Contact(cursor.getString(cursor.getColumnIndex(BaseColumns._ID)),cursor.getString(cursor.getColumnIndex(TableInfo.COLUMN_ITEM_NAME)),cursor.getString(cursor.getColumnIndex(TableInfo.COLUMN_ITEM_NUMBER)),"",cursor.getString(cursor.getColumnIndex(TableInfo.COLUMN_ITEM_PUB_KEY)))
-                contact.setCountryCode(cursor.getString(cursor.getColumnIndex(TableInfo.COLUMN_ITEM_COUNTRY_CODE)))
-                contact.setIsVerified(cursor.getString(cursor.getColumnIndex(TableInfo.COLUMN_ITEM_IS_VERIFIED)).toBoolean())
-                return contact
-            }
+    suspend fun  getPublicKeyForUser(number:String ): String? {
+        var chatPublicKey: String? =null
+         ContactsModel.selectAll().where{ ContactsModel.phoneNumber eq number }.map {
+            chatPublicKey= it[ContactsModel.chatPublickey]
         }
-        cursor.close()
-        db.close()
-
-        return null
+        return  chatPublicKey
     }
 }

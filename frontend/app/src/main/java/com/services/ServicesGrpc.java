@@ -263,35 +263,35 @@ public final class ServicesGrpc {
     return getSavePubKeyMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.services.Keyexchange.PubKeyExchange,
-      com.services.Keyexchange.PubKeyExchange> getHandShakeMethod;
+  private static volatile io.grpc.MethodDescriptor<com.services.Message.Event,
+      com.services.Message.Event> getHandShakeRequestMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "handShake",
-      requestType = com.services.Keyexchange.PubKeyExchange.class,
-      responseType = com.services.Keyexchange.PubKeyExchange.class,
+      fullMethodName = SERVICE_NAME + '/' + "handShakeRequest",
+      requestType = com.services.Message.Event.class,
+      responseType = com.services.Message.Event.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.services.Keyexchange.PubKeyExchange,
-      com.services.Keyexchange.PubKeyExchange> getHandShakeMethod() {
-    io.grpc.MethodDescriptor<com.services.Keyexchange.PubKeyExchange, com.services.Keyexchange.PubKeyExchange> getHandShakeMethod;
-    if ((getHandShakeMethod = ServicesGrpc.getHandShakeMethod) == null) {
+  public static io.grpc.MethodDescriptor<com.services.Message.Event,
+      com.services.Message.Event> getHandShakeRequestMethod() {
+    io.grpc.MethodDescriptor<com.services.Message.Event, com.services.Message.Event> getHandShakeRequestMethod;
+    if ((getHandShakeRequestMethod = ServicesGrpc.getHandShakeRequestMethod) == null) {
       synchronized (ServicesGrpc.class) {
-        if ((getHandShakeMethod = ServicesGrpc.getHandShakeMethod) == null) {
-          ServicesGrpc.getHandShakeMethod = getHandShakeMethod =
-              io.grpc.MethodDescriptor.<com.services.Keyexchange.PubKeyExchange, com.services.Keyexchange.PubKeyExchange>newBuilder()
+        if ((getHandShakeRequestMethod = ServicesGrpc.getHandShakeRequestMethod) == null) {
+          ServicesGrpc.getHandShakeRequestMethod = getHandShakeRequestMethod =
+              io.grpc.MethodDescriptor.<com.services.Message.Event, com.services.Message.Event>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "handShake"))
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "handShakeRequest"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.services.Keyexchange.PubKeyExchange.getDefaultInstance()))
+                  com.services.Message.Event.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.services.Keyexchange.PubKeyExchange.getDefaultInstance()))
-              .setSchemaDescriptor(new ServicesMethodDescriptorSupplier("handShake"))
+                  com.services.Message.Event.getDefaultInstance()))
+              .setSchemaDescriptor(new ServicesMethodDescriptorSupplier("handShakeRequest"))
               .build();
         }
       }
     }
-    return getHandShakeMethod;
+    return getHandShakeRequestMethod;
   }
 
   /**
@@ -400,9 +400,9 @@ public final class ServicesGrpc {
 
     /**
      */
-    default void handShake(com.services.Keyexchange.PubKeyExchange request,
-        io.grpc.stub.StreamObserver<com.services.Keyexchange.PubKeyExchange> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getHandShakeMethod(), responseObserver);
+    default void handShakeRequest(com.services.Message.Event request,
+        io.grpc.stub.StreamObserver<com.services.Message.Event> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getHandShakeRequestMethod(), responseObserver);
     }
   }
 
@@ -499,10 +499,10 @@ public final class ServicesGrpc {
 
     /**
      */
-    public void handShake(com.services.Keyexchange.PubKeyExchange request,
-        io.grpc.stub.StreamObserver<com.services.Keyexchange.PubKeyExchange> responseObserver) {
+    public void handShakeRequest(com.services.Message.Event request,
+        io.grpc.stub.StreamObserver<com.services.Message.Event> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getHandShakeMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getHandShakeRequestMethod(), getCallOptions()), request, responseObserver);
     }
   }
 
@@ -580,9 +580,9 @@ public final class ServicesGrpc {
 
     /**
      */
-    public com.services.Keyexchange.PubKeyExchange handShake(com.services.Keyexchange.PubKeyExchange request) {
+    public com.services.Message.Event handShakeRequest(com.services.Message.Event request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
-          getChannel(), getHandShakeMethod(), getCallOptions(), request);
+          getChannel(), getHandShakeRequestMethod(), getCallOptions(), request);
     }
   }
 
@@ -668,10 +668,10 @@ public final class ServicesGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.services.Keyexchange.PubKeyExchange> handShake(
-        com.services.Keyexchange.PubKeyExchange request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.services.Message.Event> handShakeRequest(
+        com.services.Message.Event request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
-          getChannel().newCall(getHandShakeMethod(), getCallOptions()), request);
+          getChannel().newCall(getHandShakeRequestMethod(), getCallOptions()), request);
     }
   }
 
@@ -683,7 +683,7 @@ public final class ServicesGrpc {
   private static final int METHODID_MESSAGE_UPDATE = 5;
   private static final int METHODID_VERIFY_TOKEN = 6;
   private static final int METHODID_SAVE_PUB_KEY = 7;
-  private static final int METHODID_HAND_SHAKE = 8;
+  private static final int METHODID_HAND_SHAKE_REQUEST = 8;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -734,9 +734,9 @@ public final class ServicesGrpc {
           serviceImpl.savePubKey((com.services.UserOuterClass.User) request,
               (io.grpc.stub.StreamObserver<com.services.UserOuterClass.User>) responseObserver);
           break;
-        case METHODID_HAND_SHAKE:
-          serviceImpl.handShake((com.services.Keyexchange.PubKeyExchange) request,
-              (io.grpc.stub.StreamObserver<com.services.Keyexchange.PubKeyExchange>) responseObserver);
+        case METHODID_HAND_SHAKE_REQUEST:
+          serviceImpl.handShakeRequest((com.services.Message.Event) request,
+              (io.grpc.stub.StreamObserver<com.services.Message.Event>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -813,12 +813,12 @@ public final class ServicesGrpc {
               com.services.UserOuterClass.User>(
                 service, METHODID_SAVE_PUB_KEY)))
         .addMethod(
-          getHandShakeMethod(),
+          getHandShakeRequestMethod(),
           io.grpc.stub.ServerCalls.asyncUnaryCall(
             new MethodHandlers<
-              com.services.Keyexchange.PubKeyExchange,
-              com.services.Keyexchange.PubKeyExchange>(
-                service, METHODID_HAND_SHAKE)))
+              com.services.Message.Event,
+              com.services.Message.Event>(
+                service, METHODID_HAND_SHAKE_REQUEST)))
         .build();
   }
 
@@ -875,7 +875,7 @@ public final class ServicesGrpc {
               .addMethod(getMessageUpdateMethod())
               .addMethod(getVerifyTokenMethod())
               .addMethod(getSavePubKeyMethod())
-              .addMethod(getHandShakeMethod())
+              .addMethod(getHandShakeRequestMethod())
               .build();
         }
       }

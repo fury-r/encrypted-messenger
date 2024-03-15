@@ -1,12 +1,8 @@
 package com.fury.messenger.data.db
 
-import com.services.ContactOuterClass.Contact
-import com.services.Message
-import com.services.Message.EventType
 import com.services.Message.MessageType
-import org.apache.kafka.common.protocol.types.Field.Bool
 
-class Chat {
+class ChatV1 {
        var id:String
 
        var sender:String
@@ -26,8 +22,17 @@ class Chat {
 
 
 
-    constructor(id:String,sender:String,reciever:String,messageId:String,message:String,contentType:String,isDelivered:Boolean,isSeen:Boolean,type: Message.MessageType=Message.MessageType.INSERT){
-        this.id    =id
+    constructor(
+        id: Int,
+        sender:String,
+        reciever:String,
+        messageId:String,
+        message:String,
+        contentType:String,
+        isDelivered:Boolean,
+        isSeen:Boolean,
+        type: MessageType= MessageType.INSERT){
+        this.id= id.toString()
         this.sender=sender
         this.reciever=reciever
         this.messageId=messageId

@@ -15,8 +15,6 @@ message User {
       string uuid = 7;
       string token = 8;
   optional string pubKey=9;
-  // ⚠️WARNING: For testing.Need to be removed later
-  optional string privKey=10;
 
 
 

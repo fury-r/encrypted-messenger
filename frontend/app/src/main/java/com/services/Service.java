@@ -25,19 +25,18 @@ public final class Service {
     java.lang.String[] descriptorData = {
       "\n\rservice.proto\032\013login.proto\032\016register.p" +
       "roto\032\totp.proto\032\rcontact.proto\032\rmessage." +
-      "proto\032\nauth.proto\032\nuser.proto\032\021keyexchan" +
-      "ge.proto2\230\003\n\010Services\022(\n\005Login\022\r.LoginRe" +
-      "quest\032\016.LoginResponse\"\000\0221\n\010Register\022\020.Re" +
-      "gisterRequest\032\021.RegisterResponse\"\000\022\"\n\003Ot" +
-      "p\022\013.OtpRequest\032\014.OtpResponse\"\000\0222\n\020Valida" +
-      "teContacts\022\r.ContactsList\032\r.ContactsList" +
-      "\"\000\022\030\n\004Send\022\006.Event\032\006.Event\"\000\022@\n\rmessageU" +
-      "pdate\022\025.MessageUpdateRequest\032\026.MessageUp" +
-      "dateResponse\"\000\022,\n\013VerifyToken\022\014.AuthRequ" +
-      "est\032\r.AuthResponse\"\000\022\034\n\nsavePubKey\022\005.Use" +
-      "r\032\005.User\"\000\022/\n\thandShake\022\017.PubKeyExchange" +
-      "\032\017.PubKeyExchange\"\000B\023\n\014com.servicesZ\003/pb" +
-      "b\006proto3"
+      "proto\032\nauth.proto\032\nuser.proto2\215\003\n\010Servic" +
+      "es\022(\n\005Login\022\r.LoginRequest\032\016.LoginRespon" +
+      "se\"\000\0221\n\010Register\022\020.RegisterRequest\032\021.Reg" +
+      "isterResponse\"\000\022\"\n\003Otp\022\013.OtpRequest\032\014.Ot" +
+      "pResponse\"\000\0222\n\020ValidateContacts\022\r.Contac" +
+      "tsList\032\r.ContactsList\"\000\022\030\n\004Send\022\006.Event\032" +
+      "\006.Event\"\000\022@\n\rmessageUpdate\022\025.MessageUpda" +
+      "teRequest\032\026.MessageUpdateResponse\"\000\022,\n\013V" +
+      "erifyToken\022\014.AuthRequest\032\r.AuthResponse\"" +
+      "\000\022\034\n\nsavePubKey\022\005.User\032\005.User\"\000\022$\n\020handS" +
+      "hakeRequest\022\006.Event\032\006.Event\"\000B\023\n\014com.ser" +
+      "vicesZ\003/pbb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -49,7 +48,6 @@ public final class Service {
           com.services.Message.getDescriptor(),
           com.services.Auth.getDescriptor(),
           com.services.UserOuterClass.getDescriptor(),
-          com.services.Keyexchange.getDescriptor(),
         });
     com.services.Login.getDescriptor();
     com.services.Register.getDescriptor();
@@ -58,7 +56,6 @@ public final class Service {
     com.services.Message.getDescriptor();
     com.services.Auth.getDescriptor();
     com.services.UserOuterClass.getDescriptor();
-    com.services.Keyexchange.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

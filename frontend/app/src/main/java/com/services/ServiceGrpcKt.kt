@@ -69,10 +69,9 @@ public object ServicesGrpcKt {
     @JvmStatic
     get() = ServicesGrpc.getSavePubKeyMethod()
 
-  public val handShakeMethod:
-      MethodDescriptor<Keyexchange.PubKeyExchange, Keyexchange.PubKeyExchange>
+  public val handShakeRequestMethod: MethodDescriptor<Message.Event, Message.Event>
     @JvmStatic
-    get() = ServicesGrpc.getHandShakeMethod()
+    get() = ServicesGrpc.getHandShakeRequestMethod()
 
   /**
    * A stub for issuing RPCs to a(n) Services service as suspending coroutines.
@@ -265,10 +264,10 @@ public object ServicesGrpcKt {
      *
      * @return The single response from the server.
      */
-    public suspend fun handShake(request: Keyexchange.PubKeyExchange, headers: Metadata =
-        Metadata()): Keyexchange.PubKeyExchange = unaryRpc(
+    public suspend fun handShakeRequest(request: Message.Event, headers: Metadata = Metadata()):
+        Message.Event = unaryRpc(
       channel,
-      ServicesGrpc.getHandShakeMethod(),
+      ServicesGrpc.getHandShakeRequestMethod(),
       request,
       callOptions,
       headers
@@ -397,7 +396,7 @@ public object ServicesGrpcKt {
         StatusException(UNIMPLEMENTED.withDescription("Method Services.savePubKey is unimplemented"))
 
     /**
-     * Returns the response to an RPC for Services.handShake.
+     * Returns the response to an RPC for Services.handShakeRequest.
      *
      * If this method fails with a [StatusException], the RPC will fail with the corresponding
      * [Status].  If this method fails with a [java.util.concurrent.CancellationException], the RPC
@@ -407,9 +406,8 @@ public object ServicesGrpcKt {
      *
      * @param request The request from the client.
      */
-    public open suspend fun handShake(request: Keyexchange.PubKeyExchange):
-        Keyexchange.PubKeyExchange = throw
-        StatusException(UNIMPLEMENTED.withDescription("Method Services.handShake is unimplemented"))
+    public open suspend fun handShakeRequest(request: Message.Event): Message.Event = throw
+        StatusException(UNIMPLEMENTED.withDescription("Method Services.handShakeRequest is unimplemented"))
 
     public final override fun bindService(): ServerServiceDefinition =
         builder(getServiceDescriptor())
@@ -455,8 +453,8 @@ public object ServicesGrpcKt {
     ))
       .addMethod(unaryServerMethodDefinition(
       context = this.context,
-      descriptor = ServicesGrpc.getHandShakeMethod(),
-      implementation = ::handShake
+      descriptor = ServicesGrpc.getHandShakeRequestMethod(),
+      implementation = ::handShakeRequest
     )).build()
   }
 }

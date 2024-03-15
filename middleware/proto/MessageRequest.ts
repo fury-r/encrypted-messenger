@@ -6,11 +6,9 @@ import type { MessageType as _MessageType, MessageType__Output as _MessageType__
 export interface MessageRequest {
   'message'?: (_MessageInfo | null);
   'type'?: (_MessageType);
-  'token'?: (string);
 }
 
 export interface MessageRequest__Output {
   'message'?: (_MessageInfo__Output);
   'type'?: (_MessageType__Output);
-  'token'?: (string);
 }

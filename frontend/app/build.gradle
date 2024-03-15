@@ -102,4 +102,10 @@ dependencies {
     implementation 'com.google.protobuf:protobuf-java-util:3.17.3+'
     implementation("org.slf4j:slf4j-simple:2.0.0+")
     implementation("org.slf4j:slf4j-api:2.0.0+")
+    implementation("org.jetbrains.exposed:exposed-core:0.36.1")
+    implementation("org.jetbrains.exposed:exposed-dao:0.36.1")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.36.1")
+    implementation("org.xerial:sqlite-jdbc:3.34.0")
+    implementation("org.jetbrains.exposed:exposed-java-time:0.48.0")
+
 }

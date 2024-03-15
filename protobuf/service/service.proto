@@ -10,7 +10,16 @@ import "message.proto";
 import "auth.proto";
 // import "hello.proto";
 import "user.proto";
-import "keyexchange.proto";
+
+message UserRequest{
+        string phone_number=1;
+}
+message UserResponse{
+        string phone_number=1;
+        string pub_key=2;
+
+
+}
 service Services{
         rpc Login(LoginRequest) returns (LoginResponse) {}
         rpc Register(RegisterRequest) returns (RegisterResponse) {}
@@ -20,7 +29,9 @@ service Services{
         rpc messageUpdate(MessageUpdateRequest) returns (MessageUpdateResponse) {}
         rpc VerifyToken(AuthRequest) returns (AuthResponse) {}
         rpc savePubKey(User) returns (User) {}
-        rpc handShake(PubKeyExchange) returns (PubKeyExchange) {}
+        rpc handShakeRequest(Event) returns (Event) {}
+        rpc getUser(UserRequest) returns (UserResponse) {}
+
         // rpc SayHello (HelloRequest) returns (HelloReply) {}
     
 

@@ -1,2 +1,3 @@
+#!/usr/bin/env sh
 
-yarn proto-loader-gen-types --grpcLib=@grpc/grpc-js --outDir=proto/ ../protobuf/service/*.proto 
+npx proto-loader-gen-types --grpcLib=@grpc/grpc-js --outDir=proto/ ../protobuf/service/*.proto 

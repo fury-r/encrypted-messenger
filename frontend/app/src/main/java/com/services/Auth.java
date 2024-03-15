@@ -166,7 +166,7 @@ public final class Auth {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(token_)) {
+      if (!getTokenBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, token_);
       }
       unknownFields.writeTo(output);
@@ -178,7 +178,7 @@ public final class Auth {
       if (size != -1) return size;
 
       size = 0;
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(token_)) {
+      if (!getTokenBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, token_);
       }
       size += unknownFields.getSerializedSize();
@@ -587,62 +587,62 @@ public final class Auth {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional string token = 1;</code>
+     * <code>string token = 1;</code>
      * @return Whether the token field is set.
      */
     boolean hasToken();
     /**
-     * <code>optional string token = 1;</code>
+     * <code>string token = 1;</code>
      * @return The token.
      */
     java.lang.String getToken();
     /**
-     * <code>optional string token = 1;</code>
+     * <code>string token = 1;</code>
      * @return The bytes for token.
      */
     com.google.protobuf.ByteString
         getTokenBytes();
 
     /**
-     * <code>optional bool isVerified = 2;</code>
+     * <code>bool isVerified = 2;</code>
      * @return Whether the isVerified field is set.
      */
     boolean hasIsVerified();
     /**
-     * <code>optional bool isVerified = 2;</code>
+     * <code>bool isVerified = 2;</code>
      * @return The isVerified.
      */
     boolean getIsVerified();
 
     /**
-     * <code>optional string error = 3;</code>
+     * <code>string error = 3;</code>
      * @return Whether the error field is set.
      */
     boolean hasError();
     /**
-     * <code>optional string error = 3;</code>
+     * <code>string error = 3;</code>
      * @return The error.
      */
     java.lang.String getError();
     /**
-     * <code>optional string error = 3;</code>
+     * <code>string error = 3;</code>
      * @return The bytes for error.
      */
     com.google.protobuf.ByteString
         getErrorBytes();
 
     /**
-     * <code>optional .User user = 4;</code>
+     * <code>.User user = 4;</code>
      * @return Whether the user field is set.
      */
     boolean hasUser();
     /**
-     * <code>optional .User user = 4;</code>
+     * <code>.User user = 4;</code>
      * @return The user.
      */
     com.services.UserOuterClass.User getUser();
     /**
-     * <code>optional .User user = 4;</code>
+     * <code>.User user = 4;</code>
      */
     com.services.UserOuterClass.UserOrBuilder getUserOrBuilder();
   }
@@ -760,7 +760,7 @@ public final class Auth {
     public static final int TOKEN_FIELD_NUMBER = 1;
     private volatile java.lang.Object token_;
     /**
-     * <code>optional string token = 1;</code>
+     * <code>string token = 1;</code>
      * @return Whether the token field is set.
      */
     @java.lang.Override
@@ -768,7 +768,7 @@ public final class Auth {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional string token = 1;</code>
+     * <code>string token = 1;</code>
      * @return The token.
      */
     @java.lang.Override
@@ -785,7 +785,7 @@ public final class Auth {
       }
     }
     /**
-     * <code>optional string token = 1;</code>
+     * <code>string token = 1;</code>
      * @return The bytes for token.
      */
     @java.lang.Override
@@ -806,7 +806,7 @@ public final class Auth {
     public static final int ISVERIFIED_FIELD_NUMBER = 2;
     private boolean isVerified_;
     /**
-     * <code>optional bool isVerified = 2;</code>
+     * <code>bool isVerified = 2;</code>
      * @return Whether the isVerified field is set.
      */
     @java.lang.Override
@@ -814,7 +814,7 @@ public final class Auth {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>optional bool isVerified = 2;</code>
+     * <code>bool isVerified = 2;</code>
      * @return The isVerified.
      */
     @java.lang.Override
@@ -825,7 +825,7 @@ public final class Auth {
     public static final int ERROR_FIELD_NUMBER = 3;
     private volatile java.lang.Object error_;
     /**
-     * <code>optional string error = 3;</code>
+     * <code>string error = 3;</code>
      * @return Whether the error field is set.
      */
     @java.lang.Override
@@ -833,7 +833,7 @@ public final class Auth {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
-     * <code>optional string error = 3;</code>
+     * <code>string error = 3;</code>
      * @return The error.
      */
     @java.lang.Override
@@ -850,7 +850,7 @@ public final class Auth {
       }
     }
     /**
-     * <code>optional string error = 3;</code>
+     * <code>string error = 3;</code>
      * @return The bytes for error.
      */
     @java.lang.Override
@@ -871,7 +871,7 @@ public final class Auth {
     public static final int USER_FIELD_NUMBER = 4;
     private com.services.UserOuterClass.User user_;
     /**
-     * <code>optional .User user = 4;</code>
+     * <code>.User user = 4;</code>
      * @return Whether the user field is set.
      */
     @java.lang.Override
@@ -879,7 +879,7 @@ public final class Auth {
       return ((bitField0_ & 0x00000008) != 0);
     }
     /**
-     * <code>optional .User user = 4;</code>
+     * <code>.User user = 4;</code>
      * @return The user.
      */
     @java.lang.Override
@@ -887,7 +887,7 @@ public final class Auth {
       return user_ == null ? com.services.UserOuterClass.User.getDefaultInstance() : user_;
     }
     /**
-     * <code>optional .User user = 4;</code>
+     * <code>.User user = 4;</code>
      */
     @java.lang.Override
     public com.services.UserOuterClass.UserOrBuilder getUserOrBuilder() {
@@ -1297,14 +1297,14 @@ public final class Auth {
 
       private java.lang.Object token_ = "";
       /**
-       * <code>optional string token = 1;</code>
+       * <code>string token = 1;</code>
        * @return Whether the token field is set.
        */
       public boolean hasToken() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional string token = 1;</code>
+       * <code>string token = 1;</code>
        * @return The token.
        */
       public java.lang.String getToken() {
@@ -1320,7 +1320,7 @@ public final class Auth {
         }
       }
       /**
-       * <code>optional string token = 1;</code>
+       * <code>string token = 1;</code>
        * @return The bytes for token.
        */
       public com.google.protobuf.ByteString
@@ -1337,7 +1337,7 @@ public final class Auth {
         }
       }
       /**
-       * <code>optional string token = 1;</code>
+       * <code>string token = 1;</code>
        * @param value The token to set.
        * @return This builder for chaining.
        */
@@ -1352,7 +1352,7 @@ public final class Auth {
         return this;
       }
       /**
-       * <code>optional string token = 1;</code>
+       * <code>string token = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearToken() {
@@ -1362,7 +1362,7 @@ public final class Auth {
         return this;
       }
       /**
-       * <code>optional string token = 1;</code>
+       * <code>string token = 1;</code>
        * @param value The bytes for token to set.
        * @return This builder for chaining.
        */
@@ -1380,7 +1380,7 @@ public final class Auth {
 
       private boolean isVerified_ ;
       /**
-       * <code>optional bool isVerified = 2;</code>
+       * <code>bool isVerified = 2;</code>
        * @return Whether the isVerified field is set.
        */
       @java.lang.Override
@@ -1388,7 +1388,7 @@ public final class Auth {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>optional bool isVerified = 2;</code>
+       * <code>bool isVerified = 2;</code>
        * @return The isVerified.
        */
       @java.lang.Override
@@ -1396,7 +1396,7 @@ public final class Auth {
         return isVerified_;
       }
       /**
-       * <code>optional bool isVerified = 2;</code>
+       * <code>bool isVerified = 2;</code>
        * @param value The isVerified to set.
        * @return This builder for chaining.
        */
@@ -1407,7 +1407,7 @@ public final class Auth {
         return this;
       }
       /**
-       * <code>optional bool isVerified = 2;</code>
+       * <code>bool isVerified = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearIsVerified() {
@@ -1419,14 +1419,14 @@ public final class Auth {
 
       private java.lang.Object error_ = "";
       /**
-       * <code>optional string error = 3;</code>
+       * <code>string error = 3;</code>
        * @return Whether the error field is set.
        */
       public boolean hasError() {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
-       * <code>optional string error = 3;</code>
+       * <code>string error = 3;</code>
        * @return The error.
        */
       public java.lang.String getError() {
@@ -1442,7 +1442,7 @@ public final class Auth {
         }
       }
       /**
-       * <code>optional string error = 3;</code>
+       * <code>string error = 3;</code>
        * @return The bytes for error.
        */
       public com.google.protobuf.ByteString
@@ -1459,7 +1459,7 @@ public final class Auth {
         }
       }
       /**
-       * <code>optional string error = 3;</code>
+       * <code>string error = 3;</code>
        * @param value The error to set.
        * @return This builder for chaining.
        */
@@ -1474,7 +1474,7 @@ public final class Auth {
         return this;
       }
       /**
-       * <code>optional string error = 3;</code>
+       * <code>string error = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearError() {
@@ -1484,7 +1484,7 @@ public final class Auth {
         return this;
       }
       /**
-       * <code>optional string error = 3;</code>
+       * <code>string error = 3;</code>
        * @param value The bytes for error to set.
        * @return This builder for chaining.
        */
@@ -1504,14 +1504,14 @@ public final class Auth {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.services.UserOuterClass.User, com.services.UserOuterClass.User.Builder, com.services.UserOuterClass.UserOrBuilder> userBuilder_;
       /**
-       * <code>optional .User user = 4;</code>
+       * <code>.User user = 4;</code>
        * @return Whether the user field is set.
        */
       public boolean hasUser() {
         return ((bitField0_ & 0x00000008) != 0);
       }
       /**
-       * <code>optional .User user = 4;</code>
+       * <code>.User user = 4;</code>
        * @return The user.
        */
       public com.services.UserOuterClass.User getUser() {
@@ -1522,7 +1522,7 @@ public final class Auth {
         }
       }
       /**
-       * <code>optional .User user = 4;</code>
+       * <code>.User user = 4;</code>
        */
       public Builder setUser(com.services.UserOuterClass.User value) {
         if (userBuilder_ == null) {
@@ -1538,7 +1538,7 @@ public final class Auth {
         return this;
       }
       /**
-       * <code>optional .User user = 4;</code>
+       * <code>.User user = 4;</code>
        */
       public Builder setUser(
           com.services.UserOuterClass.User.Builder builderForValue) {
@@ -1552,7 +1552,7 @@ public final class Auth {
         return this;
       }
       /**
-       * <code>optional .User user = 4;</code>
+       * <code>.User user = 4;</code>
        */
       public Builder mergeUser(com.services.UserOuterClass.User value) {
         if (userBuilder_ == null) {
@@ -1572,7 +1572,7 @@ public final class Auth {
         return this;
       }
       /**
-       * <code>optional .User user = 4;</code>
+       * <code>.User user = 4;</code>
        */
       public Builder clearUser() {
         if (userBuilder_ == null) {
@@ -1585,7 +1585,7 @@ public final class Auth {
         return this;
       }
       /**
-       * <code>optional .User user = 4;</code>
+       * <code>.User user = 4;</code>
        */
       public com.services.UserOuterClass.User.Builder getUserBuilder() {
         bitField0_ |= 0x00000008;
@@ -1593,7 +1593,7 @@ public final class Auth {
         return getUserFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .User user = 4;</code>
+       * <code>.User user = 4;</code>
        */
       public com.services.UserOuterClass.UserOrBuilder getUserOrBuilder() {
         if (userBuilder_ != null) {
@@ -1604,7 +1604,7 @@ public final class Auth {
         }
       }
       /**
-       * <code>optional .User user = 4;</code>
+       * <code>.User user = 4;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.services.UserOuterClass.User, com.services.UserOuterClass.User.Builder, com.services.UserOuterClass.UserOrBuilder> 

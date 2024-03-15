@@ -1,4 +1,4 @@
-package service
+package controller
 
 import (
 	"context"
@@ -17,21 +17,16 @@ func SavePubKeyService(ctx context.Context, req *pb.User) (*pb.User, error) {
 		return nil, err
 	}
 
-	email, err := utils.ValidateToken(req.GetToken())
+	email, err := utils.GetTokenFromMetaDataAndValidate(ctx)
 	if err != nil {
-		x := "Invalid Token"
-		fmt.Println(x)
+		return nil, err
 	}
-	fmt.Println("email " + email)
-	docs, _ := app.Collection("user").Where("email", "==", email).Documents(ctx).GetAll()
+	docs, _ := app.Collection("user").Where("email", "==", *email).Documents(ctx).GetAll()
 
 	for _, doc := range docs {
 		fmt.Println("updating firestore")
 		updateData := map[string]interface{}{
 			"pubKey": req.GetPubKey(),
-			// ⚠️WARNING: For testing need to be removed later
-
-			"privKey": req.GetPrivKey(),
 
 			"updatedAt": time.Now(),
 		}

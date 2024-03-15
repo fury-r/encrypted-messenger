@@ -14,6 +14,7 @@ export interface ProtoGrpcType {
   ContactsList: MessageTypeDefinition
   Event: MessageTypeDefinition
   EventType: EnumTypeDefinition
+  KeyExchange: MessageTypeDefinition
   LoginRequest: MessageTypeDefinition
   LoginResponse: MessageTypeDefinition
   MessageInfo: MessageTypeDefinition
@@ -24,11 +25,12 @@ export interface ProtoGrpcType {
   MessageUpdateResponse: MessageTypeDefinition
   OtpRequest: MessageTypeDefinition
   OtpResponse: MessageTypeDefinition
-  PubKeyExchange: MessageTypeDefinition
   RegisterRequest: MessageTypeDefinition
   RegisterResponse: MessageTypeDefinition
   Services: SubtypeConstructor<typeof grpc.Client, _ServicesClient> & { service: _ServicesDefinition }
   User: MessageTypeDefinition
+  UserRequest: MessageTypeDefinition
+  UserResponse: MessageTypeDefinition
   currentUser: MessageTypeDefinition
   google: {
     protobuf: {

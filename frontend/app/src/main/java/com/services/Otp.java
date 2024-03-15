@@ -31,34 +31,34 @@ public final class Otp {
         getOtpBytes();
 
     /**
-     * <code>optional string email = 2;</code>
+     * <code>string email = 2;</code>
      * @return Whether the email field is set.
      */
     boolean hasEmail();
     /**
-     * <code>optional string email = 2;</code>
+     * <code>string email = 2;</code>
      * @return The email.
      */
     java.lang.String getEmail();
     /**
-     * <code>optional string email = 2;</code>
+     * <code>string email = 2;</code>
      * @return The bytes for email.
      */
     com.google.protobuf.ByteString
         getEmailBytes();
 
     /**
-     * <code>optional string phoneNumber = 3;</code>
+     * <code>string phoneNumber = 3;</code>
      * @return Whether the phoneNumber field is set.
      */
     boolean hasPhoneNumber();
     /**
-     * <code>optional string phoneNumber = 3;</code>
+     * <code>string phoneNumber = 3;</code>
      * @return The phoneNumber.
      */
     java.lang.String getPhoneNumber();
     /**
-     * <code>optional string phoneNumber = 3;</code>
+     * <code>string phoneNumber = 3;</code>
      * @return The bytes for phoneNumber.
      */
     com.google.protobuf.ByteString
@@ -205,7 +205,7 @@ public final class Otp {
     public static final int EMAIL_FIELD_NUMBER = 2;
     private volatile java.lang.Object email_;
     /**
-     * <code>optional string email = 2;</code>
+     * <code>string email = 2;</code>
      * @return Whether the email field is set.
      */
     @java.lang.Override
@@ -213,7 +213,7 @@ public final class Otp {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional string email = 2;</code>
+     * <code>string email = 2;</code>
      * @return The email.
      */
     @java.lang.Override
@@ -230,7 +230,7 @@ public final class Otp {
       }
     }
     /**
-     * <code>optional string email = 2;</code>
+     * <code>string email = 2;</code>
      * @return The bytes for email.
      */
     @java.lang.Override
@@ -251,7 +251,7 @@ public final class Otp {
     public static final int PHONENUMBER_FIELD_NUMBER = 3;
     private volatile java.lang.Object phoneNumber_;
     /**
-     * <code>optional string phoneNumber = 3;</code>
+     * <code>string phoneNumber = 3;</code>
      * @return Whether the phoneNumber field is set.
      */
     @java.lang.Override
@@ -259,7 +259,7 @@ public final class Otp {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>optional string phoneNumber = 3;</code>
+     * <code>string phoneNumber = 3;</code>
      * @return The phoneNumber.
      */
     @java.lang.Override
@@ -276,7 +276,7 @@ public final class Otp {
       }
     }
     /**
-     * <code>optional string phoneNumber = 3;</code>
+     * <code>string phoneNumber = 3;</code>
      * @return The bytes for phoneNumber.
      */
     @java.lang.Override
@@ -308,7 +308,7 @@ public final class Otp {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(otp_)) {
+      if (!getOtpBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, otp_);
       }
       if (((bitField0_ & 0x00000001) != 0)) {
@@ -326,7 +326,7 @@ public final class Otp {
       if (size != -1) return size;
 
       size = 0;
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(otp_)) {
+      if (!getOtpBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, otp_);
       }
       if (((bitField0_ & 0x00000001) != 0)) {
@@ -730,14 +730,14 @@ public final class Otp {
 
       private java.lang.Object email_ = "";
       /**
-       * <code>optional string email = 2;</code>
+       * <code>string email = 2;</code>
        * @return Whether the email field is set.
        */
       public boolean hasEmail() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional string email = 2;</code>
+       * <code>string email = 2;</code>
        * @return The email.
        */
       public java.lang.String getEmail() {
@@ -753,7 +753,7 @@ public final class Otp {
         }
       }
       /**
-       * <code>optional string email = 2;</code>
+       * <code>string email = 2;</code>
        * @return The bytes for email.
        */
       public com.google.protobuf.ByteString
@@ -770,7 +770,7 @@ public final class Otp {
         }
       }
       /**
-       * <code>optional string email = 2;</code>
+       * <code>string email = 2;</code>
        * @param value The email to set.
        * @return This builder for chaining.
        */
@@ -785,7 +785,7 @@ public final class Otp {
         return this;
       }
       /**
-       * <code>optional string email = 2;</code>
+       * <code>string email = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearEmail() {
@@ -795,7 +795,7 @@ public final class Otp {
         return this;
       }
       /**
-       * <code>optional string email = 2;</code>
+       * <code>string email = 2;</code>
        * @param value The bytes for email to set.
        * @return This builder for chaining.
        */
@@ -813,14 +813,14 @@ public final class Otp {
 
       private java.lang.Object phoneNumber_ = "";
       /**
-       * <code>optional string phoneNumber = 3;</code>
+       * <code>string phoneNumber = 3;</code>
        * @return Whether the phoneNumber field is set.
        */
       public boolean hasPhoneNumber() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>optional string phoneNumber = 3;</code>
+       * <code>string phoneNumber = 3;</code>
        * @return The phoneNumber.
        */
       public java.lang.String getPhoneNumber() {
@@ -836,7 +836,7 @@ public final class Otp {
         }
       }
       /**
-       * <code>optional string phoneNumber = 3;</code>
+       * <code>string phoneNumber = 3;</code>
        * @return The bytes for phoneNumber.
        */
       public com.google.protobuf.ByteString
@@ -853,7 +853,7 @@ public final class Otp {
         }
       }
       /**
-       * <code>optional string phoneNumber = 3;</code>
+       * <code>string phoneNumber = 3;</code>
        * @param value The phoneNumber to set.
        * @return This builder for chaining.
        */
@@ -868,7 +868,7 @@ public final class Otp {
         return this;
       }
       /**
-       * <code>optional string phoneNumber = 3;</code>
+       * <code>string phoneNumber = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearPhoneNumber() {
@@ -878,7 +878,7 @@ public final class Otp {
         return this;
       }
       /**
-       * <code>optional string phoneNumber = 3;</code>
+       * <code>string phoneNumber = 3;</code>
        * @param value The bytes for phoneNumber to set.
        * @return This builder for chaining.
        */
@@ -1269,16 +1269,16 @@ public final class Otp {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(token_)) {
+      if (!getTokenBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, token_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(email_)) {
+      if (!getEmailBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, email_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(phoneNumber_)) {
+      if (!getPhoneNumberBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, phoneNumber_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(uuid_)) {
+      if (!getUuidBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, uuid_);
       }
       unknownFields.writeTo(output);
@@ -1290,16 +1290,16 @@ public final class Otp {
       if (size != -1) return size;
 
       size = 0;
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(token_)) {
+      if (!getTokenBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, token_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(email_)) {
+      if (!getEmailBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, email_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(phoneNumber_)) {
+      if (!getPhoneNumberBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, phoneNumber_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(uuid_)) {
+      if (!getUuidBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, uuid_);
       }
       size += unknownFields.getSerializedSize();
@@ -1969,32 +1969,32 @@ public final class Otp {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .currentUser message = 2;</code>
+     * <code>.currentUser message = 2;</code>
      * @return Whether the message field is set.
      */
     boolean hasMessage();
     /**
-     * <code>optional .currentUser message = 2;</code>
+     * <code>.currentUser message = 2;</code>
      * @return The message.
      */
     com.services.Otp.currentUser getMessage();
     /**
-     * <code>optional .currentUser message = 2;</code>
+     * <code>.currentUser message = 2;</code>
      */
     com.services.Otp.currentUserOrBuilder getMessageOrBuilder();
 
     /**
-     * <code>optional string error = 3;</code>
+     * <code>string error = 3;</code>
      * @return Whether the error field is set.
      */
     boolean hasError();
     /**
-     * <code>optional string error = 3;</code>
+     * <code>string error = 3;</code>
      * @return The error.
      */
     java.lang.String getError();
     /**
-     * <code>optional string error = 3;</code>
+     * <code>string error = 3;</code>
      * @return The bytes for error.
      */
     com.google.protobuf.ByteString
@@ -2102,7 +2102,7 @@ public final class Otp {
     public static final int MESSAGE_FIELD_NUMBER = 2;
     private com.services.Otp.currentUser message_;
     /**
-     * <code>optional .currentUser message = 2;</code>
+     * <code>.currentUser message = 2;</code>
      * @return Whether the message field is set.
      */
     @java.lang.Override
@@ -2110,7 +2110,7 @@ public final class Otp {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional .currentUser message = 2;</code>
+     * <code>.currentUser message = 2;</code>
      * @return The message.
      */
     @java.lang.Override
@@ -2118,7 +2118,7 @@ public final class Otp {
       return message_ == null ? com.services.Otp.currentUser.getDefaultInstance() : message_;
     }
     /**
-     * <code>optional .currentUser message = 2;</code>
+     * <code>.currentUser message = 2;</code>
      */
     @java.lang.Override
     public com.services.Otp.currentUserOrBuilder getMessageOrBuilder() {
@@ -2128,7 +2128,7 @@ public final class Otp {
     public static final int ERROR_FIELD_NUMBER = 3;
     private volatile java.lang.Object error_;
     /**
-     * <code>optional string error = 3;</code>
+     * <code>string error = 3;</code>
      * @return Whether the error field is set.
      */
     @java.lang.Override
@@ -2136,7 +2136,7 @@ public final class Otp {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>optional string error = 3;</code>
+     * <code>string error = 3;</code>
      * @return The error.
      */
     @java.lang.Override
@@ -2153,7 +2153,7 @@ public final class Otp {
       }
     }
     /**
-     * <code>optional string error = 3;</code>
+     * <code>string error = 3;</code>
      * @return The bytes for error.
      */
     @java.lang.Override
@@ -2524,14 +2524,14 @@ public final class Otp {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.services.Otp.currentUser, com.services.Otp.currentUser.Builder, com.services.Otp.currentUserOrBuilder> messageBuilder_;
       /**
-       * <code>optional .currentUser message = 2;</code>
+       * <code>.currentUser message = 2;</code>
        * @return Whether the message field is set.
        */
       public boolean hasMessage() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional .currentUser message = 2;</code>
+       * <code>.currentUser message = 2;</code>
        * @return The message.
        */
       public com.services.Otp.currentUser getMessage() {
@@ -2542,7 +2542,7 @@ public final class Otp {
         }
       }
       /**
-       * <code>optional .currentUser message = 2;</code>
+       * <code>.currentUser message = 2;</code>
        */
       public Builder setMessage(com.services.Otp.currentUser value) {
         if (messageBuilder_ == null) {
@@ -2558,7 +2558,7 @@ public final class Otp {
         return this;
       }
       /**
-       * <code>optional .currentUser message = 2;</code>
+       * <code>.currentUser message = 2;</code>
        */
       public Builder setMessage(
           com.services.Otp.currentUser.Builder builderForValue) {
@@ -2572,7 +2572,7 @@ public final class Otp {
         return this;
       }
       /**
-       * <code>optional .currentUser message = 2;</code>
+       * <code>.currentUser message = 2;</code>
        */
       public Builder mergeMessage(com.services.Otp.currentUser value) {
         if (messageBuilder_ == null) {
@@ -2592,7 +2592,7 @@ public final class Otp {
         return this;
       }
       /**
-       * <code>optional .currentUser message = 2;</code>
+       * <code>.currentUser message = 2;</code>
        */
       public Builder clearMessage() {
         if (messageBuilder_ == null) {
@@ -2605,7 +2605,7 @@ public final class Otp {
         return this;
       }
       /**
-       * <code>optional .currentUser message = 2;</code>
+       * <code>.currentUser message = 2;</code>
        */
       public com.services.Otp.currentUser.Builder getMessageBuilder() {
         bitField0_ |= 0x00000001;
@@ -2613,7 +2613,7 @@ public final class Otp {
         return getMessageFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .currentUser message = 2;</code>
+       * <code>.currentUser message = 2;</code>
        */
       public com.services.Otp.currentUserOrBuilder getMessageOrBuilder() {
         if (messageBuilder_ != null) {
@@ -2624,7 +2624,7 @@ public final class Otp {
         }
       }
       /**
-       * <code>optional .currentUser message = 2;</code>
+       * <code>.currentUser message = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.services.Otp.currentUser, com.services.Otp.currentUser.Builder, com.services.Otp.currentUserOrBuilder> 
@@ -2642,14 +2642,14 @@ public final class Otp {
 
       private java.lang.Object error_ = "";
       /**
-       * <code>optional string error = 3;</code>
+       * <code>string error = 3;</code>
        * @return Whether the error field is set.
        */
       public boolean hasError() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>optional string error = 3;</code>
+       * <code>string error = 3;</code>
        * @return The error.
        */
       public java.lang.String getError() {
@@ -2665,7 +2665,7 @@ public final class Otp {
         }
       }
       /**
-       * <code>optional string error = 3;</code>
+       * <code>string error = 3;</code>
        * @return The bytes for error.
        */
       public com.google.protobuf.ByteString
@@ -2682,7 +2682,7 @@ public final class Otp {
         }
       }
       /**
-       * <code>optional string error = 3;</code>
+       * <code>string error = 3;</code>
        * @param value The error to set.
        * @return This builder for chaining.
        */
@@ -2697,7 +2697,7 @@ public final class Otp {
         return this;
       }
       /**
-       * <code>optional string error = 3;</code>
+       * <code>string error = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearError() {
@@ -2707,7 +2707,7 @@ public final class Otp {
         return this;
       }
       /**
-       * <code>optional string error = 3;</code>
+       * <code>string error = 3;</code>
        * @param value The bytes for error to set.
        * @return This builder for chaining.
        */

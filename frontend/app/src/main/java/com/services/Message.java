@@ -738,22 +738,22 @@ public final class Message {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(sender_)) {
+      if (!getSenderBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, sender_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(messageId_)) {
+      if (!getMessageIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, messageId_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(text_)) {
+      if (!getTextBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, text_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(reciever_)) {
+      if (!getRecieverBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, reciever_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(contentType_)) {
+      if (!getContentTypeBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, contentType_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(timestamp_)) {
+      if (!getTimestampBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 6, timestamp_);
       }
       if (deliverStatus_ != false) {
@@ -771,22 +771,22 @@ public final class Message {
       if (size != -1) return size;
 
       size = 0;
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(sender_)) {
+      if (!getSenderBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, sender_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(messageId_)) {
+      if (!getMessageIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, messageId_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(text_)) {
+      if (!getTextBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, text_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(reciever_)) {
+      if (!getRecieverBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, reciever_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(contentType_)) {
+      if (!getContentTypeBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, contentType_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(timestamp_)) {
+      if (!getTimestampBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, timestamp_);
       }
       if (deliverStatus_ != false) {
@@ -1746,18 +1746,6 @@ public final class Message {
      * @return The type.
      */
     com.services.Message.MessageType getType();
-
-    /**
-     * <code>string token = 3;</code>
-     * @return The token.
-     */
-    java.lang.String getToken();
-    /**
-     * <code>string token = 3;</code>
-     * @return The bytes for token.
-     */
-    com.google.protobuf.ByteString
-        getTokenBytes();
   }
   /**
    * Protobuf type {@code MessageRequest}
@@ -1773,7 +1761,6 @@ public final class Message {
     }
     private MessageRequest() {
       type_ = 0;
-      token_ = "";
     }
 
     @java.lang.Override
@@ -1823,12 +1810,6 @@ public final class Message {
               int rawValue = input.readEnum();
 
               type_ = rawValue;
-              break;
-            }
-            case 26: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              token_ = s;
               break;
             }
             default: {
@@ -1908,44 +1889,6 @@ public final class Message {
       return result == null ? com.services.Message.MessageType.UNRECOGNIZED : result;
     }
 
-    public static final int TOKEN_FIELD_NUMBER = 3;
-    private volatile java.lang.Object token_;
-    /**
-     * <code>string token = 3;</code>
-     * @return The token.
-     */
-    @java.lang.Override
-    public java.lang.String getToken() {
-      java.lang.Object ref = token_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        token_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string token = 3;</code>
-     * @return The bytes for token.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getTokenBytes() {
-      java.lang.Object ref = token_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        token_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -1966,9 +1909,6 @@ public final class Message {
       if (type_ != com.services.Message.MessageType.INSERT.getNumber()) {
         output.writeEnum(2, type_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(token_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, token_);
-      }
       unknownFields.writeTo(output);
     }
 
@@ -1985,9 +1925,6 @@ public final class Message {
       if (type_ != com.services.Message.MessageType.INSERT.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(2, type_);
-      }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(token_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, token_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2010,8 +1947,6 @@ public final class Message {
             .equals(other.getMessage())) return false;
       }
       if (type_ != other.type_) return false;
-      if (!getToken()
-          .equals(other.getToken())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -2029,8 +1964,6 @@ public final class Message {
       }
       hash = (37 * hash) + TYPE_FIELD_NUMBER;
       hash = (53 * hash) + type_;
-      hash = (37 * hash) + TOKEN_FIELD_NUMBER;
-      hash = (53 * hash) + getToken().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -2172,8 +2105,6 @@ public final class Message {
         }
         type_ = 0;
 
-        token_ = "";
-
         return this;
       }
 
@@ -2206,7 +2137,6 @@ public final class Message {
           result.message_ = messageBuilder_.build();
         }
         result.type_ = type_;
-        result.token_ = token_;
         onBuilt();
         return result;
       }
@@ -2260,10 +2190,6 @@ public final class Message {
         }
         if (other.type_ != 0) {
           setTypeValue(other.getTypeValue());
-        }
-        if (!other.getToken().isEmpty()) {
-          token_ = other.token_;
-          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -2463,82 +2389,6 @@ public final class Message {
       public Builder clearType() {
         
         type_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object token_ = "";
-      /**
-       * <code>string token = 3;</code>
-       * @return The token.
-       */
-      public java.lang.String getToken() {
-        java.lang.Object ref = token_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          token_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>string token = 3;</code>
-       * @return The bytes for token.
-       */
-      public com.google.protobuf.ByteString
-          getTokenBytes() {
-        java.lang.Object ref = token_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          token_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string token = 3;</code>
-       * @param value The token to set.
-       * @return This builder for chaining.
-       */
-      public Builder setToken(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        token_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string token = 3;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearToken() {
-        
-        token_ = getDefaultInstance().getToken();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string token = 3;</code>
-       * @param value The bytes for token to set.
-       * @return This builder for chaining.
-       */
-      public Builder setTokenBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        token_ = value;
         onChanged();
         return this;
       }
@@ -3374,18 +3224,6 @@ public final class Message {
      * @return The readStatus.
      */
     boolean getReadStatus();
-
-    /**
-     * <code>string token = 6;</code>
-     * @return The token.
-     */
-    java.lang.String getToken();
-    /**
-     * <code>string token = 6;</code>
-     * @return The bytes for token.
-     */
-    com.google.protobuf.ByteString
-        getTokenBytes();
   }
   /**
    * Protobuf type {@code MessageUpdateRequest}
@@ -3403,7 +3241,6 @@ public final class Message {
       sender_ = "";
       reciever_ = "";
       messageId_ = "";
-      token_ = "";
     }
 
     @java.lang.Override
@@ -3462,12 +3299,6 @@ public final class Message {
             case 40: {
 
               readStatus_ = input.readBool();
-              break;
-            }
-            case 50: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              token_ = s;
               break;
             }
             default: {
@@ -3638,44 +3469,6 @@ public final class Message {
       return readStatus_;
     }
 
-    public static final int TOKEN_FIELD_NUMBER = 6;
-    private volatile java.lang.Object token_;
-    /**
-     * <code>string token = 6;</code>
-     * @return The token.
-     */
-    @java.lang.Override
-    public java.lang.String getToken() {
-      java.lang.Object ref = token_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        token_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string token = 6;</code>
-     * @return The bytes for token.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getTokenBytes() {
-      java.lang.Object ref = token_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        token_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -3690,13 +3483,13 @@ public final class Message {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(sender_)) {
+      if (!getSenderBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, sender_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(reciever_)) {
+      if (!getRecieverBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, reciever_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(messageId_)) {
+      if (!getMessageIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, messageId_);
       }
       if (deliverStatus_ != false) {
@@ -3704,9 +3497,6 @@ public final class Message {
       }
       if (readStatus_ != false) {
         output.writeBool(5, readStatus_);
-      }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(token_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, token_);
       }
       unknownFields.writeTo(output);
     }
@@ -3717,13 +3507,13 @@ public final class Message {
       if (size != -1) return size;
 
       size = 0;
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(sender_)) {
+      if (!getSenderBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, sender_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(reciever_)) {
+      if (!getRecieverBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, reciever_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(messageId_)) {
+      if (!getMessageIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, messageId_);
       }
       if (deliverStatus_ != false) {
@@ -3733,9 +3523,6 @@ public final class Message {
       if (readStatus_ != false) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(5, readStatus_);
-      }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(token_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, token_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3762,8 +3549,6 @@ public final class Message {
           != other.getDeliverStatus()) return false;
       if (getReadStatus()
           != other.getReadStatus()) return false;
-      if (!getToken()
-          .equals(other.getToken())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -3787,8 +3572,6 @@ public final class Message {
       hash = (37 * hash) + READSTATUS_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getReadStatus());
-      hash = (37 * hash) + TOKEN_FIELD_NUMBER;
-      hash = (53 * hash) + getToken().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -3932,8 +3715,6 @@ public final class Message {
 
         readStatus_ = false;
 
-        token_ = "";
-
         return this;
       }
 
@@ -3965,7 +3746,6 @@ public final class Message {
         result.messageId_ = messageId_;
         result.deliverStatus_ = deliverStatus_;
         result.readStatus_ = readStatus_;
-        result.token_ = token_;
         onBuilt();
         return result;
       }
@@ -4031,10 +3811,6 @@ public final class Message {
         }
         if (other.getReadStatus() != false) {
           setReadStatus(other.getReadStatus());
-        }
-        if (!other.getToken().isEmpty()) {
-          token_ = other.token_;
-          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -4351,82 +4127,6 @@ public final class Message {
       public Builder clearReadStatus() {
         
         readStatus_ = false;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object token_ = "";
-      /**
-       * <code>string token = 6;</code>
-       * @return The token.
-       */
-      public java.lang.String getToken() {
-        java.lang.Object ref = token_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          token_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>string token = 6;</code>
-       * @return The bytes for token.
-       */
-      public com.google.protobuf.ByteString
-          getTokenBytes() {
-        java.lang.Object ref = token_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          token_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string token = 6;</code>
-       * @param value The token to set.
-       * @return This builder for chaining.
-       */
-      public Builder setToken(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        token_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string token = 6;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearToken() {
-        
-        token_ = getDefaultInstance().getToken();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string token = 6;</code>
-       * @param value The bytes for token to set.
-       * @return This builder for chaining.
-       */
-      public Builder setTokenBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        token_ = value;
         onChanged();
         return this;
       }
@@ -4793,13 +4493,13 @@ public final class Message {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(sender_)) {
+      if (!getSenderBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, sender_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(reciever_)) {
+      if (!getRecieverBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, reciever_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(messageId_)) {
+      if (!getMessageIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, messageId_);
       }
       if (deliverStatus_ != false) {
@@ -4817,13 +4517,13 @@ public final class Message {
       if (size != -1) return size;
 
       size = 0;
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(sender_)) {
+      if (!getSenderBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, sender_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(reciever_)) {
+      if (!getRecieverBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, reciever_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(messageId_)) {
+      if (!getMessageIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, messageId_);
       }
       if (deliverStatus_ != false) {
@@ -5493,6 +5193,1024 @@ public final class Message {
 
   }
 
+  public interface KeyExchangeOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:KeyExchange)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string sender = 1;</code>
+     * @return The sender.
+     */
+    java.lang.String getSender();
+    /**
+     * <code>string sender = 1;</code>
+     * @return The bytes for sender.
+     */
+    com.google.protobuf.ByteString
+        getSenderBytes();
+
+    /**
+     * <code>string reciever = 2;</code>
+     * @return The reciever.
+     */
+    java.lang.String getReciever();
+    /**
+     * <code>string reciever = 2;</code>
+     * @return The bytes for reciever.
+     */
+    com.google.protobuf.ByteString
+        getRecieverBytes();
+
+    /**
+     * <code>string publicKey = 3;</code>
+     * @return The publicKey.
+     */
+    java.lang.String getPublicKey();
+    /**
+     * <code>string publicKey = 3;</code>
+     * @return The bytes for publicKey.
+     */
+    com.google.protobuf.ByteString
+        getPublicKeyBytes();
+
+    /**
+     * <code>string privateKey = 4;</code>
+     * @return The privateKey.
+     */
+    java.lang.String getPrivateKey();
+    /**
+     * <code>string privateKey = 4;</code>
+     * @return The bytes for privateKey.
+     */
+    com.google.protobuf.ByteString
+        getPrivateKeyBytes();
+  }
+  /**
+   * Protobuf type {@code KeyExchange}
+   */
+  public static final class KeyExchange extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:KeyExchange)
+      KeyExchangeOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use KeyExchange.newBuilder() to construct.
+    private KeyExchange(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private KeyExchange() {
+      sender_ = "";
+      reciever_ = "";
+      publicKey_ = "";
+      privateKey_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new KeyExchange();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private KeyExchange(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              sender_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              reciever_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              publicKey_ = s;
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              privateKey_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.services.Message.internal_static_KeyExchange_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.services.Message.internal_static_KeyExchange_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.services.Message.KeyExchange.class, com.services.Message.KeyExchange.Builder.class);
+    }
+
+    public static final int SENDER_FIELD_NUMBER = 1;
+    private volatile java.lang.Object sender_;
+    /**
+     * <code>string sender = 1;</code>
+     * @return The sender.
+     */
+    @java.lang.Override
+    public java.lang.String getSender() {
+      java.lang.Object ref = sender_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        sender_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string sender = 1;</code>
+     * @return The bytes for sender.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getSenderBytes() {
+      java.lang.Object ref = sender_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        sender_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int RECIEVER_FIELD_NUMBER = 2;
+    private volatile java.lang.Object reciever_;
+    /**
+     * <code>string reciever = 2;</code>
+     * @return The reciever.
+     */
+    @java.lang.Override
+    public java.lang.String getReciever() {
+      java.lang.Object ref = reciever_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        reciever_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string reciever = 2;</code>
+     * @return The bytes for reciever.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getRecieverBytes() {
+      java.lang.Object ref = reciever_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        reciever_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PUBLICKEY_FIELD_NUMBER = 3;
+    private volatile java.lang.Object publicKey_;
+    /**
+     * <code>string publicKey = 3;</code>
+     * @return The publicKey.
+     */
+    @java.lang.Override
+    public java.lang.String getPublicKey() {
+      java.lang.Object ref = publicKey_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        publicKey_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string publicKey = 3;</code>
+     * @return The bytes for publicKey.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPublicKeyBytes() {
+      java.lang.Object ref = publicKey_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        publicKey_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PRIVATEKEY_FIELD_NUMBER = 4;
+    private volatile java.lang.Object privateKey_;
+    /**
+     * <code>string privateKey = 4;</code>
+     * @return The privateKey.
+     */
+    @java.lang.Override
+    public java.lang.String getPrivateKey() {
+      java.lang.Object ref = privateKey_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        privateKey_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string privateKey = 4;</code>
+     * @return The bytes for privateKey.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPrivateKeyBytes() {
+      java.lang.Object ref = privateKey_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        privateKey_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getSenderBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, sender_);
+      }
+      if (!getRecieverBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, reciever_);
+      }
+      if (!getPublicKeyBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, publicKey_);
+      }
+      if (!getPrivateKeyBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, privateKey_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getSenderBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, sender_);
+      }
+      if (!getRecieverBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, reciever_);
+      }
+      if (!getPublicKeyBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, publicKey_);
+      }
+      if (!getPrivateKeyBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, privateKey_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.services.Message.KeyExchange)) {
+        return super.equals(obj);
+      }
+      com.services.Message.KeyExchange other = (com.services.Message.KeyExchange) obj;
+
+      if (!getSender()
+          .equals(other.getSender())) return false;
+      if (!getReciever()
+          .equals(other.getReciever())) return false;
+      if (!getPublicKey()
+          .equals(other.getPublicKey())) return false;
+      if (!getPrivateKey()
+          .equals(other.getPrivateKey())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + SENDER_FIELD_NUMBER;
+      hash = (53 * hash) + getSender().hashCode();
+      hash = (37 * hash) + RECIEVER_FIELD_NUMBER;
+      hash = (53 * hash) + getReciever().hashCode();
+      hash = (37 * hash) + PUBLICKEY_FIELD_NUMBER;
+      hash = (53 * hash) + getPublicKey().hashCode();
+      hash = (37 * hash) + PRIVATEKEY_FIELD_NUMBER;
+      hash = (53 * hash) + getPrivateKey().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.services.Message.KeyExchange parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.services.Message.KeyExchange parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.services.Message.KeyExchange parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.services.Message.KeyExchange parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.services.Message.KeyExchange parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.services.Message.KeyExchange parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.services.Message.KeyExchange parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.services.Message.KeyExchange parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.services.Message.KeyExchange parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.services.Message.KeyExchange parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.services.Message.KeyExchange parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.services.Message.KeyExchange parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.services.Message.KeyExchange prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code KeyExchange}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:KeyExchange)
+        com.services.Message.KeyExchangeOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.services.Message.internal_static_KeyExchange_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.services.Message.internal_static_KeyExchange_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.services.Message.KeyExchange.class, com.services.Message.KeyExchange.Builder.class);
+      }
+
+      // Construct using com.services.Message.KeyExchange.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        sender_ = "";
+
+        reciever_ = "";
+
+        publicKey_ = "";
+
+        privateKey_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.services.Message.internal_static_KeyExchange_descriptor;
+      }
+
+      @java.lang.Override
+      public com.services.Message.KeyExchange getDefaultInstanceForType() {
+        return com.services.Message.KeyExchange.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.services.Message.KeyExchange build() {
+        com.services.Message.KeyExchange result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.services.Message.KeyExchange buildPartial() {
+        com.services.Message.KeyExchange result = new com.services.Message.KeyExchange(this);
+        result.sender_ = sender_;
+        result.reciever_ = reciever_;
+        result.publicKey_ = publicKey_;
+        result.privateKey_ = privateKey_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.services.Message.KeyExchange) {
+          return mergeFrom((com.services.Message.KeyExchange)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.services.Message.KeyExchange other) {
+        if (other == com.services.Message.KeyExchange.getDefaultInstance()) return this;
+        if (!other.getSender().isEmpty()) {
+          sender_ = other.sender_;
+          onChanged();
+        }
+        if (!other.getReciever().isEmpty()) {
+          reciever_ = other.reciever_;
+          onChanged();
+        }
+        if (!other.getPublicKey().isEmpty()) {
+          publicKey_ = other.publicKey_;
+          onChanged();
+        }
+        if (!other.getPrivateKey().isEmpty()) {
+          privateKey_ = other.privateKey_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.services.Message.KeyExchange parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.services.Message.KeyExchange) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object sender_ = "";
+      /**
+       * <code>string sender = 1;</code>
+       * @return The sender.
+       */
+      public java.lang.String getSender() {
+        java.lang.Object ref = sender_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          sender_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string sender = 1;</code>
+       * @return The bytes for sender.
+       */
+      public com.google.protobuf.ByteString
+          getSenderBytes() {
+        java.lang.Object ref = sender_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          sender_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string sender = 1;</code>
+       * @param value The sender to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSender(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        sender_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string sender = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSender() {
+        
+        sender_ = getDefaultInstance().getSender();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string sender = 1;</code>
+       * @param value The bytes for sender to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSenderBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        sender_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object reciever_ = "";
+      /**
+       * <code>string reciever = 2;</code>
+       * @return The reciever.
+       */
+      public java.lang.String getReciever() {
+        java.lang.Object ref = reciever_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          reciever_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string reciever = 2;</code>
+       * @return The bytes for reciever.
+       */
+      public com.google.protobuf.ByteString
+          getRecieverBytes() {
+        java.lang.Object ref = reciever_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          reciever_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string reciever = 2;</code>
+       * @param value The reciever to set.
+       * @return This builder for chaining.
+       */
+      public Builder setReciever(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        reciever_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string reciever = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearReciever() {
+        
+        reciever_ = getDefaultInstance().getReciever();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string reciever = 2;</code>
+       * @param value The bytes for reciever to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRecieverBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        reciever_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object publicKey_ = "";
+      /**
+       * <code>string publicKey = 3;</code>
+       * @return The publicKey.
+       */
+      public java.lang.String getPublicKey() {
+        java.lang.Object ref = publicKey_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          publicKey_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string publicKey = 3;</code>
+       * @return The bytes for publicKey.
+       */
+      public com.google.protobuf.ByteString
+          getPublicKeyBytes() {
+        java.lang.Object ref = publicKey_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          publicKey_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string publicKey = 3;</code>
+       * @param value The publicKey to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPublicKey(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        publicKey_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string publicKey = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPublicKey() {
+        
+        publicKey_ = getDefaultInstance().getPublicKey();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string publicKey = 3;</code>
+       * @param value The bytes for publicKey to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPublicKeyBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        publicKey_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object privateKey_ = "";
+      /**
+       * <code>string privateKey = 4;</code>
+       * @return The privateKey.
+       */
+      public java.lang.String getPrivateKey() {
+        java.lang.Object ref = privateKey_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          privateKey_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string privateKey = 4;</code>
+       * @return The bytes for privateKey.
+       */
+      public com.google.protobuf.ByteString
+          getPrivateKeyBytes() {
+        java.lang.Object ref = privateKey_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          privateKey_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string privateKey = 4;</code>
+       * @param value The privateKey to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPrivateKey(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        privateKey_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string privateKey = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPrivateKey() {
+        
+        privateKey_ = getDefaultInstance().getPrivateKey();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string privateKey = 4;</code>
+       * @param value The bytes for privateKey to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPrivateKeyBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        privateKey_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:KeyExchange)
+    }
+
+    // @@protoc_insertion_point(class_scope:KeyExchange)
+    private static final com.services.Message.KeyExchange DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.services.Message.KeyExchange();
+    }
+
+    public static com.services.Message.KeyExchange getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<KeyExchange>
+        PARSER = new com.google.protobuf.AbstractParser<KeyExchange>() {
+      @java.lang.Override
+      public KeyExchange parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new KeyExchange(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<KeyExchange> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<KeyExchange> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.services.Message.KeyExchange getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface EventOrBuilder extends
       // @@protoc_insertion_point(interface_extends:Event)
       com.google.protobuf.MessageOrBuilder {
@@ -5509,31 +6227,36 @@ public final class Message {
     com.services.Message.EventType getType();
 
     /**
-     * <code>string token = 2;</code>
-     * @return The token.
-     */
-    java.lang.String getToken();
-    /**
-     * <code>string token = 2;</code>
-     * @return The bytes for token.
-     */
-    com.google.protobuf.ByteString
-        getTokenBytes();
-
-    /**
-     * <code>.MessageRequest message = 3;</code>
+     * <code>.MessageRequest message = 2;</code>
      * @return Whether the message field is set.
      */
     boolean hasMessage();
     /**
-     * <code>.MessageRequest message = 3;</code>
+     * <code>.MessageRequest message = 2;</code>
      * @return The message.
      */
     com.services.Message.MessageRequest getMessage();
     /**
-     * <code>.MessageRequest message = 3;</code>
+     * <code>.MessageRequest message = 2;</code>
      */
     com.services.Message.MessageRequestOrBuilder getMessageOrBuilder();
+
+    /**
+     * <code>.KeyExchange exchange = 3;</code>
+     * @return Whether the exchange field is set.
+     */
+    boolean hasExchange();
+    /**
+     * <code>.KeyExchange exchange = 3;</code>
+     * @return The exchange.
+     */
+    com.services.Message.KeyExchange getExchange();
+    /**
+     * <code>.KeyExchange exchange = 3;</code>
+     */
+    com.services.Message.KeyExchangeOrBuilder getExchangeOrBuilder();
+
+    public com.services.Message.Event.BodyCase getBodyCase();
   }
   /**
    * Protobuf type {@code Event}
@@ -5549,7 +6272,6 @@ public final class Message {
     }
     private Event() {
       type_ = 0;
-      token_ = "";
     }
 
     @java.lang.Override
@@ -5589,22 +6311,31 @@ public final class Message {
               break;
             }
             case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              token_ = s;
+              com.services.Message.MessageRequest.Builder subBuilder = null;
+              if (bodyCase_ == 2) {
+                subBuilder = ((com.services.Message.MessageRequest) body_).toBuilder();
+              }
+              body_ =
+                  input.readMessage(com.services.Message.MessageRequest.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((com.services.Message.MessageRequest) body_);
+                body_ = subBuilder.buildPartial();
+              }
+              bodyCase_ = 2;
               break;
             }
             case 26: {
-              com.services.Message.MessageRequest.Builder subBuilder = null;
-              if (message_ != null) {
-                subBuilder = message_.toBuilder();
+              com.services.Message.KeyExchange.Builder subBuilder = null;
+              if (bodyCase_ == 3) {
+                subBuilder = ((com.services.Message.KeyExchange) body_).toBuilder();
               }
-              message_ = input.readMessage(com.services.Message.MessageRequest.parser(), extensionRegistry);
+              body_ =
+                  input.readMessage(com.services.Message.KeyExchange.parser(), extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom(message_);
-                message_ = subBuilder.buildPartial();
+                subBuilder.mergeFrom((com.services.Message.KeyExchange) body_);
+                body_ = subBuilder.buildPartial();
               }
-
+              bodyCase_ = 3;
               break;
             }
             default: {
@@ -5639,6 +6370,47 @@ public final class Message {
               com.services.Message.Event.class, com.services.Message.Event.Builder.class);
     }
 
+    private int bodyCase_ = 0;
+    private java.lang.Object body_;
+    public enum BodyCase
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
+      MESSAGE(2),
+      EXCHANGE(3),
+      BODY_NOT_SET(0);
+      private final int value;
+      private BodyCase(int value) {
+        this.value = value;
+      }
+      /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static BodyCase valueOf(int value) {
+        return forNumber(value);
+      }
+
+      public static BodyCase forNumber(int value) {
+        switch (value) {
+          case 2: return MESSAGE;
+          case 3: return EXCHANGE;
+          case 0: return BODY_NOT_SET;
+          default: return null;
+        }
+      }
+      public int getNumber() {
+        return this.value;
+      }
+    };
+
+    public BodyCase
+    getBodyCase() {
+      return BodyCase.forNumber(
+          bodyCase_);
+    }
+
     public static final int TYPE_FIELD_NUMBER = 1;
     private int type_;
     /**
@@ -5658,68 +6430,66 @@ public final class Message {
       return result == null ? com.services.Message.EventType.UNRECOGNIZED : result;
     }
 
-    public static final int TOKEN_FIELD_NUMBER = 2;
-    private volatile java.lang.Object token_;
+    public static final int MESSAGE_FIELD_NUMBER = 2;
     /**
-     * <code>string token = 2;</code>
-     * @return The token.
-     */
-    @java.lang.Override
-    public java.lang.String getToken() {
-      java.lang.Object ref = token_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        token_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string token = 2;</code>
-     * @return The bytes for token.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getTokenBytes() {
-      java.lang.Object ref = token_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        token_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int MESSAGE_FIELD_NUMBER = 3;
-    private com.services.Message.MessageRequest message_;
-    /**
-     * <code>.MessageRequest message = 3;</code>
+     * <code>.MessageRequest message = 2;</code>
      * @return Whether the message field is set.
      */
     @java.lang.Override
     public boolean hasMessage() {
-      return message_ != null;
+      return bodyCase_ == 2;
     }
     /**
-     * <code>.MessageRequest message = 3;</code>
+     * <code>.MessageRequest message = 2;</code>
      * @return The message.
      */
     @java.lang.Override
     public com.services.Message.MessageRequest getMessage() {
-      return message_ == null ? com.services.Message.MessageRequest.getDefaultInstance() : message_;
+      if (bodyCase_ == 2) {
+         return (com.services.Message.MessageRequest) body_;
+      }
+      return com.services.Message.MessageRequest.getDefaultInstance();
     }
     /**
-     * <code>.MessageRequest message = 3;</code>
+     * <code>.MessageRequest message = 2;</code>
      */
     @java.lang.Override
     public com.services.Message.MessageRequestOrBuilder getMessageOrBuilder() {
-      return getMessage();
+      if (bodyCase_ == 2) {
+         return (com.services.Message.MessageRequest) body_;
+      }
+      return com.services.Message.MessageRequest.getDefaultInstance();
+    }
+
+    public static final int EXCHANGE_FIELD_NUMBER = 3;
+    /**
+     * <code>.KeyExchange exchange = 3;</code>
+     * @return Whether the exchange field is set.
+     */
+    @java.lang.Override
+    public boolean hasExchange() {
+      return bodyCase_ == 3;
+    }
+    /**
+     * <code>.KeyExchange exchange = 3;</code>
+     * @return The exchange.
+     */
+    @java.lang.Override
+    public com.services.Message.KeyExchange getExchange() {
+      if (bodyCase_ == 3) {
+         return (com.services.Message.KeyExchange) body_;
+      }
+      return com.services.Message.KeyExchange.getDefaultInstance();
+    }
+    /**
+     * <code>.KeyExchange exchange = 3;</code>
+     */
+    @java.lang.Override
+    public com.services.Message.KeyExchangeOrBuilder getExchangeOrBuilder() {
+      if (bodyCase_ == 3) {
+         return (com.services.Message.KeyExchange) body_;
+      }
+      return com.services.Message.KeyExchange.getDefaultInstance();
     }
 
     private byte memoizedIsInitialized = -1;
@@ -5739,11 +6509,11 @@ public final class Message {
       if (type_ != com.services.Message.EventType.MESSAGE.getNumber()) {
         output.writeEnum(1, type_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(token_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, token_);
+      if (bodyCase_ == 2) {
+        output.writeMessage(2, (com.services.Message.MessageRequest) body_);
       }
-      if (message_ != null) {
-        output.writeMessage(3, getMessage());
+      if (bodyCase_ == 3) {
+        output.writeMessage(3, (com.services.Message.KeyExchange) body_);
       }
       unknownFields.writeTo(output);
     }
@@ -5758,12 +6528,13 @@ public final class Message {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(1, type_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(token_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, token_);
-      }
-      if (message_ != null) {
+      if (bodyCase_ == 2) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, getMessage());
+          .computeMessageSize(2, (com.services.Message.MessageRequest) body_);
+      }
+      if (bodyCase_ == 3) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, (com.services.Message.KeyExchange) body_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -5781,12 +6552,18 @@ public final class Message {
       com.services.Message.Event other = (com.services.Message.Event) obj;
 
       if (type_ != other.type_) return false;
-      if (!getToken()
-          .equals(other.getToken())) return false;
-      if (hasMessage() != other.hasMessage()) return false;
-      if (hasMessage()) {
-        if (!getMessage()
-            .equals(other.getMessage())) return false;
+      if (!getBodyCase().equals(other.getBodyCase())) return false;
+      switch (bodyCase_) {
+        case 2:
+          if (!getMessage()
+              .equals(other.getMessage())) return false;
+          break;
+        case 3:
+          if (!getExchange()
+              .equals(other.getExchange())) return false;
+          break;
+        case 0:
+        default:
       }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
@@ -5801,11 +6578,17 @@ public final class Message {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + TYPE_FIELD_NUMBER;
       hash = (53 * hash) + type_;
-      hash = (37 * hash) + TOKEN_FIELD_NUMBER;
-      hash = (53 * hash) + getToken().hashCode();
-      if (hasMessage()) {
-        hash = (37 * hash) + MESSAGE_FIELD_NUMBER;
-        hash = (53 * hash) + getMessage().hashCode();
+      switch (bodyCase_) {
+        case 2:
+          hash = (37 * hash) + MESSAGE_FIELD_NUMBER;
+          hash = (53 * hash) + getMessage().hashCode();
+          break;
+        case 3:
+          hash = (37 * hash) + EXCHANGE_FIELD_NUMBER;
+          hash = (53 * hash) + getExchange().hashCode();
+          break;
+        case 0:
+        default:
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -5942,14 +6725,8 @@ public final class Message {
         super.clear();
         type_ = 0;
 
-        token_ = "";
-
-        if (messageBuilder_ == null) {
-          message_ = null;
-        } else {
-          message_ = null;
-          messageBuilder_ = null;
-        }
+        bodyCase_ = 0;
+        body_ = null;
         return this;
       }
 
@@ -5977,12 +6754,21 @@ public final class Message {
       public com.services.Message.Event buildPartial() {
         com.services.Message.Event result = new com.services.Message.Event(this);
         result.type_ = type_;
-        result.token_ = token_;
-        if (messageBuilder_ == null) {
-          result.message_ = message_;
-        } else {
-          result.message_ = messageBuilder_.build();
+        if (bodyCase_ == 2) {
+          if (messageBuilder_ == null) {
+            result.body_ = body_;
+          } else {
+            result.body_ = messageBuilder_.build();
+          }
         }
+        if (bodyCase_ == 3) {
+          if (exchangeBuilder_ == null) {
+            result.body_ = body_;
+          } else {
+            result.body_ = exchangeBuilder_.build();
+          }
+        }
+        result.bodyCase_ = bodyCase_;
         onBuilt();
         return result;
       }
@@ -6034,12 +6820,18 @@ public final class Message {
         if (other.type_ != 0) {
           setTypeValue(other.getTypeValue());
         }
-        if (!other.getToken().isEmpty()) {
-          token_ = other.token_;
-          onChanged();
-        }
-        if (other.hasMessage()) {
-          mergeMessage(other.getMessage());
+        switch (other.getBodyCase()) {
+          case MESSAGE: {
+            mergeMessage(other.getMessage());
+            break;
+          }
+          case EXCHANGE: {
+            mergeExchange(other.getExchange());
+            break;
+          }
+          case BODY_NOT_SET: {
+            break;
+          }
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -6069,6 +6861,21 @@ public final class Message {
         }
         return this;
       }
+      private int bodyCase_ = 0;
+      private java.lang.Object body_;
+      public BodyCase
+          getBodyCase() {
+        return BodyCase.forNumber(
+            bodyCase_);
+      }
+
+      public Builder clearBody() {
+        bodyCase_ = 0;
+        body_ = null;
+        onChanged();
+        return this;
+      }
+
 
       private int type_ = 0;
       /**
@@ -6124,199 +6931,286 @@ public final class Message {
         return this;
       }
 
-      private java.lang.Object token_ = "";
-      /**
-       * <code>string token = 2;</code>
-       * @return The token.
-       */
-      public java.lang.String getToken() {
-        java.lang.Object ref = token_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          token_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>string token = 2;</code>
-       * @return The bytes for token.
-       */
-      public com.google.protobuf.ByteString
-          getTokenBytes() {
-        java.lang.Object ref = token_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          token_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string token = 2;</code>
-       * @param value The token to set.
-       * @return This builder for chaining.
-       */
-      public Builder setToken(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        token_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string token = 2;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearToken() {
-        
-        token_ = getDefaultInstance().getToken();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string token = 2;</code>
-       * @param value The bytes for token to set.
-       * @return This builder for chaining.
-       */
-      public Builder setTokenBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        token_ = value;
-        onChanged();
-        return this;
-      }
-
-      private com.services.Message.MessageRequest message_;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.services.Message.MessageRequest, com.services.Message.MessageRequest.Builder, com.services.Message.MessageRequestOrBuilder> messageBuilder_;
       /**
-       * <code>.MessageRequest message = 3;</code>
+       * <code>.MessageRequest message = 2;</code>
        * @return Whether the message field is set.
        */
+      @java.lang.Override
       public boolean hasMessage() {
-        return messageBuilder_ != null || message_ != null;
+        return bodyCase_ == 2;
       }
       /**
-       * <code>.MessageRequest message = 3;</code>
+       * <code>.MessageRequest message = 2;</code>
        * @return The message.
        */
+      @java.lang.Override
       public com.services.Message.MessageRequest getMessage() {
         if (messageBuilder_ == null) {
-          return message_ == null ? com.services.Message.MessageRequest.getDefaultInstance() : message_;
+          if (bodyCase_ == 2) {
+            return (com.services.Message.MessageRequest) body_;
+          }
+          return com.services.Message.MessageRequest.getDefaultInstance();
         } else {
-          return messageBuilder_.getMessage();
+          if (bodyCase_ == 2) {
+            return messageBuilder_.getMessage();
+          }
+          return com.services.Message.MessageRequest.getDefaultInstance();
         }
       }
       /**
-       * <code>.MessageRequest message = 3;</code>
+       * <code>.MessageRequest message = 2;</code>
        */
       public Builder setMessage(com.services.Message.MessageRequest value) {
         if (messageBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          message_ = value;
+          body_ = value;
           onChanged();
         } else {
           messageBuilder_.setMessage(value);
         }
-
+        bodyCase_ = 2;
         return this;
       }
       /**
-       * <code>.MessageRequest message = 3;</code>
+       * <code>.MessageRequest message = 2;</code>
        */
       public Builder setMessage(
           com.services.Message.MessageRequest.Builder builderForValue) {
         if (messageBuilder_ == null) {
-          message_ = builderForValue.build();
+          body_ = builderForValue.build();
           onChanged();
         } else {
           messageBuilder_.setMessage(builderForValue.build());
         }
-
+        bodyCase_ = 2;
         return this;
       }
       /**
-       * <code>.MessageRequest message = 3;</code>
+       * <code>.MessageRequest message = 2;</code>
        */
       public Builder mergeMessage(com.services.Message.MessageRequest value) {
         if (messageBuilder_ == null) {
-          if (message_ != null) {
-            message_ =
-              com.services.Message.MessageRequest.newBuilder(message_).mergeFrom(value).buildPartial();
+          if (bodyCase_ == 2 &&
+              body_ != com.services.Message.MessageRequest.getDefaultInstance()) {
+            body_ = com.services.Message.MessageRequest.newBuilder((com.services.Message.MessageRequest) body_)
+                .mergeFrom(value).buildPartial();
           } else {
-            message_ = value;
+            body_ = value;
           }
           onChanged();
         } else {
-          messageBuilder_.mergeFrom(value);
+          if (bodyCase_ == 2) {
+            messageBuilder_.mergeFrom(value);
+          }
+          messageBuilder_.setMessage(value);
         }
-
+        bodyCase_ = 2;
         return this;
       }
       /**
-       * <code>.MessageRequest message = 3;</code>
+       * <code>.MessageRequest message = 2;</code>
        */
       public Builder clearMessage() {
         if (messageBuilder_ == null) {
-          message_ = null;
-          onChanged();
+          if (bodyCase_ == 2) {
+            bodyCase_ = 0;
+            body_ = null;
+            onChanged();
+          }
         } else {
-          message_ = null;
-          messageBuilder_ = null;
+          if (bodyCase_ == 2) {
+            bodyCase_ = 0;
+            body_ = null;
+          }
+          messageBuilder_.clear();
         }
-
         return this;
       }
       /**
-       * <code>.MessageRequest message = 3;</code>
+       * <code>.MessageRequest message = 2;</code>
        */
       public com.services.Message.MessageRequest.Builder getMessageBuilder() {
-        
-        onChanged();
         return getMessageFieldBuilder().getBuilder();
       }
       /**
-       * <code>.MessageRequest message = 3;</code>
+       * <code>.MessageRequest message = 2;</code>
        */
+      @java.lang.Override
       public com.services.Message.MessageRequestOrBuilder getMessageOrBuilder() {
-        if (messageBuilder_ != null) {
+        if ((bodyCase_ == 2) && (messageBuilder_ != null)) {
           return messageBuilder_.getMessageOrBuilder();
         } else {
-          return message_ == null ?
-              com.services.Message.MessageRequest.getDefaultInstance() : message_;
+          if (bodyCase_ == 2) {
+            return (com.services.Message.MessageRequest) body_;
+          }
+          return com.services.Message.MessageRequest.getDefaultInstance();
         }
       }
       /**
-       * <code>.MessageRequest message = 3;</code>
+       * <code>.MessageRequest message = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.services.Message.MessageRequest, com.services.Message.MessageRequest.Builder, com.services.Message.MessageRequestOrBuilder> 
           getMessageFieldBuilder() {
         if (messageBuilder_ == null) {
+          if (!(bodyCase_ == 2)) {
+            body_ = com.services.Message.MessageRequest.getDefaultInstance();
+          }
           messageBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
               com.services.Message.MessageRequest, com.services.Message.MessageRequest.Builder, com.services.Message.MessageRequestOrBuilder>(
-                  getMessage(),
+                  (com.services.Message.MessageRequest) body_,
                   getParentForChildren(),
                   isClean());
-          message_ = null;
+          body_ = null;
         }
+        bodyCase_ = 2;
+        onChanged();;
         return messageBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.services.Message.KeyExchange, com.services.Message.KeyExchange.Builder, com.services.Message.KeyExchangeOrBuilder> exchangeBuilder_;
+      /**
+       * <code>.KeyExchange exchange = 3;</code>
+       * @return Whether the exchange field is set.
+       */
+      @java.lang.Override
+      public boolean hasExchange() {
+        return bodyCase_ == 3;
+      }
+      /**
+       * <code>.KeyExchange exchange = 3;</code>
+       * @return The exchange.
+       */
+      @java.lang.Override
+      public com.services.Message.KeyExchange getExchange() {
+        if (exchangeBuilder_ == null) {
+          if (bodyCase_ == 3) {
+            return (com.services.Message.KeyExchange) body_;
+          }
+          return com.services.Message.KeyExchange.getDefaultInstance();
+        } else {
+          if (bodyCase_ == 3) {
+            return exchangeBuilder_.getMessage();
+          }
+          return com.services.Message.KeyExchange.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.KeyExchange exchange = 3;</code>
+       */
+      public Builder setExchange(com.services.Message.KeyExchange value) {
+        if (exchangeBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          body_ = value;
+          onChanged();
+        } else {
+          exchangeBuilder_.setMessage(value);
+        }
+        bodyCase_ = 3;
+        return this;
+      }
+      /**
+       * <code>.KeyExchange exchange = 3;</code>
+       */
+      public Builder setExchange(
+          com.services.Message.KeyExchange.Builder builderForValue) {
+        if (exchangeBuilder_ == null) {
+          body_ = builderForValue.build();
+          onChanged();
+        } else {
+          exchangeBuilder_.setMessage(builderForValue.build());
+        }
+        bodyCase_ = 3;
+        return this;
+      }
+      /**
+       * <code>.KeyExchange exchange = 3;</code>
+       */
+      public Builder mergeExchange(com.services.Message.KeyExchange value) {
+        if (exchangeBuilder_ == null) {
+          if (bodyCase_ == 3 &&
+              body_ != com.services.Message.KeyExchange.getDefaultInstance()) {
+            body_ = com.services.Message.KeyExchange.newBuilder((com.services.Message.KeyExchange) body_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            body_ = value;
+          }
+          onChanged();
+        } else {
+          if (bodyCase_ == 3) {
+            exchangeBuilder_.mergeFrom(value);
+          }
+          exchangeBuilder_.setMessage(value);
+        }
+        bodyCase_ = 3;
+        return this;
+      }
+      /**
+       * <code>.KeyExchange exchange = 3;</code>
+       */
+      public Builder clearExchange() {
+        if (exchangeBuilder_ == null) {
+          if (bodyCase_ == 3) {
+            bodyCase_ = 0;
+            body_ = null;
+            onChanged();
+          }
+        } else {
+          if (bodyCase_ == 3) {
+            bodyCase_ = 0;
+            body_ = null;
+          }
+          exchangeBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.KeyExchange exchange = 3;</code>
+       */
+      public com.services.Message.KeyExchange.Builder getExchangeBuilder() {
+        return getExchangeFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.KeyExchange exchange = 3;</code>
+       */
+      @java.lang.Override
+      public com.services.Message.KeyExchangeOrBuilder getExchangeOrBuilder() {
+        if ((bodyCase_ == 3) && (exchangeBuilder_ != null)) {
+          return exchangeBuilder_.getMessageOrBuilder();
+        } else {
+          if (bodyCase_ == 3) {
+            return (com.services.Message.KeyExchange) body_;
+          }
+          return com.services.Message.KeyExchange.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.KeyExchange exchange = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.services.Message.KeyExchange, com.services.Message.KeyExchange.Builder, com.services.Message.KeyExchangeOrBuilder> 
+          getExchangeFieldBuilder() {
+        if (exchangeBuilder_ == null) {
+          if (!(bodyCase_ == 3)) {
+            body_ = com.services.Message.KeyExchange.getDefaultInstance();
+          }
+          exchangeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.services.Message.KeyExchange, com.services.Message.KeyExchange.Builder, com.services.Message.KeyExchangeOrBuilder>(
+                  (com.services.Message.KeyExchange) body_,
+                  getParentForChildren(),
+                  isClean());
+          body_ = null;
+        }
+        bodyCase_ = 3;
+        onChanged();;
+        return exchangeBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -6397,6 +7291,11 @@ public final class Message {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_MessageUpdateResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_KeyExchange_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_KeyExchange_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_Event_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -6414,24 +7313,26 @@ public final class Message {
       "r\030\001 \001(\t\022\021\n\tmessageId\030\002 \001(\t\022\014\n\004text\030\003 \001(\t" +
       "\022\020\n\010reciever\030\004 \001(\t\022\023\n\013contentType\030\005 \001(\t\022" +
       "\021\n\ttimestamp\030\006 \001(\t\022\025\n\rdeliverStatus\030\007 \001(" +
-      "\010\022\022\n\nreadStatus\030\010 \001(\010\"Z\n\016MessageRequest\022" +
+      "\010\022\022\n\nreadStatus\030\010 \001(\010\"K\n\016MessageRequest\022" +
       "\035\n\007message\030\001 \001(\0132\014.MessageInfo\022\032\n\004type\030\002" +
-      " \001(\0162\014.MessageType\022\r\n\005token\030\003 \001(\t\"L\n\017Mes" +
-      "sageResponse\022\035\n\007message\030\001 \001(\0132\014.MessageI" +
-      "nfo\022\032\n\004type\030\002 \001(\0162\014.MessageType\"\205\001\n\024Mess" +
-      "ageUpdateRequest\022\016\n\006sender\030\001 \001(\t\022\020\n\010reci" +
-      "ever\030\002 \001(\t\022\021\n\tmessageId\030\003 \001(\t\022\025\n\rdeliver" +
-      "Status\030\004 \001(\010\022\022\n\nreadStatus\030\005 \001(\010\022\r\n\005toke" +
-      "n\030\006 \001(\t\"w\n\025MessageUpdateResponse\022\016\n\006send" +
-      "er\030\001 \001(\t\022\020\n\010reciever\030\002 \001(\t\022\021\n\tmessageId\030" +
-      "\003 \001(\t\022\025\n\rdeliverStatus\030\004 \001(\010\022\022\n\nreadStat" +
-      "us\030\005 \001(\010\"R\n\005Event\022\030\n\004type\030\001 \001(\0162\n.EventT" +
-      "ype\022\r\n\005token\030\002 \001(\t\022 \n\007message\030\003 \001(\0132\017.Me" +
-      "ssageRequest*%\n\013MessageType\022\n\n\006INSERT\020\000\022" +
-      "\n\n\006UPDATE\020\001*_\n\tEventType\022\013\n\007MESSAGE\020\000\022\r\n" +
-      "\tHANDSHAKE\020\001\022\022\n\016DETAILS_UPDATE\020\002\022\017\n\013TYPE" +
-      "_UPDATE\020\003\022\021\n\rSTATUS_UPDATE\020\004B\023\n\014com.serv" +
-      "icesZ\003/pbb\006proto3"
+      " \001(\0162\014.MessageType\"L\n\017MessageResponse\022\035\n" +
+      "\007message\030\001 \001(\0132\014.MessageInfo\022\032\n\004type\030\002 \001" +
+      "(\0162\014.MessageType\"v\n\024MessageUpdateRequest" +
+      "\022\016\n\006sender\030\001 \001(\t\022\020\n\010reciever\030\002 \001(\t\022\021\n\tme" +
+      "ssageId\030\003 \001(\t\022\025\n\rdeliverStatus\030\004 \001(\010\022\022\n\n" +
+      "readStatus\030\005 \001(\010\"w\n\025MessageUpdateRespons" +
+      "e\022\016\n\006sender\030\001 \001(\t\022\020\n\010reciever\030\002 \001(\t\022\021\n\tm" +
+      "essageId\030\003 \001(\t\022\025\n\rdeliverStatus\030\004 \001(\010\022\022\n" +
+      "\nreadStatus\030\005 \001(\010\"V\n\013KeyExchange\022\016\n\006send" +
+      "er\030\001 \001(\t\022\020\n\010reciever\030\002 \001(\t\022\021\n\tpublicKey\030" +
+      "\003 \001(\t\022\022\n\nprivateKey\030\004 \001(\t\"o\n\005Event\022\030\n\004ty" +
+      "pe\030\001 \001(\0162\n.EventType\022\"\n\007message\030\002 \001(\0132\017." +
+      "MessageRequestH\000\022 \n\010exchange\030\003 \001(\0132\014.Key" +
+      "ExchangeH\000B\006\n\004body*%\n\013MessageType\022\n\n\006INS" +
+      "ERT\020\000\022\n\n\006UPDATE\020\001*_\n\tEventType\022\013\n\007MESSAG" +
+      "E\020\000\022\r\n\tHANDSHAKE\020\001\022\022\n\016DETAILS_UPDATE\020\002\022\017" +
+      "\n\013TYPE_UPDATE\020\003\022\021\n\rSTATUS_UPDATE\020\004B\023\n\014co" +
+      "m.servicesZ\003/pbb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -6448,7 +7349,7 @@ public final class Message {
     internal_static_MessageRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_MessageRequest_descriptor,
-        new java.lang.String[] { "Message", "Type", "Token", });
+        new java.lang.String[] { "Message", "Type", });
     internal_static_MessageResponse_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_MessageResponse_fieldAccessorTable = new
@@ -6460,19 +7361,25 @@ public final class Message {
     internal_static_MessageUpdateRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_MessageUpdateRequest_descriptor,
-        new java.lang.String[] { "Sender", "Reciever", "MessageId", "DeliverStatus", "ReadStatus", "Token", });
+        new java.lang.String[] { "Sender", "Reciever", "MessageId", "DeliverStatus", "ReadStatus", });
     internal_static_MessageUpdateResponse_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_MessageUpdateResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_MessageUpdateResponse_descriptor,
         new java.lang.String[] { "Sender", "Reciever", "MessageId", "DeliverStatus", "ReadStatus", });
-    internal_static_Event_descriptor =
+    internal_static_KeyExchange_descriptor =
       getDescriptor().getMessageTypes().get(5);
+    internal_static_KeyExchange_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_KeyExchange_descriptor,
+        new java.lang.String[] { "Sender", "Reciever", "PublicKey", "PrivateKey", });
+    internal_static_Event_descriptor =
+      getDescriptor().getMessageTypes().get(6);
     internal_static_Event_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Event_descriptor,
-        new java.lang.String[] { "Type", "Token", "Message", });
+        new java.lang.String[] { "Type", "Message", "Exchange", "Body", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

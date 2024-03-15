@@ -4,39 +4,66 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.provider.ContactsContract
 import android.util.Log
-import com.fury.messenger.data.db.DBHelper
-import com.fury.messenger.data.db.DBMessage
-import com.fury.messenger.data.db.DBUser
+
+import com.fury.messenger.data.db.model.Contact
+import com.fury.messenger.data.db.model.ContactsModel
+import com.fury.messenger.data.db.model.ContactsModel.chatPrivateKey
+import com.fury.messenger.data.db.model.ContactsModel.chatPublickey
+import com.fury.messenger.data.db.model.ContactsModel.countryCode
+import com.fury.messenger.data.db.model.ContactsModel.createdAt
+import com.fury.messenger.data.db.model.ContactsModel.id
+import com.fury.messenger.data.db.model.ContactsModel.image
+import com.fury.messenger.data.db.model.ContactsModel.isVerified
+import com.fury.messenger.data.db.model.ContactsModel.name
+import com.fury.messenger.data.db.model.ContactsModel.phoneNumber
+import com.fury.messenger.data.db.model.ContactsModel.pubKey
+import com.fury.messenger.data.db.model.ContactsModel.uuid
 import com.fury.messenger.data.helper.mutex.MutexLock
-import com.fury.messenger.data.helper.user.CurrentUser
 
-import com.fury.messenger.manageBuilder.ManageChanelBuilder
-import com.services.ContactOuterClass
-import com.services.ContactOuterClass.ContactsList
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.sync.Mutex
+
 import kotlinx.coroutines.withContext
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.transactions.transaction
 
-class Contacts {
-    private var classType:Context;
+class Contacts (private var classType: Context){
     private  var contactList:ArrayList<Contact>?=null
-    private var db:DBHelper
-
-    constructor(classType:Context){
-        this.classType=classType
-        this.db= DBHelper(this.classType)
-
-    }
 
     private fun setContactList(contacts:ArrayList<Contact>){
         contactList=contacts
 
     }
     @SuppressLint("InlinedApi", "Range", "SuspiciousIndentation")
-    public suspend  fun listAllContacts(){
+    suspend  fun listAllContacts(): ArrayList<Contact> {
+       return withContext(Dispatchers.IO) {
+
+            val users = ContactsModel.selectAll().where { isVerified eq true }.map {
+                Contact(
+                    it[id].toString(),
+                    it[name],
+                    it[phoneNumber],
+                    it[image],
+                    it[pubKey],
+                    it[chatPublickey],
+                    it[chatPrivateKey],
+                    it[countryCode],
+                    it[isVerified],
+                    it[uuid],
+                    it[createdAt]
+                )
+            }
+            setContactList(ArrayList(users))
+            return@withContext ArrayList(users)
+        }
+
+    }
+    @SuppressLint("Range")
+    suspend fun validateContacts(contacts:ArrayList<Contact>?){
+
         withContext(Dispatchers.IO){
-            val contactList: ArrayList<Contact> = ArrayList<Contact>()
+            val contactList: ArrayList<Contact>? = if(contacts!=null) this@Contacts.contactList else contacts
             val phones = classType.contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, "display_name ASC")
             if (phones != null && phones.count>0) {
                 while(phones.moveToNext()){
@@ -52,13 +79,14 @@ class Contacts {
                         )
                         if( phoneNumberValue!=null &&phoneNumberValue.count>0){
                             while (phoneNumberValue.moveToNext()){
-                                val phoneNumValue = phoneNumberValue.getString(phoneNumberValue.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                                val hasNumber=contactList.find{
-                                        contact -> contact.getPhoneNumber()==phoneNumValue.split(" ").joinToString("")
+                                val phoneNumValue = phoneNumberValue.getString(phoneNumberValue.getColumnIndex(
+                                    ContactsContract.CommonDataKinds.Phone.NUMBER))
+                                val hasNumber=contactList?.find{
+                                        contact -> contact.phoneNumber==phoneNumValue.split(" ").joinToString("")
                                 }
                                 if(hasNumber==null) {
                                     val contact = Contact(id, name, phoneNumValue.split(" ").joinToString(""), image)
-                                    contactList.add(contact)
+                                    contactList?.add(contact)
                                 }
                             }
                             phoneNumberValue.close()
@@ -70,94 +98,67 @@ class Contacts {
                 }
                 phones.close()
             }
-            Log.d("list length",contactList.count().toString())
-            setContactList(contactList)
-        }
-    }
 
-    suspend fun validateContacts(){
-     withContext(Dispatchers.IO){
-         if(contactList!=null){
-             val channel=ManageChanelBuilder.channel
-             val client=ManageChanelBuilder.client
-             val request=ContactsList.newBuilder()
-
-             contactList?.forEachIndexed { index, contact ->
-                 run {
-
-                     val countryCode=contact.getCountryCode()
-                     if(countryCode!=null){
-                         var subRequest =ContactOuterClass.Contact.newBuilder().setId(index.toString())
-                             .setPhoneNumber(contact.getPhoneNumber()).setName(contact.getName())
-                             .setIsVerified(contact.getIsVerified()).setCountryCode(countryCode).build()
-                         request.addContacts( subRequest)
-
-                     }else{
-                         var subRequest =ContactOuterClass.Contact.newBuilder().setId(index.toString())
-                             .setPhoneNumber(contact.getPhoneNumber()).setName(contact.getName())
-                             .setIsVerified(contact.getIsVerified()).build()
-                         request.addContacts(subRequest)
-                     }
-                 }
-             }
-             val response= client.validateContacts(request.build())
-
-
-
-             updateDb(response.contactsList)
-         }
-     }
-    }
-    private suspend fun updateDb(validContacts: MutableList<ContactOuterClass.Contact>) {
-        val dbHelper=DBHelper(this.classType)
-        while(MutexLock.getDbLock()){
-
-        }
-        val db=dbHelper.writableDatabase
-
-        MutexLock.setDbLock(true)
-        validContacts.forEach { contact ->
-            run {
-                val index =
-                    this.contactList?.indexOfFirst { it.getPhoneNumber() == contact.phoneNumber }
-                if (index != null) {
-                    this.contactList?.get(index)?.getPubKey()
-                        ?.let { Log.d(index?.let { this.contactList?.get(it)?.getName() }, it) }
-                }
-                if (index != null && this.contactList?.get(index)?.getPubKey()?.replace("-----BEGIN PRIVATE KEY-----", "")
-                        ?.replace("-----END PRIVATE KEY-----", "")
-                        ?.replace("\n", "")!=contact.pubKey.replace("-----BEGIN PRIVATE KEY-----", "")
-                        ?.replace("-----END PRIVATE KEY-----", "")
-                        ?.replace("\n", "")) {
-
-                    this.contactList?.get(index)?.setIsVerified(true)
-
-
-                    this.contactList?.get(index)?.setName(contact.name)
-                    this.contactList?.get(index)?.getPhoneNumber()
-
-                    this.contactList?.get(index)?.setPubKey(contact.pubKey.replace("-----BEGIN PRIVATE KEY-----", "")
-                        ?.replace("-----END PRIVATE KEY-----", "")
-                        ?.replace("\n", ""))
-                    this.contactList?.get(index)?.setUUID(contact.uuid)
-                   db.execSQL(DBMessage.createTableQuery("table_${contact.phoneNumber}"))
-
-                }
-
-
+            if (contactList != null) {
+                setContactList(contactList)
+                updateDb(contactList)
+                Log.d("list length",contactList.count().toString())
 
             }
         }
-        MutexLock.setDbLock(false)
+    }
+    private fun updateDb(validContacts: ArrayList<Contact>) {
+        while(MutexLock.getDbLock()){
 
-        runBlocking {
-          DBUser.multipleInsert(contactList!!,dbHelper)
-          dbHelper.close()
+        }
 
-      }
+        MutexLock.setDbLock(true)
+        transaction {
+            SchemaUtils.create(ContactsModel)
+
+            validContacts.forEach { contact ->
+                run {
+                    val index =
+                        this@Contacts.contactList?.indexOfFirst { it.phoneNumber == contact.phoneNumber }
+                    if (index != null) {
+                        this@Contacts.contactList?.get(index)?.pubKey
+                            ?.let { it -> Log.d(index.let {  this@Contacts.contactList?.get(it)?.name }, it) }
+                    }
+                    if (index != null &&  this@Contacts.contactList?.get(index)?.pubKey?.replace("-----BEGIN PUBLIC KEY-----", "")
+                            ?.replace("-----END PUBLIC KEY-----", "")
+                            ?.replace("\n", "")!= contact.pubKey?.replace("-----BEGIN PRIVATE KEY-----", "")
+                            ?.replace("-----END PRIVATE KEY-----", "")
+                                ?.replace("\n", "")
+                    ) {
+                        ContactsModel.insert {
+                            it[name]=contact.name!!
+                            it[phoneNumber]=contact.phoneNumber
+                            it[pubKey]= contact.pubKey
+                            it[uuid]=contact.uuid!!
+                            it[isVerified]=true
+                        }
+
+                    }
 
 
 
+                }
+            }
+
+        }
+
+
+
+    }
+
+
+    fun getAllVerifiedContacts():ArrayList<Contact>{
+
+        return  ArrayList(ContactsModel.selectAll().where{ContactsModel.isVerified eq true}.map {
+            Contact(it[id].toString(),it[name],it[phoneNumber],it[image], it[pubKey],it[chatPublickey],it[chatPrivateKey],it[countryCode],it[isVerified],
+                it[uuid],it[createdAt]
+            )
+        })
     }
     }
 

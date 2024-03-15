@@ -13,6 +13,7 @@ import com.fury.messenger.data.db.DBMessage.messageThreadHandler
 import com.fury.messenger.kafka.ConsumerThread
 import com.fury.messenger.kafka.RabbitMQ
 import com.fury.messenger.manageBuilder.ManageChanelBuilder
+import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.fury.messenger.ui.login.LoginActivity
 import com.google.protobuf.util.JsonFormat
 import com.rabbitmq.client.AMQP
@@ -47,7 +48,6 @@ object CurrentUser {
         return Base64.getEncoder().encodeToString(key)
     }
      fun convertStringToKeyFactory(key: String, type:Int): Key? {
-         Log.d( type.toString(),key)
 
 
 
@@ -195,12 +195,10 @@ try{
 
                             channel.basicAck(deliveryTag, false)
                             if(messageResponse.message.type==Message.MessageType.INSERT){
-                                val request=Message.MessageRequest.newBuilder().setType(Message.MessageType.UPDATE).setToken(
-                                    getToken()
-                                )
+                                val request=Message.MessageRequest.newBuilder().setType(Message.MessageType.UPDATE)
                                 val messageInfo=Message.MessageInfo.newBuilder().setMessageId(messageObj.messageId).setSender(messageObj.reciever).setReciever(messageObj.sender).setDeliverStatus(true).build()
                                 val event= Message.Event.newBuilder().setMessage(request.setMessage(messageInfo).build()).setType(Message.EventType.MESSAGE).build()
-                                val client=ManageChanelBuilder.client
+                                val client= createAuthenticationStub(getToken())
                                 client.send(event)
                             }
 

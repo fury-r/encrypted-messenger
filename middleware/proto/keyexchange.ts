@@ -1,12 +1,16 @@
-import type * as grpc from '@grpc/grpc-js';
-import type { MessageTypeDefinition } from '@grpc/proto-loader';
+// Original file: ../protobuf/service/message.proto
 
 
-type SubtypeConstructor<Constructor extends new (...args: any) => any, Subtype> = {
-  new(...args: ConstructorParameters<Constructor>): Subtype;
-};
-
-export interface ProtoGrpcType {
-  PubKeyExchange: MessageTypeDefinition
+export interface KeyExchange {
+  'sender'?: (string);
+  'reciever'?: (string);
+  'publicKey'?: (string);
+  'privateKey'?: (string);
 }
 
+export interface KeyExchange__Output {
+  'sender'?: (string);
+  'reciever'?: (string);
+  'publicKey'?: (string);
+  'privateKey'?: (string);
+}

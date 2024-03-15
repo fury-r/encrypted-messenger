@@ -1,4 +1,4 @@
-package service
+package controller
 
 import (
 	"fmt"
@@ -7,25 +7,24 @@ import (
 	"example.com/messenger/pb"
 	"example.com/messenger/utils"
 	"golang.org/x/net/context"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func VerifyTokenService(ctx context.Context, req *pb.AuthRequest) (*pb.AuthResponse, error) {
 	app := firebase.InitFirebase()
+
 	firestore, err := app.Firestore(ctx)
 	auth, _ := app.Auth(ctx)
 	if err != nil {
-		panic(err)
+		return nil, status.Errorf(codes.Unauthenticated, "Authorization token not provided")
 	}
-	fmt.Println(req.GetToken())
 
-	email, err := utils.ValidateToken(req.GetToken())
+	email, err := utils.GetTokenFromMetaDataAndValidate(ctx)
 	if err != nil {
-		x := "Invalid Token 1"
-		return &pb.AuthResponse{
-			Error: &x,
-		}, nil
+		return nil, err
 	}
-	docs, _ := firestore.Collection("user").Where("email", "==", email).Limit(1).Documents(ctx).GetAll()
+	docs, _ := firestore.Collection("user").Where("email", "==", *email).Limit(1).Documents(ctx).GetAll()
 	if docs == nil {
 		x := "Invalid Token 2"
 		return &pb.AuthResponse{
@@ -60,4 +59,37 @@ func VerifyTokenService(ctx context.Context, req *pb.AuthRequest) (*pb.AuthRespo
 	return &pb.AuthResponse{
 		Error: &x,
 	}, nil
+}
+
+func GetUserService(ctx context.Context, req *pb.UserRequest) (*pb.UserResponse, error) {
+	app, err := firebase.InitFirebase().Firestore(ctx)
+	if err != nil {
+		panic(err)
+	}
+
+	_, err = utils.GetTokenFromMetaDataAndValidate(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	docs := app.Collection("user").Where("phoneNumber", "==", req.PhoneNumber).Documents(ctx)
+
+	for {
+		doc, err := docs.Next()
+		if err != nil {
+			return nil, err
+		}
+
+		data := doc.Data()
+		pubKey, ok := data["pubKey"]
+		key := ""
+		if ok == true {
+			key = pubKey.(string)
+		}
+		return &pb.UserResponse{
+			PubKey:      key,
+			PhoneNumber: req.PhoneNumber,
+		}, nil
+	}
+
 }

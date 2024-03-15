@@ -6,12 +6,10 @@ option go_package="/pb";
 option java_package = "com.services";
 import "user.proto";
 message AuthRequest {
-    string token=1;
 }
 
 message AuthResponse {
-    optional  string token=1;
-    optional bool isVerified=2;
-    optional string error=3;
-    optional User user=4;
+    optional bool isVerified=1;
+    optional string error=2;
+    optional User user=3;
 }

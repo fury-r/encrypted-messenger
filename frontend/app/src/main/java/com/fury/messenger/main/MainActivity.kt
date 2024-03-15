@@ -18,9 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fury.messenger.R
 import com.fury.messenger.data.db.DBHelper
-import com.fury.messenger.data.db.DBUser
-import com.fury.messenger.data.helper.contact.Contact
+import com.fury.messenger.data.db.model.Contact
 import com.fury.messenger.data.helper.contact.Contacts
+
 import com.fury.messenger.data.helper.user.CurrentUser
 import com.fury.messenger.editprofile.EditProfile
 import com.fury.messenger.rsa.RSA.initRSA
@@ -42,7 +42,7 @@ class MainActivity: AppCompatActivity() {
     private lateinit var recentAdapter: RecentAdapter
     private lateinit var mAuth: FirebaseAuth
     private  lateinit var db:SQLiteOpenHelper
-    private lateinit var contacts:Contacts
+    private lateinit var contacts:ArrayList<Contact>
     private   var hasReadContactPermission:Boolean=false
     private   var hasStoragePermission:Boolean=false
     private  lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
@@ -66,9 +66,9 @@ class MainActivity: AppCompatActivity() {
           scope.launch {
           db=DBHelper(ctx)
 
-          contacts.listAllContacts()
-          contacts.validateContacts()
-          val data= DBUser.getData(db).filter { contact -> contact.getIsVerified() } as ArrayList<Contact>
+
+          contacts.validateContacts( contacts.listAllContacts())
+          val data= contacts.getAllVerifiedContacts()
           Log.d(" Thread-Messenger contacts",data.size.toString())
           setContactList(data)
           db.close()
@@ -76,7 +76,7 @@ class MainActivity: AppCompatActivity() {
       }
 
 
-        Log.d("name-z",userList.size.toString())
+        Log.d("Contact-z",userList.size.toString())
 
         tokenManager=TokenManager(this)
         supportActionBar!!.setBackgroundDrawable(ColorDrawable(Color.parseColor("#696969")))

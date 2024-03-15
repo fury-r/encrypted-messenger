@@ -1,4 +1,3 @@
-import path from "path";
 import { Kafka } from "kafkajs";
 
 const { KAFKA_USERNAME: username, KAFKA_PASSWORD: password } = process.env;

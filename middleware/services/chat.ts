@@ -1,67 +1,71 @@
-import path from "path";
-import * as grpc from "@grpc/grpc-js";
-import * as protoLoader from "@grpc/proto-loader";
 import { GrpcClientService } from "../common/GrpcClientService";
 import { KafkaSetup } from "../common/kafka";
 import { Event } from "../proto/Event";
 import { RabbitMQ } from "../common/rabbitMQ";
+import { validateToken } from "../utils/validateToken";
+import { encryptMessage } from "../utils/rsa";
 
-export const chatService = (): grpc.UntypedServiceImplementation => {
-  const PROTO_FILE = "../../protobuf/service/service.proto";
-
+export const send = async (
+  req: {
+    request: Event;
+  },
+  callback: any
+) => {
   const client = new GrpcClientService().getClient();
-  const packageDef = protoLoader.loadSync(path.resolve(__dirname, PROTO_FILE));
-  const grpcObject: any = grpc.loadPackageDefinition(packageDef);
   const producer = new KafkaSetup().getKafkaProducer();
   const rabbitMQ = new RabbitMQ("amqp://guest:guest@localhost:5672", "chat");
-  return {
-    //TODO: Currently hardcoded to handle event of type message
-    send: async (
-      req: {
-        request: Event;
-      },
-      callback: any
-    ) => {
-      const data: Event = req.request as Event;
-      console.log("hit", data);
+  const data: Event = req.request as Event;
 
-      delete req.request.token;
-      if (req.request?.message?.message?.reciever) {
-        rabbitMQ.sendToQueue(
-          JSON.stringify(req.request),
-          req.request?.message?.message?.reciever
-        );
-        console.log("Adding to Message broker");
-      } else {
-        console.log(" not ", req.request);
-      }
+  validateToken(req, (_, res: any) => {});
 
-      return callback(null, {});
-      let response: any = await client.VerifyToken(
-        {
-          token: req.request.token,
-        },
-        (e, result) => {
-          if (e) {
-            return callback(e, null);
-          } else {
-            return result;
-          }
-        }
-      );
-      if (response?.user) {
-        // rabbitMQ.sendToQueue(JSON.stringify(req.request));
-        // await producer?.send({
-        //   topic: req.request.to,
-        //   messages: [
-        //     {
-        //       value: req.request.message,
-        //     },
-        //   ],
-        // });
-      } else {
-        return callback("Invalid token", null);
-      }
+  let pubKey: string | undefined;
+  client.getUser(
+    {
+      phoneNumber:
+        req.request.message?.message?.reciever ||
+        req.request.exchange?.reciever,
     },
-  };
+    (_, res) => {
+      pubKey = res?.pubKey;
+    }
+  );
+  // 2nd level of encryption
+  const encryptedMessage = encryptMessage(JSON.stringify(req.request), pubKey);
+  if (req.request?.message?.message?.reciever) {
+    console.log("Adding to Message broker");
+
+    rabbitMQ.sendToQueue(
+      encryptedMessage,
+      req.request?.message?.message?.reciever
+    );
+  } else {
+    console.log(" not ", req.request);
+  }
+
+  return callback(null, {});
+  const response: any = await client.VerifyToken(
+    {
+      token: req.request.token,
+    },
+    (e, result) => {
+      if (e) {
+        return callback(e, null);
+      } else {
+        return result;
+      }
+    }
+  );
+  if (response?.user) {
+    // rabbitMQ.sendToQueue(JSON.stringify(req.request));
+    // await producer?.send({
+    //   topic: req.request.to,
+    //   messages: [
+    //     {
+    //       value: req.request.message,
+    //     },
+    //   ],
+    // });
+  } else {
+    return callback("Invalid token", null);
+  }
 };

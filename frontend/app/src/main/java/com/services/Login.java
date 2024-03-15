@@ -49,17 +49,17 @@ public final class Login {
     boolean getUsePassword();
 
     /**
-     * <code>optional string countryCode = 4;</code>
+     * <code>string countryCode = 4;</code>
      * @return Whether the countryCode field is set.
      */
     boolean hasCountryCode();
     /**
-     * <code>optional string countryCode = 4;</code>
+     * <code>string countryCode = 4;</code>
      * @return The countryCode.
      */
     java.lang.String getCountryCode();
     /**
-     * <code>optional string countryCode = 4;</code>
+     * <code>string countryCode = 4;</code>
      * @return The bytes for countryCode.
      */
     com.google.protobuf.ByteString
@@ -260,7 +260,7 @@ public final class Login {
     public static final int COUNTRYCODE_FIELD_NUMBER = 4;
     private volatile java.lang.Object countryCode_;
     /**
-     * <code>optional string countryCode = 4;</code>
+     * <code>string countryCode = 4;</code>
      * @return Whether the countryCode field is set.
      */
     @java.lang.Override
@@ -268,7 +268,7 @@ public final class Login {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional string countryCode = 4;</code>
+     * <code>string countryCode = 4;</code>
      * @return The countryCode.
      */
     @java.lang.Override
@@ -285,7 +285,7 @@ public final class Login {
       }
     }
     /**
-     * <code>optional string countryCode = 4;</code>
+     * <code>string countryCode = 4;</code>
      * @return The bytes for countryCode.
      */
     @java.lang.Override
@@ -317,10 +317,10 @@ public final class Login {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(phoneNumber_)) {
+      if (!getPhoneNumberBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, phoneNumber_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(password_)) {
+      if (!getPasswordBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, password_);
       }
       if (usePassword_ != false) {
@@ -338,10 +338,10 @@ public final class Login {
       if (size != -1) return size;
 
       size = 0;
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(phoneNumber_)) {
+      if (!getPhoneNumberBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, phoneNumber_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(password_)) {
+      if (!getPasswordBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, password_);
       }
       if (usePassword_ != false) {
@@ -855,14 +855,14 @@ public final class Login {
 
       private java.lang.Object countryCode_ = "";
       /**
-       * <code>optional string countryCode = 4;</code>
+       * <code>string countryCode = 4;</code>
        * @return Whether the countryCode field is set.
        */
       public boolean hasCountryCode() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional string countryCode = 4;</code>
+       * <code>string countryCode = 4;</code>
        * @return The countryCode.
        */
       public java.lang.String getCountryCode() {
@@ -878,7 +878,7 @@ public final class Login {
         }
       }
       /**
-       * <code>optional string countryCode = 4;</code>
+       * <code>string countryCode = 4;</code>
        * @return The bytes for countryCode.
        */
       public com.google.protobuf.ByteString
@@ -895,7 +895,7 @@ public final class Login {
         }
       }
       /**
-       * <code>optional string countryCode = 4;</code>
+       * <code>string countryCode = 4;</code>
        * @param value The countryCode to set.
        * @return This builder for chaining.
        */
@@ -910,7 +910,7 @@ public final class Login {
         return this;
       }
       /**
-       * <code>optional string countryCode = 4;</code>
+       * <code>string countryCode = 4;</code>
        * @return This builder for chaining.
        */
       public Builder clearCountryCode() {
@@ -920,7 +920,7 @@ public final class Login {
         return this;
       }
       /**
-       * <code>optional string countryCode = 4;</code>
+       * <code>string countryCode = 4;</code>
        * @param value The bytes for countryCode to set.
        * @return This builder for chaining.
        */
@@ -1005,17 +1005,17 @@ public final class Login {
         getMessageBytes();
 
     /**
-     * <code>optional string error = 2;</code>
+     * <code>string error = 2;</code>
      * @return Whether the error field is set.
      */
     boolean hasError();
     /**
-     * <code>optional string error = 2;</code>
+     * <code>string error = 2;</code>
      * @return The error.
      */
     java.lang.String getError();
     /**
-     * <code>optional string error = 2;</code>
+     * <code>string error = 2;</code>
      * @return The bytes for error.
      */
     com.google.protobuf.ByteString
@@ -1155,7 +1155,7 @@ public final class Login {
     public static final int ERROR_FIELD_NUMBER = 2;
     private volatile java.lang.Object error_;
     /**
-     * <code>optional string error = 2;</code>
+     * <code>string error = 2;</code>
      * @return Whether the error field is set.
      */
     @java.lang.Override
@@ -1163,7 +1163,7 @@ public final class Login {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional string error = 2;</code>
+     * <code>string error = 2;</code>
      * @return The error.
      */
     @java.lang.Override
@@ -1180,7 +1180,7 @@ public final class Login {
       }
     }
     /**
-     * <code>optional string error = 2;</code>
+     * <code>string error = 2;</code>
      * @return The bytes for error.
      */
     @java.lang.Override
@@ -1212,7 +1212,7 @@ public final class Login {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(message_)) {
+      if (!getMessageBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, message_);
       }
       if (((bitField0_ & 0x00000001) != 0)) {
@@ -1227,7 +1227,7 @@ public final class Login {
       if (size != -1) return size;
 
       size = 0;
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(message_)) {
+      if (!getMessageBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, message_);
       }
       if (((bitField0_ & 0x00000001) != 0)) {
@@ -1608,14 +1608,14 @@ public final class Login {
 
       private java.lang.Object error_ = "";
       /**
-       * <code>optional string error = 2;</code>
+       * <code>string error = 2;</code>
        * @return Whether the error field is set.
        */
       public boolean hasError() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional string error = 2;</code>
+       * <code>string error = 2;</code>
        * @return The error.
        */
       public java.lang.String getError() {
@@ -1631,7 +1631,7 @@ public final class Login {
         }
       }
       /**
-       * <code>optional string error = 2;</code>
+       * <code>string error = 2;</code>
        * @return The bytes for error.
        */
       public com.google.protobuf.ByteString
@@ -1648,7 +1648,7 @@ public final class Login {
         }
       }
       /**
-       * <code>optional string error = 2;</code>
+       * <code>string error = 2;</code>
        * @param value The error to set.
        * @return This builder for chaining.
        */
@@ -1663,7 +1663,7 @@ public final class Login {
         return this;
       }
       /**
-       * <code>optional string error = 2;</code>
+       * <code>string error = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearError() {
@@ -1673,7 +1673,7 @@ public final class Login {
         return this;
       }
       /**
-       * <code>optional string error = 2;</code>
+       * <code>string error = 2;</code>
        * @param value The bytes for error to set.
        * @return This builder for chaining.
        */

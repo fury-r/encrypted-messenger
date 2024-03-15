@@ -3,6 +3,7 @@ package com.fury.messenger.ui.login
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -11,6 +12,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.fury.messenger.R
@@ -18,6 +20,7 @@ import com.fury.messenger.data.db.DBHelper
 import com.fury.messenger.data.helper.user.CurrentUser
 import com.fury.messenger.main.MainActivity
 import com.fury.messenger.manageBuilder.ManageChanelBuilder
+import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.fury.messenger.otp.OtpActivity
 import com.fury.messenger.rsa.RSA
 import com.fury.messenger.signup.SignupActivity
@@ -45,12 +48,13 @@ class LoginActivity : AppCompatActivity() {
     private  lateinit var permissionLauncher:ActivityResultLauncher<Array<String>>
     lateinit var message:String
     private  var scope= CoroutineScope(Dispatchers.Main)
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         Log.d("send to backend","")
         channel=ManageChanelBuilder.channel
-            val client=ManageChanelBuilder.client
+        val client= createAuthenticationStub(CurrentUser.getToken())
         permissionLauncher=registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
             permission->
             hasStoragePermission=permission[Manifest.permission.MANAGE_EXTERNAL_STORAGE]?:hasStoragePermission
@@ -112,7 +116,6 @@ class LoginActivity : AppCompatActivity() {
 
 
         editPhoneNumber=findViewById(R.id.phoneNumber)
-        isPassword=findViewById(R.id.usePassword)
         edtPassword=findViewById(R.id.password)
         signupBtn=findViewById(R.id.signupBtn)
         loginBtn=findViewById(R.id.loginBtn)
@@ -120,7 +123,7 @@ class LoginActivity : AppCompatActivity() {
 
         loginBtn.setOnClickListener {
 
-            loginBtn.setEnabled(true)
+            loginBtn.isEnabled = true
             try{
                 var number=editPhoneNumber.text.toString()
                 val countryCode= number?.let { Constants.getCountryCodeFromPhone(it) }

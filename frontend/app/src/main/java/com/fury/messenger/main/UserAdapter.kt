@@ -2,28 +2,19 @@ package com.fury.messenger.main
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.fury.messenger.R
 import com.fury.messenger.TripleDES
-import com.fury.messenger.data.helper.contact.Contact
+import com.fury.messenger.data.db.model.Contact
 import com.fury.messenger.messages.ChatActivity
-import com.fury.messenger.messages.Message
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.ZoneId
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -39,14 +30,15 @@ class UserAdapter(val context: Context, var userList:ArrayList<Contact>): Recycl
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val currentUser=userList[position]
-        holder.textName.text=currentUser.getName()
+        holder.textName.text=currentUser.name
 //        getLastText(currentUser.uid,holder)
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ChatActivity::class.java)
-            Log.d(currentUser.getName()+"xzzzz1",currentUser.getPhoneNumber()+""+currentUser.getPubKey())
-            intent.putExtra("name",currentUser.getName())
-            intent.putExtra("phoneNumber",currentUser.getPhoneNumber())
-//            intent.putExtra("uri",uri)
+            Log.d(currentUser.name+"xzzzz1",currentUser.phoneNumber+""+currentUser.pubKey)
+            intent.putExtra("Contact",currentUser.name)
+            intent.putExtra("phoneNumber",currentUser.phoneNumber)
+            intent.putExtra("chatPrivateKey",currentUser.chatPrivateKey)
+            intent.putExtra("chatPublicKey",currentUser.chatPublickey)
 
             context.startActivity(intent)
         }

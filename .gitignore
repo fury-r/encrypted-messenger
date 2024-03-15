@@ -94,3 +94,4 @@ npm-debug.log
 
 package-lock.json
 backend/utils/authToken.go
+frontend/tools/protobuf/compiler

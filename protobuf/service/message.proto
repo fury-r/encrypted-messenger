@@ -24,7 +24,6 @@ enum MessageType {
 message MessageRequest{
     MessageInfo message=1;
     MessageType type=2; 
-    string token=3;
 
 }
 message MessageResponse{
@@ -34,13 +33,7 @@ message MessageResponse{
 }
 
 
-// message MessageResponse{
-//     MessageInfo message=1;
-//     bool deliverStatus=2;
-//     bool readStatus=3;
-//     string token=4;
 
-// }
 
 
 message MessageUpdateRequest{
@@ -49,7 +42,6 @@ message MessageUpdateRequest{
     string messageId=3;
     bool deliverStatus=4;
     bool readStatus=5;
-    string token=6;
 
 }
 
@@ -72,10 +64,22 @@ STATUS_UPDATE=4;
 
     
 }
+message  KeyExchange{
+    string sender = 1;
+    string reciever = 2;
+    string publicKey = 3;
+    string privateKey = 4;
+
+}
+
+
 
 message Event{
     EventType type=1;
-    string token=2;
-    MessageRequest message=3;
+    oneof body{
+        MessageRequest message=2;
+        KeyExchange exchange=3;
+    }
     
 }
+

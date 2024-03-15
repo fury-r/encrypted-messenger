@@ -55,79 +55,79 @@ public final class ContactOuterClass {
         getPhoneNumberBytes();
 
     /**
-     * <code>optional string countryCode = 4;</code>
+     * <code>string countryCode = 4;</code>
      * @return Whether the countryCode field is set.
      */
     boolean hasCountryCode();
     /**
-     * <code>optional string countryCode = 4;</code>
+     * <code>string countryCode = 4;</code>
      * @return The countryCode.
      */
     java.lang.String getCountryCode();
     /**
-     * <code>optional string countryCode = 4;</code>
+     * <code>string countryCode = 4;</code>
      * @return The bytes for countryCode.
      */
     com.google.protobuf.ByteString
         getCountryCodeBytes();
 
     /**
-     * <code>optional string profilePicture = 5;</code>
+     * <code>string profilePicture = 5;</code>
      * @return Whether the profilePicture field is set.
      */
     boolean hasProfilePicture();
     /**
-     * <code>optional string profilePicture = 5;</code>
+     * <code>string profilePicture = 5;</code>
      * @return The profilePicture.
      */
     java.lang.String getProfilePicture();
     /**
-     * <code>optional string profilePicture = 5;</code>
+     * <code>string profilePicture = 5;</code>
      * @return The bytes for profilePicture.
      */
     com.google.protobuf.ByteString
         getProfilePictureBytes();
 
     /**
-     * <code>optional bool isVerified = 6;</code>
+     * <code>bool isVerified = 6;</code>
      * @return Whether the isVerified field is set.
      */
     boolean hasIsVerified();
     /**
-     * <code>optional bool isVerified = 6;</code>
+     * <code>bool isVerified = 6;</code>
      * @return The isVerified.
      */
     boolean getIsVerified();
 
     /**
-     * <code>optional string uuid = 7;</code>
+     * <code>string uuid = 7;</code>
      * @return Whether the uuid field is set.
      */
     boolean hasUuid();
     /**
-     * <code>optional string uuid = 7;</code>
+     * <code>string uuid = 7;</code>
      * @return The uuid.
      */
     java.lang.String getUuid();
     /**
-     * <code>optional string uuid = 7;</code>
+     * <code>string uuid = 7;</code>
      * @return The bytes for uuid.
      */
     com.google.protobuf.ByteString
         getUuidBytes();
 
     /**
-     * <code>optional string pubKey = 8;</code>
+     * <code>string pubKey = 8;</code>
      * @return Whether the pubKey field is set.
      */
     boolean hasPubKey();
     /**
-     * <code>optional string pubKey = 8;</code>
+     * <code>string pubKey = 8;</code>
      * @return The pubKey.
      */
     java.lang.String getPubKey();
     /**
-     * <code>optional string pubKey = 8;</code>
+     * <code>string pubKey = 8;</code>
      * @return The bytes for pubKey.
      */
     com.google.protobuf.ByteString
@@ -383,7 +383,7 @@ public final class ContactOuterClass {
     public static final int COUNTRYCODE_FIELD_NUMBER = 4;
     private volatile java.lang.Object countryCode_;
     /**
-     * <code>optional string countryCode = 4;</code>
+     * <code>string countryCode = 4;</code>
      * @return Whether the countryCode field is set.
      */
     @java.lang.Override
@@ -391,7 +391,7 @@ public final class ContactOuterClass {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional string countryCode = 4;</code>
+     * <code>string countryCode = 4;</code>
      * @return The countryCode.
      */
     @java.lang.Override
@@ -408,7 +408,7 @@ public final class ContactOuterClass {
       }
     }
     /**
-     * <code>optional string countryCode = 4;</code>
+     * <code>string countryCode = 4;</code>
      * @return The bytes for countryCode.
      */
     @java.lang.Override
@@ -429,7 +429,7 @@ public final class ContactOuterClass {
     public static final int PROFILEPICTURE_FIELD_NUMBER = 5;
     private volatile java.lang.Object profilePicture_;
     /**
-     * <code>optional string profilePicture = 5;</code>
+     * <code>string profilePicture = 5;</code>
      * @return Whether the profilePicture field is set.
      */
     @java.lang.Override
@@ -437,7 +437,7 @@ public final class ContactOuterClass {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>optional string profilePicture = 5;</code>
+     * <code>string profilePicture = 5;</code>
      * @return The profilePicture.
      */
     @java.lang.Override
@@ -454,7 +454,7 @@ public final class ContactOuterClass {
       }
     }
     /**
-     * <code>optional string profilePicture = 5;</code>
+     * <code>string profilePicture = 5;</code>
      * @return The bytes for profilePicture.
      */
     @java.lang.Override
@@ -475,7 +475,7 @@ public final class ContactOuterClass {
     public static final int ISVERIFIED_FIELD_NUMBER = 6;
     private boolean isVerified_;
     /**
-     * <code>optional bool isVerified = 6;</code>
+     * <code>bool isVerified = 6;</code>
      * @return Whether the isVerified field is set.
      */
     @java.lang.Override
@@ -483,7 +483,7 @@ public final class ContactOuterClass {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
-     * <code>optional bool isVerified = 6;</code>
+     * <code>bool isVerified = 6;</code>
      * @return The isVerified.
      */
     @java.lang.Override
@@ -494,7 +494,7 @@ public final class ContactOuterClass {
     public static final int UUID_FIELD_NUMBER = 7;
     private volatile java.lang.Object uuid_;
     /**
-     * <code>optional string uuid = 7;</code>
+     * <code>string uuid = 7;</code>
      * @return Whether the uuid field is set.
      */
     @java.lang.Override
@@ -502,7 +502,7 @@ public final class ContactOuterClass {
       return ((bitField0_ & 0x00000008) != 0);
     }
     /**
-     * <code>optional string uuid = 7;</code>
+     * <code>string uuid = 7;</code>
      * @return The uuid.
      */
     @java.lang.Override
@@ -519,7 +519,7 @@ public final class ContactOuterClass {
       }
     }
     /**
-     * <code>optional string uuid = 7;</code>
+     * <code>string uuid = 7;</code>
      * @return The bytes for uuid.
      */
     @java.lang.Override
@@ -540,7 +540,7 @@ public final class ContactOuterClass {
     public static final int PUBKEY_FIELD_NUMBER = 8;
     private volatile java.lang.Object pubKey_;
     /**
-     * <code>optional string pubKey = 8;</code>
+     * <code>string pubKey = 8;</code>
      * @return Whether the pubKey field is set.
      */
     @java.lang.Override
@@ -548,7 +548,7 @@ public final class ContactOuterClass {
       return ((bitField0_ & 0x00000010) != 0);
     }
     /**
-     * <code>optional string pubKey = 8;</code>
+     * <code>string pubKey = 8;</code>
      * @return The pubKey.
      */
     @java.lang.Override
@@ -565,7 +565,7 @@ public final class ContactOuterClass {
       }
     }
     /**
-     * <code>optional string pubKey = 8;</code>
+     * <code>string pubKey = 8;</code>
      * @return The bytes for pubKey.
      */
     @java.lang.Override
@@ -597,13 +597,13 @@ public final class ContactOuterClass {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(id_)) {
+      if (!getIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, id_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(name_)) {
+      if (!getNameBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, name_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(phoneNumber_)) {
+      if (!getPhoneNumberBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, phoneNumber_);
       }
       if (((bitField0_ & 0x00000001) != 0)) {
@@ -630,13 +630,13 @@ public final class ContactOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(id_)) {
+      if (!getIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, id_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(name_)) {
+      if (!getNameBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, name_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(phoneNumber_)) {
+      if (!getPhoneNumberBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, phoneNumber_);
       }
       if (((bitField0_ & 0x00000001) != 0)) {
@@ -1283,14 +1283,14 @@ public final class ContactOuterClass {
 
       private java.lang.Object countryCode_ = "";
       /**
-       * <code>optional string countryCode = 4;</code>
+       * <code>string countryCode = 4;</code>
        * @return Whether the countryCode field is set.
        */
       public boolean hasCountryCode() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional string countryCode = 4;</code>
+       * <code>string countryCode = 4;</code>
        * @return The countryCode.
        */
       public java.lang.String getCountryCode() {
@@ -1306,7 +1306,7 @@ public final class ContactOuterClass {
         }
       }
       /**
-       * <code>optional string countryCode = 4;</code>
+       * <code>string countryCode = 4;</code>
        * @return The bytes for countryCode.
        */
       public com.google.protobuf.ByteString
@@ -1323,7 +1323,7 @@ public final class ContactOuterClass {
         }
       }
       /**
-       * <code>optional string countryCode = 4;</code>
+       * <code>string countryCode = 4;</code>
        * @param value The countryCode to set.
        * @return This builder for chaining.
        */
@@ -1338,7 +1338,7 @@ public final class ContactOuterClass {
         return this;
       }
       /**
-       * <code>optional string countryCode = 4;</code>
+       * <code>string countryCode = 4;</code>
        * @return This builder for chaining.
        */
       public Builder clearCountryCode() {
@@ -1348,7 +1348,7 @@ public final class ContactOuterClass {
         return this;
       }
       /**
-       * <code>optional string countryCode = 4;</code>
+       * <code>string countryCode = 4;</code>
        * @param value The bytes for countryCode to set.
        * @return This builder for chaining.
        */
@@ -1366,14 +1366,14 @@ public final class ContactOuterClass {
 
       private java.lang.Object profilePicture_ = "";
       /**
-       * <code>optional string profilePicture = 5;</code>
+       * <code>string profilePicture = 5;</code>
        * @return Whether the profilePicture field is set.
        */
       public boolean hasProfilePicture() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>optional string profilePicture = 5;</code>
+       * <code>string profilePicture = 5;</code>
        * @return The profilePicture.
        */
       public java.lang.String getProfilePicture() {
@@ -1389,7 +1389,7 @@ public final class ContactOuterClass {
         }
       }
       /**
-       * <code>optional string profilePicture = 5;</code>
+       * <code>string profilePicture = 5;</code>
        * @return The bytes for profilePicture.
        */
       public com.google.protobuf.ByteString
@@ -1406,7 +1406,7 @@ public final class ContactOuterClass {
         }
       }
       /**
-       * <code>optional string profilePicture = 5;</code>
+       * <code>string profilePicture = 5;</code>
        * @param value The profilePicture to set.
        * @return This builder for chaining.
        */
@@ -1421,7 +1421,7 @@ public final class ContactOuterClass {
         return this;
       }
       /**
-       * <code>optional string profilePicture = 5;</code>
+       * <code>string profilePicture = 5;</code>
        * @return This builder for chaining.
        */
       public Builder clearProfilePicture() {
@@ -1431,7 +1431,7 @@ public final class ContactOuterClass {
         return this;
       }
       /**
-       * <code>optional string profilePicture = 5;</code>
+       * <code>string profilePicture = 5;</code>
        * @param value The bytes for profilePicture to set.
        * @return This builder for chaining.
        */
@@ -1449,7 +1449,7 @@ public final class ContactOuterClass {
 
       private boolean isVerified_ ;
       /**
-       * <code>optional bool isVerified = 6;</code>
+       * <code>bool isVerified = 6;</code>
        * @return Whether the isVerified field is set.
        */
       @java.lang.Override
@@ -1457,7 +1457,7 @@ public final class ContactOuterClass {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
-       * <code>optional bool isVerified = 6;</code>
+       * <code>bool isVerified = 6;</code>
        * @return The isVerified.
        */
       @java.lang.Override
@@ -1465,7 +1465,7 @@ public final class ContactOuterClass {
         return isVerified_;
       }
       /**
-       * <code>optional bool isVerified = 6;</code>
+       * <code>bool isVerified = 6;</code>
        * @param value The isVerified to set.
        * @return This builder for chaining.
        */
@@ -1476,7 +1476,7 @@ public final class ContactOuterClass {
         return this;
       }
       /**
-       * <code>optional bool isVerified = 6;</code>
+       * <code>bool isVerified = 6;</code>
        * @return This builder for chaining.
        */
       public Builder clearIsVerified() {
@@ -1488,14 +1488,14 @@ public final class ContactOuterClass {
 
       private java.lang.Object uuid_ = "";
       /**
-       * <code>optional string uuid = 7;</code>
+       * <code>string uuid = 7;</code>
        * @return Whether the uuid field is set.
        */
       public boolean hasUuid() {
         return ((bitField0_ & 0x00000008) != 0);
       }
       /**
-       * <code>optional string uuid = 7;</code>
+       * <code>string uuid = 7;</code>
        * @return The uuid.
        */
       public java.lang.String getUuid() {
@@ -1511,7 +1511,7 @@ public final class ContactOuterClass {
         }
       }
       /**
-       * <code>optional string uuid = 7;</code>
+       * <code>string uuid = 7;</code>
        * @return The bytes for uuid.
        */
       public com.google.protobuf.ByteString
@@ -1528,7 +1528,7 @@ public final class ContactOuterClass {
         }
       }
       /**
-       * <code>optional string uuid = 7;</code>
+       * <code>string uuid = 7;</code>
        * @param value The uuid to set.
        * @return This builder for chaining.
        */
@@ -1543,7 +1543,7 @@ public final class ContactOuterClass {
         return this;
       }
       /**
-       * <code>optional string uuid = 7;</code>
+       * <code>string uuid = 7;</code>
        * @return This builder for chaining.
        */
       public Builder clearUuid() {
@@ -1553,7 +1553,7 @@ public final class ContactOuterClass {
         return this;
       }
       /**
-       * <code>optional string uuid = 7;</code>
+       * <code>string uuid = 7;</code>
        * @param value The bytes for uuid to set.
        * @return This builder for chaining.
        */
@@ -1571,14 +1571,14 @@ public final class ContactOuterClass {
 
       private java.lang.Object pubKey_ = "";
       /**
-       * <code>optional string pubKey = 8;</code>
+       * <code>string pubKey = 8;</code>
        * @return Whether the pubKey field is set.
        */
       public boolean hasPubKey() {
         return ((bitField0_ & 0x00000010) != 0);
       }
       /**
-       * <code>optional string pubKey = 8;</code>
+       * <code>string pubKey = 8;</code>
        * @return The pubKey.
        */
       public java.lang.String getPubKey() {
@@ -1594,7 +1594,7 @@ public final class ContactOuterClass {
         }
       }
       /**
-       * <code>optional string pubKey = 8;</code>
+       * <code>string pubKey = 8;</code>
        * @return The bytes for pubKey.
        */
       public com.google.protobuf.ByteString
@@ -1611,7 +1611,7 @@ public final class ContactOuterClass {
         }
       }
       /**
-       * <code>optional string pubKey = 8;</code>
+       * <code>string pubKey = 8;</code>
        * @param value The pubKey to set.
        * @return This builder for chaining.
        */
@@ -1626,7 +1626,7 @@ public final class ContactOuterClass {
         return this;
       }
       /**
-       * <code>optional string pubKey = 8;</code>
+       * <code>string pubKey = 8;</code>
        * @return This builder for chaining.
        */
       public Builder clearPubKey() {
@@ -1636,7 +1636,7 @@ public final class ContactOuterClass {
         return this;
       }
       /**
-       * <code>optional string pubKey = 8;</code>
+       * <code>string pubKey = 8;</code>
        * @param value The bytes for pubKey to set.
        * @return This builder for chaining.
        */
@@ -1731,18 +1731,6 @@ public final class ContactOuterClass {
      */
     com.services.ContactOuterClass.ContactOrBuilder getContactsOrBuilder(
         int index);
-
-    /**
-     * <code>string token = 2;</code>
-     * @return The token.
-     */
-    java.lang.String getToken();
-    /**
-     * <code>string token = 2;</code>
-     * @return The bytes for token.
-     */
-    com.google.protobuf.ByteString
-        getTokenBytes();
   }
   /**
    * Protobuf type {@code ContactsList}
@@ -1758,7 +1746,6 @@ public final class ContactOuterClass {
     }
     private ContactsList() {
       contacts_ = java.util.Collections.emptyList();
-      token_ = "";
     }
 
     @java.lang.Override
@@ -1799,12 +1786,6 @@ public final class ContactOuterClass {
               }
               contacts_.add(
                   input.readMessage(com.services.ContactOuterClass.Contact.parser(), extensionRegistry));
-              break;
-            }
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              token_ = s;
               break;
             }
             default: {
@@ -1882,44 +1863,6 @@ public final class ContactOuterClass {
       return contacts_.get(index);
     }
 
-    public static final int TOKEN_FIELD_NUMBER = 2;
-    private volatile java.lang.Object token_;
-    /**
-     * <code>string token = 2;</code>
-     * @return The token.
-     */
-    @java.lang.Override
-    public java.lang.String getToken() {
-      java.lang.Object ref = token_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        token_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string token = 2;</code>
-     * @return The bytes for token.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getTokenBytes() {
-      java.lang.Object ref = token_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        token_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -1937,9 +1880,6 @@ public final class ContactOuterClass {
       for (int i = 0; i < contacts_.size(); i++) {
         output.writeMessage(1, contacts_.get(i));
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(token_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, token_);
-      }
       unknownFields.writeTo(output);
     }
 
@@ -1952,9 +1892,6 @@ public final class ContactOuterClass {
       for (int i = 0; i < contacts_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, contacts_.get(i));
-      }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(token_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, token_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1973,8 +1910,6 @@ public final class ContactOuterClass {
 
       if (!getContactsList()
           .equals(other.getContactsList())) return false;
-      if (!getToken()
-          .equals(other.getToken())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -1990,8 +1925,6 @@ public final class ContactOuterClass {
         hash = (37 * hash) + CONTACTS_FIELD_NUMBER;
         hash = (53 * hash) + getContactsList().hashCode();
       }
-      hash = (37 * hash) + TOKEN_FIELD_NUMBER;
-      hash = (53 * hash) + getToken().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -2132,8 +2065,6 @@ public final class ContactOuterClass {
         } else {
           contactsBuilder_.clear();
         }
-        token_ = "";
-
         return this;
       }
 
@@ -2170,7 +2101,6 @@ public final class ContactOuterClass {
         } else {
           result.contacts_ = contactsBuilder_.build();
         }
-        result.token_ = token_;
         onBuilt();
         return result;
       }
@@ -2244,10 +2174,6 @@ public final class ContactOuterClass {
               contactsBuilder_.addAllMessages(other.contacts_);
             }
           }
-        }
-        if (!other.getToken().isEmpty()) {
-          token_ = other.token_;
-          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -2518,82 +2444,6 @@ public final class ContactOuterClass {
         }
         return contactsBuilder_;
       }
-
-      private java.lang.Object token_ = "";
-      /**
-       * <code>string token = 2;</code>
-       * @return The token.
-       */
-      public java.lang.String getToken() {
-        java.lang.Object ref = token_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          token_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>string token = 2;</code>
-       * @return The bytes for token.
-       */
-      public com.google.protobuf.ByteString
-          getTokenBytes() {
-        java.lang.Object ref = token_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          token_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string token = 2;</code>
-       * @param value The token to set.
-       * @return This builder for chaining.
-       */
-      public Builder setToken(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        token_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string token = 2;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearToken() {
-        
-        token_ = getDefaultInstance().getToken();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string token = 2;</code>
-       * @param value The bytes for token to set.
-       * @return This builder for chaining.
-       */
-      public Builder setTokenBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        token_ = value;
-        onChanged();
-        return this;
-      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -2672,9 +2522,9 @@ public final class ContactOuterClass {
       " \001(\tH\001\210\001\001\022\027\n\nisVerified\030\006 \001(\010H\002\210\001\001\022\021\n\004uu" +
       "id\030\007 \001(\tH\003\210\001\001\022\023\n\006pubKey\030\010 \001(\tH\004\210\001\001B\016\n\014_c" +
       "ountryCodeB\021\n\017_profilePictureB\r\n\013_isVeri" +
-      "fiedB\007\n\005_uuidB\t\n\007_pubKey\"9\n\014ContactsList" +
-      "\022\032\n\010contacts\030\001 \003(\0132\010.Contact\022\r\n\005token\030\002 " +
-      "\001(\tB\023\n\014com.servicesZ\003/pbb\006proto3"
+      "fiedB\007\n\005_uuidB\t\n\007_pubKey\"*\n\014ContactsList" +
+      "\022\032\n\010contacts\030\001 \003(\0132\010.ContactB\023\n\014com.serv" +
+      "icesZ\003/pbb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -2691,7 +2541,7 @@ public final class ContactOuterClass {
     internal_static_ContactsList_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ContactsList_descriptor,
-        new java.lang.String[] { "Contacts", "Token", });
+        new java.lang.String[] { "Contacts", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

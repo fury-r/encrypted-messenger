@@ -12,10 +12,11 @@ import type { MessageUpdateRequest as _MessageUpdateRequest, MessageUpdateReques
 import type { MessageUpdateResponse as _MessageUpdateResponse, MessageUpdateResponse__Output as _MessageUpdateResponse__Output } from './MessageUpdateResponse';
 import type { OtpRequest as _OtpRequest, OtpRequest__Output as _OtpRequest__Output } from './OtpRequest';
 import type { OtpResponse as _OtpResponse, OtpResponse__Output as _OtpResponse__Output } from './OtpResponse';
-import type { PubKeyExchange as _PubKeyExchange, PubKeyExchange__Output as _PubKeyExchange__Output } from './PubKeyExchange';
 import type { RegisterRequest as _RegisterRequest, RegisterRequest__Output as _RegisterRequest__Output } from './RegisterRequest';
 import type { RegisterResponse as _RegisterResponse, RegisterResponse__Output as _RegisterResponse__Output } from './RegisterResponse';
 import type { User as _User, User__Output as _User__Output } from './User';
+import type { UserRequest as _UserRequest, UserRequest__Output as _UserRequest__Output } from './UserRequest';
+import type { UserResponse as _UserResponse, UserResponse__Output as _UserResponse__Output } from './UserResponse';
 
 export interface ServicesClient extends grpc.Client {
   Login(argument: _LoginRequest, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_LoginResponse__Output>): grpc.ClientUnaryCall;
@@ -72,14 +73,23 @@ export interface ServicesClient extends grpc.Client {
   verifyToken(argument: _AuthRequest, options: grpc.CallOptions, callback: grpc.requestCallback<_AuthResponse__Output>): grpc.ClientUnaryCall;
   verifyToken(argument: _AuthRequest, callback: grpc.requestCallback<_AuthResponse__Output>): grpc.ClientUnaryCall;
   
-  handShake(argument: _PubKeyExchange, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_PubKeyExchange__Output>): grpc.ClientUnaryCall;
-  handShake(argument: _PubKeyExchange, metadata: grpc.Metadata, callback: grpc.requestCallback<_PubKeyExchange__Output>): grpc.ClientUnaryCall;
-  handShake(argument: _PubKeyExchange, options: grpc.CallOptions, callback: grpc.requestCallback<_PubKeyExchange__Output>): grpc.ClientUnaryCall;
-  handShake(argument: _PubKeyExchange, callback: grpc.requestCallback<_PubKeyExchange__Output>): grpc.ClientUnaryCall;
-  handShake(argument: _PubKeyExchange, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_PubKeyExchange__Output>): grpc.ClientUnaryCall;
-  handShake(argument: _PubKeyExchange, metadata: grpc.Metadata, callback: grpc.requestCallback<_PubKeyExchange__Output>): grpc.ClientUnaryCall;
-  handShake(argument: _PubKeyExchange, options: grpc.CallOptions, callback: grpc.requestCallback<_PubKeyExchange__Output>): grpc.ClientUnaryCall;
-  handShake(argument: _PubKeyExchange, callback: grpc.requestCallback<_PubKeyExchange__Output>): grpc.ClientUnaryCall;
+  getUser(argument: _UserRequest, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_UserResponse__Output>): grpc.ClientUnaryCall;
+  getUser(argument: _UserRequest, metadata: grpc.Metadata, callback: grpc.requestCallback<_UserResponse__Output>): grpc.ClientUnaryCall;
+  getUser(argument: _UserRequest, options: grpc.CallOptions, callback: grpc.requestCallback<_UserResponse__Output>): grpc.ClientUnaryCall;
+  getUser(argument: _UserRequest, callback: grpc.requestCallback<_UserResponse__Output>): grpc.ClientUnaryCall;
+  getUser(argument: _UserRequest, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_UserResponse__Output>): grpc.ClientUnaryCall;
+  getUser(argument: _UserRequest, metadata: grpc.Metadata, callback: grpc.requestCallback<_UserResponse__Output>): grpc.ClientUnaryCall;
+  getUser(argument: _UserRequest, options: grpc.CallOptions, callback: grpc.requestCallback<_UserResponse__Output>): grpc.ClientUnaryCall;
+  getUser(argument: _UserRequest, callback: grpc.requestCallback<_UserResponse__Output>): grpc.ClientUnaryCall;
+  
+  handShakeRequest(argument: _Event, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_Event__Output>): grpc.ClientUnaryCall;
+  handShakeRequest(argument: _Event, metadata: grpc.Metadata, callback: grpc.requestCallback<_Event__Output>): grpc.ClientUnaryCall;
+  handShakeRequest(argument: _Event, options: grpc.CallOptions, callback: grpc.requestCallback<_Event__Output>): grpc.ClientUnaryCall;
+  handShakeRequest(argument: _Event, callback: grpc.requestCallback<_Event__Output>): grpc.ClientUnaryCall;
+  handShakeRequest(argument: _Event, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_Event__Output>): grpc.ClientUnaryCall;
+  handShakeRequest(argument: _Event, metadata: grpc.Metadata, callback: grpc.requestCallback<_Event__Output>): grpc.ClientUnaryCall;
+  handShakeRequest(argument: _Event, options: grpc.CallOptions, callback: grpc.requestCallback<_Event__Output>): grpc.ClientUnaryCall;
+  handShakeRequest(argument: _Event, callback: grpc.requestCallback<_Event__Output>): grpc.ClientUnaryCall;
   
   messageUpdate(argument: _MessageUpdateRequest, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_MessageUpdateResponse__Output>): grpc.ClientUnaryCall;
   messageUpdate(argument: _MessageUpdateRequest, metadata: grpc.Metadata, callback: grpc.requestCallback<_MessageUpdateResponse__Output>): grpc.ClientUnaryCall;
@@ -114,7 +124,9 @@ export interface ServicesHandlers extends grpc.UntypedServiceImplementation {
   
   VerifyToken: grpc.handleUnaryCall<_AuthRequest__Output, _AuthResponse>;
   
-  handShake: grpc.handleUnaryCall<_PubKeyExchange__Output, _PubKeyExchange>;
+  getUser: grpc.handleUnaryCall<_UserRequest__Output, _UserResponse>;
+  
+  handShakeRequest: grpc.handleUnaryCall<_Event__Output, _Event>;
   
   messageUpdate: grpc.handleUnaryCall<_MessageUpdateRequest__Output, _MessageUpdateResponse>;
   
@@ -129,7 +141,8 @@ export interface ServicesDefinition extends grpc.ServiceDefinition {
   Send: MethodDefinition<_Event, _Event, _Event__Output, _Event__Output>
   ValidateContacts: MethodDefinition<_ContactsList, _ContactsList, _ContactsList__Output, _ContactsList__Output>
   VerifyToken: MethodDefinition<_AuthRequest, _AuthResponse, _AuthRequest__Output, _AuthResponse__Output>
-  handShake: MethodDefinition<_PubKeyExchange, _PubKeyExchange, _PubKeyExchange__Output, _PubKeyExchange__Output>
+  getUser: MethodDefinition<_UserRequest, _UserResponse, _UserRequest__Output, _UserResponse__Output>
+  handShakeRequest: MethodDefinition<_Event, _Event, _Event__Output, _Event__Output>
   messageUpdate: MethodDefinition<_MessageUpdateRequest, _MessageUpdateResponse, _MessageUpdateRequest__Output, _MessageUpdateResponse__Output>
   savePubKey: MethodDefinition<_User, _User, _User__Output, _User__Output>
 }

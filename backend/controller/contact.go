@@ -1,4 +1,4 @@
-package service
+package controller
 
 import (
 	"context"
@@ -17,18 +17,16 @@ func ContactService(ctx context.Context, req *pb.ContactsList) (*pb.ContactsList
 	if err != nil {
 		return nil, err
 	}
-
+	_, err = utils.GetTokenFromMetaDataAndValidate(ctx)
+	if err != nil {
+		return nil, err
+	}
 	phonesList := []string{}
 	for _, x := range req.GetContacts() {
 		phonesList = append(phonesList, x.PhoneNumber)
 
 	}
 
-	_, err = utils.ValidateToken(req.GetToken())
-	if err != nil {
-		x := "Invalid Token"
-		fmt.Println(x)
-	}
 	// TODO:  2023/07/16 18:06:19 Failed to iterate over query results: rpc error: code = InvalidArgument desc = 'IN' supports up to 30 comparison values. exit status 1
 	iterations := len(phonesList) / 30
 	batchSize := 30

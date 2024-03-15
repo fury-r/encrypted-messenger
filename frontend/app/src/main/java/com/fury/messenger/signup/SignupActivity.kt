@@ -20,9 +20,11 @@ import android.widget.Toast
 import com.fury.messenger.databinding.ActivityLoginBinding
 
 import com.fury.messenger.R
+import com.fury.messenger.data.helper.user.CurrentUser
 import com.fury.messenger.main.MainActivity
-import com.fury.messenger.main.User
+import com.fury.messenger.main.Contact
 import com.fury.messenger.manageBuilder.ManageChanelBuilder
+import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.fury.messenger.otp.OtpActivity
 import com.fury.messenger.utils.Constants
 import com.google.android.material.snackbar.Snackbar
@@ -58,7 +60,7 @@ class SignupActivity: AppCompatActivity() {
         edtPassword = findViewById(R.id.password)
         signupBtn = findViewById(R.id.signupBtn)
         channel=ManageChanelBuilder.channel
-        val client=ManageChanelBuilder.client
+        val client= createAuthenticationStub(CurrentUser.getToken())
         signupBtn.setOnClickListener {
             signupBtn.setEnabled(false)
 //            val email = edtEmail.text.toString()
@@ -119,6 +121,6 @@ class SignupActivity: AppCompatActivity() {
         Log.d("database",username+" "+email+" "+uid)
 //
 //    dbRef=FirebaseDatabase.getInstance().getReference()
-//        dbRef.child("user").child(uid).setValue(User(username,email,uid))
+//        dbRef.child("user").child(uid).setValue(Contact(username,email,uid))
     }
 }

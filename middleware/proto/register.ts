@@ -1,4 +1,3 @@
-import type * as grpc from '@grpc/grpc-js';
 import type { MessageTypeDefinition } from '@grpc/proto-loader';
 
 

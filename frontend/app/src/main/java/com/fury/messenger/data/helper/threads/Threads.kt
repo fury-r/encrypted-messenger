@@ -8,6 +8,8 @@ import com.fury.messenger.data.helper.user.CurrentUser
 import com.fury.messenger.kafka.ConsumerThread
 import com.fury.messenger.kafka.RabbitMQ
 import com.fury.messenger.manageBuilder.ManageChanelBuilder
+import com.fury.messenger.manageBuilder.createAuthenticationStub
+import com.fury.messenger.rsa.RSA
 import com.google.protobuf.util.JsonFormat
 import com.rabbitmq.client.AMQP
 import com.rabbitmq.client.Channel
@@ -46,44 +48,106 @@ object Threads {
                             body: ByteArray?
                         ) {
 
-                            val message=body?.let{
+                            val message = body?.let {
                                 String(it, charset("UTF-8"))
                             }
-
-
-                            val routingKey = envelope!!.routingKey
-                            val contentType = properties!!.contentType
-                            val deliveryTag = envelope!!.deliveryTag
-                            val messageBuilder = Message.Event.newBuilder()
-                            JsonFormat.parser().merge(message,messageBuilder)
-                            var messageResponse=messageBuilder.build()
-                            val messageObj=messageResponse.message.message
-
-                            if (message != null && messageResponse.type==Message.EventType.MESSAGE  && !envelope.isRedeliver) {
-                                //TODO: SQL Triggers
-                                scope.launch{
-                                    DBMessage.messageThreadHandler(
-                                        messageResponse.message,
-                                        dbHelper
-                                    )
-                                }
-
+                            if (message != null) {
+                                val decryptMessage =
+                                    RSA.decryptMessage(message, CurrentUser.getPrivateKey())
+                                val routingKey = envelope!!.routingKey
+                                val contentType = properties!!.contentType
+                                val deliveryTag = envelope.deliveryTag
+                                val messageBuilder = Message.Event.newBuilder()
+                                JsonFormat.parser().merge(decryptMessage, messageBuilder)
+                                val event = messageBuilder.build()
 
                                 channel.basicAck(deliveryTag, false)
-                                if(messageResponse.message.type==Message.MessageType.INSERT){
-                                    val request=Message.MessageRequest.newBuilder().setType(Message.MessageType.UPDATE).setToken(
-                                        CurrentUser.getToken()
-                                    )
-                                    val messageInfo=Message.MessageInfo.newBuilder().setMessageId(messageObj.messageId).setSender(messageObj.reciever).setReciever(messageObj.sender).setDeliverStatus(true).build()
-                                    val event= Message.Event.newBuilder().setMessage(request.setMessage(messageInfo).build()).setType(Message.EventType.MESSAGE).build()
-                                    val client=ManageChanelBuilder.client
-                                    client.send(event)
-                                }
 
+                                if (!envelope.isRedeliver) {
+                                    val messageObj = event.message.message
+
+                                    //TODO: SQL Triggers
+                                    scope.launch {
+                                        DBMessage.messageThreadHandler(
+                                            event.message
+                                        )
+                                    }
+                                    when (event.type) {
+                                        Message.EventType.MESSAGE -> {
+
+                                            when (event.message.type) {
+                                                Message.MessageType.INSERT -> {
+                                                    val request =
+                                                        Message.MessageRequest.newBuilder()
+                                                            .setType(Message.MessageType.UPDATE)
+                                                    val messageInfo =
+                                                        Message.MessageInfo.newBuilder()
+                                                            .setMessageId(messageObj.messageId)
+                                                            .setSender(messageObj.reciever)
+                                                            .setReciever(messageObj.sender)
+                                                            .setDeliverStatus(true).build()
+                                                    val eventBuild = Message.Event.newBuilder()
+                                                        .setMessage(
+                                                            request.setMessage(messageInfo).build()
+                                                        ).setType(Message.EventType.MESSAGE).build()
+                                                    val client =
+                                                        createAuthenticationStub(CurrentUser.getToken())
+                                                    client.send(eventBuild)
+                                                }
+
+                                                else -> {
+                                                    Log.d(
+                                                        "Messenger logs",
+                                                        "Message type case not handle yet for reply."
+                                                    )
+
+                                                }
+                                            }
+
+                                        }
+
+                                        Message.EventType.HANDSHAKE -> {
+
+                                            scope.launch {
+                                                DBMessage.saveHandshake(
+                                                    event.exchange
+                                                )
+                                            }
+
+                                        }
+
+                                        else -> {
+                                            Log.d(
+                                                "Messenger logs",
+                                                "Event type case not handle yet."
+                                            )
+                                        }
+                                    }
+//                                if(event.type==Message.EventType.MESSAGE ){
+//                                    if(event.message.type==Message.MessageType.INSERT){
+//                                        val request=Message.MessageRequest.newBuilder().setType(Message.MessageType.UPDATE)
+//                                        val messageInfo=Message.MessageInfo.newBuilder().setMessageId(messageObj.messageId).setSender(messageObj.reciever).setReciever(messageObj.sender).setDeliverStatus(true).build()
+//                                        val event= Message.Event.newBuilder().setMessage(request.setMessage(messageInfo).build()).setType(Message.EventType.MESSAGE).build()
+//                                        val client= createAuthenticationStub(CurrentUser.getToken())
+//                                        client.send(event)
+//                                    }
+//
+//                                }
+//
+//                                else if(event.type===Message.EventType.HANDSHAKE){
+//
+//                                    scope.launch{
+//                                        DBMessage.saveHandshake(
+//                                            event.exchange
+//                                        )
+//                                    }
+//                                }
+
+                                }
                             }
                         }
                     }
-                    CurrentUser.getPhoneNumber()?.let { channel?.basicConsume(it,consumer)  }
+                    CurrentUser.getPhoneNumber()?.let { channel.basicConsume(it,consumer) }
 
                 }
 

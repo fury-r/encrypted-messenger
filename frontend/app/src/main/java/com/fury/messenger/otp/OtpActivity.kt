@@ -14,6 +14,7 @@ import com.fury.messenger.R
 import com.fury.messenger.data.helper.user.CurrentUser
 import com.fury.messenger.main.MainActivity
 import com.fury.messenger.manageBuilder.ManageChanelBuilder
+import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.fury.messenger.utils.TokenManager
 import com.services.Otp.OtpRequest
 import com.services.ServicesGrpc
@@ -36,7 +37,7 @@ private lateinit var otp1:EditText;
     setContentView(R.layout.activity_otp)
         channel=ManageChanelBuilder.channel
 
-        val client=ManageChanelBuilder.client
+        val client= createAuthenticationStub(CurrentUser.getToken())
         otpBtn=findViewById(R.id.otpBtn)
         otp1=findViewById(R.id.otp1)
         otp2=findViewById(R.id.otp2)

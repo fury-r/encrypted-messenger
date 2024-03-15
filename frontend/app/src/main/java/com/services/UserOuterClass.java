@@ -19,51 +19,51 @@ public final class UserOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional string username = 1;</code>
+     * <code>string username = 1;</code>
      * @return Whether the username field is set.
      */
     boolean hasUsername();
     /**
-     * <code>optional string username = 1;</code>
+     * <code>string username = 1;</code>
      * @return The username.
      */
     java.lang.String getUsername();
     /**
-     * <code>optional string username = 1;</code>
+     * <code>string username = 1;</code>
      * @return The bytes for username.
      */
     com.google.protobuf.ByteString
         getUsernameBytes();
 
     /**
-     * <code>optional string password = 2;</code>
+     * <code>string password = 2;</code>
      * @return Whether the password field is set.
      */
     boolean hasPassword();
     /**
-     * <code>optional string password = 2;</code>
+     * <code>string password = 2;</code>
      * @return The password.
      */
     java.lang.String getPassword();
     /**
-     * <code>optional string password = 2;</code>
+     * <code>string password = 2;</code>
      * @return The bytes for password.
      */
     com.google.protobuf.ByteString
         getPasswordBytes();
 
     /**
-     * <code>optional string email = 3;</code>
+     * <code>string email = 3;</code>
      * @return Whether the email field is set.
      */
     boolean hasEmail();
     /**
-     * <code>optional string email = 3;</code>
+     * <code>string email = 3;</code>
      * @return The email.
      */
     java.lang.String getEmail();
     /**
-     * <code>optional string email = 3;</code>
+     * <code>string email = 3;</code>
      * @return The bytes for email.
      */
     com.google.protobuf.ByteString
@@ -82,34 +82,34 @@ public final class UserOuterClass {
         getPhoneNumberBytes();
 
     /**
-     * <code>optional string countryCode = 5;</code>
+     * <code>string countryCode = 5;</code>
      * @return Whether the countryCode field is set.
      */
     boolean hasCountryCode();
     /**
-     * <code>optional string countryCode = 5;</code>
+     * <code>string countryCode = 5;</code>
      * @return The countryCode.
      */
     java.lang.String getCountryCode();
     /**
-     * <code>optional string countryCode = 5;</code>
+     * <code>string countryCode = 5;</code>
      * @return The bytes for countryCode.
      */
     com.google.protobuf.ByteString
         getCountryCodeBytes();
 
     /**
-     * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+     * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
      * @return Whether the updatedAt field is set.
      */
     boolean hasUpdatedAt();
     /**
-     * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+     * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
      * @return The updatedAt.
      */
     com.google.protobuf.Timestamp getUpdatedAt();
     /**
-     * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+     * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
      */
     com.google.protobuf.TimestampOrBuilder getUpdatedAtOrBuilder();
 
@@ -138,50 +138,21 @@ public final class UserOuterClass {
         getTokenBytes();
 
     /**
-     * <code>optional string pubKey = 9;</code>
+     * <code>string pubKey = 9;</code>
      * @return Whether the pubKey field is set.
      */
     boolean hasPubKey();
     /**
-     * <code>optional string pubKey = 9;</code>
+     * <code>string pubKey = 9;</code>
      * @return The pubKey.
      */
     java.lang.String getPubKey();
     /**
-     * <code>optional string pubKey = 9;</code>
+     * <code>string pubKey = 9;</code>
      * @return The bytes for pubKey.
      */
     com.google.protobuf.ByteString
         getPubKeyBytes();
-
-    /**
-     * <pre>
-     * ⚠️WARNING: For testing.Need to be removed later
-     * </pre>
-     *
-     * <code>optional string privKey = 10;</code>
-     * @return Whether the privKey field is set.
-     */
-    boolean hasPrivKey();
-    /**
-     * <pre>
-     * ⚠️WARNING: For testing.Need to be removed later
-     * </pre>
-     *
-     * <code>optional string privKey = 10;</code>
-     * @return The privKey.
-     */
-    java.lang.String getPrivKey();
-    /**
-     * <pre>
-     * ⚠️WARNING: For testing.Need to be removed later
-     * </pre>
-     *
-     * <code>optional string privKey = 10;</code>
-     * @return The bytes for privKey.
-     */
-    com.google.protobuf.ByteString
-        getPrivKeyBytes();
   }
   /**
    * Protobuf type {@code User}
@@ -204,7 +175,6 @@ public final class UserOuterClass {
       uuid_ = "";
       token_ = "";
       pubKey_ = "";
-      privKey_ = "";
     }
 
     @java.lang.Override
@@ -299,12 +269,6 @@ public final class UserOuterClass {
               pubKey_ = s;
               break;
             }
-            case 82: {
-              java.lang.String s = input.readStringRequireUtf8();
-              bitField0_ |= 0x00000040;
-              privKey_ = s;
-              break;
-            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -341,7 +305,7 @@ public final class UserOuterClass {
     public static final int USERNAME_FIELD_NUMBER = 1;
     private volatile java.lang.Object username_;
     /**
-     * <code>optional string username = 1;</code>
+     * <code>string username = 1;</code>
      * @return Whether the username field is set.
      */
     @java.lang.Override
@@ -349,7 +313,7 @@ public final class UserOuterClass {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional string username = 1;</code>
+     * <code>string username = 1;</code>
      * @return The username.
      */
     @java.lang.Override
@@ -366,7 +330,7 @@ public final class UserOuterClass {
       }
     }
     /**
-     * <code>optional string username = 1;</code>
+     * <code>string username = 1;</code>
      * @return The bytes for username.
      */
     @java.lang.Override
@@ -387,7 +351,7 @@ public final class UserOuterClass {
     public static final int PASSWORD_FIELD_NUMBER = 2;
     private volatile java.lang.Object password_;
     /**
-     * <code>optional string password = 2;</code>
+     * <code>string password = 2;</code>
      * @return Whether the password field is set.
      */
     @java.lang.Override
@@ -395,7 +359,7 @@ public final class UserOuterClass {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>optional string password = 2;</code>
+     * <code>string password = 2;</code>
      * @return The password.
      */
     @java.lang.Override
@@ -412,7 +376,7 @@ public final class UserOuterClass {
       }
     }
     /**
-     * <code>optional string password = 2;</code>
+     * <code>string password = 2;</code>
      * @return The bytes for password.
      */
     @java.lang.Override
@@ -433,7 +397,7 @@ public final class UserOuterClass {
     public static final int EMAIL_FIELD_NUMBER = 3;
     private volatile java.lang.Object email_;
     /**
-     * <code>optional string email = 3;</code>
+     * <code>string email = 3;</code>
      * @return Whether the email field is set.
      */
     @java.lang.Override
@@ -441,7 +405,7 @@ public final class UserOuterClass {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
-     * <code>optional string email = 3;</code>
+     * <code>string email = 3;</code>
      * @return The email.
      */
     @java.lang.Override
@@ -458,7 +422,7 @@ public final class UserOuterClass {
       }
     }
     /**
-     * <code>optional string email = 3;</code>
+     * <code>string email = 3;</code>
      * @return The bytes for email.
      */
     @java.lang.Override
@@ -517,7 +481,7 @@ public final class UserOuterClass {
     public static final int COUNTRYCODE_FIELD_NUMBER = 5;
     private volatile java.lang.Object countryCode_;
     /**
-     * <code>optional string countryCode = 5;</code>
+     * <code>string countryCode = 5;</code>
      * @return Whether the countryCode field is set.
      */
     @java.lang.Override
@@ -525,7 +489,7 @@ public final class UserOuterClass {
       return ((bitField0_ & 0x00000008) != 0);
     }
     /**
-     * <code>optional string countryCode = 5;</code>
+     * <code>string countryCode = 5;</code>
      * @return The countryCode.
      */
     @java.lang.Override
@@ -542,7 +506,7 @@ public final class UserOuterClass {
       }
     }
     /**
-     * <code>optional string countryCode = 5;</code>
+     * <code>string countryCode = 5;</code>
      * @return The bytes for countryCode.
      */
     @java.lang.Override
@@ -563,7 +527,7 @@ public final class UserOuterClass {
     public static final int UPDATEDAT_FIELD_NUMBER = 6;
     private com.google.protobuf.Timestamp updatedAt_;
     /**
-     * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+     * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
      * @return Whether the updatedAt field is set.
      */
     @java.lang.Override
@@ -571,7 +535,7 @@ public final class UserOuterClass {
       return ((bitField0_ & 0x00000010) != 0);
     }
     /**
-     * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+     * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
      * @return The updatedAt.
      */
     @java.lang.Override
@@ -579,7 +543,7 @@ public final class UserOuterClass {
       return updatedAt_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : updatedAt_;
     }
     /**
-     * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+     * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
      */
     @java.lang.Override
     public com.google.protobuf.TimestampOrBuilder getUpdatedAtOrBuilder() {
@@ -665,7 +629,7 @@ public final class UserOuterClass {
     public static final int PUBKEY_FIELD_NUMBER = 9;
     private volatile java.lang.Object pubKey_;
     /**
-     * <code>optional string pubKey = 9;</code>
+     * <code>string pubKey = 9;</code>
      * @return Whether the pubKey field is set.
      */
     @java.lang.Override
@@ -673,7 +637,7 @@ public final class UserOuterClass {
       return ((bitField0_ & 0x00000020) != 0);
     }
     /**
-     * <code>optional string pubKey = 9;</code>
+     * <code>string pubKey = 9;</code>
      * @return The pubKey.
      */
     @java.lang.Override
@@ -690,7 +654,7 @@ public final class UserOuterClass {
       }
     }
     /**
-     * <code>optional string pubKey = 9;</code>
+     * <code>string pubKey = 9;</code>
      * @return The bytes for pubKey.
      */
     @java.lang.Override
@@ -702,64 +666,6 @@ public final class UserOuterClass {
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         pubKey_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int PRIVKEY_FIELD_NUMBER = 10;
-    private volatile java.lang.Object privKey_;
-    /**
-     * <pre>
-     * ⚠️WARNING: For testing.Need to be removed later
-     * </pre>
-     *
-     * <code>optional string privKey = 10;</code>
-     * @return Whether the privKey field is set.
-     */
-    @java.lang.Override
-    public boolean hasPrivKey() {
-      return ((bitField0_ & 0x00000040) != 0);
-    }
-    /**
-     * <pre>
-     * ⚠️WARNING: For testing.Need to be removed later
-     * </pre>
-     *
-     * <code>optional string privKey = 10;</code>
-     * @return The privKey.
-     */
-    @java.lang.Override
-    public java.lang.String getPrivKey() {
-      java.lang.Object ref = privKey_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        privKey_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     * ⚠️WARNING: For testing.Need to be removed later
-     * </pre>
-     *
-     * <code>optional string privKey = 10;</code>
-     * @return The bytes for privKey.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getPrivKeyBytes() {
-      java.lang.Object ref = privKey_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        privKey_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -789,7 +695,7 @@ public final class UserOuterClass {
       if (((bitField0_ & 0x00000004) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, email_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(phoneNumber_)) {
+      if (!getPhoneNumberBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, phoneNumber_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
@@ -798,17 +704,14 @@ public final class UserOuterClass {
       if (((bitField0_ & 0x00000010) != 0)) {
         output.writeMessage(6, getUpdatedAt());
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(uuid_)) {
+      if (!getUuidBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 7, uuid_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(token_)) {
+      if (!getTokenBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 8, token_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 9, pubKey_);
-      }
-      if (((bitField0_ & 0x00000040) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, privKey_);
       }
       unknownFields.writeTo(output);
     }
@@ -828,7 +731,7 @@ public final class UserOuterClass {
       if (((bitField0_ & 0x00000004) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, email_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(phoneNumber_)) {
+      if (!getPhoneNumberBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, phoneNumber_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
@@ -838,17 +741,14 @@ public final class UserOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(6, getUpdatedAt());
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(uuid_)) {
+      if (!getUuidBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, uuid_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(token_)) {
+      if (!getTokenBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, token_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, pubKey_);
-      }
-      if (((bitField0_ & 0x00000040) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, privKey_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -901,11 +801,6 @@ public final class UserOuterClass {
         if (!getPubKey()
             .equals(other.getPubKey())) return false;
       }
-      if (hasPrivKey() != other.hasPrivKey()) return false;
-      if (hasPrivKey()) {
-        if (!getPrivKey()
-            .equals(other.getPrivKey())) return false;
-      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -946,10 +841,6 @@ public final class UserOuterClass {
       if (hasPubKey()) {
         hash = (37 * hash) + PUBKEY_FIELD_NUMBER;
         hash = (53 * hash) + getPubKey().hashCode();
-      }
-      if (hasPrivKey()) {
-        hash = (37 * hash) + PRIVKEY_FIELD_NUMBER;
-        hash = (53 * hash) + getPrivKey().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -1107,8 +998,6 @@ public final class UserOuterClass {
 
         pubKey_ = "";
         bitField0_ = (bitField0_ & ~0x00000020);
-        privKey_ = "";
-        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
 
@@ -1168,10 +1057,6 @@ public final class UserOuterClass {
           to_bitField0_ |= 0x00000020;
         }
         result.pubKey_ = pubKey_;
-        if (((from_bitField0_ & 0x00000040) != 0)) {
-          to_bitField0_ |= 0x00000040;
-        }
-        result.privKey_ = privKey_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1261,11 +1146,6 @@ public final class UserOuterClass {
           pubKey_ = other.pubKey_;
           onChanged();
         }
-        if (other.hasPrivKey()) {
-          bitField0_ |= 0x00000040;
-          privKey_ = other.privKey_;
-          onChanged();
-        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -1298,14 +1178,14 @@ public final class UserOuterClass {
 
       private java.lang.Object username_ = "";
       /**
-       * <code>optional string username = 1;</code>
+       * <code>string username = 1;</code>
        * @return Whether the username field is set.
        */
       public boolean hasUsername() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional string username = 1;</code>
+       * <code>string username = 1;</code>
        * @return The username.
        */
       public java.lang.String getUsername() {
@@ -1321,7 +1201,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional string username = 1;</code>
+       * <code>string username = 1;</code>
        * @return The bytes for username.
        */
       public com.google.protobuf.ByteString
@@ -1338,7 +1218,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional string username = 1;</code>
+       * <code>string username = 1;</code>
        * @param value The username to set.
        * @return This builder for chaining.
        */
@@ -1353,7 +1233,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional string username = 1;</code>
+       * <code>string username = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearUsername() {
@@ -1363,7 +1243,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional string username = 1;</code>
+       * <code>string username = 1;</code>
        * @param value The bytes for username to set.
        * @return This builder for chaining.
        */
@@ -1381,14 +1261,14 @@ public final class UserOuterClass {
 
       private java.lang.Object password_ = "";
       /**
-       * <code>optional string password = 2;</code>
+       * <code>string password = 2;</code>
        * @return Whether the password field is set.
        */
       public boolean hasPassword() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>optional string password = 2;</code>
+       * <code>string password = 2;</code>
        * @return The password.
        */
       public java.lang.String getPassword() {
@@ -1404,7 +1284,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional string password = 2;</code>
+       * <code>string password = 2;</code>
        * @return The bytes for password.
        */
       public com.google.protobuf.ByteString
@@ -1421,7 +1301,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional string password = 2;</code>
+       * <code>string password = 2;</code>
        * @param value The password to set.
        * @return This builder for chaining.
        */
@@ -1436,7 +1316,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional string password = 2;</code>
+       * <code>string password = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearPassword() {
@@ -1446,7 +1326,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional string password = 2;</code>
+       * <code>string password = 2;</code>
        * @param value The bytes for password to set.
        * @return This builder for chaining.
        */
@@ -1464,14 +1344,14 @@ public final class UserOuterClass {
 
       private java.lang.Object email_ = "";
       /**
-       * <code>optional string email = 3;</code>
+       * <code>string email = 3;</code>
        * @return Whether the email field is set.
        */
       public boolean hasEmail() {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
-       * <code>optional string email = 3;</code>
+       * <code>string email = 3;</code>
        * @return The email.
        */
       public java.lang.String getEmail() {
@@ -1487,7 +1367,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional string email = 3;</code>
+       * <code>string email = 3;</code>
        * @return The bytes for email.
        */
       public com.google.protobuf.ByteString
@@ -1504,7 +1384,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional string email = 3;</code>
+       * <code>string email = 3;</code>
        * @param value The email to set.
        * @return This builder for chaining.
        */
@@ -1519,7 +1399,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional string email = 3;</code>
+       * <code>string email = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearEmail() {
@@ -1529,7 +1409,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional string email = 3;</code>
+       * <code>string email = 3;</code>
        * @param value The bytes for email to set.
        * @return This builder for chaining.
        */
@@ -1623,14 +1503,14 @@ public final class UserOuterClass {
 
       private java.lang.Object countryCode_ = "";
       /**
-       * <code>optional string countryCode = 5;</code>
+       * <code>string countryCode = 5;</code>
        * @return Whether the countryCode field is set.
        */
       public boolean hasCountryCode() {
         return ((bitField0_ & 0x00000008) != 0);
       }
       /**
-       * <code>optional string countryCode = 5;</code>
+       * <code>string countryCode = 5;</code>
        * @return The countryCode.
        */
       public java.lang.String getCountryCode() {
@@ -1646,7 +1526,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional string countryCode = 5;</code>
+       * <code>string countryCode = 5;</code>
        * @return The bytes for countryCode.
        */
       public com.google.protobuf.ByteString
@@ -1663,7 +1543,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional string countryCode = 5;</code>
+       * <code>string countryCode = 5;</code>
        * @param value The countryCode to set.
        * @return This builder for chaining.
        */
@@ -1678,7 +1558,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional string countryCode = 5;</code>
+       * <code>string countryCode = 5;</code>
        * @return This builder for chaining.
        */
       public Builder clearCountryCode() {
@@ -1688,7 +1568,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional string countryCode = 5;</code>
+       * <code>string countryCode = 5;</code>
        * @param value The bytes for countryCode to set.
        * @return This builder for chaining.
        */
@@ -1708,14 +1588,14 @@ public final class UserOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> updatedAtBuilder_;
       /**
-       * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+       * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
        * @return Whether the updatedAt field is set.
        */
       public boolean hasUpdatedAt() {
         return ((bitField0_ & 0x00000010) != 0);
       }
       /**
-       * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+       * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
        * @return The updatedAt.
        */
       public com.google.protobuf.Timestamp getUpdatedAt() {
@@ -1726,7 +1606,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+       * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
        */
       public Builder setUpdatedAt(com.google.protobuf.Timestamp value) {
         if (updatedAtBuilder_ == null) {
@@ -1742,7 +1622,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+       * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
        */
       public Builder setUpdatedAt(
           com.google.protobuf.Timestamp.Builder builderForValue) {
@@ -1756,7 +1636,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+       * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
        */
       public Builder mergeUpdatedAt(com.google.protobuf.Timestamp value) {
         if (updatedAtBuilder_ == null) {
@@ -1776,7 +1656,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+       * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
        */
       public Builder clearUpdatedAt() {
         if (updatedAtBuilder_ == null) {
@@ -1789,7 +1669,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+       * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
        */
       public com.google.protobuf.Timestamp.Builder getUpdatedAtBuilder() {
         bitField0_ |= 0x00000010;
@@ -1797,7 +1677,7 @@ public final class UserOuterClass {
         return getUpdatedAtFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+       * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
        */
       public com.google.protobuf.TimestampOrBuilder getUpdatedAtOrBuilder() {
         if (updatedAtBuilder_ != null) {
@@ -1808,7 +1688,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+       * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> 
@@ -1978,14 +1858,14 @@ public final class UserOuterClass {
 
       private java.lang.Object pubKey_ = "";
       /**
-       * <code>optional string pubKey = 9;</code>
+       * <code>string pubKey = 9;</code>
        * @return Whether the pubKey field is set.
        */
       public boolean hasPubKey() {
         return ((bitField0_ & 0x00000020) != 0);
       }
       /**
-       * <code>optional string pubKey = 9;</code>
+       * <code>string pubKey = 9;</code>
        * @return The pubKey.
        */
       public java.lang.String getPubKey() {
@@ -2001,7 +1881,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional string pubKey = 9;</code>
+       * <code>string pubKey = 9;</code>
        * @return The bytes for pubKey.
        */
       public com.google.protobuf.ByteString
@@ -2018,7 +1898,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional string pubKey = 9;</code>
+       * <code>string pubKey = 9;</code>
        * @param value The pubKey to set.
        * @return This builder for chaining.
        */
@@ -2033,7 +1913,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional string pubKey = 9;</code>
+       * <code>string pubKey = 9;</code>
        * @return This builder for chaining.
        */
       public Builder clearPubKey() {
@@ -2043,7 +1923,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional string pubKey = 9;</code>
+       * <code>string pubKey = 9;</code>
        * @param value The bytes for pubKey to set.
        * @return This builder for chaining.
        */
@@ -2055,113 +1935,6 @@ public final class UserOuterClass {
   checkByteStringIsUtf8(value);
         bitField0_ |= 0x00000020;
         pubKey_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object privKey_ = "";
-      /**
-       * <pre>
-       * ⚠️WARNING: For testing.Need to be removed later
-       * </pre>
-       *
-       * <code>optional string privKey = 10;</code>
-       * @return Whether the privKey field is set.
-       */
-      public boolean hasPrivKey() {
-        return ((bitField0_ & 0x00000040) != 0);
-      }
-      /**
-       * <pre>
-       * ⚠️WARNING: For testing.Need to be removed later
-       * </pre>
-       *
-       * <code>optional string privKey = 10;</code>
-       * @return The privKey.
-       */
-      public java.lang.String getPrivKey() {
-        java.lang.Object ref = privKey_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          privKey_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       * ⚠️WARNING: For testing.Need to be removed later
-       * </pre>
-       *
-       * <code>optional string privKey = 10;</code>
-       * @return The bytes for privKey.
-       */
-      public com.google.protobuf.ByteString
-          getPrivKeyBytes() {
-        java.lang.Object ref = privKey_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          privKey_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * ⚠️WARNING: For testing.Need to be removed later
-       * </pre>
-       *
-       * <code>optional string privKey = 10;</code>
-       * @param value The privKey to set.
-       * @return This builder for chaining.
-       */
-      public Builder setPrivKey(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
-        privKey_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * ⚠️WARNING: For testing.Need to be removed later
-       * </pre>
-       *
-       * <code>optional string privKey = 10;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearPrivKey() {
-        bitField0_ = (bitField0_ & ~0x00000040);
-        privKey_ = getDefaultInstance().getPrivKey();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * ⚠️WARNING: For testing.Need to be removed later
-       * </pre>
-       *
-       * <code>optional string privKey = 10;</code>
-       * @param value The bytes for privKey to set.
-       * @return This builder for chaining.
-       */
-      public Builder setPrivKeyBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        bitField0_ |= 0x00000040;
-        privKey_ = value;
         onChanged();
         return this;
       }
@@ -2233,16 +2006,15 @@ public final class UserOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\nuser.proto\032\037google/protobuf/timestamp." +
-      "proto\"\314\002\n\004User\022\025\n\010username\030\001 \001(\tH\000\210\001\001\022\025\n" +
+      "proto\"\252\002\n\004User\022\025\n\010username\030\001 \001(\tH\000\210\001\001\022\025\n" +
       "\010password\030\002 \001(\tH\001\210\001\001\022\022\n\005email\030\003 \001(\tH\002\210\001\001" +
       "\022\023\n\013phoneNumber\030\004 \001(\t\022\030\n\013countryCode\030\005 \001" +
       "(\tH\003\210\001\001\0222\n\tupdatedAt\030\006 \001(\0132\032.google.prot" +
       "obuf.TimestampH\004\210\001\001\022\014\n\004uuid\030\007 \001(\t\022\r\n\005tok" +
-      "en\030\010 \001(\t\022\023\n\006pubKey\030\t \001(\tH\005\210\001\001\022\024\n\007privKey" +
-      "\030\n \001(\tH\006\210\001\001B\013\n\t_usernameB\013\n\t_passwordB\010\n" +
-      "\006_emailB\016\n\014_countryCodeB\014\n\n_updatedAtB\t\n" +
-      "\007_pubKeyB\n\n\010_privKeyB\023\n\014com.servicesZ\003/p" +
-      "bb\006proto3"
+      "en\030\010 \001(\t\022\023\n\006pubKey\030\t \001(\tH\005\210\001\001B\013\n\t_userna" +
+      "meB\013\n\t_passwordB\010\n\006_emailB\016\n\014_countryCod" +
+      "eB\014\n\n_updatedAtB\t\n\007_pubKeyB\023\n\014com.servic" +
+      "esZ\003/pbb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -2254,7 +2026,7 @@ public final class UserOuterClass {
     internal_static_User_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_User_descriptor,
-        new java.lang.String[] { "Username", "Password", "Email", "PhoneNumber", "CountryCode", "UpdatedAt", "Uuid", "Token", "PubKey", "PrivKey", "Username", "Password", "Email", "CountryCode", "UpdatedAt", "PubKey", "PrivKey", });
+        new java.lang.String[] { "Username", "Password", "Email", "PhoneNumber", "CountryCode", "UpdatedAt", "Uuid", "Token", "PubKey", "Username", "Password", "Email", "CountryCode", "UpdatedAt", "PubKey", });
     com.google.protobuf.TimestampProto.getDescriptor();
   }
 
