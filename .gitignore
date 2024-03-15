@@ -63,9 +63,7 @@ middeware/.DS_Store
 # test coverage
 middeware/coverage/
 
-# package locks
-/middleware/yarn.lock
-/middleware/package-lock.json
+
 
 
 
@@ -92,6 +90,5 @@ backend/*.out
 node_modules
 npm-debug.log
 
-package-lock.json
 backend/utils/authToken.go
 frontend/tools/protobuf/compiler
