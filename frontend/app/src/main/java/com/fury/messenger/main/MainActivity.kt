@@ -63,7 +63,7 @@ class MainActivity: AppCompatActivity() {
 
         val ctx=this
         initRSA(ctx)
-          scope.launch {
+        scope.launch {
           db=DBHelper(ctx)
 
 
@@ -73,7 +73,7 @@ class MainActivity: AppCompatActivity() {
           setContactList(data)
           db.close()
 
-      }
+       }
 
 
         Log.d("Contact-z",userList.size.toString())

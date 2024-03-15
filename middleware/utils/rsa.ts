@@ -13,4 +13,3 @@ export function encryptMessage(message: string, publicKey: any) {
 
   return encryptedBuffer.toString("base64");
 }
-encryptMessage("test", "11111111");

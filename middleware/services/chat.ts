@@ -30,7 +30,10 @@ export const send = async (
     }
   );
   // 2nd level of encryption
-  const encryptedMessage = encryptMessage(JSON.stringify(req.request), pubKey);
+  const encryptedMessage = encryptMessage(
+    JSON.stringify(req.request),
+    pubKey || ""
+  );
   if (req.request?.message?.message?.reciever) {
     console.log("Adding to Message broker");
 
@@ -45,7 +48,7 @@ export const send = async (
   return callback(null, {});
   const response: any = await client.VerifyToken(
     {
-      token: req.request.token,
+      token: req.request,
     },
     (e, result) => {
       if (e) {
