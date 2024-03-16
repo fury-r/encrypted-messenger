@@ -448,34 +448,51 @@ public final class Auth {
     boolean getIsVerified();
 
     /**
-     * <code>string error = 2;</code>
+     * <code>string token = 2;</code>
+     * @return Whether the token field is set.
+     */
+    boolean hasToken();
+    /**
+     * <code>string token = 2;</code>
+     * @return The token.
+     */
+    java.lang.String getToken();
+    /**
+     * <code>string token = 2;</code>
+     * @return The bytes for token.
+     */
+    com.google.protobuf.ByteString
+        getTokenBytes();
+
+    /**
+     * <code>string error = 3;</code>
      * @return Whether the error field is set.
      */
     boolean hasError();
     /**
-     * <code>string error = 2;</code>
+     * <code>string error = 3;</code>
      * @return The error.
      */
     java.lang.String getError();
     /**
-     * <code>string error = 2;</code>
+     * <code>string error = 3;</code>
      * @return The bytes for error.
      */
     com.google.protobuf.ByteString
         getErrorBytes();
 
     /**
-     * <code>.User user = 3;</code>
+     * <code>.User user = 4;</code>
      * @return Whether the user field is set.
      */
     boolean hasUser();
     /**
-     * <code>.User user = 3;</code>
+     * <code>.User user = 4;</code>
      * @return The user.
      */
     com.services.UserOuterClass.User getUser();
     /**
-     * <code>.User user = 3;</code>
+     * <code>.User user = 4;</code>
      */
     com.services.UserOuterClass.UserOrBuilder getUserOrBuilder();
   }
@@ -492,6 +509,7 @@ public final class Auth {
       super(builder);
     }
     private AuthResponse() {
+      token_ = "";
       error_ = "";
     }
 
@@ -534,12 +552,18 @@ public final class Auth {
             case 18: {
               java.lang.String s = input.readStringRequireUtf8();
               bitField0_ |= 0x00000002;
-              error_ = s;
+              token_ = s;
               break;
             }
             case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000004;
+              error_ = s;
+              break;
+            }
+            case 34: {
               com.services.UserOuterClass.User.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000004) != 0)) {
+              if (((bitField0_ & 0x00000008) != 0)) {
                 subBuilder = user_.toBuilder();
               }
               user_ = input.readMessage(com.services.UserOuterClass.User.parser(), extensionRegistry);
@@ -547,7 +571,7 @@ public final class Auth {
                 subBuilder.mergeFrom(user_);
                 user_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000004;
+              bitField0_ |= 0x00000008;
               break;
             }
             default: {
@@ -602,18 +626,64 @@ public final class Auth {
       return isVerified_;
     }
 
-    public static final int ERROR_FIELD_NUMBER = 2;
+    public static final int TOKEN_FIELD_NUMBER = 2;
+    private volatile java.lang.Object token_;
+    /**
+     * <code>string token = 2;</code>
+     * @return Whether the token field is set.
+     */
+    @java.lang.Override
+    public boolean hasToken() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <code>string token = 2;</code>
+     * @return The token.
+     */
+    @java.lang.Override
+    public java.lang.String getToken() {
+      java.lang.Object ref = token_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        token_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string token = 2;</code>
+     * @return The bytes for token.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getTokenBytes() {
+      java.lang.Object ref = token_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        token_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ERROR_FIELD_NUMBER = 3;
     private volatile java.lang.Object error_;
     /**
-     * <code>string error = 2;</code>
+     * <code>string error = 3;</code>
      * @return Whether the error field is set.
      */
     @java.lang.Override
     public boolean hasError() {
-      return ((bitField0_ & 0x00000002) != 0);
+      return ((bitField0_ & 0x00000004) != 0);
     }
     /**
-     * <code>string error = 2;</code>
+     * <code>string error = 3;</code>
      * @return The error.
      */
     @java.lang.Override
@@ -630,7 +700,7 @@ public final class Auth {
       }
     }
     /**
-     * <code>string error = 2;</code>
+     * <code>string error = 3;</code>
      * @return The bytes for error.
      */
     @java.lang.Override
@@ -648,18 +718,18 @@ public final class Auth {
       }
     }
 
-    public static final int USER_FIELD_NUMBER = 3;
+    public static final int USER_FIELD_NUMBER = 4;
     private com.services.UserOuterClass.User user_;
     /**
-     * <code>.User user = 3;</code>
+     * <code>.User user = 4;</code>
      * @return Whether the user field is set.
      */
     @java.lang.Override
     public boolean hasUser() {
-      return ((bitField0_ & 0x00000004) != 0);
+      return ((bitField0_ & 0x00000008) != 0);
     }
     /**
-     * <code>.User user = 3;</code>
+     * <code>.User user = 4;</code>
      * @return The user.
      */
     @java.lang.Override
@@ -667,7 +737,7 @@ public final class Auth {
       return user_ == null ? com.services.UserOuterClass.User.getDefaultInstance() : user_;
     }
     /**
-     * <code>.User user = 3;</code>
+     * <code>.User user = 4;</code>
      */
     @java.lang.Override
     public com.services.UserOuterClass.UserOrBuilder getUserOrBuilder() {
@@ -692,10 +762,13 @@ public final class Auth {
         output.writeBool(1, isVerified_);
       }
       if (((bitField0_ & 0x00000002) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, error_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, token_);
       }
       if (((bitField0_ & 0x00000004) != 0)) {
-        output.writeMessage(3, getUser());
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, error_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        output.writeMessage(4, getUser());
       }
       unknownFields.writeTo(output);
     }
@@ -711,11 +784,14 @@ public final class Auth {
           .computeBoolSize(1, isVerified_);
       }
       if (((bitField0_ & 0x00000002) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, error_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, token_);
       }
       if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, error_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, getUser());
+          .computeMessageSize(4, getUser());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -736,6 +812,11 @@ public final class Auth {
       if (hasIsVerified()) {
         if (getIsVerified()
             != other.getIsVerified()) return false;
+      }
+      if (hasToken() != other.hasToken()) return false;
+      if (hasToken()) {
+        if (!getToken()
+            .equals(other.getToken())) return false;
       }
       if (hasError() != other.hasError()) return false;
       if (hasError()) {
@@ -762,6 +843,10 @@ public final class Auth {
         hash = (37 * hash) + ISVERIFIED_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
             getIsVerified());
+      }
+      if (hasToken()) {
+        hash = (37 * hash) + TOKEN_FIELD_NUMBER;
+        hash = (53 * hash) + getToken().hashCode();
       }
       if (hasError()) {
         hash = (37 * hash) + ERROR_FIELD_NUMBER;
@@ -907,14 +992,16 @@ public final class Auth {
         super.clear();
         isVerified_ = false;
         bitField0_ = (bitField0_ & ~0x00000001);
-        error_ = "";
+        token_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
+        error_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
         if (userBuilder_ == null) {
           user_ = null;
         } else {
           userBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -950,14 +1037,18 @@ public final class Auth {
         if (((from_bitField0_ & 0x00000002) != 0)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.error_ = error_;
+        result.token_ = token_;
         if (((from_bitField0_ & 0x00000004) != 0)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.error_ = error_;
+        if (((from_bitField0_ & 0x00000008) != 0)) {
           if (userBuilder_ == null) {
             result.user_ = user_;
           } else {
             result.user_ = userBuilder_.build();
           }
-          to_bitField0_ |= 0x00000004;
+          to_bitField0_ |= 0x00000008;
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -1011,8 +1102,13 @@ public final class Auth {
         if (other.hasIsVerified()) {
           setIsVerified(other.getIsVerified());
         }
-        if (other.hasError()) {
+        if (other.hasToken()) {
           bitField0_ |= 0x00000002;
+          token_ = other.token_;
+          onChanged();
+        }
+        if (other.hasError()) {
+          bitField0_ |= 0x00000004;
           error_ = other.error_;
           onChanged();
         }
@@ -1088,16 +1184,99 @@ public final class Auth {
         return this;
       }
 
-      private java.lang.Object error_ = "";
+      private java.lang.Object token_ = "";
       /**
-       * <code>string error = 2;</code>
-       * @return Whether the error field is set.
+       * <code>string token = 2;</code>
+       * @return Whether the token field is set.
        */
-      public boolean hasError() {
+      public boolean hasToken() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>string error = 2;</code>
+       * <code>string token = 2;</code>
+       * @return The token.
+       */
+      public java.lang.String getToken() {
+        java.lang.Object ref = token_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          token_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string token = 2;</code>
+       * @return The bytes for token.
+       */
+      public com.google.protobuf.ByteString
+          getTokenBytes() {
+        java.lang.Object ref = token_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          token_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string token = 2;</code>
+       * @param value The token to set.
+       * @return This builder for chaining.
+       */
+      public Builder setToken(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        token_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string token = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearToken() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        token_ = getDefaultInstance().getToken();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string token = 2;</code>
+       * @param value The bytes for token to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTokenBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        bitField0_ |= 0x00000002;
+        token_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object error_ = "";
+      /**
+       * <code>string error = 3;</code>
+       * @return Whether the error field is set.
+       */
+      public boolean hasError() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <code>string error = 3;</code>
        * @return The error.
        */
       public java.lang.String getError() {
@@ -1113,7 +1292,7 @@ public final class Auth {
         }
       }
       /**
-       * <code>string error = 2;</code>
+       * <code>string error = 3;</code>
        * @return The bytes for error.
        */
       public com.google.protobuf.ByteString
@@ -1130,7 +1309,7 @@ public final class Auth {
         }
       }
       /**
-       * <code>string error = 2;</code>
+       * <code>string error = 3;</code>
        * @param value The error to set.
        * @return This builder for chaining.
        */
@@ -1139,23 +1318,23 @@ public final class Auth {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  bitField0_ |= 0x00000004;
         error_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>string error = 2;</code>
+       * <code>string error = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearError() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000004);
         error_ = getDefaultInstance().getError();
         onChanged();
         return this;
       }
       /**
-       * <code>string error = 2;</code>
+       * <code>string error = 3;</code>
        * @param value The bytes for error to set.
        * @return This builder for chaining.
        */
@@ -1165,7 +1344,7 @@ public final class Auth {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000004;
         error_ = value;
         onChanged();
         return this;
@@ -1175,14 +1354,14 @@ public final class Auth {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.services.UserOuterClass.User, com.services.UserOuterClass.User.Builder, com.services.UserOuterClass.UserOrBuilder> userBuilder_;
       /**
-       * <code>.User user = 3;</code>
+       * <code>.User user = 4;</code>
        * @return Whether the user field is set.
        */
       public boolean hasUser() {
-        return ((bitField0_ & 0x00000004) != 0);
+        return ((bitField0_ & 0x00000008) != 0);
       }
       /**
-       * <code>.User user = 3;</code>
+       * <code>.User user = 4;</code>
        * @return The user.
        */
       public com.services.UserOuterClass.User getUser() {
@@ -1193,7 +1372,7 @@ public final class Auth {
         }
       }
       /**
-       * <code>.User user = 3;</code>
+       * <code>.User user = 4;</code>
        */
       public Builder setUser(com.services.UserOuterClass.User value) {
         if (userBuilder_ == null) {
@@ -1205,11 +1384,11 @@ public final class Auth {
         } else {
           userBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         return this;
       }
       /**
-       * <code>.User user = 3;</code>
+       * <code>.User user = 4;</code>
        */
       public Builder setUser(
           com.services.UserOuterClass.User.Builder builderForValue) {
@@ -1219,15 +1398,15 @@ public final class Auth {
         } else {
           userBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         return this;
       }
       /**
-       * <code>.User user = 3;</code>
+       * <code>.User user = 4;</code>
        */
       public Builder mergeUser(com.services.UserOuterClass.User value) {
         if (userBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) != 0) &&
+          if (((bitField0_ & 0x00000008) != 0) &&
               user_ != null &&
               user_ != com.services.UserOuterClass.User.getDefaultInstance()) {
             user_ =
@@ -1239,11 +1418,11 @@ public final class Auth {
         } else {
           userBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         return this;
       }
       /**
-       * <code>.User user = 3;</code>
+       * <code>.User user = 4;</code>
        */
       public Builder clearUser() {
         if (userBuilder_ == null) {
@@ -1252,19 +1431,19 @@ public final class Auth {
         } else {
           userBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
       /**
-       * <code>.User user = 3;</code>
+       * <code>.User user = 4;</code>
        */
       public com.services.UserOuterClass.User.Builder getUserBuilder() {
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         onChanged();
         return getUserFieldBuilder().getBuilder();
       }
       /**
-       * <code>.User user = 3;</code>
+       * <code>.User user = 4;</code>
        */
       public com.services.UserOuterClass.UserOrBuilder getUserOrBuilder() {
         if (userBuilder_ != null) {
@@ -1275,7 +1454,7 @@ public final class Auth {
         }
       }
       /**
-       * <code>.User user = 3;</code>
+       * <code>.User user = 4;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.services.UserOuterClass.User, com.services.UserOuterClass.User.Builder, com.services.UserOuterClass.UserOrBuilder> 
@@ -1363,10 +1542,11 @@ public final class Auth {
   static {
     java.lang.String[] descriptorData = {
       "\n\nauth.proto\032\nuser.proto\"\r\n\013AuthRequest\"" +
-      "w\n\014AuthResponse\022\027\n\nisVerified\030\001 \001(\010H\000\210\001\001" +
-      "\022\022\n\005error\030\002 \001(\tH\001\210\001\001\022\030\n\004user\030\003 \001(\0132\005.Use" +
-      "rH\002\210\001\001B\r\n\013_isVerifiedB\010\n\006_errorB\007\n\005_user" +
-      "B\023\n\014com.servicesZ\003/pbb\006proto3"
+      "\225\001\n\014AuthResponse\022\027\n\nisVerified\030\001 \001(\010H\000\210\001" +
+      "\001\022\022\n\005token\030\002 \001(\tH\001\210\001\001\022\022\n\005error\030\003 \001(\tH\002\210\001" +
+      "\001\022\030\n\004user\030\004 \001(\0132\005.UserH\003\210\001\001B\r\n\013_isVerifi" +
+      "edB\010\n\006_tokenB\010\n\006_errorB\007\n\005_userB\023\n\014com.s" +
+      "ervicesZ\003/pbb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1384,7 +1564,7 @@ public final class Auth {
     internal_static_AuthResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AuthResponse_descriptor,
-        new java.lang.String[] { "IsVerified", "Error", "User", "IsVerified", "Error", "User", });
+        new java.lang.String[] { "IsVerified", "Token", "Error", "User", "IsVerified", "Token", "Error", "User", });
     com.services.UserOuterClass.getDescriptor();
   }
 

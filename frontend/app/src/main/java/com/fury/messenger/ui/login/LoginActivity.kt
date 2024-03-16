@@ -42,7 +42,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var signupBtn:Button
     private lateinit var channel:ManagedChannel
-    private lateinit var  isPassword:CheckBox
     private   var hasReadContactPermission:Boolean=false
     private   var hasStoragePermission:Boolean=false
     private  lateinit var permissionLauncher:ActivityResultLauncher<Array<String>>
@@ -131,8 +130,7 @@ class LoginActivity : AppCompatActivity() {
                 if(countryCode!=null) {
                     number = number.replace("+$countryCode", "")
                 }
-                Log.d("log xxin",isPassword.isChecked().toString())
-                val request = LoginRequest.newBuilder().setPhoneNumber(number).setCountryCode(countryCode).setPassword(edtPassword.text.toString()).setUsePassword(isPassword.isChecked()).build();
+                val request = LoginRequest.newBuilder().setPhoneNumber(number).setCountryCode(countryCode).setPassword(edtPassword.text.toString()).build();
 
                 val response=client.login(request);
                 Toast.makeText(this,if (response.hasError() )response.error+"."+response.message else (response.message),Toast.LENGTH_SHORT).show()
