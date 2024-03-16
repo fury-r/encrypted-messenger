@@ -7,7 +7,6 @@ import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.fury.messenger.utils.Constants.APP_NAME
 import com.fury.messenger.utils.Constants.stringToByteArray
 import com.fury.messenger.utils.TokenManager
-import com.services.ContactOuterClass
 import com.services.UserOuterClass
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -160,7 +159,7 @@ object RSA {
     fun submitPublicKey(key: String,key2:String=""){
         val client= createAuthenticationStub(CurrentUser.getToken())
         val request=
-            UserOuterClass.User.newBuilder().setPhoneNumber(CurrentUser.getPhoneNumber()).setPubKey(
+            UserOuterClass.User.newBuilder().setPhoneNumber(CurrentUser.getCurrentUserPhoneNumber()).setPubKey(
             key).build()
         client.savePubKey(request)
     }

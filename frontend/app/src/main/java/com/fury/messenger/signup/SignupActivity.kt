@@ -2,39 +2,23 @@ package com.fury.messenger.signup
 
 
 
-import android.app.Activity
 import android.content.Intent
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.fury.messenger.databinding.ActivityLoginBinding
-
+import androidx.appcompat.app.AppCompatActivity
 import com.fury.messenger.R
 import com.fury.messenger.data.helper.user.CurrentUser
 import com.fury.messenger.main.MainActivity
-import com.fury.messenger.main.Contact
 import com.fury.messenger.manageBuilder.ManageChanelBuilder
 import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.fury.messenger.otp.OtpActivity
 import com.fury.messenger.utils.Constants
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.protobuf.BlockingService
-
 import com.services.Register.RegisterRequest
-import com.services.ServicesGrpc
 import io.grpc.ManagedChannel
 
 class SignupActivity: AppCompatActivity() {

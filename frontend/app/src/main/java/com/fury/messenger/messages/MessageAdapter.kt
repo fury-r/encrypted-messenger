@@ -7,12 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fury.messenger.R
-import com.fury.messenger.TripleDES
 import com.fury.messenger.data.db.model.Chat
 import com.fury.messenger.data.helper.user.CurrentUser
-import com.fury.messenger.main.UserAdapter
-import com.fury.messenger.rsa.RSA.decryptMessage
-import com.google.firebase.auth.FirebaseAuth
 
 class MessageAdapter(val context: Context, var messageList:List<Chat?>, uid:String?): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -33,7 +29,7 @@ class MessageAdapter(val context: Context, var messageList:List<Chat?>, uid:Stri
     override fun getItemViewType(position: Int): Int {
 
         val currentMessage=messageList[position]
-        return if( currentMessage!=null && CurrentUser.getPhoneNumber()==currentMessage.sender){
+        return if( currentMessage!=null && CurrentUser.getCurrentUserPhoneNumber()==currentMessage.sender){
             0
         } else{
             1

@@ -36,9 +36,9 @@ import com.fury.messenger.rsa.RSA.generateEncryptionKeys
 import com.google.firebase.auth.FirebaseAuth
 import com.services.Message
 import com.services.Message.Event
+import com.services.Message.KeyExchange
 import com.services.Message.MessageInfo
 import com.services.Message.MessageRequest
-import com.services.Message.PubKeyExchange
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -157,7 +157,7 @@ class ChatActivity : AppCompatActivity() {
                        }
                        publicKey=keys[1]
                        val recipientPublicKey= convertStringToKeyFactory(recipientDetails!!.pubKey!!,0)
-                       val message=PubKeyExchange.newBuilder().setSender(CurrentUser.getPhoneNumber()).setReciever(recipientDetails!!.phoneNumber).setPublicKey(
+                       val message=KeyExchange.newBuilder().setSender(CurrentUser.getCurrentUserPhoneNumber()).setReciever(recipientDetails!!.phoneNumber).setPublicKey(
                            encryptMessage(keyToString(keys[0].encoded),recipientPublicKey)
                        ).setPrivateKey( encryptMessage(keyToString(keys[1].encoded),recipientPublicKey)).build()
 
@@ -170,10 +170,8 @@ class ChatActivity : AppCompatActivity() {
                        publicKey
                    )
                    val chat=  setMessageClass(id,messageText) as Chat
-                   insertMessage(dbHelper,
-
-                       Chat(chat.id,chat.sender,chat.receiver,encryptedMessage,chat.messageId,chat.contentType,chat.isSeen,chat.isDelivered,chat.type ,chat.createdAt))
-                   val message=MessageInfo.newBuilder().setMessageId(id).setText(encryptedMessage).setSender(CurrentUser.getPhoneNumber()).setReciever(recipientDetails!!.phoneNumber).setContentType("text").build()
+                   insertMessage(Chat(chat.id,chat.sender,chat.receiver,encryptedMessage,chat.messageId,chat.contentType,chat.isSeen,chat.isDelivered,chat.type ,chat.createdAt))
+                   val message=MessageInfo.newBuilder().setMessageId(id).setText(encryptedMessage).setSender(CurrentUser.getCurrentUserPhoneNumber()).setReciever(recipientDetails!!.phoneNumber).setContentType("text").build()
                    val chatRequestBuilder=MessageRequest.newBuilder().setMessage(message).setType(Message.MessageType.INSERT).build()
                    //TODO: FIX Enum issue
                    val event=Event.newBuilder().setType(Message.EventType.MESSAGE).setMessage(chatRequestBuilder).build()
@@ -233,7 +231,7 @@ class ChatActivity : AppCompatActivity() {
     private  fun setMessageClass(id:String, message: String): Chat? {
 
 
-        val chat=     CurrentUser.getPhoneNumber()?.let {
+        val chat=     CurrentUser.getCurrentUserPhoneNumber()?.let {
             recipientDetails?.let { it1 ->
                 Chat(0, it, it1.phoneNumber,message,id,"text", isDelivered = false, isSeen = false,Message.MessageType.INSERT,
                     LocalDateTime.now())

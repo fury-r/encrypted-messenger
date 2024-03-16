@@ -2,14 +2,12 @@ package com.fury.messenger.otp
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextWatcher
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.doOnTextChanged
 import com.fury.messenger.R
 import com.fury.messenger.data.helper.user.CurrentUser
 import com.fury.messenger.main.MainActivity
@@ -65,7 +63,7 @@ private lateinit var otp1:EditText;
             val tokenManager=TokenManager(this)
             tokenManager.setToken(response.message.token)
             CurrentUser.setToken(response.message.token)
-            CurrentUser.setPhoneNumber(response.message.phoneNumber)
+            CurrentUser.setCurrentUserPhoneNumber(response.message.phoneNumber)
             CurrentUser.setEmail(response.message.email)
             if(response.message.uuid!=null && response.message.uuid.isNotEmpty()) {
                 CurrentUser.setUUID(response.message.uuid)

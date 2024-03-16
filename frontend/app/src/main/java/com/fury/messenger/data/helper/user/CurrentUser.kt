@@ -28,7 +28,7 @@ import java.util.Base64
 
 object CurrentUser {
 
-    var phoneNumber:String?=null
+    var phoneNumber: String? =null
     private var uuid:String?=null
 
     private var phoneCountryCode:String?=null
@@ -76,7 +76,7 @@ try{
      fun   getUsername(): String? {
           return username
      }
-     fun   getPhoneNumber(): String? {
+     fun getCurrentUserPhoneNumber(): String? {
           return this.phoneNumber
      }
      fun   getToken(): String? {
@@ -105,7 +105,7 @@ try{
      fun   setToken(token:String="") {
          this.token =token
      }
-     fun   setPhoneNumber(phoneNumber:String) {
+     fun   setCurrentUserPhoneNumber(phoneNumber:String?) {
          this.phoneNumber =phoneNumber
          this.phoneNumber?.let { Log.d("setting phone Number", it) }
 
@@ -114,7 +114,7 @@ try{
         CurrentUser.email =email
     }
     fun   setPublicKey(value:Any) {
-        Log.d("Thread-Messenger key",  "setting key "+value)
+        Log.d("Thread-Messenger key", "setting key $value")
         this.publicKey = if(value::class==String::class ){
             convertStringToKeyFactory(value as String,2) as PublicKey
         } else{
@@ -254,7 +254,7 @@ try{
                             }
                         }
                     }
-                    getPhoneNumber()?.let { channel.basicConsume(it, consumer) }
+                    getCurrentUserPhoneNumber().let { channel.basicConsume(it, consumer) }
 
                 }
             }

@@ -148,7 +148,7 @@ object Threads {
                             }
                         }
                     }
-                    CurrentUser.getPhoneNumber()?.let { channel.basicConsume(it,consumer) }
+                    CurrentUser.getCurrentUserPhoneNumber()?.let { channel.basicConsume(it,consumer) }
 
                 }
 

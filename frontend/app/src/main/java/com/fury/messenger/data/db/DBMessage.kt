@@ -8,7 +8,6 @@ import android.provider.BaseColumns
 import android.util.Log
 import com.fury.messenger.data.db.model.Chat
 import com.fury.messenger.data.db.model.Chats
-import com.fury.messenger.data.db.model.Contact
 import com.fury.messenger.data.db.model.ContactsModel
 
 import com.fury.messenger.data.helper.mutex.MutexLock
@@ -24,7 +23,6 @@ import com.services.Message.MessageType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.and
@@ -218,7 +216,7 @@ transaction {
     }
     suspend fun  sendSeenEvent(recipientNumber:String){
     withContext(Dispatchers.IO){
-        val message=MessageInfo.newBuilder().setReciever(recipientNumber).setSender(CurrentUser.getPhoneNumber()).setReadStatus(true).build()
+        val message=MessageInfo.newBuilder().setReciever(recipientNumber).setSender(CurrentUser.getCurrentUserPhoneNumber()).setReadStatus(true).build()
         val messageRequest=MessageRequest.newBuilder().setMessage(message).setType(Message.MessageType.UPDATE).build()
         val event=Event.newBuilder().setMessage(messageRequest).setType(Message.EventType.MESSAGE).build()
 

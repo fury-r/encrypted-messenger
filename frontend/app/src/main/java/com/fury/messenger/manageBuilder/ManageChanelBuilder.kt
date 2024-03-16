@@ -7,7 +7,7 @@ import io.grpc.Metadata
 import io.grpc.stub.MetadataUtils
 
 object ManageChanelBuilder {
-      var channel:ManagedChannel= ManagedChannelBuilder.forAddress("192.168.0.104", 8081).usePlaintext().build()
+      var channel:ManagedChannel= ManagedChannelBuilder.forAddress("172.24.198.65", 8081).usePlaintext().build()
       val headers=Metadata()
       var client:ServicesGrpc.ServicesBlockingStub= ServicesGrpc.newBlockingStub(channel);
 

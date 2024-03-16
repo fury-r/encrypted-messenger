@@ -72,7 +72,7 @@ class LoginActivity : AppCompatActivity() {
             val db=DBHelper(this)
           scope.launch{
              withContext(Dispatchers.IO) {
-                 val request=AuthRequest.newBuilder().setToken(token).build()
+                 val request=AuthRequest.newBuilder().build()
 
                  val response=  client.verifyToken(request)
                  Log.d("setting user details",response.error)
@@ -86,7 +86,7 @@ class LoginActivity : AppCompatActivity() {
                  else{
                      CurrentUser.setToken(token)
                      Log.d("setting user details",response.user.phoneNumber)
-                     CurrentUser.setPhoneNumber(response.user.phoneNumber)
+                     CurrentUser.setCurrentUserPhoneNumber(response.user.phoneNumber)
                      CurrentUser.setEmail(response.user.email)
                      val publicKey=tokenManager.getPublicKey(true)
                      if(response.user.pubKey!=publicKey && response.user.pubKey.isNotEmpty())
