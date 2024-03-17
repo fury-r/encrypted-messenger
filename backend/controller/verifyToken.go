@@ -22,6 +22,8 @@ func VerifyTokenService(ctx context.Context, req *pb.AuthRequest) (*pb.AuthRespo
 
 	email, err := utils.GetTokenFromMetaDataAndValidate(ctx)
 	if err != nil {
+
+		fmt.Println("Invalid token")
 		return nil, err
 	}
 	docs, _ := firestore.Collection("user").Where("email", "==", *email).Limit(1).Documents(ctx).GetAll()

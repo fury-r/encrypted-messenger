@@ -14,7 +14,7 @@ import {
   login,
   otp,
   register,
-  savePubKeys,
+  savePubKey,
   send,
   validateContacts,
   verifyToken,
@@ -60,7 +60,7 @@ function getServer() {
     handShakeRequest,
     register,
     otp,
-    savePubKeys,
+    savePubKey,
     verifyToken,
     send,
   });

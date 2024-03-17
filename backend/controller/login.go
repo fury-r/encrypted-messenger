@@ -10,6 +10,8 @@ import (
 	"example.com/messenger/pb"
 	"example.com/messenger/utils"
 	"golang.org/x/net/context"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func LoginService(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
@@ -17,7 +19,8 @@ func LoginService(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse,
 
 	app, firebaseerr := firebase.InitFirebase().Firestore(ctx)
 	if firebaseerr != nil {
-		panic(firebaseerr)
+		fmt.Println("Error", firebaseerr)
+		return nil, status.Error(codes.Internal, "Internal server Error")
 	}
 	userCheck := app.Collection("user").Where("phoneNumber", "==", req.GetPhoneNumber()).Documents(ctx)
 	if userCheck == nil {
@@ -28,13 +31,11 @@ func LoginService(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse,
 		}, nil
 	}
 	docs, _ := app.Collection("user").Where("phoneNumber", "==", req.GetPhoneNumber()).Documents(ctx).GetAll()
-
 	for _, doc := range docs {
 		updateData := map[string]interface{}{
 			"otp":       utils.GenerateOtp(),
 			"updatedAt": time.Now(),
 		}
-		fmt.Println(updateData["otp"])
 
 		_, err := app.Collection("user").Doc(doc.Ref.ID).Set(
 			ctx,
@@ -42,7 +43,8 @@ func LoginService(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse,
 			firestore.MergeAll,
 		)
 		if err != nil {
-			panic(err)
+			fmt.Println("Error", firebaseerr)
+			return nil, status.Error(codes.Internal, "Internal server Error")
 		}
 	}
 	return &pb.LoginResponse{

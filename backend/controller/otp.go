@@ -10,6 +10,7 @@ import (
 )
 
 func OtpService(ctx context.Context, req *pb.OtpRequest) (*pb.OtpResponse, error) {
+	fmt.Print(req.Otp, "validating otp ", req.PhoneNumber)
 	app := firebase.InitFirebase()
 	firestore, err := app.Firestore(ctx)
 	auth, _ := app.Auth(ctx)
@@ -38,10 +39,6 @@ func OtpService(ctx context.Context, req *pb.OtpRequest) (*pb.OtpResponse, error
 		}
 
 		fmt.Println(user.UID)
-		if err != nil {
-			panic(err)
-
-		}
 
 		token, err := utils.CreateToken(*email)
 		if err != nil {
@@ -52,6 +49,7 @@ func OtpService(ctx context.Context, req *pb.OtpRequest) (*pb.OtpResponse, error
 			}, nil
 		}
 		_, e := utils.ValidateToken(token)
+
 		if e != nil {
 			fmt.Println(err)
 			errMessage := "Invalid Otp.Please try again."

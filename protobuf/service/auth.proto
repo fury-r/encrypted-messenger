@@ -6,6 +6,7 @@ option go_package="/pb";
 option java_package = "com.services";
 import "user.proto";
 message AuthRequest {
+    
 }
 
 message AuthResponse {

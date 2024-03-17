@@ -4,19 +4,15 @@ import { Event } from "../proto/Event";
 import { RabbitMQ } from "../common/rabbitMQ";
 import { validateToken } from "../utils/validateToken";
 import { encryptMessage } from "../utils/rsa";
+import { Metadata } from "@grpc/grpc-js";
 
-export const send = async (
-  req: {
-    request: Event;
-  },
-  callback: any
-) => {
-  const client = new GrpcClientService().getClient();
+export const send = async (req: any, callback: any) => {
+  validateToken(req, (_, res: any) => {});
+
+  const client = new GrpcClientService(undefined).getClient();
   const producer = new KafkaSetup().getKafkaProducer();
   const rabbitMQ = new RabbitMQ("amqp://guest:guest@localhost:5672", "chat");
   const data: Event = req.request as Event;
-
-  validateToken(req, (_, res: any) => {});
 
   let pubKey: string | undefined;
   client.getUser(
