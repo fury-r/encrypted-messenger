@@ -21,89 +21,109 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <LinearLayout
-            android:id="@+id/otpLayout"
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/otpLayout"-->
 
-            android:layout_width="415dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <!--            android:layout_width="415dp"-->
+        <!--            android:layout_height="100dp"-->
+        <!--            android:layout_marginTop="10dp"-->
+        <!--            android:gravity="center"-->
+        <!--            android:orientation="horizontal"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent">-->
 
-            <EditText
-                android:id="@+id/otp1"
-                android:layout_width="48dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10sp"
-                android:gravity="center"
-                android:inputType="phone"
-                android:maxLength="1"
-                android:selectAllOnFocus="true" />
+        <!--            <EditText-->
+        <!--                android:id="@+id/otp1"-->
+        <!--                android:layout_width="48dp"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginRight="10sp"-->
+        <!--                android:gravity="center"-->
+        <!--                android:inputType="phone"-->
+        <!--                android:maxLength="1"-->
+        <!--                android:selectAllOnFocus="true" />-->
 
-            <EditText
-                android:id="@+id/otp2"
-                android:layout_width="48dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10sp"
-                android:gravity="center"
-                android:inputType="phone"
-                android:maxLength="1"
+        <!--            <EditText-->
+        <!--                android:id="@+id/otp2"-->
+        <!--                android:layout_width="48dp"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginRight="10sp"-->
+        <!--                android:gravity="center"-->
+        <!--                android:inputType="phone"-->
+        <!--                android:maxLength="1"-->
 
-                android:selectAllOnFocus="true" />
+        <!--                android:selectAllOnFocus="true" />-->
 
-            <EditText
-                android:id="@+id/otp3"
-                android:layout_width="48dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10sp"
-                android:gravity="center"
-                android:inputType="phone"
-                android:maxLength="1"
+        <!--            <EditText-->
+        <!--                android:id="@+id/otp3"-->
+        <!--                android:layout_width="48dp"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginRight="10sp"-->
+        <!--                android:gravity="center"-->
+        <!--                android:inputType="phone"-->
+        <!--                android:maxLength="1"-->
 
-                android:selectAllOnFocus="true" />
+        <!--                android:selectAllOnFocus="true" />-->
 
-            <EditText
-                android:id="@+id/otp4"
-                android:layout_width="48dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10sp"
+        <!--            <EditText-->
+        <!--                android:id="@+id/otp4"-->
+        <!--                android:layout_width="48dp"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginRight="10sp"-->
 
-                android:gravity="center"
-                android:inputType="phone"
-                android:maxLength="1"
+        <!--                android:gravity="center"-->
+        <!--                android:inputType="phone"-->
+        <!--                android:maxLength="1"-->
 
-                android:selectAllOnFocus="true" />
+        <!--                android:selectAllOnFocus="true" />-->
 
-            <EditText
-                android:id="@+id/otp5"
-                android:layout_width="48dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10sp"
-                android:gravity="center"
-                android:inputType="phone"
-                android:maxLength="1"
+        <!--            <EditText-->
+        <!--                android:id="@+id/otp5"-->
+        <!--                android:layout_width="48dp"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginRight="10sp"-->
+        <!--                android:gravity="center"-->
+        <!--                android:inputType="phone"-->
+        <!--                android:maxLength="1"-->
 
-                android:selectAllOnFocus="true" />
+        <!--                android:selectAllOnFocus="true" />-->
 
-            <EditText
-                android:id="@+id/otp6"
-                android:layout_width="48dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:inputType="phone"
-                android:maxLength="1"
+        <!--            <EditText-->
+        <!--                android:id="@+id/otp6"-->
+        <!--                android:layout_width="48dp"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:gravity="center"-->
+        <!--                android:inputType="phone"-->
+        <!--                android:maxLength="1"-->
 
-                android:selectAllOnFocus="true" />
-        </LinearLayout>
+        <!--                android:selectAllOnFocus="true" />-->
+        <!--        </LinearLayout>-->
+
+        <EditText
+            android:id="@+id/otp"
+            android:layout_width="264dp"
+            android:layout_height="43dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerHorizontal='true'
+            android:layout_marginStart="74dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginEnd="82dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="top"
+            android:hint="@string/otp"
+            android:inputType="number"
+            android:maxLength="6"
+            android:selectAllOnFocus="true"
+            android:text="@string/otp"
+
+          />
 
         <Button
             android:id="@+id/otpBtn"
             android:layout_width="192dp"
             android:layout_height="60dp"
-            android:layout_below="@+id/otpLayout"
+            android:layout_below="@+id/otp"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_gravity="start"
