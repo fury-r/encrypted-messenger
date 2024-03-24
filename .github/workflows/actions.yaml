@@ -44,6 +44,10 @@ jobs:
         run: chmod +x gradlew
         shell: bash
         working-directory: ./frontend
+      - name: Convert line endings
+        run: dos2unix gradlew
+        shell: bash
+        working-directory: ./frontend
       - run: echo "Building Debug APK."
       - name: Build with Gradle
         run: ./gradlew build
