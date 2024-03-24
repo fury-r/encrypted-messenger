@@ -13,6 +13,6 @@ func GenerateOtp() string {
 	for i := 0; i < 6; i++ {
 		otp = otp + strconv.Itoa(rand.Intn(6))
 	}
-	fmt.Println("Otp generated %d", otp)
+	fmt.Println("Otp generated ", otp)
 	return otp
 }

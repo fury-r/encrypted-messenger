@@ -15,7 +15,7 @@ import (
 )
 
 func Alive(w http.ResponseWriter, _ *http.Request) {
-	fmt.Println("Server Alive\n")
+	fmt.Println("Server Alive")
 	w.Write([]byte("Server Alive"))
 }
 

@@ -47,7 +47,8 @@ func LoginService(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse,
 			return nil, status.Error(codes.Internal, "Internal server Error")
 		}
 	}
+	fmt.Sprintln("OTP has been sent ", req.GetPhoneNumber())
 	return &pb.LoginResponse{
-		Message: fmt.Sprintf("OTP has been sent %d", req.GetPhoneNumber()),
+		Message: "OTP has been sent " + req.GetPhoneNumber(), Error: nil,
 	}, nil
 }
