@@ -44,6 +44,9 @@ jobs:
         run: chmod +x gradlew
         shell: bash
         working-directory: ./frontend
+      - name: Install dos2unix
+        run: sudo apt-get install dos2unix
+        shell: bash
       - name: Convert line endings
         run: dos2unix gradlew
         shell: bash
