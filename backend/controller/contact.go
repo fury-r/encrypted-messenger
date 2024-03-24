@@ -35,8 +35,9 @@ func ContactService(ctx context.Context, req *pb.ContactsList) (*pb.ContactsList
 		iterations++
 	}
 	contactList := []*pb.Contact{}
-	fmt.Println("%d $x", batchSize, iterations)
+	fmt.Println(batchSize, iterations)
 	for i := 0; i < iterations; i++ {
+
 		docs := app.Collection("user").Where("phoneNumber", "in", phonesList[start:start+batchSize]).Documents(ctx)
 		for {
 			doc, err := docs.Next()
@@ -73,6 +74,7 @@ func ContactService(ctx context.Context, req *pb.ContactsList) (*pb.ContactsList
 		start += batchSize
 	}
 
+	fmt.Println("ContactList ", len(contactList))
 	return &pb.ContactsList{
 		Contacts: contactList,
 	}, nil

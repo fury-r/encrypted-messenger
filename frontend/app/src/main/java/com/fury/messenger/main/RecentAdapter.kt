@@ -10,14 +10,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fury.messenger.R
-import com.fury.messenger.data.db.model.Contact
+import com.fury.messenger.helper.contact.ContactChats
 import com.fury.messenger.messages.ChatActivity
-import com.google.firebase.database.*
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.storage.StorageReference
-import java.util.*
-import kotlin.collections.ArrayList
 
-class RecentAdapter(val context: Context, var userList:ArrayList<Contact>): RecyclerView.Adapter<RecentAdapter.RecentViewHolder>() {
+class RecentAdapter(val context: Context, var userList:ArrayList<ContactChats>): RecyclerView.Adapter<RecentAdapter.RecentViewHolder>() {
     private lateinit var dbRef: DatabaseReference
     private lateinit var storageRef: StorageReference
     private  var uri: String? =null
@@ -29,8 +27,8 @@ class RecentAdapter(val context: Context, var userList:ArrayList<Contact>): Recy
 
     override fun onBindViewHolder(holder: RecentViewHolder, position: Int) {
         val currentUser=userList[position]
-        Log.d("username",currentUser.name.toString())
-        holder.textName.text=currentUser.name
+        Log.d("username",currentUser.contact.name.toString())
+        holder.textName.text=currentUser.contact.name
         //storageRef = FirebaseStorage.getInstance().reference
         val url=""
 //        storageRef?.child("profile"+currentUser.getPhoneNumber())?.downloadUrl?.addOnSuccessListener { url: Uri ->
@@ -44,8 +42,8 @@ class RecentAdapter(val context: Context, var userList:ArrayList<Contact>): Recy
         //holder.profilePicture.src=currentUser.profile
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ChatActivity::class.java)
-            intent.putExtra("Contact",currentUser.name)
-            intent.putExtra("phoneNumber",currentUser.phoneNumber)
+            intent.putExtra("Contact",currentUser.contact.name)
+            intent.putExtra("phoneNumber",currentUser.contact.phoneNumber)
 //            intent.putExtra("uri",url)
             context.startActivity(intent)
         }

@@ -19,12 +19,12 @@ public final class Service {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>string phone_number = 1;</code>
+     * <code>string phoneNumber = 1;</code>
      * @return The phoneNumber.
      */
     java.lang.String getPhoneNumber();
     /**
-     * <code>string phone_number = 1;</code>
+     * <code>string phoneNumber = 1;</code>
      * @return The bytes for phoneNumber.
      */
     com.google.protobuf.ByteString
@@ -114,10 +114,10 @@ public final class Service {
               com.services.Service.UserRequest.class, com.services.Service.UserRequest.Builder.class);
     }
 
-    public static final int PHONE_NUMBER_FIELD_NUMBER = 1;
+    public static final int PHONENUMBER_FIELD_NUMBER = 1;
     private volatile java.lang.Object phoneNumber_;
     /**
-     * <code>string phone_number = 1;</code>
+     * <code>string phoneNumber = 1;</code>
      * @return The phoneNumber.
      */
     @java.lang.Override
@@ -134,7 +134,7 @@ public final class Service {
       }
     }
     /**
-     * <code>string phone_number = 1;</code>
+     * <code>string phoneNumber = 1;</code>
      * @return The bytes for phoneNumber.
      */
     @java.lang.Override
@@ -209,7 +209,7 @@ public final class Service {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + PHONE_NUMBER_FIELD_NUMBER;
+      hash = (37 * hash) + PHONENUMBER_FIELD_NUMBER;
       hash = (53 * hash) + getPhoneNumber().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -456,7 +456,7 @@ public final class Service {
 
       private java.lang.Object phoneNumber_ = "";
       /**
-       * <code>string phone_number = 1;</code>
+       * <code>string phoneNumber = 1;</code>
        * @return The phoneNumber.
        */
       public java.lang.String getPhoneNumber() {
@@ -472,7 +472,7 @@ public final class Service {
         }
       }
       /**
-       * <code>string phone_number = 1;</code>
+       * <code>string phoneNumber = 1;</code>
        * @return The bytes for phoneNumber.
        */
       public com.google.protobuf.ByteString
@@ -489,7 +489,7 @@ public final class Service {
         }
       }
       /**
-       * <code>string phone_number = 1;</code>
+       * <code>string phoneNumber = 1;</code>
        * @param value The phoneNumber to set.
        * @return This builder for chaining.
        */
@@ -504,7 +504,7 @@ public final class Service {
         return this;
       }
       /**
-       * <code>string phone_number = 1;</code>
+       * <code>string phoneNumber = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearPhoneNumber() {
@@ -514,7 +514,7 @@ public final class Service {
         return this;
       }
       /**
-       * <code>string phone_number = 1;</code>
+       * <code>string phoneNumber = 1;</code>
        * @param value The bytes for phoneNumber to set.
        * @return This builder for chaining.
        */
@@ -587,24 +587,24 @@ public final class Service {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>string phone_number = 1;</code>
+     * <code>string phoneNumber = 1;</code>
      * @return The phoneNumber.
      */
     java.lang.String getPhoneNumber();
     /**
-     * <code>string phone_number = 1;</code>
+     * <code>string phoneNumber = 1;</code>
      * @return The bytes for phoneNumber.
      */
     com.google.protobuf.ByteString
         getPhoneNumberBytes();
 
     /**
-     * <code>string pub_key = 2;</code>
+     * <code>string pubKey = 2;</code>
      * @return The pubKey.
      */
     java.lang.String getPubKey();
     /**
-     * <code>string pub_key = 2;</code>
+     * <code>string pubKey = 2;</code>
      * @return The bytes for pubKey.
      */
     com.google.protobuf.ByteString
@@ -701,10 +701,10 @@ public final class Service {
               com.services.Service.UserResponse.class, com.services.Service.UserResponse.Builder.class);
     }
 
-    public static final int PHONE_NUMBER_FIELD_NUMBER = 1;
+    public static final int PHONENUMBER_FIELD_NUMBER = 1;
     private volatile java.lang.Object phoneNumber_;
     /**
-     * <code>string phone_number = 1;</code>
+     * <code>string phoneNumber = 1;</code>
      * @return The phoneNumber.
      */
     @java.lang.Override
@@ -721,7 +721,7 @@ public final class Service {
       }
     }
     /**
-     * <code>string phone_number = 1;</code>
+     * <code>string phoneNumber = 1;</code>
      * @return The bytes for phoneNumber.
      */
     @java.lang.Override
@@ -739,10 +739,10 @@ public final class Service {
       }
     }
 
-    public static final int PUB_KEY_FIELD_NUMBER = 2;
+    public static final int PUBKEY_FIELD_NUMBER = 2;
     private volatile java.lang.Object pubKey_;
     /**
-     * <code>string pub_key = 2;</code>
+     * <code>string pubKey = 2;</code>
      * @return The pubKey.
      */
     @java.lang.Override
@@ -759,7 +759,7 @@ public final class Service {
       }
     }
     /**
-     * <code>string pub_key = 2;</code>
+     * <code>string pubKey = 2;</code>
      * @return The bytes for pubKey.
      */
     @java.lang.Override
@@ -842,9 +842,9 @@ public final class Service {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + PHONE_NUMBER_FIELD_NUMBER;
+      hash = (37 * hash) + PHONENUMBER_FIELD_NUMBER;
       hash = (53 * hash) + getPhoneNumber().hashCode();
-      hash = (37 * hash) + PUB_KEY_FIELD_NUMBER;
+      hash = (37 * hash) + PUBKEY_FIELD_NUMBER;
       hash = (53 * hash) + getPubKey().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -1098,7 +1098,7 @@ public final class Service {
 
       private java.lang.Object phoneNumber_ = "";
       /**
-       * <code>string phone_number = 1;</code>
+       * <code>string phoneNumber = 1;</code>
        * @return The phoneNumber.
        */
       public java.lang.String getPhoneNumber() {
@@ -1114,7 +1114,7 @@ public final class Service {
         }
       }
       /**
-       * <code>string phone_number = 1;</code>
+       * <code>string phoneNumber = 1;</code>
        * @return The bytes for phoneNumber.
        */
       public com.google.protobuf.ByteString
@@ -1131,7 +1131,7 @@ public final class Service {
         }
       }
       /**
-       * <code>string phone_number = 1;</code>
+       * <code>string phoneNumber = 1;</code>
        * @param value The phoneNumber to set.
        * @return This builder for chaining.
        */
@@ -1146,7 +1146,7 @@ public final class Service {
         return this;
       }
       /**
-       * <code>string phone_number = 1;</code>
+       * <code>string phoneNumber = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearPhoneNumber() {
@@ -1156,7 +1156,7 @@ public final class Service {
         return this;
       }
       /**
-       * <code>string phone_number = 1;</code>
+       * <code>string phoneNumber = 1;</code>
        * @param value The bytes for phoneNumber to set.
        * @return This builder for chaining.
        */
@@ -1174,7 +1174,7 @@ public final class Service {
 
       private java.lang.Object pubKey_ = "";
       /**
-       * <code>string pub_key = 2;</code>
+       * <code>string pubKey = 2;</code>
        * @return The pubKey.
        */
       public java.lang.String getPubKey() {
@@ -1190,7 +1190,7 @@ public final class Service {
         }
       }
       /**
-       * <code>string pub_key = 2;</code>
+       * <code>string pubKey = 2;</code>
        * @return The bytes for pubKey.
        */
       public com.google.protobuf.ByteString
@@ -1207,7 +1207,7 @@ public final class Service {
         }
       }
       /**
-       * <code>string pub_key = 2;</code>
+       * <code>string pubKey = 2;</code>
        * @param value The pubKey to set.
        * @return This builder for chaining.
        */
@@ -1222,7 +1222,7 @@ public final class Service {
         return this;
       }
       /**
-       * <code>string pub_key = 2;</code>
+       * <code>string pubKey = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearPubKey() {
@@ -1232,7 +1232,7 @@ public final class Service {
         return this;
       }
       /**
-       * <code>string pub_key = 2;</code>
+       * <code>string pubKey = 2;</code>
        * @param value The bytes for pubKey to set.
        * @return This builder for chaining.
        */
@@ -1321,21 +1321,21 @@ public final class Service {
     java.lang.String[] descriptorData = {
       "\n\rservice.proto\032\013login.proto\032\016register.p" +
       "roto\032\totp.proto\032\rcontact.proto\032\rmessage." +
-      "proto\032\nauth.proto\032\nuser.proto\"#\n\013UserReq" +
-      "uest\022\024\n\014phone_number\030\001 \001(\t\"5\n\014UserRespon" +
-      "se\022\024\n\014phone_number\030\001 \001(\t\022\017\n\007pub_key\030\002 \001(" +
-      "\t2\267\003\n\010Services\022(\n\005Login\022\r.LoginRequest\032\016" +
-      ".LoginResponse\"\000\0221\n\010Register\022\020.RegisterR" +
-      "equest\032\021.RegisterResponse\"\000\022\"\n\003Otp\022\013.Otp" +
-      "Request\032\014.OtpResponse\"\000\0222\n\020ValidateConta" +
-      "cts\022\r.ContactsList\032\r.ContactsList\"\000\022\030\n\004S" +
-      "end\022\006.Event\032\006.Event\"\000\022@\n\rmessageUpdate\022\025" +
-      ".MessageUpdateRequest\032\026.MessageUpdateRes" +
-      "ponse\"\000\022,\n\013VerifyToken\022\014.AuthRequest\032\r.A" +
-      "uthResponse\"\000\022\034\n\nsavePubKey\022\005.User\032\005.Use" +
-      "r\"\000\022$\n\020handShakeRequest\022\006.Event\032\006.Event\"" +
-      "\000\022(\n\007getUser\022\014.UserRequest\032\r.UserRespons" +
-      "e\"\000B\023\n\014com.servicesZ\003/pbb\006proto3"
+      "proto\032\nauth.proto\032\nuser.proto\"\"\n\013UserReq" +
+      "uest\022\023\n\013phoneNumber\030\001 \001(\t\"3\n\014UserRespons" +
+      "e\022\023\n\013phoneNumber\030\001 \001(\t\022\016\n\006pubKey\030\002 \001(\t2\267" +
+      "\003\n\010Services\022(\n\005Login\022\r.LoginRequest\032\016.Lo" +
+      "ginResponse\"\000\0221\n\010Register\022\020.RegisterRequ" +
+      "est\032\021.RegisterResponse\"\000\022\"\n\003Otp\022\013.OtpReq" +
+      "uest\032\014.OtpResponse\"\000\0222\n\020ValidateContacts" +
+      "\022\r.ContactsList\032\r.ContactsList\"\000\022\030\n\004Send" +
+      "\022\006.Event\032\006.Event\"\000\022@\n\rmessageUpdate\022\025.Me" +
+      "ssageUpdateRequest\032\026.MessageUpdateRespon" +
+      "se\"\000\022,\n\013VerifyToken\022\014.AuthRequest\032\r.Auth" +
+      "Response\"\000\022\034\n\nsavePubKey\022\005.User\032\005.User\"\000" +
+      "\022$\n\020handShakeRequest\022\006.Event\032\006.Event\"\000\022(" +
+      "\n\007getUser\022\014.UserRequest\032\r.UserResponse\"\000" +
+      "B\023\n\014com.servicesZ\003/pbb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

@@ -1,14 +1,9 @@
 import path from "path";
 import * as grpc from "@grpc/grpc-js";
 import * as protoLoader from "@grpc/proto-loader";
-import { ProtoGrpcType } from "./proto/service";
 
 const PORT = 8081;
-const PROTO_FILE = "../protobuf/service/service.proto";
-const packageDef = protoLoader.loadSync(path.resolve(__dirname, PROTO_FILE));
-const grpcObject = grpc.loadPackageDefinition(
-  packageDef
-) as unknown as ProtoGrpcType;
+
 import {
   handShakeRequest,
   login,

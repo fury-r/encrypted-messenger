@@ -3,6 +3,9 @@ package com.fury.messenger.data.db
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import androidx.room.TypeConverter
+import java.sql.Date
+import java.sql.Timestamp
 
 class DBHelper(context: Context):SQLiteOpenHelper(context,"messenger.db",null,1) {
    private var db:SQLiteDatabase?=null
@@ -43,3 +46,25 @@ class DBHelper(context: Context):SQLiteOpenHelper(context,"messenger.db",null,1)
     }
 }
 
+class Converters {
+    @TypeConverter
+    fun fromTimestamp(value: Long?): Date? {
+        return value?.let { Date(it) }
+    }
+
+    @TypeConverter
+    fun dateToTimestamp(date: Date?): Long? {
+        return date?.time?.toLong()
+    }
+}
+class TimestampConverter {
+    @TypeConverter
+    fun fromTimestamp(value: Long?): Timestamp? {
+        return value?.let { Timestamp(it) }
+    }
+
+    @TypeConverter
+    fun dateToTimestamp(date: Timestamp?): Long? {
+        return date?.time
+    }
+}

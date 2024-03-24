@@ -112,12 +112,12 @@ func main() {
 	s := grpc.NewServer()
 	pb.RegisterServicesServer(s, &Server{})
 	// log.Fatalf("2")
-	fmt.Println("Server running on PORT 8082 \n")
+	fmt.Println("Server running on PORT 8082")
 
 	if err := s.Serve(listener); err != nil {
 		log.Fatalf("failed to server %v", err)
 		panic("Exit")
 	}
-	fmt.Println("Server running on PORT 8082 \n")
+	fmt.Println("Server running on PORT 8082")
 
 }

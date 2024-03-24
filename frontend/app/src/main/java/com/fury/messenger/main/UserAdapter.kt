@@ -2,7 +2,7 @@ package com.fury.messenger.main
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,34 +11,55 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fury.messenger.R
 import com.fury.messenger.TripleDES
-import com.fury.messenger.data.db.model.Contact
+import com.fury.messenger.helper.contact.ContactChats
+import com.fury.messenger.helper.user.CurrentUser
 import com.fury.messenger.messages.ChatActivity
-import com.google.firebase.database.*
+import com.fury.messenger.rsa.RSA.decryptMessage
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.storage.StorageReference
-import java.util.*
-import kotlin.collections.ArrayList
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 
-class UserAdapter(val context: Context, var userList:ArrayList<Contact>): RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+class UserAdapter(val context: Context, var userList: ArrayList<ContactChats>) :
+    RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
     private lateinit var dbRef: DatabaseReference
     private lateinit var storageRef: StorageReference
-    private  var uri: String? =null
-    val decipher=TripleDES
+    private var uri: String? = null
+    val decipher = TripleDES
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
-       val view:View= LayoutInflater.from(context).inflate(R.layout.user_layout,parent,false)
+        val view: View = LayoutInflater.from(context).inflate(R.layout.user_layout, parent, false)
         return UserViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        val currentUser=userList[position]
-        holder.textName.text=currentUser.name
+        val currentUser = userList[position]
+        holder.textName.text = currentUser.contact.name
+        if (currentUser.messageCount > 0) {
+            holder.count.text = currentUser.messageCount.toString()
+
+        } else {
+            holder.count.visibility = View.GONE
+        }
+        if (currentUser.latestMessage != null) {
+            holder.lastMessage.text = decryptMessage(currentUser.latestMessage.message, CurrentUser.getPrivateKey())
+            if(currentUser.latestMessage.sender!=CurrentUser.phoneNumber){
+                holder.lastMessage.setTypeface(null, Typeface.BOLD);
+            }
+            holder.datetime.text= currentUser.latestMessage.createdAt?.format(DateTimeFormatter.ofPattern("hh:mm:a"))
+                ?: ""
+
+        }
+        else{
+            holder.datetime.text=OffsetDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm:a"))
+        }
+
+
 //        getLastText(currentUser.uid,holder)
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ChatActivity::class.java)
-            Log.d(currentUser.name+"xzzzz1",currentUser.phoneNumber+""+currentUser.pubKey)
-            intent.putExtra("Contact",currentUser.name)
-            intent.putExtra("phoneNumber",currentUser.phoneNumber)
-            intent.putExtra("chatPrivateKey",currentUser.chatPrivateKey)
-            intent.putExtra("chatPublicKey",currentUser.chatPublickey)
+            intent.putExtra("Contact", currentUser.contact.name)
+            intent.putExtra("phoneNumber", currentUser.contact.phoneNumber)
+            intent.putExtra("key", currentUser.contact.key)
 
             context.startActivity(intent)
         }
@@ -49,11 +70,14 @@ class UserAdapter(val context: Context, var userList:ArrayList<Contact>): Recycl
     override fun getItemCount(): Int {
         return userList.size
     }
-    class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        var lastMessage=itemView.findViewById<TextView>(R.id.lastMessage)
-        val textName=itemView.findViewById<TextView>(R.id.txtName)
-        val imageView=itemView.findViewById<ImageView>(R.id.profilePicture)
-        var datetime=itemView.findViewById<TextView>(R.id.datetime)
+
+    class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var lastMessage = itemView.findViewById<TextView>(R.id.lastMessage)
+        val textName = itemView.findViewById<TextView>(R.id.txtName)
+        val imageView = itemView.findViewById<ImageView>(R.id.profilePicture)
+        var datetime = itemView.findViewById<TextView>(R.id.datetime)
+        var count = itemView.findViewById<TextView>(R.id.count)
+
     }
 
 //    private fun getLastText(uid:String? ,holder: UserViewHolder){

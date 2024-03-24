@@ -1,6 +1,5 @@
 import { GrpcClientService } from "../common/GrpcClientService";
 import * as grpc from "@grpc/grpc-js";
-import { AuthRequest } from "../proto/AuthRequest";
 
 export const validateToken = async (req: any, callback: any) => {
   const client = new GrpcClientService(undefined).getClient();

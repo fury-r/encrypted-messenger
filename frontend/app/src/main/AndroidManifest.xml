@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.fury.messenger">
+   >
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
@@ -20,29 +20,31 @@
         tools:targetApi="31">
         <activity
             android:name=".messages.ChatActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".signup.SignupActivity"
             android:exported="true"
-
+            android:windowSoftInputMode="adjustResize"
             android:label="Sign up" />
         <activity
             android:name=".main.MainActivity"
             android:exported="true"
+            android:windowSoftInputMode="adjustResize"
             android:label="Messenger" />
         <activity
             android:name=".editprofile.EditProfile"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true"
          />
         <activity
             android:name=".otp.OtpActivity"
             android:exported="true"
-            android:label="@string/app_name"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true"
-            android:label="@string/app_name">
+            android:windowSoftInputMode="adjustResize">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

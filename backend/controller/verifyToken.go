@@ -19,16 +19,17 @@ func VerifyTokenService(ctx context.Context, req *pb.AuthRequest) (*pb.AuthRespo
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "Authorization token not provided")
 	}
+	x := "Invalid Token"
 
 	email, err := utils.GetTokenFromMetaDataAndValidate(ctx)
 	if err != nil {
 
-		fmt.Println("Invalid token")
-		return nil, err
+		return &pb.AuthResponse{
+			Error: &x,
+		}, nil
 	}
 	docs, _ := firestore.Collection("user").Where("email", "==", *email).Limit(1).Documents(ctx).GetAll()
 	if docs == nil {
-		x := "Invalid Token 2"
 		return &pb.AuthResponse{
 			Error: &x,
 		}, nil
@@ -45,7 +46,7 @@ func VerifyTokenService(ctx context.Context, req *pb.AuthRequest) (*pb.AuthRespo
 		IsVerified := true
 		email := data.Email
 		id := doc.Ref.ID
-		fmt.Printf("Valid token")
+		fmt.Println("Valid token")
 		return &pb.AuthResponse{
 			Token:      &token,
 			IsVerified: &IsVerified,
@@ -57,7 +58,7 @@ func VerifyTokenService(ctx context.Context, req *pb.AuthRequest) (*pb.AuthRespo
 			},
 		}, nil
 	}
-	x := "Invalid Token 3"
+	x = "Invalid Token 3"
 	return &pb.AuthResponse{
 		Error: &x,
 	}, nil
@@ -68,12 +69,15 @@ func GetUserService(ctx context.Context, req *pb.UserRequest) (*pb.UserResponse,
 	if err != nil {
 		panic(err)
 	}
-
+	if len(req.PhoneNumber) == 0 {
+		fmt.Println("Empty Request", req)
+		return nil, status.Errorf(codes.InvalidArgument, "Empty Request")
+	}
 	_, err = utils.GetTokenFromMetaDataAndValidate(ctx)
 	if err != nil {
 		return nil, err
 	}
-
+	fmt.Println("here", req)
 	docs := app.Collection("user").Where("phoneNumber", "==", req.PhoneNumber).Documents(ctx)
 
 	for {
@@ -88,6 +92,7 @@ func GetUserService(ctx context.Context, req *pb.UserRequest) (*pb.UserResponse,
 		if ok == true {
 			key = pubKey.(string)
 		}
+		fmt.Println(key)
 		return &pb.UserResponse{
 			PubKey:      key,
 			PhoneNumber: req.PhoneNumber,

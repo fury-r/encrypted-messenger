@@ -26,17 +26,38 @@
             android:src="@drawable/ic_person_white_24dp" />
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/username"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="5dip"
+        android:layout_height="match_parent"
         android:layout_toRightOf="@+id/ImageView01"
-        android:fontFamily="@font/poppins_semibold"
-        android:text="Person"
-        android:textSize="20sp"
-        android:textColor="@color/white"
-        android:textStyle="bold" />
+>
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="5dip"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Person"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/username"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:gravity="bottom"
+            android:text="last_seen"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:layout_marginRight="5dp"/>
+    </RelativeLayout>
 </LinearLayout>

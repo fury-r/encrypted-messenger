@@ -1,7 +1,6 @@
 import * as grpc from "@grpc/grpc-js";
 import * as protoLoader from "@grpc/proto-loader";
 import { ServicesClient } from "../proto/Services";
-import { ServiceClient } from "@grpc/grpc-js/build/src/make-client";
 
 export class GrpcClientService {
   private path = "";

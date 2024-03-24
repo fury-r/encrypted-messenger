@@ -5,6 +5,6 @@ object ConfigConstants {
     const val USERNAME="consumer"
     const val PASSWORD="EHQqx]D.~#CF6:."
     const val VIRTUAL_HOST="/"
-    const val HOSTNAME="192.168.0.104"
+    const val HOSTNAME="192.168.0.102"
     const val PORT=5672
 }

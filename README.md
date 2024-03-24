@@ -7,7 +7,7 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
 
 ## Features
 
-- **End-to-End Encryption (E2EE):** All communication within SecureMessenger is encrypted, ensuring that only the intended recipients can access the messages.
+- **End-to-End Encryption (E2EE):** All communication within SecureMessenger is encrypted, ensuring that only the intended recipients can access the messages (RSA + AES).
 
 - **Kotlin Android App:** The Android application is built using Kotlin, providing a seamless and modern user experience.
 
@@ -47,10 +47,16 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
 ``
 
 
+
 ### Installation
 
 1. **Android App:**
    - Open the SecureMessenger Android project in Android Studio.
+   - Open terminal in wsl or in your linux os
+   - generate the types if not you have made any change
+   ``sh
+      sh linux_proto.sh
+   ``
    - Build and run the application on an emulator or physical device.
 
 2. **Node.js Middleware:**
@@ -60,9 +66,70 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
 
 3. **Go Backend Server:**
    - Navigate to the `backend` directory.
+   - generate types by running `sh proto.sh`
+   - Run    `go mod download` to download all modules.
    - Run `go run main.go` to start the backend server.
 
 
+### End to End encryption
+## How It Works
+
+1. **User Registration and Public Key Storage**: 
+    - Users register on the platform   and generates public key and private key and their public keys are securely stored in Firestore.
+    - Public keys are essential for encrypting data intended for specific users.
+
+2. **Handshake Initialization**: 
+    - User1 initiates communication with User2, User1 checks in the local db if AES key is present for this communication if not.
+    - User1 generates an AES key for symmetric encryption.
+    - User1 saves the AES key in the local DB.
+    - User1 retrieves User2's public key from Firestore.
+    - User1 encrypts the AES key with User2's public key.
+
+3. **Handshake**: 
+    - User1 sends the encrypted AES key to User2.
+    - User2 receives the encrypted AES key and decrypts it using their private key.
+    - Stores it in the local DB.
+
+4. **Secure Communication**:
+    - User1 and User2 now share a common AES key securely.
+    - Both parties can use this AES key for symmetric encryption and decryption of messages.
+
+5. **Message Exchange**:
+    - User1 encrypts their message using the shared AES key.
+    - User1 sends the encrypted message to User2.
+    - User2 receives the encrypted message and decrypts it using the shared AES key.
+
+
+## Security Measures
+
+- **End-to-End Encryption**: 
+    - All communication between users is encrypted from end-to-end.
+    - Only the intended recipient possessing the private key can decrypt the messages.
+
+- **Public Key Storage**: 
+    - Public keys are stored securely in Firestore.
+    - Firestore security rules ensure that only authorized users can access these keys.
+
+- **AES Key Exchange**: 
+    - The AES key used for symmetric encryption is exchanged securely via RSA encryption.
+    - This ensures that even if the public key is compromised, the messages remain secure.
+
+## Technologies Used
+
+- **Firestore**: 
+    - Firestore is utilized for storing users' public keys securely.
+
+- **RSA Encryption**: 
+    - RSA encryption is used for asymmetric encryption of the AES key during the handshake.
+
+- **AES Encryption**: 
+    - AES encryption is used for symmetric encryption of the actual message data.
+
+
+
+## Conclusion
+
+This setup ensures end-to-end encryption of communication between users, providing a high level of security and privacy. By leveraging Firestore for secure storage of public keys and employing RSA for key exchange and AES for symmetric encryption, users can communicate confidentially and securely within the platform.
 ## Configuration
 
 - Update the necessary configuration parameters in the Android app, middleware, and backend server to match your environment, such as API endpoints, database connections, and encryption keys.

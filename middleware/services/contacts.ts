@@ -1,9 +1,7 @@
 import { Metadata } from "@grpc/grpc-js";
 import { GrpcClientService } from "../common/GrpcClientService";
-import { validateToken } from "../utils/validateToken";
 
 export const validateContacts = async (req: any, callback: any) => {
-  validateToken(req, callback);
   const client = new GrpcClientService(undefined).getClient();
 
   const metadata = new Metadata();
@@ -19,7 +17,7 @@ export const validateContacts = async (req: any, callback: any) => {
         return callback(e, null);
       } else {
         console.log(result);
-        return callback("", { ...result });
+        return callback("", result);
       }
     }
   );

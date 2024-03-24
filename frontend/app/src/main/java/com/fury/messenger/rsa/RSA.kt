@@ -1,8 +1,8 @@
 package com.fury.messenger.rsa
 import android.content.Context
 import android.util.Log
-import com.fury.messenger.data.helper.user.CurrentUser
-import com.fury.messenger.data.helper.user.CurrentUser.keyToString
+import com.fury.messenger.helper.user.CurrentUser
+import com.fury.messenger.helper.user.CurrentUser.keyToString
 import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.fury.messenger.utils.Constants.APP_NAME
 import com.fury.messenger.utils.Constants.stringToByteArray
@@ -18,6 +18,10 @@ import java.security.PublicKey
 import java.security.Signature
 import java.util.Base64
 import javax.crypto.Cipher
+import javax.crypto.KeyGenerator
+import javax.crypto.SecretKey
+import javax.crypto.spec.SecretKeySpec
+
 
 
 
@@ -40,6 +44,14 @@ object RSA {
         publicKey= keyPair.public
         privateKey= keyPair.private
         return listOf(keyPair.private,keyPair.public)
+    }
+
+    fun getAES(): SecretKey? {
+     val   keyPairGen=KeyGenerator.getInstance("AES");
+        keyPairGen.init( 256)
+        val  keyPair=keyPairGen.generateKey()
+
+        return keyPair
     }
     fun initRSA(ctx:Context) {
 
@@ -97,13 +109,29 @@ object RSA {
         return  Base64.getEncoder().encodeToString(encryptedBytes)
 
     }
+    fun encryptAESMessage(message: String, key: SecretKey?): String {
+        val messageBytes: ByteArray = stringToByteArray(message)
+        val cipher = Cipher.getInstance("AES")
+        cipher.init(Cipher.ENCRYPT_MODE, key)
+        val encryptedBytes = cipher.doFinal(messageBytes)
+        return  Base64.getEncoder().encodeToString(encryptedBytes)
 
+    }
+
+    fun decryptAESMessage(message: String, key: SecretKey?): String {
+        val messageBytes: ByteArray = stringToByteArray(message)
+        val cipher = Cipher.getInstance("AES")
+        cipher.init(Cipher.DECRYPT_MODE, key)
+        val encryptedBytes = cipher.doFinal(messageBytes)
+        return  Base64.getEncoder().encodeToString(encryptedBytes)
+
+    }
 
     fun decryptMessage(message: String,privateKey:PrivateKey?=null):String?{
         if(privateKey==null){
            return throw  error("Private key missing")
         }
-        Log.d("thread-messenger",CurrentUser.getPrivateKey().toString())
+        Log.d("thread-messenger", CurrentUser.getPrivateKey().toString())
         val cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
         try{
             cipher.init(Cipher.DECRYPT_MODE, privateKey)
@@ -162,6 +190,19 @@ object RSA {
             UserOuterClass.User.newBuilder().setPhoneNumber(CurrentUser.getCurrentUserPhoneNumber()).setPubKey(
             key).build()
         client.savePubKey(request)
+    }
+
+    fun convertAESKeyToString(key:SecretKey):String{
+        return  Base64.getEncoder().encodeToString(key.encoded);
+    }
+    fun convertAESstringToKey(key:String?):SecretKey?{
+
+        if(key?.length===0){
+            return null
+        }
+        val decodedKey: ByteArray = Base64.getDecoder().decode(key)
+        val restoredKey: SecretKey = SecretKeySpec(decodedKey, 0, decodedKey.size, "AES")
+        return  restoredKey
     }
 
 }

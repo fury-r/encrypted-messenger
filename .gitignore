@@ -61,7 +61,7 @@ middeware/*.swo
 middeware/.DS_Store
 
 # test coverage
-middeware/coverage/
+middleware/coverage
 
 
 
@@ -90,5 +90,8 @@ backend/*.out
 node_modules
 npm-debug.log
 
-backend/utils/authToken.go
+# protobuf compiler for kotlin
 frontend/tools/protobuf/compiler
+
+# Enviroment variables
+*.env

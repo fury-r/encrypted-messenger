@@ -10,8 +10,8 @@
     tools:context=".otp.OtpActivity">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_width="425dp"
+        android:layout_height="441dp"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:background="@drawable/messages_background"
@@ -19,7 +19,10 @@
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <!--        <LinearLayout-->
         <!--            android:id="@+id/otpLayout"-->
@@ -117,7 +120,7 @@
             android:selectAllOnFocus="true"
             android:text="@string/otp"
 
-          />
+            />
 
         <Button
             android:id="@+id/otpBtn"
@@ -131,7 +134,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="116dp"
             android:elevation="10dp"
-            android:text="Submit Otp"
+            android:text="@string/submit_otp"
             android:textColor="@color/white"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />
@@ -149,6 +152,7 @@
             app:layout_constraintStart_toStartOf="@+id/otpLayout"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.3" />
+
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

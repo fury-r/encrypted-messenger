@@ -12,14 +12,14 @@ import "auth.proto";
 import "user.proto";
 
 message UserRequest{
-        string phone_number=1;
+        string phoneNumber=1;
 }
 message UserResponse{
-        string phone_number=1;
-        string pub_key=2;
-
+        string phoneNumber=1;
+        string pubKey=2;
 
 }
+
 service Services{
         rpc Login(LoginRequest) returns (LoginResponse) {}
         rpc Register(RegisterRequest) returns (RegisterResponse) {}

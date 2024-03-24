@@ -12,4 +12,9 @@
     <string name="save">Save</string>
     <string name="name">Name</string>
     <string name="otp">OTP</string>
+    <string name="type_a_message">Type a message</string>
+    <string name="submit_otp">Submit Otp</string>
+    <string name="status">Status</string>
+    <string name="time">Time</string>
+    <string name="signup">Signup</string>
 </resources>

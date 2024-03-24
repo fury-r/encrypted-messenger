@@ -67,19 +67,23 @@ STATUS_UPDATE=4;
 message  KeyExchange{
     string sender = 1;
     string reciever = 2;
-    string publicKey = 3;
-    string privateKey = 4;
+    string key = 3;
 
 }
+
+
 
 
 
 message Event{
     EventType type=1;
     oneof body{
-        MessageRequest message=2;
-        KeyExchange exchange=3;
+        string message=2;
+        string exchange=3;
+        string sender=4;
     }
+    string reciever = 5;
+
     
 }
 
