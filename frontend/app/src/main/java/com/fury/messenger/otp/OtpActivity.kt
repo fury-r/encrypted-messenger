@@ -14,7 +14,6 @@ import com.fury.messenger.manageBuilder.ManageChanelBuilder
 import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.fury.messenger.utils.TokenManager
 import com.services.Otp.OtpRequest
-import com.services.ServicesGrpc
 import io.grpc.ManagedChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,36 +21,21 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class OtpActivity : AppCompatActivity() {
-    private lateinit var otp: String
     private lateinit var channel: ManagedChannel
-    private lateinit var client: ServicesGrpc.ServicesBlockingStub
-    private lateinit var otp1: EditText;
-    private lateinit var otp2: EditText;
-    private lateinit var otp3: EditText;
-    private lateinit var otp4: EditText;
-    private lateinit var otp5: EditText;
-    private lateinit var otp6: EditText;
+
     private lateinit var otpBtn: Button
     private lateinit var otpInput: EditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_otp)
         channel = ManageChanelBuilder.channel
-         var scope = CoroutineScope(Dispatchers.IO)
+         val scope = CoroutineScope(Dispatchers.IO)
 
         val client = createAuthenticationStub(CurrentUser.getToken())
         otpBtn = findViewById(R.id.otpBtn)
-//        otp1=findViewById(R.id.otp1)
-//        otp2=findViewById(R.id.otp2)
-//        otp3=findViewById(R.id.otp3)
-//        otp4=findViewById(R.id.otp4)
-//        otp5=findViewById(R.id.otp5)
-//        otp6=findViewById(R.id.otp6)
 
-        //TODO: otp textView shift
-//        otp1.addTextChangedListener(TextWatcher(){
-//
-//        })
+
+
         otpInput = findViewById(R.id.otp)
         otpBtn.setOnClickListener() {
             otpBtn.isEnabled = false
