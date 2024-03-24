@@ -1,5 +1,5 @@
 # SecureMessenger App
-This code is over improvement to my old project which is private:[link](https://github.com/fury-r/messenger)
+This code is an improvement over my old project which is private:[link](https://github.com/fury-r/messenger)
 
 [![Workflow status](https://github.com/fury-dev/erp/actions/workflows/actions.yaml/badge.svg?branch=master)](https://github.com/fury-dev/erp/actions/workflows/actions.yaml)
 
