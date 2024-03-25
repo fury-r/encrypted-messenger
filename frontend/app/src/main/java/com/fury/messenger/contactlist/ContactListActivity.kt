@@ -27,6 +27,7 @@ import com.fury.messenger.helper.contact.ContactChats
 import com.fury.messenger.helper.contact.Contacts
 import com.fury.messenger.helper.user.AppDatabase
 import com.fury.messenger.helper.user.CurrentUser
+import com.fury.messenger.main.MainActivity
 import com.fury.messenger.main.UserAdapter
 import com.fury.messenger.rsa.RSA.initRSA
 import com.fury.messenger.ui.login.LoginActivity
@@ -36,7 +37,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainActivity : AppCompatActivity() {
+class ContactListActivity : AppCompatActivity() {
 
     private lateinit var userListView: RecyclerView
     private var userList: ArrayList<ContactChats> = arrayListOf<ContactChats>()
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         db = getDatabase(this)
         val ctx = this
         initRSA(ctx)
-        this@MainActivity.progressBar.isVisible = true
+        this@ContactListActivity.progressBar.isVisible = true
         searchView.clearFocus()
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -70,23 +71,23 @@ class MainActivity : AppCompatActivity() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 // Filter the list based on the search query
                 if (newText != null) {
-                    val filteredList = this@MainActivity.userList.filter {
+                    val filteredList = this@ContactListActivity.userList.filter {
                         it.contact.name?.contains(newText, ignoreCase = true)
                             ?: false
                     }
                     if (filteredList.isEmpty()) {
-                        Toast.makeText(this@MainActivity, "No contacts found", Toast.LENGTH_SHORT)
+                        Toast.makeText(this@ContactListActivity, "No contacts found", Toast.LENGTH_SHORT)
                             .show()
 
                     } else {
-                        this@MainActivity.adapter.userList = filteredList as ArrayList<ContactChats>
+                        this@ContactListActivity.adapter.userList = filteredList as ArrayList<ContactChats>
                     }
 
 
                 } else {
-                    this@MainActivity.adapter.userList = this@MainActivity.userList
+                    this@ContactListActivity.adapter.userList = this@ContactListActivity.userList
                 }
-                this@MainActivity.adapter.notifyDataSetChanged()
+                this@ContactListActivity.adapter.notifyDataSetChanged()
 
                 return true
             }
@@ -100,12 +101,12 @@ class MainActivity : AppCompatActivity() {
                     contacts.validateContacts()
                     val data = contacts.getAllVerifiedContacts()
                     val contactsList = DBUser.getAllLastMessagesForContact(
-                        this@MainActivity,
+                        this@ContactListActivity,
                         data
                     )
 
                     runOnUiThread {
-                        this@MainActivity.setContactList(
+                        this@ContactListActivity.setContactList(
                             contactsList
                         )
 
@@ -115,7 +116,7 @@ class MainActivity : AppCompatActivity() {
 
                 } finally {
                     runOnUiThread {
-                        this@MainActivity.progressBar.isVisible = false
+                        this@ContactListActivity.progressBar.isVisible = false
 
                     }
 

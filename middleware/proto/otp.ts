@@ -8,7 +8,5 @@ type SubtypeConstructor<Constructor extends new (...args: any) => any, Subtype> 
 
 export interface ProtoGrpcType {
   OtpRequest: MessageTypeDefinition
-  OtpResponse: MessageTypeDefinition
-  currentUser: MessageTypeDefinition
 }
 

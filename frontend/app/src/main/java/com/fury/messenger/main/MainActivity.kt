@@ -25,7 +25,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fury.messenger.R
-import com.fury.messenger.contactlist.MainActivity
+import com.fury.messenger.contactlist.ContactListActivity
 import com.fury.messenger.data.db.DBUser
 import com.fury.messenger.data.db.DbConnect
 import com.fury.messenger.editprofile.EditProfile
@@ -37,6 +37,7 @@ import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.fury.messenger.rsa.RSA.initRSA
 import com.fury.messenger.ui.login.LoginActivity
 import com.fury.messenger.utils.TokenManager
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.services.ServicesGrpc
 import com.services.UserOuterClass.BlockRequest
 import kotlinx.coroutines.CoroutineScope
@@ -61,6 +62,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private var selected: Int? = null
     private  lateinit var client: ServicesGrpc.ServicesBlockingStub
+    private  lateinit var contactButton: FloatingActionButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -84,8 +86,7 @@ class MainActivity : AppCompatActivity() {
         client= createAuthenticationStub(CurrentUser.getToken())
 
 
-
-
+        contactButton=findViewById(R.id.contactButton)
 
         Log.d("Contact-z", userList.size.toString())
 
@@ -103,6 +104,11 @@ class MainActivity : AppCompatActivity() {
 
         userListView.adapter = adapter
         recentUsers.adapter = pinnedUserAdapter
+
+
+        contactButton.setOnClickListener{
+            startActivity(Intent(this, ContactListActivity::class.java))
+        }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 // Handle search query submission
@@ -231,7 +237,7 @@ class MainActivity : AppCompatActivity() {
         val blockMenuItem = menu.findItem(R.id.block)
         val pinMenuItem = menu.findItem(R.id.pin)
 
-        if (this.classLoader !== MainActivity::class) {
+        if (this.classLoader !== MainActivity::class &&  deleteMenuItem!=null) {
             deleteMenuItem.isVisible = false
         }
 

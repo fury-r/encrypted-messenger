@@ -10,7 +10,7 @@
     tools:context=".otp.OtpActivity">
 
     <RelativeLayout
-        android:layout_width="425dp"
+        android:layout_width="match_parent"
         android:layout_height="441dp"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
@@ -53,6 +53,7 @@
             android:layout_below="@+id/otp"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="start"
             android:layout_marginStart="113dp"
             android:layout_marginTop="32dp"
@@ -68,9 +69,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/otp"
+            android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:layout_marginTop="6dp"
             android:layout_centerHorizontal="true"
+            android:visibility="gone"
            />
 
     </RelativeLayout>

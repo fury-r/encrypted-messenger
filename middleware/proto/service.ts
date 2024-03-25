@@ -26,14 +26,12 @@ export interface ProtoGrpcType {
   MessageUpdateRequest: MessageTypeDefinition
   MessageUpdateResponse: MessageTypeDefinition
   OtpRequest: MessageTypeDefinition
-  OtpResponse: MessageTypeDefinition
   RegisterRequest: MessageTypeDefinition
   RegisterResponse: MessageTypeDefinition
   Services: SubtypeConstructor<typeof grpc.Client, _ServicesClient> & { service: _ServicesDefinition }
   User: MessageTypeDefinition
   UserRequest: MessageTypeDefinition
   UserResponse: MessageTypeDefinition
-  currentUser: MessageTypeDefinition
   google: {
     protobuf: {
       Timestamp: MessageTypeDefinition

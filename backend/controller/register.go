@@ -40,13 +40,13 @@ func RegisterService(ctx context.Context, req *pb.RegisterRequest) (*pb.Register
 
 	var password string = utils.GenerateComplexPassword(10)
 	firestore.Collection("user").NewDoc().Set(ctx, map[string]interface{}{
-		"username":      req.GetUsername(),
-		"countryCode":   req.CountryCode,
-		"phoneNumber":   req.GetPhoneNumber(),
-		"email":         req.GetEmail(),
-		"password":      password,
-		"otp":           utils.GenerateOtp(),
-		"blocked_users": []interface{}{},
+		"username":     req.GetUsername(),
+		"countryCode":  req.CountryCode,
+		"phoneNumber":  req.GetPhoneNumber(),
+		"email":        req.GetEmail(),
+		"password":     password,
+		"otp":          utils.GenerateOtp(),
+		"blockedUsers": []interface{}{},
 	})
 
 	firebase.CreateUser(ctx, auth, req.GetEmail(), password)

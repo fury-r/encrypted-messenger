@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.fury.messenger.R
 import com.fury.messenger.helper.user.CurrentUser
@@ -36,7 +35,7 @@ class OtpActivity : AppCompatActivity() {
 
 
         otpInput = findViewById(R.id.otp)
-        otpBtn.setOnClickListener() {
+        otpBtn.setOnClickListener {
             otpBtn.isEnabled = false
             val request = OtpRequest.newBuilder().setOtp(
                 otpInput.text.toString()
@@ -44,24 +43,20 @@ class OtpActivity : AppCompatActivity() {
             ).setPhoneNumber(intent.getStringExtra("phoneNumber")).build()
             scope.launch {
                 val response = (async { client.otp(request) }).await()
-                runOnUiThread {
-                    Toast.makeText(
-                        this@OtpActivity,
-                        if (response.hasError()) response.error else "Validation Complete ${response.user.phoneNumber}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+
 
                 if (!response.hasError()) {
+                    Log.d("ssss",response.toString())
                     CurrentUser.saveUserDetails(this@OtpActivity, response.token, response)
-                    intent.getStringExtra("phoneNumber")?.let { it1 -> Log.d("Saving token", it1) }
 
-                    val intent = Intent(this@OtpActivity, MainActivity::class.java)
+                    runOnUiThread {
+                        val intent = Intent(this@OtpActivity, MainActivity::class.java)
+                        intent.getStringExtra("phoneNumber")?.let { it1 -> Log.d("Saving token", it1) }
 
-                    startActivity(intent)
-                    finish()
+                        startActivity(intent)
+                    }
                 }
-                otpBtn.isEnabled = true
+              runOnUiThread {   otpBtn.isEnabled = true }
 
 
             }

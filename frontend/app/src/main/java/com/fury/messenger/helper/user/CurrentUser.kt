@@ -49,7 +49,7 @@ object CurrentUser {
     private var privateKey: PrivateKey? = null
     private var publicKey: PublicKey? = null
     private var MessageThread: ConsumerThread? = null
-    private var blockedUsers: ArrayList<String>? = null
+    private var blockedUsers: ArrayList<String> = arrayListOf()
     private var NotificationThread: ConsumerThread? = null
 
     fun keyToString(key: ByteArray): String {
@@ -170,7 +170,10 @@ object CurrentUser {
     suspend fun saveUserDetails(ctx: Context, token: String, response: AuthResponse) {
         this.setToken(token)
         this.setCurrentUserPhoneNumber(response.user.phoneNumber)
-        this.setBlockedUser(response.user.blockedUsersList as ArrayList<String>)
+        if (response.user.blockedUsersList.isNotEmpty()){
+            this.setBlockedUser(response.user.blockedUsersList as ArrayList<String>)
+
+        }
         val tokenManager = TokenManager(ctx)
 
         val publicKey = tokenManager.getPublicKey(true)

@@ -3,7 +3,6 @@ package com.fury.messenger.ui.login
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -11,7 +10,6 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.fury.messenger.R
@@ -28,6 +26,7 @@ import com.services.Login.LoginRequest
 import io.grpc.ManagedChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var editPhoneNumber: EditText
@@ -41,7 +40,6 @@ class LoginActivity : AppCompatActivity() {
     lateinit var message: String
     private var scope = CoroutineScope(Dispatchers.Main)
 
-    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -58,12 +56,12 @@ class LoginActivity : AppCompatActivity() {
             }
         requestPermission()
         val tokenManager = TokenManager(this)
-        val token = tokenManager.getToken().toString()
+        val token = tokenManager.getToken()
         val client = createAuthenticationStub(tokenManager.getToken())
-        Log.d("setting user details", token)
-
-        if (token.isNotEmpty()) {
+        Log.d("here sss",token.toString())
+        if (token!=null) {
             startActivity(Intent(this,VerifyTokenActivity::class.java))
+
         }
 
 
@@ -84,19 +82,22 @@ class LoginActivity : AppCompatActivity() {
                     LoginRequest.newBuilder().setPhoneNumber(number).setCountryCode(countryCode)
                        .build();
 
-                val response = client.login(request);
-                Toast.makeText(
-                    this,
-                    if (response.hasError()) response.error + "." + response.message else (response.message),
-                    Toast.LENGTH_SHORT
-                ).show()
+                scope.launch {
+                    val response = client.login(request);
+                   runOnUiThread {  Toast.makeText(
+                       this@LoginActivity,
+                       if (response.hasError()) response.error + "." + response.message else (response.message),
+                       Toast.LENGTH_SHORT
+                   ).show() }
 
-                if (!response.hasError()) {
-                    val intent = Intent(this, OtpActivity::class.java)
-                    intent.putExtra("phoneNumber", number)
+                    if (!response.hasError()) {
+                        runOnUiThread{
+                            val intent = Intent(this@LoginActivity, OtpActivity::class.java)
+                            intent.putExtra("phoneNumber", number)
 
-                    startActivity(intent)
-                    finish()
+                            startActivity(intent)
+                        }
+                    }
                 }
 
             } catch (e: Exception) {
