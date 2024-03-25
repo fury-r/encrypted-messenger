@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
 	"net"
 	"net/http"
 
@@ -101,8 +100,11 @@ func (s *Server) BlockUser(ctx context.Context, req *pb.BlockRequest) (*pb.Block
 	message, err := service.BlockUserController(ctx, req)
 	return message, err
 }
+
 func main() {
-	// log.Fatalf("1x")
+	// mux := http.NewServeMux()
+
+	// mux.Handle("/test", http.HandlerFunc(Alive))
 	listener, err := net.Listen("tcp", ":8082")
 	fmt.Print("Starting up backend\n")
 
@@ -110,18 +112,13 @@ func main() {
 
 		panic(err)
 	}
-	mux := http.NewServeMux()
-	// log.Fatalf("1")
 
-	mux.Handle("/test", http.HandlerFunc(Alive))
 	s := grpc.NewServer()
 	pb.RegisterServicesServer(s, &Server{})
-	// log.Fatalf("2")
 	fmt.Println("Server running on PORT 8082")
 
 	if err := s.Serve(listener); err != nil {
-		log.Fatalf("failed to server %v", err)
-		panic("Exit")
+		panic(err)
 	}
 	fmt.Println("Server running on PORT 8082")
 
