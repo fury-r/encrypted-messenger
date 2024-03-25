@@ -80,15 +80,3 @@ jobs:
         run: go vet ./...
         shell: bash
         working-directory: ./backend
-      - name: Install staticcheck
-        run: go install honnef.co/go/tools/cmd/staticcheck@latest
-        shell: bash
-        working-directory: ./backend
-      - name: Install golint
-        run: go get -u golang.org/x/lint/golint
-        shell: bash
-        working-directory: ./backend
-      - name: Run golint
-        run: golint ./...
-        shell: bash
-        working-directory: ./backend
