@@ -85,7 +85,7 @@ jobs:
         shell: bash
         working-directory: ./backend
       - name: Install golint
-        run: go install golang.org/x/lint/golint@latest
+        run: go get -u golang.org/x/lint/golint
         shell: bash
         working-directory: ./backend
       - name: Run golint
