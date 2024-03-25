@@ -194,6 +194,7 @@ object CurrentUser {
                                 val messageBuilder = Message.Event.newBuilder()
                                 JsonFormat.parser().merge(decryptMessage, messageBuilder)
                                 val event = messageBuilder.build()
+                                val  db= getDatabase(ctx)
 
                                 channel.basicAck(deliveryTag, false)
 
@@ -207,8 +208,8 @@ object CurrentUser {
                                     when (event.type) {
                                         Message.EventType.MESSAGE -> {
                                             val messageBuilder = Message.MessageRequest.newBuilder()
-
-                                            JsonFormat.parser().merge(decryptMessage, messageBuilder)
+                                            val contact=db.contactDao().findByNumber(event.reciever)
+                                            JsonFormat.parser().merge(RSA.decryptAESMessage(event.message,RSA.convertAESstringToKey(contact.key)), messageBuilder)
                                             val messageObj=messageBuilder.build()
                                             scope.launch {
                                                 DBMessage.messageThreadHandler(ctx,
@@ -262,7 +263,6 @@ object CurrentUser {
 
                                         }
                                         Message.EventType.TYPE_UPDATE->{
-                                            val  db= getDatabase(ctx)
                                             val contact=db.contactDao().findByNumber(event.sender)
                                             contact.typeTime=OffsetDateTime.now()
                                             db.contactDao().update(contact)

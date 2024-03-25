@@ -1,4 +1,6 @@
 package com.fury.messenger.rsa
+
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import com.fury.messenger.helper.user.CurrentUser
@@ -23,79 +25,73 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 
 
-
-
-
 object RSA {
     //RSA/ECB/PKCS1Padding
-    private lateinit var keyPairGen:KeyPairGenerator
+    private lateinit var keyPairGen: KeyPairGenerator
 
-     private lateinit var keyPair:KeyPair;
-     private  lateinit var privateKey: PrivateKey;
-     private  lateinit var publicKey:PublicKey;
-     private  lateinit var  sign:Signature;
-    private   var cipher:Cipher=Cipher.getInstance("RSA/ECB/PKCS1Padding")
-    private  lateinit var tokenManager: TokenManager
-    private  var scope= CoroutineScope(Dispatchers.IO)
+    private lateinit var keyPair: KeyPair;
+    private lateinit var privateKey: PrivateKey;
+    private lateinit var publicKey: PublicKey;
+    private lateinit var sign: Signature;
+    private var cipher: Cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
+    private lateinit var tokenManager: TokenManager
+    private var scope = CoroutineScope(Dispatchers.IO)
     fun generateEncryptionKeys(): List<Key> {
-        keyPairGen=KeyPairGenerator.getInstance("RSA");
+        keyPairGen = KeyPairGenerator.getInstance("RSA");
         keyPairGen.initialize(2048)
-        keyPair=keyPairGen.generateKeyPair()
-        publicKey= keyPair.public
-        privateKey= keyPair.private
-        return listOf(keyPair.private,keyPair.public)
+        keyPair = keyPairGen.generateKeyPair()
+        publicKey = keyPair.public
+        privateKey = keyPair.private
+        return listOf(keyPair.private, keyPair.public)
     }
 
     fun getAES(): SecretKey? {
-     val   keyPairGen=KeyGenerator.getInstance("AES");
-        keyPairGen.init( 256)
-        val  keyPair=keyPairGen.generateKey()
+        val keyPairGen = KeyGenerator.getInstance("AES");
+        keyPairGen.init(256)
+        val keyPair = keyPairGen.generateKey()
 
         return keyPair
     }
-    fun initRSA(ctx:Context) {
+
+    fun initRSA(ctx: Context) {
 
 
-        this.tokenManager= TokenManager(ctx)
+        this.tokenManager = TokenManager(ctx)
 
-        val hasPublicKey=tokenManager.getPublicKey()
-        val hasPrivateKey=tokenManager.getPrivateKey()
+        val hasPublicKey = tokenManager.getPublicKey()
+        val hasPrivateKey = tokenManager.getPrivateKey()
 
-        if(hasPrivateKey!=null){
+        if (hasPrivateKey != null) {
             Log.d("Messenger-x", "has saved key $hasPrivateKey")
-            privateKey=hasPrivateKey as PrivateKey
-            publicKey=hasPublicKey as PublicKey
+            privateKey = hasPrivateKey as PrivateKey
+            publicKey = hasPublicKey as PublicKey
 
-        }
-        else{
-            Log.d("Messenger-x"," does not have saved key")
+        } else {
+            Log.d("Messenger-x", " does not have saved key")
             generateEncryptionKeys()
-            val privateKeyString=keyToString(privateKey.encoded)
-            val publicKeyString=keyToString(publicKey.encoded)
+            val privateKeyString = keyToString(privateKey.encoded)
+            val publicKeyString = keyToString(publicKey.encoded)
 
-            this.tokenManager.saveKeys("${APP_NAME}_PRIV_KEY",privateKeyString)
-            Log.d("Messenger-x"," saving key in firestore")
-            this.tokenManager.saveKeys("${APP_NAME}_PUB_KEY",publicKeyString)
+            this.tokenManager.saveKeys("${APP_NAME}_PRIV_KEY", privateKeyString)
+            Log.d("Messenger-x", " saving key in firestore")
+            this.tokenManager.saveKeys("${APP_NAME}_PUB_KEY", publicKeyString)
 
 
             // ⚠️WARNING: For testing.Need to be removed private key later
 
-            submitPublicKey(publicKeyString,privateKeyString)
+            submitPublicKey(publicKeyString, privateKeyString)
 
-            Log.d("Messenger-x"," setting keys to the user")
-
-
-
+            Log.d("Messenger-x", " setting keys to the user")
 
 
         }
         CurrentUser.setPublicKey(publicKey)
         CurrentUser.setPrivateKey(privateKey)
-        Log.d("asKey",hasPublicKey.toString())
+        Log.d("asKey", hasPublicKey.toString())
 
-        sign=Signature.getInstance("SHA256withRSA")
+        sign = Signature.getInstance("SHA256withRSA")
         //this.cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
-     //   runTest(publicKey, privateKey)
+        //   runTest(publicKey, privateKey)
 
     }
 
@@ -106,103 +102,108 @@ object RSA {
         val cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
         cipher.init(Cipher.ENCRYPT_MODE, publicKey)
         val encryptedBytes = cipher.doFinal(messageBytes)
-        return  Base64.getEncoder().encodeToString(encryptedBytes)
+        return Base64.getEncoder().encodeToString(encryptedBytes)
 
     }
+
+    @SuppressLint("GetInstance")
     fun encryptAESMessage(message: String, key: SecretKey?): String {
         val messageBytes: ByteArray = stringToByteArray(message)
         val cipher = Cipher.getInstance("AES")
         cipher.init(Cipher.ENCRYPT_MODE, key)
         val encryptedBytes = cipher.doFinal(messageBytes)
-        return  Base64.getEncoder().encodeToString(encryptedBytes)
+        return Base64.getEncoder().encodeToString(encryptedBytes)
 
     }
-
+    @SuppressLint("GetInstance")
     fun decryptAESMessage(message: String, key: SecretKey?): String {
         val messageBytes: ByteArray = stringToByteArray(message)
         val cipher = Cipher.getInstance("AES")
         cipher.init(Cipher.DECRYPT_MODE, key)
         val encryptedBytes = cipher.doFinal(messageBytes)
-        return  Base64.getEncoder().encodeToString(encryptedBytes)
+        return Base64.getEncoder().encodeToString(encryptedBytes)
 
     }
 
-    fun decryptMessage(message: String,privateKey:PrivateKey?=null):String?{
-        if(privateKey==null){
-           return throw  error("Private key missing")
+    fun decryptMessage(message: String, privateKey: PrivateKey? = null): String {
+        if (privateKey == null) {
+            throw error("Private key missing")
         }
         Log.d("thread-messenger", CurrentUser.getPrivateKey().toString())
         val cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
-        try{
+        try {
             cipher.init(Cipher.DECRYPT_MODE, privateKey)
             val encryptedBytes = Base64.getDecoder().decode(message)
             val decryptedBytes = cipher.doFinal(encryptedBytes)
 //        val decipherText:ByteArray=cipher.doFinal( stringToByteArray(message));
             return String(decryptedBytes)
-        }
-        catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
-            Log.d("decrypt error","")
+            Log.d("decrypt error", "")
         }
-    return  "" +
-            ""
+        return "" + ""
     }
 
 
-    private fun runTest(publicKey: PublicKey, privateKey: PrivateKey){
-        val TEST="Hello world"
-        var pubKey=keyToString(publicKey.encoded)
-        Log.d(" pub key",publicKey.toString())
-        Log.d("String pub key",pubKey)
-        val pubKey_1= CurrentUser.convertStringToKeyFactory(pubKey,2) as PublicKey
-        Log.d(" pub key",pubKey_1.toString())
-        var privKey=keyToString(privateKey.encoded)
+    private fun runTest(publicKey: PublicKey, privateKey: PrivateKey) {
+        val TEST = "Hello world"
+        var pubKey = keyToString(publicKey.encoded)
+        Log.d(" pub key", publicKey.toString())
+        Log.d("String pub key", pubKey)
+        val pubKey_1 = CurrentUser.convertStringToKeyFactory(pubKey, 2) as PublicKey
+        Log.d(" pub key", pubKey_1.toString())
+        var privKey = keyToString(privateKey.encoded)
 
 
-        Log.d(" pub key",publicKey.toString())
-        Log.d("String pub key",privKey)
-        val privKey_1= CurrentUser.convertStringToKeyFactory(privKey,1) as PrivateKey
-        Log.d(" pub key",pubKey_1.toString())
-        var stringConvEncrypt= encryptMessage(TEST,pubKey_1)
-        var stringConvDecrypt= decryptMessage(TEST,privKey_1)
-        val encrypt= encryptMessage(TEST,publicKey)
-        val decrypt= decryptMessage(TEST,privateKey)
-        if(TEST==stringConvEncrypt){
-            Log.d("Valid-x",stringConvEncrypt+" normal $stringConvDecrypt")
+        Log.d(" pub key", publicKey.toString())
+        Log.d("String pub key", privKey)
+        val privKey_1 = CurrentUser.convertStringToKeyFactory(privKey, 1) as PrivateKey
+        Log.d(" pub key", pubKey_1.toString())
+        var stringConvEncrypt = encryptMessage(TEST, pubKey_1)
+        var stringConvDecrypt = decryptMessage(TEST, privKey_1)
+        val encrypt = encryptMessage(TEST, publicKey)
+        val decrypt = decryptMessage(TEST, privateKey)
+        if (TEST == stringConvEncrypt) {
+            Log.d("Valid-x", stringConvEncrypt + " normal $stringConvDecrypt")
+        } else {
+            Log.d("in-Valid-x", stringConvEncrypt + " normal $stringConvDecrypt")
         }
-        else{
-            Log.d("in-Valid-x",stringConvEncrypt+" normal $stringConvDecrypt")
-        }
-        if(TEST==decrypt){
+        if (TEST == decrypt) {
             Log.d("Valid-x", "$encrypt normal $decrypt")
-        }
-        else{
+        } else {
             Log.d("in-Valid-x", "$encrypt normal $decrypt")
 
         }
-        if(pubKey_1==publicKey){
-            Log.d("valid-x key", (keyToString(pubKey_1.encoded)== keyToString(publicKey.encoded)).toString())
+        if (pubKey_1 == publicKey) {
+            Log.d(
+                "valid-x key",
+                (keyToString(pubKey_1.encoded) == keyToString(publicKey.encoded)).toString()
+            )
         }
     }
-    fun submitPublicKey(key: String,key2:String=""){
-        val client= createAuthenticationStub(CurrentUser.getToken())
-        val request=
-            UserOuterClass.User.newBuilder().setPhoneNumber(CurrentUser.getCurrentUserPhoneNumber()).setPubKey(
-            key).build()
+
+    fun submitPublicKey(key: String, key2: String = "") {
+        val client = createAuthenticationStub(CurrentUser.getToken())
+        val request =
+            UserOuterClass.User.newBuilder().setPhoneNumber(CurrentUser.getCurrentUserPhoneNumber())
+                .setPubKey(
+                    key
+                ).build()
         client.savePubKey(request)
     }
 
-    fun convertAESKeyToString(key:SecretKey):String{
-        return  Base64.getEncoder().encodeToString(key.encoded);
+    fun convertAESKeyToString(key: SecretKey): String {
+        return Base64.getEncoder().encodeToString(key.encoded);
     }
-    fun convertAESstringToKey(key:String?):SecretKey?{
 
-        if(key?.length===0){
+    fun convertAESstringToKey(key: String?): SecretKey? {
+
+        if (key?.length === 0) {
             return null
         }
         val decodedKey: ByteArray = Base64.getDecoder().decode(key)
         val restoredKey: SecretKey = SecretKeySpec(decodedKey, 0, decodedKey.size, "AES")
-        return  restoredKey
+        return restoredKey
     }
 
 }

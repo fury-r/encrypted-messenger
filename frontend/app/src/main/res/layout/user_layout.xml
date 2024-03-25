@@ -3,98 +3,103 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:background="#3F3F3F"
-
     android:layout_height="wrap_content"
-    android:weightSum="100"
 
-   >
-       <LinearLayout
-           android:layout_weight="90"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content">
-               <androidx.cardview.widget.CardView
-                   android:id="@+id/ImageView01"
-                   android:layout_width="50dp"
-                    android:layout_gravity="center"
-                   android:layout_height="50dp"
-                   app:cardCornerRadius="50dp"
-                   android:layout_margin="5dp"
-                   android:elevation="30dp">
+    android:background="#3F3F3F"
+    android:baselineAligned="false"
 
-                       <ImageView
-                           android:id="@+id/profilePicture"
-                           android:layout_width="match_parent"
-                           android:layout_height="match_parent"
+    android:weightSum="100">
 
-                           android:background="@color/grey_500"
-                           android:scaleType="centerCrop"
-                           android:src="@drawable/ic_person_white_24dp" />
-               </androidx.cardview.widget.CardView>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="90">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/ImageView01"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:elevation="30dp"
+            app:cardCornerRadius="50dp">
+
+            <ImageView
+                android:id="@+id/profilePicture"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:background="@color/grey_500"
+                android:contentDescription="@string/test"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_person_white_24dp" />
+        </androidx.cardview.widget.CardView>
 
 
-               <RelativeLayout
-                   android:layout_width="wrap_content"
-                   android:layout_toRightOf="@id/ImageView01"
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-                   android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/txtName"
+                style="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Fury"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
 
-                   <TextView
-                       android:id="@+id/txtName"
-                       style="bold"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:layout_marginLeft="10dp"
-                       android:layout_marginTop="5dp"
-                       android:fontFamily="@font/poppins_semibold"
-                       android:text="Fury"
-                       android:textColor="@color/white"
-                       android:textSize="18sp" />
+            <TextView
+                android:id="@+id/lastMessage"
+                style="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtName"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/poppins_regular"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="15sp" />
 
-                       <TextView
-                           android:id="@+id/lastMessage"
-                           style="bold"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:layout_marginLeft="10dp"
-                           android:layout_marginTop="5dp"
-                           android:text=""
-                           android:fontFamily="@font/poppins_regular"
-                           android:textColor="@color/white"
-                           android:textSize="15sp"
-                           android:layout_below="@+id/txtName" />
+        </RelativeLayout>
 
-               </RelativeLayout>
-
-       </LinearLayout>
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="50dp"
         android:layout_height="match_parent">
+
         <TextView
             android:id="@+id/datetime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_regular"
             android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="@string/datetime"
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:layout_marginTop="5dp"
             android:textSize="10sp"
-            android:text="Datetime"/>
+            tools:ignore="SmallSp" />
+
         <TextView
             android:id="@+id/count"
             style="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Count"
-            android:fontFamily="@font/poppins_regular"
-            android:textColor="@color/white"
-            android:textAlignment="center"
+            android:layout_below="@+id/datetime"
             android:layout_centerInParent="true"
+            android:layout_marginTop="20dp"
             android:background="@drawable/round_button"
+            android:fontFamily="@font/poppins_regular"
+            android:text="@string/count"
+            android:textAlignment="center"
+            android:textColor="@color/white"
             android:textSize="10sp"
-            android:layout_below="@+id/datetime" />
+            tools:ignore="SmallSp" />
     </RelativeLayout>
 </LinearLayout>

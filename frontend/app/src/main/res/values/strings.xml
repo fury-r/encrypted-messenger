@@ -17,4 +17,7 @@
     <string name="status">Status</string>
     <string name="time">Time</string>
     <string name="signup">Signup</string>
+    <string name="datetime">Datetime</string>
+    <string name="count">Count</string>
+    <string name="test">TEST</string>
 </resources>

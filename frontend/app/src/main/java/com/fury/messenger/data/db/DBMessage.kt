@@ -91,16 +91,7 @@ object DBMessage {
                 "${TableInfo.COLUMN_ITEM_SEEN} BOOL )"
     }
 
-    private fun hasMessage(id: String, tableName: String, dbHelper: SQLiteOpenHelper): Boolean {
-        val db = dbHelper.writableDatabase
 
-        val cursor: Cursor = db.query(
-            tableName,
-            arrayOf(BaseColumns._ID), BaseColumns._ID + " =?", arrayOf(id), null, null, null, "1"
-        );
-        return cursor.count > 0
-
-    }
 
 
     // save handshake request in db

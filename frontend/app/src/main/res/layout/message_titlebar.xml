@@ -28,9 +28,7 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_toRightOf="@+id/ImageView01"
->
+        android:layout_height="match_parent">
         <TextView
             android:id="@+id/username"
             android:layout_width="wrap_content"

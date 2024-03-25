@@ -2,6 +2,7 @@ package com.fury.messenger.main
 
 //import com.fury.messenger.middlewaregrpc.MiddlewareGrpc
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteOpenHelper
@@ -78,14 +79,14 @@ class MainActivity : AppCompatActivity() {
                  contacts.getContactsFromPhone()
                  contacts.validateContacts()
                  val data = contacts.getAllVerifiedContacts()
-                 val contacts=    DBUser.getAllLastMessagesForContact(
+                 val contactsList=    DBUser.getAllLastMessagesForContact(
                      this@MainActivity,
                      data
                  )
 
                 runOnUiThread{
                     this@MainActivity.setContactList(
-                        contacts
+                        contactsList
                     )
 
                 }
@@ -176,6 +177,7 @@ class MainActivity : AppCompatActivity() {
         permissionLauncher.launch(permissionRequest.toTypedArray())
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun setContactList(data: ArrayList<ContactChats>) {
         super.onResume()
         Log.d("Thread-Messenger updating contacts", data.size.toString())

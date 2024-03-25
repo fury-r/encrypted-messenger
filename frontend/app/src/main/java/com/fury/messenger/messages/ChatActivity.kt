@@ -90,6 +90,7 @@ class ChatActivity : AppCompatActivity() {
         messageRecyleView = findViewById(R.id.chatRecyclerView)
         messageAdapter = MessageAdapter(this, messageList, receiverUid)
         listeners =
+            @SuppressLint("NotifyDataSetChanged")
             fun(callback: (messages: ArrayList<Chat?>, recipient: String?) -> ArrayList<Chat?>) {
 
                 this.messageAdapter.messageList = callback(messageList, phoneNumber)
@@ -230,6 +231,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun setMessages(messages: ArrayList<Chat?>) {
         this.messageAdapter.messageList = messages
         this.messageList = messages
