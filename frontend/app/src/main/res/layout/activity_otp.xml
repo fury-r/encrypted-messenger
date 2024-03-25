@@ -67,15 +67,11 @@
             android:id="@+id/loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/otp"
             android:layout_gravity="center"
-            android:layout_marginTop="64dp"
-            android:layout_marginBottom="64dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/otpLayout"
-            app:layout_constraintStart_toStartOf="@+id/otpLayout"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.3" />
+            android:layout_marginTop="6dp"
+            android:layout_centerHorizontal="true"
+           />
 
     </RelativeLayout>
 
