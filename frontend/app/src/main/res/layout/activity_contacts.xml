@@ -6,46 +6,32 @@
     android:background="#696969"
     android:layout_height="match_parent">
 
+
     <SearchView
         android:id="@+id/searchView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
+        android:layout_above="@+id/userslist"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="6dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="51dp"
         android:background="@drawable/receive_text"
         app:queryHint="Search" />
-
-    <LinearLayout
-    android:id="@+id/pinned_users"
-    android:layout_width="match_parent"
-    android:layout_below="@+id/searchView"
-    android:layout_height="wrap_content">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recentlist"
-        android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:orientation="horizontal"
-        android:scrollbars="horizontal"
-
-        tools:listitem="@layout/recent_users" />
-
-</LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/userslist"
         android:layout_width="match_parent"
-        android:layout_height="675dp"
-        android:layout_below="@+id/pinned_users"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/messages_background"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
 
+        android:layout_marginBottom="3dp"
+        android:background="@drawable/messages_background"
         android:paddingHorizontal="10dp"
         android:paddingTop="40dp"
         android:scrollbars="vertical"
@@ -68,19 +54,6 @@
 
         android:layout_marginBottom="343dp" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="20dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="30dp"
-        android:clickable="true"
-       />
 
 
 

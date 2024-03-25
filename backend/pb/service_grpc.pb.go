@@ -29,6 +29,7 @@ const (
 	Services_SavePubKey_FullMethodName       = "/Services/savePubKey"
 	Services_HandShakeRequest_FullMethodName = "/Services/handShakeRequest"
 	Services_GetUser_FullMethodName          = "/Services/getUser"
+	Services_BlockUser_FullMethodName        = "/Services/blockUser"
 )
 
 // ServicesClient is the client API for Services service.
@@ -37,7 +38,7 @@ const (
 type ServicesClient interface {
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
-	Otp(ctx context.Context, in *OtpRequest, opts ...grpc.CallOption) (*OtpResponse, error)
+	Otp(ctx context.Context, in *OtpRequest, opts ...grpc.CallOption) (*AuthResponse, error)
 	ValidateContacts(ctx context.Context, in *ContactsList, opts ...grpc.CallOption) (*ContactsList, error)
 	Send(ctx context.Context, in *Event, opts ...grpc.CallOption) (*Event, error)
 	MessageUpdate(ctx context.Context, in *MessageUpdateRequest, opts ...grpc.CallOption) (*MessageUpdateResponse, error)
@@ -45,6 +46,7 @@ type ServicesClient interface {
 	SavePubKey(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error)
 	HandShakeRequest(ctx context.Context, in *Event, opts ...grpc.CallOption) (*Event, error)
 	GetUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error)
+	BlockUser(ctx context.Context, in *BlockRequest, opts ...grpc.CallOption) (*BlockResponse, error)
 }
 
 type servicesClient struct {
@@ -73,8 +75,8 @@ func (c *servicesClient) Register(ctx context.Context, in *RegisterRequest, opts
 	return out, nil
 }
 
-func (c *servicesClient) Otp(ctx context.Context, in *OtpRequest, opts ...grpc.CallOption) (*OtpResponse, error) {
-	out := new(OtpResponse)
+func (c *servicesClient) Otp(ctx context.Context, in *OtpRequest, opts ...grpc.CallOption) (*AuthResponse, error) {
+	out := new(AuthResponse)
 	err := c.cc.Invoke(ctx, Services_Otp_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -145,13 +147,22 @@ func (c *servicesClient) GetUser(ctx context.Context, in *UserRequest, opts ...g
 	return out, nil
 }
 
+func (c *servicesClient) BlockUser(ctx context.Context, in *BlockRequest, opts ...grpc.CallOption) (*BlockResponse, error) {
+	out := new(BlockResponse)
+	err := c.cc.Invoke(ctx, Services_BlockUser_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ServicesServer is the server API for Services service.
 // All implementations must embed UnimplementedServicesServer
 // for forward compatibility
 type ServicesServer interface {
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
-	Otp(context.Context, *OtpRequest) (*OtpResponse, error)
+	Otp(context.Context, *OtpRequest) (*AuthResponse, error)
 	ValidateContacts(context.Context, *ContactsList) (*ContactsList, error)
 	Send(context.Context, *Event) (*Event, error)
 	MessageUpdate(context.Context, *MessageUpdateRequest) (*MessageUpdateResponse, error)
@@ -159,6 +170,7 @@ type ServicesServer interface {
 	SavePubKey(context.Context, *User) (*User, error)
 	HandShakeRequest(context.Context, *Event) (*Event, error)
 	GetUser(context.Context, *UserRequest) (*UserResponse, error)
+	BlockUser(context.Context, *BlockRequest) (*BlockResponse, error)
 	mustEmbedUnimplementedServicesServer()
 }
 
@@ -172,7 +184,7 @@ func (UnimplementedServicesServer) Login(context.Context, *LoginRequest) (*Login
 func (UnimplementedServicesServer) Register(context.Context, *RegisterRequest) (*RegisterResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
 }
-func (UnimplementedServicesServer) Otp(context.Context, *OtpRequest) (*OtpResponse, error) {
+func (UnimplementedServicesServer) Otp(context.Context, *OtpRequest) (*AuthResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Otp not implemented")
 }
 func (UnimplementedServicesServer) ValidateContacts(context.Context, *ContactsList) (*ContactsList, error) {
@@ -195,6 +207,9 @@ func (UnimplementedServicesServer) HandShakeRequest(context.Context, *Event) (*E
 }
 func (UnimplementedServicesServer) GetUser(context.Context, *UserRequest) (*UserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
+}
+func (UnimplementedServicesServer) BlockUser(context.Context, *BlockRequest) (*BlockResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BlockUser not implemented")
 }
 func (UnimplementedServicesServer) mustEmbedUnimplementedServicesServer() {}
 
@@ -389,6 +404,24 @@ func _Services_GetUser_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Services_BlockUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BlockRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServicesServer).BlockUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Services_BlockUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServicesServer).BlockUser(ctx, req.(*BlockRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Services_ServiceDesc is the grpc.ServiceDesc for Services service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -435,6 +468,10 @@ var Services_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "getUser",
 			Handler:    _Services_GetUser_Handler,
+		},
+		{
+			MethodName: "blockUser",
+			Handler:    _Services_BlockUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

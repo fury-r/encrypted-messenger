@@ -52,6 +52,7 @@ data class  Contact   (
     @ColumnInfo(name="isVerified") var isVerified: Boolean = false,
     @ColumnInfo(name="uuid") var uuid: String? = null,
     @ColumnInfo(name="typeTime") var typeTime: OffsetDateTime? = null,
+    @ColumnInfo(name="isPinned") var isPinned: Boolean? = null,
     @ColumnInfo(name="createdAt") var createdAt: OffsetDateTime?=null,
     @ColumnInfo(name="updatedAt") var updatedAt: OffsetDateTime?=null
     )

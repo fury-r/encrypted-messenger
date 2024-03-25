@@ -17,7 +17,6 @@
     "typescript": "^5.0.4"
   },
   "scripts": {
-    "proto:gen": "./proto-gen.sh",
     "start": "ts-node index.ts",
     "test": "jest",
     "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0 ",

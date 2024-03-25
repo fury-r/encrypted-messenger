@@ -1,7 +1,6 @@
 package com.fury.messenger.helper.user
 
 import android.content.Context
-import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import androidx.room.Database
 import androidx.room.RoomDatabase
@@ -17,11 +16,13 @@ import com.fury.messenger.kafka.ConsumerThread
 import com.fury.messenger.kafka.RabbitMQ
 import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.fury.messenger.rsa.RSA
+import com.fury.messenger.utils.TokenManager
 import com.google.protobuf.util.JsonFormat
 import com.rabbitmq.client.AMQP
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.DefaultConsumer
 import com.rabbitmq.client.Envelope
+import com.services.Auth.AuthResponse
 import com.services.Message
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -48,12 +49,16 @@ object CurrentUser {
     private var privateKey: PrivateKey? = null
     private var publicKey: PublicKey? = null
     private var MessageThread: ConsumerThread? = null
+    private var blockedUsers: ArrayList<String>? = null
     private var NotificationThread: ConsumerThread? = null
 
     fun keyToString(key: ByteArray): String {
         return Base64.getEncoder().encodeToString(key)
     }
 
+    fun setBlockedUser(blockedUsers: ArrayList<String>) {
+        this.blockedUsers = blockedUsers
+    }
 
     fun convertStringToKeyFactory(key: String, type: Int): Key? {
 
@@ -93,7 +98,11 @@ object CurrentUser {
         return phoneNumber
     }
 
-    fun getToken(): String? {
+    fun isBlocked(number: String): Boolean {
+        return this.blockedUsers?.contains(number) ?: false
+    }
+
+    fun getToken(): String {
         return token
     }
 
@@ -158,10 +167,34 @@ object CurrentUser {
 
     }
 
-    suspend fun startMessageThread(ctx: Context, dbHelper: SQLiteOpenHelper) {
+    suspend fun saveUserDetails(ctx: Context, token: String, response: AuthResponse) {
+        this.setToken(token)
+        this.setCurrentUserPhoneNumber(response.user.phoneNumber)
+        this.setBlockedUser(response.user.blockedUsersList as ArrayList<String>)
+        val tokenManager = TokenManager(ctx)
+
+        val publicKey = tokenManager.getPublicKey(true)
+
+        this.setEmail(response.user.email)
+        if (response.user.pubKey != publicKey && response.user.pubKey.isNotEmpty()) {
+            Log.d("Messenger", "Keys are different.Saving new key $publicKey")
+            if (publicKey == null) {
+                RSA.initRSA(ctx)
+
+            } else {
+
+                RSA.submitPublicKey(publicKey as String)
+            }
+
+
+        }
+    }
+
+    suspend fun startMessageThread(ctx: Context) {
         val scope = CoroutineScope(Dispatchers.Main)
+
         withContext(Dispatchers.IO) {
-            val database=getDatabase()
+            val database = getDatabase()
 
             if (MessageThread == null || (MessageThread?.isAlive == false)) {
 
@@ -194,106 +227,112 @@ object CurrentUser {
                                 val messageBuilder = Message.Event.newBuilder()
                                 JsonFormat.parser().merge(decryptMessage, messageBuilder)
                                 val event = messageBuilder.build()
-                                val  db= getDatabase(ctx)
+                                val db = getDatabase(ctx)
 
                                 channel.basicAck(deliveryTag, false)
 
                                 if (!envelope.isRedeliver) {
 
 
-                                    //TODO: SQL Triggers
+                                    if (!CurrentUser.isBlocked(event.reciever)) {
+                                        //TODO: SQL Triggers
 
-                                    val key=RSA.convertAESstringToKey(database.contactDao().findByNumber(event.reciever).key!!)
+                                        val key = RSA.convertAESstringToKey(
+                                            database.contactDao().findByNumber(event.reciever).key!!
+                                        )
 
-                                    when (event.type) {
-                                        Message.EventType.MESSAGE -> {
-                                            val messageBuilder = Message.MessageRequest.newBuilder()
-                                            val contact=db.contactDao().findByNumber(event.reciever)
-                                            JsonFormat.parser().merge(RSA.decryptAESMessage(event.message,RSA.convertAESstringToKey(contact.key)), messageBuilder)
-                                            val messageObj=messageBuilder.build()
-                                            scope.launch {
-                                                DBMessage.messageThreadHandler(ctx,
-                                                    messageObj
+                                        when (event.type) {
+                                            Message.EventType.MESSAGE -> {
+                                                val messageBuilder =
+                                                    Message.MessageRequest.newBuilder()
+                                                val contact =
+                                                    db.contactDao().findByNumber(event.reciever)
+                                                JsonFormat.parser().merge(
+                                                    RSA.decryptAESMessage(
+                                                        event.message,
+                                                        RSA.convertAESstringToKey(contact.key)
+                                                    ), messageBuilder
                                                 )
-                                            }
-                                            when (messageObj.type) {
-                                                Message.MessageType.INSERT -> {
-                                                    val request =
-                                                        Message.MessageRequest.newBuilder()
-                                                            .setType(Message.MessageType.UPDATE)
-                                                    val messageInfo =
-                                                        Message.MessageInfo.newBuilder()
-                                                            .setMessageId(messageObj.message.messageId)
-                                                            .setSender(messageObj.message.reciever)
-                                                            .setReciever(messageObj.message.sender)
-                                                            .setDeliverStatus(true).build()
-                                                    val eventBuild = Message.Event.newBuilder()
-                                                        .setMessage(
-                                                            RSA.encryptAESMessage(request.setMessage(messageInfo).toString(),key)
-                                                        ).setType(Message.EventType.MESSAGE).build()
-                                                    val client =
-                                                        createAuthenticationStub(getToken())
-                                                    client.send(eventBuild)
-                                                }
-
-                                                else -> {
-                                                    Log.d(
-                                                        "Messenger logs",
-                                                        "Message type case not handle yet for reply."
+                                                val messageObj = messageBuilder.build()
+                                                scope.launch {
+                                                    DBMessage.messageThreadHandler(
+                                                        ctx,
+                                                        messageObj
                                                     )
-
                                                 }
+                                                when (messageObj.type) {
+                                                    Message.MessageType.INSERT -> {
+                                                        val request =
+                                                            Message.MessageRequest.newBuilder()
+                                                                .setType(Message.MessageType.UPDATE)
+                                                        val messageInfo =
+                                                            Message.MessageInfo.newBuilder()
+                                                                .setMessageId(messageObj.message.messageId)
+                                                                .setSender(messageObj.message.reciever)
+                                                                .setReciever(messageObj.message.sender)
+                                                                .setDeliverStatus(true).build()
+                                                        val eventBuild = Message.Event.newBuilder()
+                                                            .setMessage(
+                                                                RSA.encryptAESMessage(
+                                                                    request.setMessage(
+                                                                        messageInfo
+                                                                    ).toString(), key
+                                                                )
+                                                            ).setType(Message.EventType.MESSAGE)
+                                                            .build()
+                                                        val client =
+                                                            createAuthenticationStub(getToken())
+                                                        client.send(eventBuild)
+                                                    }
+
+                                                    else -> {
+                                                        Log.d(
+                                                            "Messenger logs",
+                                                            "Message type case not handle yet for reply."
+                                                        )
+
+                                                    }
+                                                }
+
                                             }
 
-                                        }
+                                            Message.EventType.HANDSHAKE -> {
+                                                val messageBuilder =
+                                                    Message.KeyExchange.newBuilder()
+                                                val decryptMessage = RSA.decryptMessage(
+                                                    event.message,
+                                                    privateKey
+                                                )
 
-                                        Message.EventType.HANDSHAKE -> {
-                                            val messageBuilder = Message.KeyExchange.newBuilder()
-                                            val decryptMessage = RSA.decryptMessage(event.message,
-                                                privateKey
-                                            )
+                                                JsonFormat.parser()
+                                                    .merge(decryptMessage, messageBuilder)
+                                                val messageObj = messageBuilder.build()
+                                                scope.launch {
+                                                    DBMessage.saveHandshake(
+                                                        ctx,
+                                                        messageObj
+                                                    )
+                                                }
 
-                                            JsonFormat.parser().merge(decryptMessage,messageBuilder )
-                                            val messageObj=messageBuilder.build()
-                                            scope.launch {
-                                                DBMessage.saveHandshake(ctx,
-                                                    messageObj
+                                            }
+
+                                            Message.EventType.TYPE_UPDATE -> {
+                                                val contact =
+                                                    db.contactDao().findByNumber(event.sender)
+                                                contact.typeTime = OffsetDateTime.now()
+                                                db.contactDao().update(contact)
+                                            }
+
+                                            else -> {
+                                                Log.d(
+                                                    "Messenger: Event handler",
+                                                    "Event type case not handle yet."
                                                 )
                                             }
+                                        }
 
-                                        }
-                                        Message.EventType.TYPE_UPDATE->{
-                                            val contact=db.contactDao().findByNumber(event.sender)
-                                            contact.typeTime=OffsetDateTime.now()
-                                            db.contactDao().update(contact)
-                                        }
-                                        else -> {
-                                            Log.d(
-                                                "Messenger logs",
-                                                "Event type case not handle yet."
-                                            )
-                                        }
+
                                     }
-//                                if(event.type==Message.EventType.MESSAGE ){
-//                                    if(event.message.type==Message.MessageType.INSERT){
-//                                        val request=Message.MessageRequest.newBuilder().setType(Message.MessageType.UPDATE)
-//                                        val messageInfo=Message.MessageInfo.newBuilder().setMessageId(messageObj.messageId).setSender(messageObj.reciever).setReciever(messageObj.sender).setDeliverStatus(true).build()
-//                                        val event= Message.Event.newBuilder().setMessage(request.setMessage(messageInfo).build()).setType(Message.EventType.MESSAGE).build()
-//                                        val client= createAuthenticationStub(CurrentUser.getToken())
-//                                        client.send(event)
-//                                    }
-//
-//                                }
-//
-//                                else if(event.type===Message.EventType.HANDSHAKE){
-//
-//                                    scope.launch{
-//                                        DBMessage.saveHandshake(
-//                                            event.exchange
-//                                        )
-//                                    }
-//                                }
-
                                 }
                             }
                         }
@@ -309,13 +348,13 @@ object CurrentUser {
 
 
     fun killMessageThread() {
-        MessageThread!!.stop()
+        MessageThread!!.join()
     }
 
 }
 
 
-@Database(entities = [Contact::class,Chat::class], version = 1)
+@Database(entities = [Contact::class, Chat::class], version = 1)
 @TypeConverters(*[DateTypeConverters::class])
 abstract class AppDatabase : RoomDatabase() {
     abstract fun contactDao(): ContactsDao

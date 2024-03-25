@@ -8,13 +8,13 @@ message User {
   optional  string username = 1;
   optional  string password = 2;
   optional  string email = 3;
-    string phoneNumber = 4;
-    optional  string countryCode=5;
-
-    optional  google.protobuf.Timestamp updatedAt = 6;
-      string uuid = 7;
-      string token = 8;
+  string phoneNumber = 4;
+  optional  string countryCode=5;
+  optional  google.protobuf.Timestamp updatedAt = 6;
+  string uuid = 7;
+  string token = 8;
   optional string pubKey=9;
+  repeated string blockedUsers=10;
 
 
 
@@ -22,3 +22,12 @@ message User {
 
 
 
+
+message BlockRequest{
+  bool block=1;
+  string number=2;
+}
+
+message BlockResponse{
+  repeated string blockedUsers=1;
+}

@@ -51,10 +51,11 @@ func VerifyTokenService(ctx context.Context, req *pb.AuthRequest) (*pb.AuthRespo
 			Token:      &token,
 			IsVerified: &IsVerified,
 			User: &pb.User{
-				Email:       email,
-				PhoneNumber: data.GetPhoneNumber(),
-				Uuid:        id,
-				PubKey:      data.PubKey,
+				Email:        email,
+				PhoneNumber:  data.GetPhoneNumber(),
+				Uuid:         id,
+				PubKey:       data.PubKey,
+				BlockedUsers: data.GetBlockedUsers(),
 			},
 		}, nil
 	}
@@ -79,7 +80,7 @@ func GetUserService(ctx context.Context, req *pb.UserRequest) (*pb.UserResponse,
 	}
 	fmt.Println("here", req)
 	docs := app.Collection("user").Where("phoneNumber", "==", req.PhoneNumber).Documents(ctx)
-
+	var blocked_users []string
 	for {
 		doc, err := docs.Next()
 		if err != nil {
@@ -92,10 +93,16 @@ func GetUserService(ctx context.Context, req *pb.UserRequest) (*pb.UserResponse,
 		if ok == true {
 			key = pubKey.(string)
 		}
+
+		value, ok := data["blocked_users"].([]string)
+		if ok == true {
+			blocked_users = value
+		}
 		fmt.Println(key)
 		return &pb.UserResponse{
-			PubKey:      key,
-			PhoneNumber: req.PhoneNumber,
+			PubKey:       key,
+			PhoneNumber:  req.PhoneNumber,
+			BlockedUsers: blocked_users,
 		}, nil
 	}
 

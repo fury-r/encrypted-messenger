@@ -9,6 +9,8 @@ type SubtypeConstructor<Constructor extends new (...args: any) => any, Subtype> 
 export interface ProtoGrpcType {
   AuthRequest: MessageTypeDefinition
   AuthResponse: MessageTypeDefinition
+  BlockRequest: MessageTypeDefinition
+  BlockResponse: MessageTypeDefinition
   User: MessageTypeDefinition
   google: {
     protobuf: {

@@ -15,7 +15,7 @@ import com.fury.messenger.messages.ChatActivity
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.storage.StorageReference
 
-class RecentAdapter(val context: Context, var userList:ArrayList<ContactChats>): RecyclerView.Adapter<RecentAdapter.RecentViewHolder>() {
+class PinnedUserAdapter(val context: Context, var userList:ArrayList<ContactChats>): RecyclerView.Adapter<PinnedUserAdapter.RecentViewHolder>() {
     private lateinit var dbRef: DatabaseReference
     private lateinit var storageRef: StorageReference
     private  var uri: String? =null

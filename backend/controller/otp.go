@@ -9,7 +9,7 @@ import (
 	"golang.org/x/net/context"
 )
 
-func OtpService(ctx context.Context, req *pb.OtpRequest) (*pb.OtpResponse, error) {
+func OtpService(ctx context.Context, req *pb.OtpRequest) (*pb.AuthResponse, error) {
 	fmt.Print(req.Otp, "validating otp ", req.PhoneNumber)
 	app := firebase.InitFirebase()
 	firestore, err := app.Firestore(ctx)
@@ -21,7 +21,7 @@ func OtpService(ctx context.Context, req *pb.OtpRequest) (*pb.OtpResponse, error
 	docs, _ := firestore.Collection("user").Where("phoneNumber", "==", req.GetPhoneNumber()).Where("otp", "==", req.GetOtp()).Limit(1).Documents(ctx).GetAll()
 	if docs == nil {
 		errMessage := "Invalid Otp.Please try again."
-		return &pb.OtpResponse{
+		return &pb.AuthResponse{
 			Error: &errMessage,
 		}, nil
 	}
@@ -44,7 +44,7 @@ func OtpService(ctx context.Context, req *pb.OtpRequest) (*pb.OtpResponse, error
 		if err != nil {
 			fmt.Println(err)
 			errMessage := "Invalid Otp.Please try again."
-			return &pb.OtpResponse{
+			return &pb.AuthResponse{
 				Error: &errMessage,
 			}, nil
 		}
@@ -53,23 +53,25 @@ func OtpService(ctx context.Context, req *pb.OtpRequest) (*pb.OtpResponse, error
 		if e != nil {
 			fmt.Println(err)
 			errMessage := "Invalid Otp.Please try again."
-			return &pb.OtpResponse{
+			return &pb.AuthResponse{
 				Error: &errMessage,
 			}, nil
 		}
 		id := doc.Ref.ID
+		email = data.Email
 
-		return &pb.OtpResponse{
-			Message: &pb.CurrentUser{
-				Token:       token,
-				Email:       data.GetEmail(),
-				PhoneNumber: data.GetPhoneNumber(),
-				Uuid:        id,
+		return &pb.AuthResponse{
+			User: &pb.User{
+				Email:        email,
+				PhoneNumber:  data.GetPhoneNumber(),
+				Uuid:         id,
+				BlockedUsers: data.GetBlockedUsers(),
 			},
+			Token: &token,
 		}, nil
 	}
 	errMessage := "Invalid Otp.Please try again."
-	return &pb.OtpResponse{
+	return &pb.AuthResponse{
 		Error: &errMessage,
 	}, nil
 }

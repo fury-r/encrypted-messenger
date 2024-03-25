@@ -609,6 +609,31 @@ public final class Service {
      */
     com.google.protobuf.ByteString
         getPubKeyBytes();
+
+    /**
+     * <code>repeated string blocked_users = 3;</code>
+     * @return A list containing the blockedUsers.
+     */
+    java.util.List<java.lang.String>
+        getBlockedUsersList();
+    /**
+     * <code>repeated string blocked_users = 3;</code>
+     * @return The count of blockedUsers.
+     */
+    int getBlockedUsersCount();
+    /**
+     * <code>repeated string blocked_users = 3;</code>
+     * @param index The index of the element to return.
+     * @return The blockedUsers at the given index.
+     */
+    java.lang.String getBlockedUsers(int index);
+    /**
+     * <code>repeated string blocked_users = 3;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the blockedUsers at the given index.
+     */
+    com.google.protobuf.ByteString
+        getBlockedUsersBytes(int index);
   }
   /**
    * Protobuf type {@code UserResponse}
@@ -625,6 +650,7 @@ public final class Service {
     private UserResponse() {
       phoneNumber_ = "";
       pubKey_ = "";
+      blockedUsers_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
 
     @java.lang.Override
@@ -647,6 +673,7 @@ public final class Service {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
+      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -669,6 +696,15 @@ public final class Service {
               pubKey_ = s;
               break;
             }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                blockedUsers_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              blockedUsers_.add(s);
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -684,6 +720,9 @@ public final class Service {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+          blockedUsers_ = blockedUsers_.getUnmodifiableView();
+        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -777,6 +816,41 @@ public final class Service {
       }
     }
 
+    public static final int BLOCKED_USERS_FIELD_NUMBER = 3;
+    private com.google.protobuf.LazyStringList blockedUsers_;
+    /**
+     * <code>repeated string blocked_users = 3;</code>
+     * @return A list containing the blockedUsers.
+     */
+    public com.google.protobuf.ProtocolStringList
+        getBlockedUsersList() {
+      return blockedUsers_;
+    }
+    /**
+     * <code>repeated string blocked_users = 3;</code>
+     * @return The count of blockedUsers.
+     */
+    public int getBlockedUsersCount() {
+      return blockedUsers_.size();
+    }
+    /**
+     * <code>repeated string blocked_users = 3;</code>
+     * @param index The index of the element to return.
+     * @return The blockedUsers at the given index.
+     */
+    public java.lang.String getBlockedUsers(int index) {
+      return blockedUsers_.get(index);
+    }
+    /**
+     * <code>repeated string blocked_users = 3;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the blockedUsers at the given index.
+     */
+    public com.google.protobuf.ByteString
+        getBlockedUsersBytes(int index) {
+      return blockedUsers_.getByteString(index);
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -797,6 +871,9 @@ public final class Service {
       if (!getPubKeyBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, pubKey_);
       }
+      for (int i = 0; i < blockedUsers_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, blockedUsers_.getRaw(i));
+      }
       unknownFields.writeTo(output);
     }
 
@@ -811,6 +888,14 @@ public final class Service {
       }
       if (!getPubKeyBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, pubKey_);
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < blockedUsers_.size(); i++) {
+          dataSize += computeStringSizeNoTag(blockedUsers_.getRaw(i));
+        }
+        size += dataSize;
+        size += 1 * getBlockedUsersList().size();
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -831,6 +916,8 @@ public final class Service {
           .equals(other.getPhoneNumber())) return false;
       if (!getPubKey()
           .equals(other.getPubKey())) return false;
+      if (!getBlockedUsersList()
+          .equals(other.getBlockedUsersList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -846,6 +933,10 @@ public final class Service {
       hash = (53 * hash) + getPhoneNumber().hashCode();
       hash = (37 * hash) + PUBKEY_FIELD_NUMBER;
       hash = (53 * hash) + getPubKey().hashCode();
+      if (getBlockedUsersCount() > 0) {
+        hash = (37 * hash) + BLOCKED_USERS_FIELD_NUMBER;
+        hash = (53 * hash) + getBlockedUsersList().hashCode();
+      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -983,6 +1074,8 @@ public final class Service {
 
         pubKey_ = "";
 
+        blockedUsers_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
 
@@ -1009,8 +1102,14 @@ public final class Service {
       @java.lang.Override
       public com.services.Service.UserResponse buildPartial() {
         com.services.Service.UserResponse result = new com.services.Service.UserResponse(this);
+        int from_bitField0_ = bitField0_;
         result.phoneNumber_ = phoneNumber_;
         result.pubKey_ = pubKey_;
+        if (((bitField0_ & 0x00000001) != 0)) {
+          blockedUsers_ = blockedUsers_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        }
+        result.blockedUsers_ = blockedUsers_;
         onBuilt();
         return result;
       }
@@ -1067,6 +1166,16 @@ public final class Service {
           pubKey_ = other.pubKey_;
           onChanged();
         }
+        if (!other.blockedUsers_.isEmpty()) {
+          if (blockedUsers_.isEmpty()) {
+            blockedUsers_ = other.blockedUsers_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureBlockedUsersIsMutable();
+            blockedUsers_.addAll(other.blockedUsers_);
+          }
+          onChanged();
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -1095,6 +1204,7 @@ public final class Service {
         }
         return this;
       }
+      private int bitField0_;
 
       private java.lang.Object phoneNumber_ = "";
       /**
@@ -1247,6 +1357,116 @@ public final class Service {
         onChanged();
         return this;
       }
+
+      private com.google.protobuf.LazyStringList blockedUsers_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureBlockedUsersIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          blockedUsers_ = new com.google.protobuf.LazyStringArrayList(blockedUsers_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+      /**
+       * <code>repeated string blocked_users = 3;</code>
+       * @return A list containing the blockedUsers.
+       */
+      public com.google.protobuf.ProtocolStringList
+          getBlockedUsersList() {
+        return blockedUsers_.getUnmodifiableView();
+      }
+      /**
+       * <code>repeated string blocked_users = 3;</code>
+       * @return The count of blockedUsers.
+       */
+      public int getBlockedUsersCount() {
+        return blockedUsers_.size();
+      }
+      /**
+       * <code>repeated string blocked_users = 3;</code>
+       * @param index The index of the element to return.
+       * @return The blockedUsers at the given index.
+       */
+      public java.lang.String getBlockedUsers(int index) {
+        return blockedUsers_.get(index);
+      }
+      /**
+       * <code>repeated string blocked_users = 3;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the blockedUsers at the given index.
+       */
+      public com.google.protobuf.ByteString
+          getBlockedUsersBytes(int index) {
+        return blockedUsers_.getByteString(index);
+      }
+      /**
+       * <code>repeated string blocked_users = 3;</code>
+       * @param index The index to set the value at.
+       * @param value The blockedUsers to set.
+       * @return This builder for chaining.
+       */
+      public Builder setBlockedUsers(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureBlockedUsersIsMutable();
+        blockedUsers_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string blocked_users = 3;</code>
+       * @param value The blockedUsers to add.
+       * @return This builder for chaining.
+       */
+      public Builder addBlockedUsers(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureBlockedUsersIsMutable();
+        blockedUsers_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string blocked_users = 3;</code>
+       * @param values The blockedUsers to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllBlockedUsers(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureBlockedUsersIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, blockedUsers_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string blocked_users = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearBlockedUsers() {
+        blockedUsers_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string blocked_users = 3;</code>
+       * @param value The bytes of the blockedUsers to add.
+       * @return This builder for chaining.
+       */
+      public Builder addBlockedUsersBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        ensureBlockedUsersIsMutable();
+        blockedUsers_.add(value);
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -1322,20 +1542,22 @@ public final class Service {
       "\n\rservice.proto\032\013login.proto\032\016register.p" +
       "roto\032\totp.proto\032\rcontact.proto\032\rmessage." +
       "proto\032\nauth.proto\032\nuser.proto\"\"\n\013UserReq" +
-      "uest\022\023\n\013phoneNumber\030\001 \001(\t\"3\n\014UserRespons" +
-      "e\022\023\n\013phoneNumber\030\001 \001(\t\022\016\n\006pubKey\030\002 \001(\t2\267" +
-      "\003\n\010Services\022(\n\005Login\022\r.LoginRequest\032\016.Lo" +
-      "ginResponse\"\000\0221\n\010Register\022\020.RegisterRequ" +
-      "est\032\021.RegisterResponse\"\000\022\"\n\003Otp\022\013.OtpReq" +
-      "uest\032\014.OtpResponse\"\000\0222\n\020ValidateContacts" +
-      "\022\r.ContactsList\032\r.ContactsList\"\000\022\030\n\004Send" +
-      "\022\006.Event\032\006.Event\"\000\022@\n\rmessageUpdate\022\025.Me" +
-      "ssageUpdateRequest\032\026.MessageUpdateRespon" +
-      "se\"\000\022,\n\013VerifyToken\022\014.AuthRequest\032\r.Auth" +
-      "Response\"\000\022\034\n\nsavePubKey\022\005.User\032\005.User\"\000" +
-      "\022$\n\020handShakeRequest\022\006.Event\032\006.Event\"\000\022(" +
-      "\n\007getUser\022\014.UserRequest\032\r.UserResponse\"\000" +
-      "B\023\n\014com.servicesZ\003/pbb\006proto3"
+      "uest\022\023\n\013phoneNumber\030\001 \001(\t\"J\n\014UserRespons" +
+      "e\022\023\n\013phoneNumber\030\001 \001(\t\022\016\n\006pubKey\030\002 \001(\t\022\025" +
+      "\n\rblocked_users\030\003 \003(\t2\346\003\n\010Services\022(\n\005Lo" +
+      "gin\022\r.LoginRequest\032\016.LoginResponse\"\000\0221\n\010" +
+      "Register\022\020.RegisterRequest\032\021.RegisterRes" +
+      "ponse\"\000\022#\n\003Otp\022\013.OtpRequest\032\r.AuthRespon" +
+      "se\"\000\0222\n\020ValidateContacts\022\r.ContactsList\032" +
+      "\r.ContactsList\"\000\022\030\n\004Send\022\006.Event\032\006.Event" +
+      "\"\000\022@\n\rmessageUpdate\022\025.MessageUpdateReque" +
+      "st\032\026.MessageUpdateResponse\"\000\022,\n\013VerifyTo" +
+      "ken\022\014.AuthRequest\032\r.AuthResponse\"\000\022\034\n\nsa" +
+      "vePubKey\022\005.User\032\005.User\"\000\022$\n\020handShakeReq" +
+      "uest\022\006.Event\032\006.Event\"\000\022(\n\007getUser\022\014.User" +
+      "Request\032\r.UserResponse\"\000\022,\n\tblockUser\022\r." +
+      "BlockRequest\032\016.BlockResponse\"\000B\023\n\014com.se" +
+      "rvicesZ\003/pbb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1359,7 +1581,7 @@ public final class Service {
     internal_static_UserResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_UserResponse_descriptor,
-        new java.lang.String[] { "PhoneNumber", "PubKey", });
+        new java.lang.String[] { "PhoneNumber", "PubKey", "BlockedUsers", });
     com.services.Login.getDescriptor();
     com.services.Register.getDescriptor();
     com.services.Otp.getDescriptor();

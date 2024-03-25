@@ -15,24 +15,19 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.fury.messenger.R
-import com.fury.messenger.data.db.DBHelper
-import com.fury.messenger.helper.user.CurrentUser
+import com.fury.messenger.Validater.VerifyTokenActivity
 import com.fury.messenger.main.MainActivity
 import com.fury.messenger.manageBuilder.ManageChanelBuilder
 import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.fury.messenger.otp.OtpActivity
-import com.fury.messenger.rsa.RSA
 import com.fury.messenger.signup.SignupActivity
 import com.fury.messenger.utils.Constants
 import com.fury.messenger.utils.TokenManager
 import com.google.firebase.auth.FirebaseAuth
-import com.services.Auth.AuthRequest
 import com.services.Login.LoginRequest
 import io.grpc.ManagedChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var editPhoneNumber: EditText
@@ -68,54 +63,7 @@ class LoginActivity : AppCompatActivity() {
         Log.d("setting user details", token)
 
         if (token.isNotEmpty()) {
-
-
-            val ctx = this
-            val db = DBHelper(this)
-            scope.launch {
-
-                withContext(Dispatchers.IO) {
-                    val request = AuthRequest.newBuilder().build()
-
-                    val response = client.verifyToken(request)
-                    Log.d("setting user details", response.error)
-                    val tokenManager = TokenManager(this@LoginActivity)
-
-                    if (response.hasError()) {
-                        tokenManager.deleteToken()
-
-
-                    } else {
-                        CurrentUser.setToken(token)
-                        Log.d("setting user details", response.user.phoneNumber)
-                        CurrentUser.setCurrentUserPhoneNumber(response.user.phoneNumber)
-                        CurrentUser.setEmail(response.user.email)
-                        val publicKey = tokenManager.getPublicKey(true)
-                        if (response.user.pubKey != publicKey && response.user.pubKey.isNotEmpty()) {
-                            Log.d("Messenger", "Keys are different.Saving new key $publicKey")
-                            if(publicKey==null){
-                                Log.d("Messenger","Init RSA")
-                                RSA.initRSA(ctx)
-
-                            }
-                            else{
-
-                                RSA.submitPublicKey(publicKey as String)
-                            }
-
-
-                        }
-
-                        val intent = Intent(ctx, MainActivity::class.java)
-                        startActivity(intent)
-                    }
-
-                }
-
-
-            }
-
-
+            startActivity(Intent(this,VerifyTokenActivity::class.java))
         }
 
 
@@ -130,11 +78,8 @@ class LoginActivity : AppCompatActivity() {
             loginBtn.isEnabled = false
             try {
                 var number = editPhoneNumber.text.toString()
-                val countryCode = number?.let { Constants.getCountryCodeFromPhone(it) }
-                Log.d("codxxe", countryCode.toString())
-                if (countryCode != null) {
-                    number = number.replace("+$countryCode", "")
-                }
+                val countryCode = number.let { Constants.getCountryCodeFromPhone(it) }
+                number = number.replace("+$countryCode", "")
                 val request =
                     LoginRequest.newBuilder().setPhoneNumber(number).setCountryCode(countryCode)
                        .build();

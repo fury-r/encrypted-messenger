@@ -17,13 +17,14 @@ message UserRequest{
 message UserResponse{
         string phoneNumber=1;
         string pubKey=2;
+        repeated string blocked_users=3;
 
 }
 
 service Services{
         rpc Login(LoginRequest) returns (LoginResponse) {}
         rpc Register(RegisterRequest) returns (RegisterResponse) {}
-        rpc Otp(OtpRequest) returns (OtpResponse) {}
+        rpc Otp(OtpRequest) returns (AuthResponse) {}
         rpc ValidateContacts(ContactsList) returns (ContactsList) {}
         rpc Send (Event) returns (Event) {}
         rpc messageUpdate(MessageUpdateRequest) returns (MessageUpdateResponse) {}
@@ -31,6 +32,7 @@ service Services{
         rpc savePubKey(User) returns (User) {}
         rpc handShakeRequest(Event) returns (Event) {}
         rpc getUser(UserRequest) returns (UserResponse) {}
+        rpc blockUser(BlockRequest) returns (BlockResponse) {}
 
         // rpc SayHello (HelloRequest) returns (HelloReply) {}
     

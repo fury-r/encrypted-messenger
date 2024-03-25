@@ -3,9 +3,6 @@ package com.fury.messenger.data.db
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
-import android.database.Cursor
-import android.database.sqlite.SQLiteOpenHelper
-import android.provider.BaseColumns
 import android.util.Log
 import androidx.room.Room
 import com.fury.messenger.data.db.DbConnect.getDatabase
@@ -32,7 +29,6 @@ import javax.crypto.SecretKey
 
 
 object DBMessage {
-    val SQL_CREATE_QUERY = createTableQuery("Messages")
     val functions = arrayOf(::setMessages)
     private var scope = CoroutineScope(Dispatchers.Main)
     var presenfunc =
@@ -42,18 +38,8 @@ object DBMessage {
     var listeners: (callback: (messages: ArrayList<Chat?>, recipient: String?) -> ArrayList<Chat?>) -> Unit =
         presenfunc
     private val DB_BUFFER: ArrayList<Chat?> = arrayListOf<Chat?>()
-    const val SQL_DELETE_QUERY = "DROP TABLE IF EXISTS ${TableInfo.TABLE_NAME}"
 
-    object TableInfo : BaseColumns {
-        const val TABLE_NAME = "Messages"
-        const val COLUMN_ITEM_SENDER = "sender"
-        const val COLUMN_ITEM_RECEIVER = "receiver"
-        const val COLUMN_ITEM_CONTENT_TYPE = "content_type"
-        const val COLUMN_ITEM_MESSAGE = "message"
-        const val COLUMN_ITEM_SEEN = "seen"
-        const val COLUM_ITEM_DELIVERED = "is_delivered"
-        const val COLUMN_ITEM_MESSAGE_ID = "message_id"
-    }
+
 
     private fun setMessages(messages: ArrayList<Chat>) {
 
@@ -75,20 +61,6 @@ object DBMessage {
     private fun notifyAllSubscribers() {
         this.listeners(this::addAllData)
         eraseDB_BUFFER()
-    }
-
-    private fun createTableQuery(tableName: String): String {
-        return "CREATE TABLE IF NOT EXISTS ${tableName} (" +
-                "${BaseColumns._ID} INTEGER  PRIMARY KEY," +
-                "${TableInfo.COLUMN_ITEM_SENDER} VARCHAR ," +
-
-                "${TableInfo.COLUMN_ITEM_RECEIVER} VARCHAR ," +
-                "${TableInfo.COLUMN_ITEM_MESSAGE_ID} VARCHAR  UNIQUE," +
-
-                "${TableInfo.COLUMN_ITEM_CONTENT_TYPE} VARCHAR ," +
-                "${TableInfo.COLUMN_ITEM_MESSAGE} VARCHAR ," +
-                "${TableInfo.COLUM_ITEM_DELIVERED} BOOL ," +
-                "${TableInfo.COLUMN_ITEM_SEEN} BOOL )"
     }
 
 

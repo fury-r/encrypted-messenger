@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:id="@+id/RelativeLayout01"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="60dp"
     android:layout_centerHorizontal="true"
     android:layout_marginTop="20dp"
     android:gravity="center"
     android:background="@color/dark_500"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">.
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <androidx.cardview.widget.CardView
         android:id="@+id/ImageView01"
         android:layout_width="50dp"
@@ -27,16 +28,15 @@
     </androidx.cardview.widget.CardView>
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="5dip"
+            android:layout_marginEnd="5dp"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Person"
+            android:text="@string/person"
             android:textSize="20sp"
             android:textColor="@color/white"
             android:textStyle="bold" />
@@ -46,16 +46,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/username"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="70dp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/poppins_semibold"
             android:gravity="bottom"
-            android:text="last_seen"
+            android:text="@string/last_seen"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
             android:textColor="@color/white"
             android:textSize="10sp"
             android:textStyle="bold"
-            android:layout_marginRight="5dp"/>
+            android:layout_marginEnd="5dp"/>
     </RelativeLayout>
 </LinearLayout>

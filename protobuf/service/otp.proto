@@ -11,16 +11,3 @@ message OtpRequest {
   optional  string email = 2;
    optional string phoneNumber=3;
 }
-message currentUser{
-  string token=1;
-  string email=2;
-  string phoneNumber=3;
-  string uuid=4;
-}
-message OtpResponse {
-
-  optional  currentUser message = 2;
-  optional   string error = 3;
-  
-
-}

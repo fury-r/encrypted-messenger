@@ -10,6 +10,8 @@ type SubtypeConstructor<Constructor extends new (...args: any) => any, Subtype> 
 export interface ProtoGrpcType {
   AuthRequest: MessageTypeDefinition
   AuthResponse: MessageTypeDefinition
+  BlockRequest: MessageTypeDefinition
+  BlockResponse: MessageTypeDefinition
   Contact: MessageTypeDefinition
   ContactsList: MessageTypeDefinition
   Event: MessageTypeDefinition

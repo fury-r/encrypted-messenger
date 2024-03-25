@@ -20,4 +20,13 @@
     <string name="datetime">Datetime</string>
     <string name="count">Count</string>
     <string name="test">TEST</string>
+    <string name="pin">Pin</string>
+    <string name="unpin">Unpin</string>
+    <string name="logout">Logout</string>
+    <string name="block">Block</string>
+    <string name="un_block">Un-Block</string>
+    <string name="person">Person</string>
+    <string name="last_seen">last_seen</string>
+    <string name="delete">Delete</string>
+    <string name="loading">Loading...</string>
 </resources>

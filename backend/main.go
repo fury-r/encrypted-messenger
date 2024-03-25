@@ -77,7 +77,7 @@ func (s *Server) SavePubKey(ctx context.Context, req *pb.User) (*pb.User, error)
 
 }
 
-func (s *Server) Otp(ctx context.Context, req *pb.OtpRequest) (*pb.OtpResponse, error) {
+func (s *Server) Otp(ctx context.Context, req *pb.OtpRequest) (*pb.AuthResponse, error) {
 	message, err := service.OtpService(ctx, req)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
@@ -96,6 +96,11 @@ func (s *Server) GetUser(ctx context.Context, req *pb.UserRequest) (*pb.UserResp
 
 }
 
+func (s *Server) BlockUser(ctx context.Context, req *pb.BlockRequest) (*pb.BlockResponse, error) {
+
+	message, err := service.BlockUserController(ctx, req)
+	return message, err
+}
 func main() {
 	// log.Fatalf("1x")
 	listener, err := net.Listen("tcp", ":8082")

@@ -11,7 +11,8 @@ message AuthRequest {
 
 message AuthResponse {
     optional bool isVerified=1;
-   optional string token=2;
+    optional string token=2;
     optional string error=3;
     optional User user=4;
+
 }
