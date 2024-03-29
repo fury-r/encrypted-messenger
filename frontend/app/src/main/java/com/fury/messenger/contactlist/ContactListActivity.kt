@@ -26,7 +26,7 @@ import com.fury.messenger.helper.contact.Contacts
 import com.fury.messenger.helper.user.AppDatabase
 import com.fury.messenger.helper.user.CurrentUser
 import com.fury.messenger.main.UserAdapter
-import com.fury.messenger.rsa.RSA.initRSA
+import com.fury.messenger.crypto.Crypto.initRSA
 import com.fury.messenger.ui.login.LoginActivity
 import com.fury.messenger.utils.TokenManager
 import kotlinx.coroutines.CoroutineScope

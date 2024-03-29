@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.fury.messenger.crypto.Crypto
 import com.fury.messenger.data.db.DBMessage
 import com.fury.messenger.data.db.DbConnect.getDatabase
 import com.fury.messenger.data.db.helper.DateTypeConverters
@@ -15,7 +16,6 @@ import com.fury.messenger.data.db.model.ContactsDao
 import com.fury.messenger.kafka.ConsumerThread
 import com.fury.messenger.kafka.RabbitMQ
 import com.fury.messenger.manageBuilder.createAuthenticationStub
-import com.fury.messenger.rsa.RSA
 import com.fury.messenger.utils.TokenManager
 import com.google.protobuf.util.JsonFormat
 import com.rabbitmq.client.AMQP
@@ -182,8 +182,7 @@ object CurrentUser {
             this.setBlockedUser(arrayList as ArrayList<String>)
 
         }
-        val tokenManager = TokenManager(ctx)
-        tokenManager.setToken(token)
+
 
         val publicKey = tokenManager.getPublicKey(true)
 
@@ -191,11 +190,11 @@ object CurrentUser {
         if (response.user.pubKey != publicKey && response.user.pubKey.isNotEmpty()) {
             Log.d("Messenger", "Keys are different.Saving new key $publicKey")
             if (publicKey == null) {
-                RSA.initRSA(ctx)
+                Crypto.initRSA(ctx)
 
             } else {
 
-                RSA.submitPublicKey(publicKey as String)
+                Crypto.submitPublicKey(publicKey as String)
             }
 
 
@@ -232,7 +231,7 @@ object CurrentUser {
                             }
                             if (message != null) {
                                 val decryptMessage =
-                                    RSA.decryptMessage(message, getPrivateKey())
+                                    Crypto.decryptMessage(message, getPrivateKey())
                                 val routingKey = envelope!!.routingKey
                                 val contentType = properties!!.contentType
                                 val deliveryTag = envelope.deliveryTag
@@ -246,10 +245,10 @@ object CurrentUser {
                                 if (!envelope.isRedeliver) {
 
 
-                                    if (!CurrentUser.isBlocked(event.reciever)) {
+                                    if (!isBlocked(event.reciever)) {
                                         //TODO: SQL Triggers
 
-                                        val key = RSA.convertAESstringToKey(
+                                        val key = Crypto.convertAESstringToKey(
                                             database.contactDao().findByNumber(event.reciever).key!!
                                         )
 
@@ -260,9 +259,9 @@ object CurrentUser {
                                                 val contact =
                                                     db.contactDao().findByNumber(event.reciever)
                                                 JsonFormat.parser().merge(
-                                                    RSA.decryptAESMessage(
+                                                    Crypto.decryptAESMessage(
                                                         event.message,
-                                                        RSA.convertAESstringToKey(contact.key)
+                                                        Crypto.convertAESstringToKey(contact.key)
                                                     ), messageBuilder
                                                 )
                                                 val messageObj = messageBuilder.build()
@@ -285,7 +284,7 @@ object CurrentUser {
                                                                 .setDeliverStatus(true).build()
                                                         val eventBuild = Message.Event.newBuilder()
                                                             .setMessage(
-                                                                RSA.encryptAESMessage(
+                                                                Crypto.encryptAESMessage(
                                                                     request.setMessage(
                                                                         messageInfo
                                                                     ).toString(), key
@@ -311,7 +310,7 @@ object CurrentUser {
                                             Message.EventType.HANDSHAKE -> {
                                                 val messageBuilder =
                                                     Message.KeyExchange.newBuilder()
-                                                val decryptMessage = RSA.decryptMessage(
+                                                val decryptMessage = Crypto.decryptMessage(
                                                     event.message,
                                                     privateKey
                                                 )

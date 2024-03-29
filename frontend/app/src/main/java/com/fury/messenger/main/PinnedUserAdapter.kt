@@ -73,7 +73,7 @@ class PinnedUserAdapter(val context: Context, var userList:ArrayList<ContactChat
             val inflater = MenuInflater(v.context)
 
             inflater.inflate(R.menu.user_menu, menu)
-            Menu.onPrepareOptionsMenu(menu,userList[textName.tag as Int ],context)
+            Menu.onPrepareOptionsMenu(menu,userList[textName.tag as Int ].contact,context)
 
 
         }

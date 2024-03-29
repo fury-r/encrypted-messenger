@@ -1,23 +1,18 @@
-import type * as grpc from '@grpc/grpc-js';
-import type { MessageTypeDefinition } from '@grpc/proto-loader';
+// Original file: ../protobuf/service/user.proto
 
+import type { Timestamp as _google_protobuf_Timestamp, Timestamp__Output as _google_protobuf_Timestamp__Output } from './google/protobuf/Timestamp';
 
-type SubtypeConstructor<Constructor extends new (...args: any) => any, Subtype> = {
-  new(...args: ConstructorParameters<Constructor>): Subtype;
-};
-
-export interface ProtoGrpcType {
-  BlockRequest: MessageTypeDefinition
-  BlockResponse: MessageTypeDefinition
-  User: MessageTypeDefinition
-  google: {
-    protobuf: {
-      Timestamp: MessageTypeDefinition
-    }
-  }
-}
-
-dUsers'?: (string)[];
+export interface User {
+  'username'?: (string);
+  'password'?: (string);
+  'email'?: (string);
+  'phoneNumber'?: (string);
+  'countryCode'?: (string);
+  'updatedAt'?: (_google_protobuf_Timestamp | null);
+  'uuid'?: (string);
+  'token'?: (string);
+  'pubKey'?: (string);
+  'blockedUsers'?: (string)[];
   '_username'?: "username";
   '_password'?: "password";
   '_email'?: "email";

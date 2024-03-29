@@ -5,6 +5,9 @@ import android.content.ContentValues
 import android.content.Context
 import android.util.Log
 import androidx.room.Room
+import com.fury.messenger.crypto.Crypto
+import com.fury.messenger.crypto.Crypto.decryptMessage
+import com.fury.messenger.crypto.Crypto.encryptMessage
 import com.fury.messenger.data.db.DbConnect.getDatabase
 import com.fury.messenger.data.db.model.Chat
 import com.fury.messenger.data.db.model.Contact
@@ -12,10 +15,8 @@ import com.fury.messenger.helper.mutex.MutexLock
 import com.fury.messenger.helper.user.AppDatabase
 import com.fury.messenger.helper.user.CurrentUser
 import com.fury.messenger.manageBuilder.createAuthenticationStub
-import com.fury.messenger.rsa.RSA
-import com.fury.messenger.rsa.RSA.decryptMessage
-import com.fury.messenger.rsa.RSA.encryptMessage
 import com.services.Message
+import com.services.Message.ContentType
 import com.services.Message.Event
 import com.services.Message.KeyExchange
 import com.services.Message.MessageInfo
@@ -91,7 +92,7 @@ object DBMessage {
                 data.message.reciever,
                 data.message.messageId,
                 data.message.text,
-                data.message.contentType,
+                data.message.contentType as String,
                 isDelivered = false,
                 isSeen = false,
                 MessageType.INSERT.toString(),
@@ -154,7 +155,7 @@ object DBMessage {
         ctx: Context,
         sender: String,
         receiver: String,
-        contentType: String? = "text",
+        contentType: ContentType? = ContentType.Text,
         deliveryStatus: Boolean?= false,
         readStatus: Boolean ?= false,
         messageId: String
@@ -201,10 +202,10 @@ object DBMessage {
         val client= createAuthenticationStub(CurrentUser.getToken())
 
         // generate new private and public keys
-        val  encryptKey = RSA.getAES()!!
+        val  encryptKey = Crypto.getAES()!!
         val contact =
             DbConnect.getDatabase().contactDao().findByNumber(recipientDetails.phoneNumber!!)
-        contact.key = RSA.convertAESKeyToString(encryptKey!!)
+        contact.key = Crypto.convertAESKeyToString(encryptKey!!)
         DbConnect.getDatabase().contactDao().update(contact)
 
         val recipientPublicKey =
@@ -222,7 +223,7 @@ object DBMessage {
         return encryptKey
     }
 
-     fun sendMessage(ctx: Context,chat:Chat,reciever:Contact,encryptKey:SecretKey){
+     fun sendMessage(ctx: Context,chat:Chat,reciever:Contact,encryptKey:SecretKey,messageType:ContentType){
         val client= createAuthenticationStub(CurrentUser.getToken())
 
 
@@ -230,7 +231,7 @@ object DBMessage {
             MessageInfo.newBuilder().setMessageId(chat.messageId).setText(encryptMessage(chat.message,
                 CurrentUser.convertStringToKeyFactory(reciever.pubKey!!,2)))
                 .setSender(CurrentUser.getCurrentUserPhoneNumber())
-                .setReciever(reciever.phoneNumber).setContentType("text")
+                .setReciever(reciever.phoneNumber).setContentType(messageType)
                 .build()
         chat.message= encryptMessage(chat.message,CurrentUser.getPublicKey())
         this.insertMessage(ctx,
@@ -245,7 +246,7 @@ object DBMessage {
             Event.newBuilder().setType(Message.EventType.MESSAGE).setReciever(
                 reciever.phoneNumber
             ).setMessage(
-                RSA.encryptAESMessage(
+                Crypto.encryptAESMessage(
                     chatRequestBuilder.toString(),
                     encryptKey
                 )
@@ -265,7 +266,7 @@ object DBMessage {
                     .build()
             val database=getDatabase()
             val event =
-                Event.newBuilder().setMessage(RSA.encryptAESMessage(messageRequest.toString(),RSA.convertAESstringToKey(database.contactDao().findByNumber(recipientNumber).key!!))).setType(Message.EventType.MESSAGE)
+                Event.newBuilder().setMessage(Crypto.encryptAESMessage(messageRequest.toString(),Crypto.convertAESstringToKey(database.contactDao().findByNumber(recipientNumber).key!!))).setType(Message.EventType.MESSAGE)
                     .build()
 
             val client = createAuthenticationStub(CurrentUser.getToken())

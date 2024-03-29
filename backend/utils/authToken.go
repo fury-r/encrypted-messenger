@@ -100,7 +100,7 @@ func GetTokenFromMetaDataAndValidate(ctx context.Context) (*string, error) {
 		return nil, status.Errorf(codes.Unauthenticated, "Authorization token not provided")
 
 	}
-	fmt.Println(data)
+	fmt.Println("GetTokenFromMetaDataAndValidate", token, data)
 	return &data, nil
 
 }

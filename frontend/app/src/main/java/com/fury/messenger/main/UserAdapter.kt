@@ -12,24 +12,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fury.messenger.R
-import com.fury.messenger.TripleDES
+import com.fury.messenger.crypto.Crypto.decryptMessage
 import com.fury.messenger.helper.contact.ContactChats
 import com.fury.messenger.helper.ui.Menu
 import com.fury.messenger.helper.user.CurrentUser
 import com.fury.messenger.messages.ChatActivity
-import com.fury.messenger.rsa.RSA.decryptMessage
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.storage.StorageReference
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
 class UserAdapter(val context: Context, var userList: ArrayList<ContactChats>, setSelected: (Int?) -> Unit, private var view:Boolean=false) :
     RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
-    private lateinit var dbRef: DatabaseReference
-    private lateinit var storageRef: StorageReference
-    private var ctx=context
-    private var uri: String? = null
-    val decipher = TripleDES
+
     private var setSelected=setSelected
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.user_layout, parent, false)
@@ -68,7 +61,6 @@ class UserAdapter(val context: Context, var userList: ArrayList<ContactChats>, s
 
 
 
-//        getLastText(currentUser.uid,holder)
         if(!view){
 
             holder.itemView.setOnClickListener {
@@ -105,7 +97,7 @@ class UserAdapter(val context: Context, var userList: ArrayList<ContactChats>, s
       override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
           val inflater = MenuInflater(v.context)
           inflater.inflate(R.menu.user_menu, menu)
-            Menu.onPrepareOptionsMenu(menu,userList[lastMessage.tag as Int ],context)
+            Menu.onPrepareOptionsMenu(menu,userList[lastMessage.tag as Int ].contact,context)
 
 
       }

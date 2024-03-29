@@ -76,7 +76,7 @@ class VerifyTokenActivity : AppCompatActivity() {
                     val request = AuthRequest.newBuilder().build()
 
                     val response = client.verifyToken(request)
-                    Log.d("setting user details", response.error)
+                    Log.d("setting user details", response.token)
                     val tokenManager = TokenManager(this@VerifyTokenActivity)
 
                     intent = if (response.hasError()) {
@@ -86,9 +86,6 @@ class VerifyTokenActivity : AppCompatActivity() {
 
                     } else {
                         CurrentUser.saveUserDetails(this@VerifyTokenActivity, token, response)
-
-
-
                         Intent(ctx, MainActivity::class.java)
                     }
                     startActivity(intent)

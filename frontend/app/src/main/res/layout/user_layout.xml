@@ -11,6 +11,7 @@
     android:foreground="?android:attr/selectableItemBackground"
     android:weightSum="100"
     android:id="@+id/user"
+    android:layout_margin="2dp"
    >
 
     <LinearLayout

@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.AdapterView
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.SearchView
@@ -25,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fury.messenger.R
 import com.fury.messenger.contactlist.ContactListActivity
+import com.fury.messenger.crypto.Crypto.initRSA
 import com.fury.messenger.data.db.DBMessage
 import com.fury.messenger.data.db.DBUser
 import com.fury.messenger.data.db.DbConnect
@@ -34,7 +34,6 @@ import com.fury.messenger.helper.contact.Contacts
 import com.fury.messenger.helper.user.AppDatabase
 import com.fury.messenger.helper.user.CurrentUser
 import com.fury.messenger.manageBuilder.createAuthenticationStub
-import com.fury.messenger.rsa.RSA.initRSA
 import com.fury.messenger.ui.login.LoginActivity
 import com.fury.messenger.utils.TokenManager
 import com.services.ServicesGrpc
@@ -53,6 +52,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var pinnedUserAdapter: PinnedUserAdapter
     private lateinit var db: AppDatabase
     private var hasReadContactPermission: Boolean = false
+    private var hasAudioRecordPermission: Boolean = false
+
     private var hasStoragePermission: Boolean = false
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
     private lateinit var tokenManager: TokenManager
@@ -61,6 +62,8 @@ class MainActivity : AppCompatActivity() {
     private var selected: Int? = null
     private lateinit var client: ServicesGrpc.ServicesBlockingStub
     private lateinit var contactButton: Button
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -70,6 +73,7 @@ class MainActivity : AppCompatActivity() {
                     permission[Manifest.permission.WRITE_EXTERNAL_STORAGE] ?: hasStoragePermission
                 hasReadContactPermission =
                     permission[Manifest.permission.READ_CONTACTS] ?: hasReadContactPermission
+                hasAudioRecordPermission=permission[Manifest.permission.RECORD_AUDIO]?:hasAudioRecordPermission
 
             }
         requestPermission()
@@ -112,6 +116,8 @@ class MainActivity : AppCompatActivity() {
         contactButton.setOnClickListener {
             startActivity(Intent(this, ContactListActivity::class.java))
         }
+
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 // Handle search query submission
@@ -190,19 +196,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.logout) {
-            tokenManager.deleteToken()
-            val intent = Intent(this, LoginActivity::class.java)
+        when(item.itemId){
+            R.id.logout->{
+                val intent = Intent(this, LoginActivity::class.java)
 
-            // finish()
-            startActivity(intent)
-            return true
-        } else if (item.itemId == R.id.editProfile) {
-            val intent = Intent(this, EditProfile::class.java)
+                startActivity(intent)
+                return true
+            }
+            R.id.editProfile->{
+                val intent = Intent(this, EditProfile::class.java)
 
-            // finish()
-            startActivity(intent)
-            return true
+                startActivity(intent)
+                return true
+            }
+
         }
         return super.onOptionsItemSelected(item)
     }
@@ -225,6 +232,12 @@ class MainActivity : AppCompatActivity() {
         }
         if (!hasReadContactPermission) {
             permissionRequest.add(Manifest.permission.READ_CONTACTS)
+        }
+        if(!hasAudioRecordPermission){
+            permissionRequest.add(Manifest.permission.RECORD_AUDIO)
+            permissionRequest.add(Manifest.permission.CAPTURE_AUDIO_OUTPUT)
+
+
         }
         permissionLauncher.launch(permissionRequest.toTypedArray())
     }
@@ -261,7 +274,6 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        val info = item.menuInfo as? AdapterView.AdapterContextMenuInfo
         val selectedItem = this.selected?.let { userList[it] }
 
         if (selectedItem != null) {
@@ -311,7 +323,6 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.block -> {
-                    Log.d("onContextItemSelected", "isPinned")
 
                     scope.launch {
                        DBMessage.blockUser(selectedItem.contact.phoneNumber)

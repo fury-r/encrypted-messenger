@@ -10,7 +10,7 @@ message MessageInfo{
     string messageId=2;
     string text=3;
     string reciever=4;
-    string contentType=5;
+    ContentType contentType=5;
     string timestamp=6;
     bool deliverStatus=7;
     bool readStatus=8;
@@ -20,6 +20,10 @@ enum MessageType {
     INSERT=0;
     UPDATE=1;
     
+}
+enum ContentType{
+    Text=0;
+    Audio=1;
 }
 message MessageRequest{
     MessageInfo message=1;

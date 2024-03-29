@@ -123,6 +123,114 @@ public final class Message {
   }
 
   /**
+   * Protobuf enum {@code ContentType}
+   */
+  public enum ContentType
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>Text = 0;</code>
+     */
+    Text(0),
+    /**
+     * <code>Audio = 1;</code>
+     */
+    Audio(1),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <code>Text = 0;</code>
+     */
+    public static final int Text_VALUE = 0;
+    /**
+     * <code>Audio = 1;</code>
+     */
+    public static final int Audio_VALUE = 1;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static ContentType valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static ContentType forNumber(int value) {
+      switch (value) {
+        case 0: return Text;
+        case 1: return Audio;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<ContentType>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        ContentType> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<ContentType>() {
+            public ContentType findValueByNumber(int number) {
+              return ContentType.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalStateException(
+            "Can't get the descriptor of an unrecognized enum value.");
+      }
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.services.Message.getDescriptor().getEnumTypes().get(1);
+    }
+
+    private static final ContentType[] VALUES = values();
+
+    public static ContentType valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private ContentType(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:ContentType)
+  }
+
+  /**
    * Protobuf enum {@code EventType}
    */
   public enum EventType
@@ -231,7 +339,7 @@ public final class Message {
     }
     public static final com.google.protobuf.Descriptors.EnumDescriptor
         getDescriptor() {
-      return com.services.Message.getDescriptor().getEnumTypes().get(1);
+      return com.services.Message.getDescriptor().getEnumTypes().get(2);
     }
 
     private static final EventType[] VALUES = values();
@@ -310,16 +418,15 @@ public final class Message {
         getRecieverBytes();
 
     /**
-     * <code>string contentType = 5;</code>
+     * <code>.ContentType contentType = 5;</code>
+     * @return The enum numeric value on the wire for contentType.
+     */
+    int getContentTypeValue();
+    /**
+     * <code>.ContentType contentType = 5;</code>
      * @return The contentType.
      */
-    java.lang.String getContentType();
-    /**
-     * <code>string contentType = 5;</code>
-     * @return The bytes for contentType.
-     */
-    com.google.protobuf.ByteString
-        getContentTypeBytes();
+    com.services.Message.ContentType getContentType();
 
     /**
      * <code>string timestamp = 6;</code>
@@ -362,7 +469,7 @@ public final class Message {
       messageId_ = "";
       text_ = "";
       reciever_ = "";
-      contentType_ = "";
+      contentType_ = 0;
       timestamp_ = "";
     }
 
@@ -420,10 +527,10 @@ public final class Message {
               reciever_ = s;
               break;
             }
-            case 42: {
-              java.lang.String s = input.readStringRequireUtf8();
+            case 40: {
+              int rawValue = input.readEnum();
 
-              contentType_ = s;
+              contentType_ = rawValue;
               break;
             }
             case 50: {
@@ -627,41 +734,22 @@ public final class Message {
     }
 
     public static final int CONTENTTYPE_FIELD_NUMBER = 5;
-    private volatile java.lang.Object contentType_;
+    private int contentType_;
     /**
-     * <code>string contentType = 5;</code>
-     * @return The contentType.
+     * <code>.ContentType contentType = 5;</code>
+     * @return The enum numeric value on the wire for contentType.
      */
-    @java.lang.Override
-    public java.lang.String getContentType() {
-      java.lang.Object ref = contentType_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        contentType_ = s;
-        return s;
-      }
+    @java.lang.Override public int getContentTypeValue() {
+      return contentType_;
     }
     /**
-     * <code>string contentType = 5;</code>
-     * @return The bytes for contentType.
+     * <code>.ContentType contentType = 5;</code>
+     * @return The contentType.
      */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getContentTypeBytes() {
-      java.lang.Object ref = contentType_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        contentType_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    @java.lang.Override public com.services.Message.ContentType getContentType() {
+      @SuppressWarnings("deprecation")
+      com.services.Message.ContentType result = com.services.Message.ContentType.valueOf(contentType_);
+      return result == null ? com.services.Message.ContentType.UNRECOGNIZED : result;
     }
 
     public static final int TIMESTAMP_FIELD_NUMBER = 6;
@@ -750,8 +838,8 @@ public final class Message {
       if (!getRecieverBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, reciever_);
       }
-      if (!getContentTypeBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, contentType_);
+      if (contentType_ != com.services.Message.ContentType.Text.getNumber()) {
+        output.writeEnum(5, contentType_);
       }
       if (!getTimestampBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 6, timestamp_);
@@ -783,8 +871,9 @@ public final class Message {
       if (!getRecieverBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, reciever_);
       }
-      if (!getContentTypeBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, contentType_);
+      if (contentType_ != com.services.Message.ContentType.Text.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(5, contentType_);
       }
       if (!getTimestampBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, timestamp_);
@@ -820,8 +909,7 @@ public final class Message {
           .equals(other.getText())) return false;
       if (!getReciever()
           .equals(other.getReciever())) return false;
-      if (!getContentType()
-          .equals(other.getContentType())) return false;
+      if (contentType_ != other.contentType_) return false;
       if (!getTimestamp()
           .equals(other.getTimestamp())) return false;
       if (getDeliverStatus()
@@ -848,7 +936,7 @@ public final class Message {
       hash = (37 * hash) + RECIEVER_FIELD_NUMBER;
       hash = (53 * hash) + getReciever().hashCode();
       hash = (37 * hash) + CONTENTTYPE_FIELD_NUMBER;
-      hash = (53 * hash) + getContentType().hashCode();
+      hash = (53 * hash) + contentType_;
       hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
       hash = (53 * hash) + getTimestamp().hashCode();
       hash = (37 * hash) + DELIVERSTATUS_FIELD_NUMBER;
@@ -998,7 +1086,7 @@ public final class Message {
 
         reciever_ = "";
 
-        contentType_ = "";
+        contentType_ = 0;
 
         timestamp_ = "";
 
@@ -1104,9 +1192,8 @@ public final class Message {
           reciever_ = other.reciever_;
           onChanged();
         }
-        if (!other.getContentType().isEmpty()) {
-          contentType_ = other.contentType_;
-          onChanged();
+        if (other.contentType_ != 0) {
+          setContentTypeValue(other.getContentTypeValue());
         }
         if (!other.getTimestamp().isEmpty()) {
           timestamp_ = other.timestamp_;
@@ -1451,78 +1538,56 @@ public final class Message {
         return this;
       }
 
-      private java.lang.Object contentType_ = "";
+      private int contentType_ = 0;
       /**
-       * <code>string contentType = 5;</code>
-       * @return The contentType.
+       * <code>.ContentType contentType = 5;</code>
+       * @return The enum numeric value on the wire for contentType.
        */
-      public java.lang.String getContentType() {
-        java.lang.Object ref = contentType_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          contentType_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      @java.lang.Override public int getContentTypeValue() {
+        return contentType_;
       }
       /**
-       * <code>string contentType = 5;</code>
-       * @return The bytes for contentType.
-       */
-      public com.google.protobuf.ByteString
-          getContentTypeBytes() {
-        java.lang.Object ref = contentType_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          contentType_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string contentType = 5;</code>
-       * @param value The contentType to set.
+       * <code>.ContentType contentType = 5;</code>
+       * @param value The enum numeric value on the wire for contentType to set.
        * @return This builder for chaining.
        */
-      public Builder setContentType(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      public Builder setContentTypeValue(int value) {
+        
         contentType_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>string contentType = 5;</code>
+       * <code>.ContentType contentType = 5;</code>
+       * @return The contentType.
+       */
+      @java.lang.Override
+      public com.services.Message.ContentType getContentType() {
+        @SuppressWarnings("deprecation")
+        com.services.Message.ContentType result = com.services.Message.ContentType.valueOf(contentType_);
+        return result == null ? com.services.Message.ContentType.UNRECOGNIZED : result;
+      }
+      /**
+       * <code>.ContentType contentType = 5;</code>
+       * @param value The contentType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setContentType(com.services.Message.ContentType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        contentType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.ContentType contentType = 5;</code>
        * @return This builder for chaining.
        */
       public Builder clearContentType() {
         
-        contentType_ = getDefaultInstance().getContentType();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string contentType = 5;</code>
-       * @param value The bytes for contentType to set.
-       * @return This builder for chaining.
-       */
-      public Builder setContentTypeBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        contentType_ = value;
+        contentType_ = 0;
         onChanged();
         return this;
       }
@@ -7382,30 +7447,31 @@ public final class Message {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\rmessage.proto\"\243\001\n\013MessageInfo\022\016\n\006sende" +
+      "\n\rmessage.proto\"\261\001\n\013MessageInfo\022\016\n\006sende" +
       "r\030\001 \001(\t\022\021\n\tmessageId\030\002 \001(\t\022\014\n\004text\030\003 \001(\t" +
-      "\022\020\n\010reciever\030\004 \001(\t\022\023\n\013contentType\030\005 \001(\t\022" +
-      "\021\n\ttimestamp\030\006 \001(\t\022\025\n\rdeliverStatus\030\007 \001(" +
-      "\010\022\022\n\nreadStatus\030\010 \001(\010\"K\n\016MessageRequest\022" +
-      "\035\n\007message\030\001 \001(\0132\014.MessageInfo\022\032\n\004type\030\002" +
-      " \001(\0162\014.MessageType\"L\n\017MessageResponse\022\035\n" +
-      "\007message\030\001 \001(\0132\014.MessageInfo\022\032\n\004type\030\002 \001" +
-      "(\0162\014.MessageType\"v\n\024MessageUpdateRequest" +
-      "\022\016\n\006sender\030\001 \001(\t\022\020\n\010reciever\030\002 \001(\t\022\021\n\tme" +
-      "ssageId\030\003 \001(\t\022\025\n\rdeliverStatus\030\004 \001(\010\022\022\n\n" +
-      "readStatus\030\005 \001(\010\"w\n\025MessageUpdateRespons" +
-      "e\022\016\n\006sender\030\001 \001(\t\022\020\n\010reciever\030\002 \001(\t\022\021\n\tm" +
-      "essageId\030\003 \001(\t\022\025\n\rdeliverStatus\030\004 \001(\010\022\022\n" +
-      "\nreadStatus\030\005 \001(\010\"<\n\013KeyExchange\022\016\n\006send" +
-      "er\030\001 \001(\t\022\020\n\010reciever\030\002 \001(\t\022\013\n\003key\030\003 \001(\t\"" +
-      "t\n\005Event\022\030\n\004type\030\001 \001(\0162\n.EventType\022\021\n\007me" +
-      "ssage\030\002 \001(\tH\000\022\022\n\010exchange\030\003 \001(\tH\000\022\020\n\006sen" +
-      "der\030\004 \001(\tH\000\022\020\n\010reciever\030\005 \001(\tB\006\n\004body*%\n" +
-      "\013MessageType\022\n\n\006INSERT\020\000\022\n\n\006UPDATE\020\001*_\n\t" +
-      "EventType\022\013\n\007MESSAGE\020\000\022\r\n\tHANDSHAKE\020\001\022\022\n" +
-      "\016DETAILS_UPDATE\020\002\022\017\n\013TYPE_UPDATE\020\003\022\021\n\rST" +
-      "ATUS_UPDATE\020\004B\023\n\014com.servicesZ\003/pbb\006prot" +
-      "o3"
+      "\022\020\n\010reciever\030\004 \001(\t\022!\n\013contentType\030\005 \001(\0162" +
+      "\014.ContentType\022\021\n\ttimestamp\030\006 \001(\t\022\025\n\rdeli" +
+      "verStatus\030\007 \001(\010\022\022\n\nreadStatus\030\010 \001(\010\"K\n\016M" +
+      "essageRequest\022\035\n\007message\030\001 \001(\0132\014.Message" +
+      "Info\022\032\n\004type\030\002 \001(\0162\014.MessageType\"L\n\017Mess" +
+      "ageResponse\022\035\n\007message\030\001 \001(\0132\014.MessageIn" +
+      "fo\022\032\n\004type\030\002 \001(\0162\014.MessageType\"v\n\024Messag" +
+      "eUpdateRequest\022\016\n\006sender\030\001 \001(\t\022\020\n\010reciev" +
+      "er\030\002 \001(\t\022\021\n\tmessageId\030\003 \001(\t\022\025\n\rdeliverSt" +
+      "atus\030\004 \001(\010\022\022\n\nreadStatus\030\005 \001(\010\"w\n\025Messag" +
+      "eUpdateResponse\022\016\n\006sender\030\001 \001(\t\022\020\n\010recie" +
+      "ver\030\002 \001(\t\022\021\n\tmessageId\030\003 \001(\t\022\025\n\rdeliverS" +
+      "tatus\030\004 \001(\010\022\022\n\nreadStatus\030\005 \001(\010\"<\n\013KeyEx" +
+      "change\022\016\n\006sender\030\001 \001(\t\022\020\n\010reciever\030\002 \001(\t" +
+      "\022\013\n\003key\030\003 \001(\t\"t\n\005Event\022\030\n\004type\030\001 \001(\0162\n.E" +
+      "ventType\022\021\n\007message\030\002 \001(\tH\000\022\022\n\010exchange\030" +
+      "\003 \001(\tH\000\022\020\n\006sender\030\004 \001(\tH\000\022\020\n\010reciever\030\005 " +
+      "\001(\tB\006\n\004body*%\n\013MessageType\022\n\n\006INSERT\020\000\022\n" +
+      "\n\006UPDATE\020\001*\"\n\013ContentType\022\010\n\004Text\020\000\022\t\n\005A" +
+      "udio\020\001*_\n\tEventType\022\013\n\007MESSAGE\020\000\022\r\n\tHAND" +
+      "SHAKE\020\001\022\022\n\016DETAILS_UPDATE\020\002\022\017\n\013TYPE_UPDA" +
+      "TE\020\003\022\021\n\rSTATUS_UPDATE\020\004B\023\n\014com.servicesZ" +
+      "\003/pbb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

@@ -14,6 +14,7 @@ export interface ProtoGrpcType {
   BlockResponse: MessageTypeDefinition
   Contact: MessageTypeDefinition
   ContactsList: MessageTypeDefinition
+  ContentType: EnumTypeDefinition
   Event: MessageTypeDefinition
   EventType: EnumTypeDefinition
   KeyExchange: MessageTypeDefinition

@@ -1,7 +1,6 @@
 package com.fury.messenger.utils
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil
-import com.google.i18n.phonenumbers.Phonenumber
 
 object Constants {
 
@@ -9,8 +8,7 @@ object Constants {
     const val  PREFS_TOKEN="MESSENGER_TOKEN_X"
     const val  USER_TOKEN="USER_TOKEN"
     const val APP_NAME="MESSENGER_X"
-     var PRIVATE_KEY=null
-    var PUBLIC_KEY=null
+
 
     fun getCountryCodeFromPhone(phoneNumber:String): String {
         val phoneInstance= PhoneNumberUtil.getInstance()

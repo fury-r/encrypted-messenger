@@ -34,7 +34,7 @@ object Threads {
 //                        }
 //                        if (message != null) {
 //                            val decryptMessage =
-//                                RSA.decryptMessage(message, CurrentUser.getPrivateKey())
+//                                Crypto.decryptMessage(message, CurrentUser.getPrivateKey())
 ////                                val routingKey = envelope!!.routingKey
 ////                                val contentType = properties!!.contentType
 //                            val deliveryTag = envelope?.deliveryTag
