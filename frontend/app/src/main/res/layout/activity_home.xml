@@ -47,7 +47,6 @@
         android:layout_below="@+id/pinned_users"
         android:layout_marginTop="20dp"
         android:background="@drawable/messages_background"
-
         android:paddingHorizontal="10dp"
         android:paddingTop="40dp"
         android:scrollbars="vertical"
@@ -70,21 +69,22 @@
 
         android:layout_marginBottom="343dp" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <Button
         android:id="@+id/contactButton"
-        android:layout_width="wrap_content"
+        android:layout_width="45dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="20dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/round_button"
         android:clickable="true"
-       />
+        app:icon="@drawable/ic_add_black_24dp"
 
-
+        app:iconTint="#FFFFFF" />
 
 
 </RelativeLayout>

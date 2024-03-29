@@ -4,11 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-
-    android:background="#3F3F3F"
+    android:focusable="true"
+    android:clickable="true"
+    android:background="@drawable/contact_item_button"
     android:baselineAligned="false"
-
-    android:weightSum="100">
+    android:foreground="?android:attr/selectableItemBackground"
+    android:weightSum="100"
+    android:id="@+id/user"
+   >
 
     <LinearLayout
         android:layout_width="0dp"

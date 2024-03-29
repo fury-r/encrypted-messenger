@@ -5,6 +5,7 @@ import * as protoLoader from "@grpc/proto-loader";
 const PORT = 8081;
 
 import {
+  blockUser,
   handShakeRequest,
   login,
   otp,
@@ -58,6 +59,7 @@ function getServer() {
     savePubKey,
     verifyToken,
     send,
+    blockUser,
   });
   return server;
 }

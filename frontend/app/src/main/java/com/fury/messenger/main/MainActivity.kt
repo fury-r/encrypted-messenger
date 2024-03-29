@@ -9,11 +9,10 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.AdapterView
+import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.SearchView
 import android.widget.Toast
@@ -26,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fury.messenger.R
 import com.fury.messenger.contactlist.ContactListActivity
+import com.fury.messenger.data.db.DBMessage
 import com.fury.messenger.data.db.DBUser
 import com.fury.messenger.data.db.DbConnect
 import com.fury.messenger.editprofile.EditProfile
@@ -37,9 +37,7 @@ import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.fury.messenger.rsa.RSA.initRSA
 import com.fury.messenger.ui.login.LoginActivity
 import com.fury.messenger.utils.TokenManager
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.services.ServicesGrpc
-import com.services.UserOuterClass.BlockRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -57,12 +55,12 @@ class MainActivity : AppCompatActivity() {
     private var hasReadContactPermission: Boolean = false
     private var hasStoragePermission: Boolean = false
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
-    private lateinit var tokenManager: TokenManager;
+    private lateinit var tokenManager: TokenManager
     private var scope = CoroutineScope(Dispatchers.IO)
     private lateinit var progressBar: ProgressBar
     private var selected: Int? = null
-    private  lateinit var client: ServicesGrpc.ServicesBlockingStub
-    private  lateinit var contactButton: FloatingActionButton
+    private lateinit var client: ServicesGrpc.ServicesBlockingStub
+    private lateinit var contactButton: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -76,24 +74,29 @@ class MainActivity : AppCompatActivity() {
             }
         requestPermission()
         val contacts = Contacts(this)
-        db=DbConnect.getDatabase(this)
+        db = DbConnect.getDatabase(this)
         progressBar = findViewById(R.id.progressBar)
         searchView = findViewById(R.id.searchView)
         val ctx = this
         initRSA(ctx)
         this@MainActivity.progressBar.isVisible = true
         searchView.clearFocus()
-        client= createAuthenticationStub(CurrentUser.getToken())
+        client = createAuthenticationStub(CurrentUser.getToken())
 
 
-        contactButton=findViewById(R.id.contactButton)
+        contactButton = findViewById(R.id.contactButton)
 
         Log.d("Contact-z", userList.size.toString())
 
         tokenManager = TokenManager(this)
         supportActionBar!!.setBackgroundDrawable(ColorDrawable(Color.parseColor("#696969")))
-        pinnedUserAdapter = PinnedUserAdapter(this, userList)
-        adapter = UserAdapter(this, userList)
+        pinnedUserAdapter = PinnedUserAdapter(this, userList, fun(pos: Int?) {
+            this.selected = pos
+        })
+        adapter = UserAdapter(this, userList, fun(pos: Int?) {
+            Log.d("this.selected.toString()", "UserAdapter $pos")
+            this.selected = pos
+        })
         userListView = findViewById(R.id.userslist)
         recentUsers = findViewById(R.id.recentlist)
         userListView.layoutManager = LinearLayoutManager(this)
@@ -106,7 +109,7 @@ class MainActivity : AppCompatActivity() {
         recentUsers.adapter = pinnedUserAdapter
 
 
-        contactButton.setOnClickListener{
+        contactButton.setOnClickListener {
             startActivity(Intent(this, ContactListActivity::class.java))
         }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -117,23 +120,24 @@ class MainActivity : AppCompatActivity() {
 
             @SuppressLint("NotifyDataSetChanged")
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText != null)
-                {
-                    val filteredList= this@MainActivity.userList.filter {
+                if (newText != null) {
+                    val filteredList = this@MainActivity.userList.filter {
                         it.contact.name?.contains(newText, ignoreCase = true)
                             ?: false
                     }
-                    if(filteredList.isEmpty()){
-                        Toast.makeText(this@MainActivity,"No contacts found", Toast.LENGTH_SHORT).show()
 
-                    }else{
-                        this@MainActivity.adapter.userList=filteredList as  ArrayList<ContactChats>
+                    if (filteredList.isEmpty()) {
+                        Toast.makeText(this@MainActivity, "No contacts found", Toast.LENGTH_SHORT)
+                            .show()
+                        this@MainActivity.adapter.userList = arrayListOf()
+
+                    } else {
+                        this@MainActivity.adapter.userList = filteredList as ArrayList<ContactChats>
                     }
 
 
-                }
-                else{
-                    this@MainActivity.adapter.userList=this@MainActivity.userList
+                } else {
+                    this@MainActivity.adapter.userList = this@MainActivity.userList
                 }
                 this@MainActivity.adapter.notifyDataSetChanged()
 
@@ -204,7 +208,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun requestPermission() {
-        Log.d("ask permission", "")
         hasReadContactPermission = ContextCompat.checkSelfPermission(
             this,
             Manifest.permission.READ_CONTACTS
@@ -225,27 +228,21 @@ class MainActivity : AppCompatActivity() {
         }
         permissionLauncher.launch(permissionRequest.toTypedArray())
     }
-    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
-        super.onCreateContextMenu(menu, v, menuInfo)
-        this.selected = (menuInfo as AdapterView.AdapterContextMenuInfo).position
 
-        menuInflater.inflate(R.menu.user_menu, menu)
-    }
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
 
         val deleteMenuItem = menu.findItem(R.id.deleteItem)
         val blockMenuItem = menu.findItem(R.id.block)
         val pinMenuItem = menu.findItem(R.id.pin)
 
-        if (this.classLoader !== MainActivity::class &&  deleteMenuItem!=null) {
+        if (this.classLoader !== MainActivity::class && deleteMenuItem != null) {
             deleteMenuItem.isVisible = false
         }
-
         if (this.selected != null) {
-            val contact=this.userList[this.selected!!]
-            if (!contact.contact.isVerified){
-                blockMenuItem.isVisible=false
-                pinMenuItem.isVisible=false
+            val contact = this.userList[this.selected!!]
+            if (!contact.contact.isVerified) {
+                blockMenuItem.isVisible = false
+                pinMenuItem.isVisible = false
 
             }
             if (CurrentUser.isBlocked(contact.contact.phoneNumber)) {
@@ -255,59 +252,77 @@ class MainActivity : AppCompatActivity() {
             if (this.userList[this.selected!!].contact.isPinned == true) {
 
                 pinMenuItem.title = "Un pinned"
+                pinMenuItem.isVisible = false
             }
         }
         return true
 
     }
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        val info = item.menuInfo as AdapterView.AdapterContextMenuInfo
-        val selectedItem = userList.get(info.position)
+        val info = item.menuInfo as? AdapterView.AdapterContextMenuInfo
+        val selectedItem = this.selected?.let { userList[it] }
 
-        when (item.itemId) {
-            R.id.deleteItem -> {
-                // Handle delete action
-                this@MainActivity.db.chatsDao().deleteAllChats(selectedItem.contact.phoneNumber)
+        if (selectedItem != null) {
 
-                userList.remove(selectedItem)
-                adapter.notifyDataSetChanged()
-                Toast.makeText(this, "Deleted: ${selectedItem.contact.phoneNumber}", Toast.LENGTH_SHORT).show()
-                return true
+            when (item.itemId) {
+                R.id.deleteItem -> {
+                    scope.launch {
+                        this@MainActivity.db.chatsDao()
+                            .deleteAllChats(selectedItem.contact.phoneNumber)
 
-            }
-            R.id.pin->{
-                if(selectedItem.contact.isPinned==true){
-                    selectedItem.contact.isPinned=false
-                    db.contactDao().update(selectedItem.contact)
-                }
-                else{
-                    selectedItem.contact.isPinned=true
-                    db.contactDao().update(selectedItem.contact)
-                }
-                this.userList[info.position]=selectedItem
-                pinnedUserAdapter.userList =
-                    userList.filter { it.contact.isPinned == true } as ArrayList<ContactChats>
-                this.pinnedUserAdapter.notifyDataSetChanged()
-            }
-            R.id.block->{
-                val isBlocked=CurrentUser.isBlocked(selectedItem.contact.phoneNumber)
+                    }
+                    userList.remove(selectedItem)
+                    adapter.notifyDataSetChanged()
+                    Toast.makeText(
+                        this,
+                        "Deleted: ${selectedItem.contact.phoneNumber}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return true
 
-                val request =BlockRequest.newBuilder().setNumber(selectedItem.contact.phoneNumber)
-                if (isBlocked){
-                    request.setBlock(false)
-                }else{
-                    request.setBlock(true)
                 }
 
-                val response=client.blockUser(request.build())
+                R.id.pin -> {
 
-                CurrentUser.setBlockedUser(response.blockedUsersList as ArrayList<String>)
+                    scope.launch {
+                        if (selectedItem.contact.isPinned == true) {
+                            selectedItem.contact.isPinned = false
+                            db.contactDao().update(selectedItem.contact)
+                            runOnUiThread {
+                                item.title = "Pin"
+                            }
+                        } else {
+                            selectedItem.contact.isPinned = true
+                            db.contactDao().update(selectedItem.contact)
+                            runOnUiThread {
+                                item.title = "Un Pin"
+                            }
+                        }
+                        runOnUiThread {
+                            this@MainActivity.userList[this@MainActivity.selected!!] = selectedItem
+                            pinnedUserAdapter.userList =
+                                userList.filter { it.contact.isPinned == true } as ArrayList<ContactChats>
+                            this@MainActivity.pinnedUserAdapter.notifyDataSetChanged()
+                        }
+                    }
 
+                }
+
+                R.id.block -> {
+                    Log.d("onContextItemSelected", "isPinned")
+
+                    scope.launch {
+                       DBMessage.blockUser(selectedItem.contact.phoneNumber)
+                    }
+
+                }
             }
         }
         return super.onContextItemSelected(item)
     }
+
     @SuppressLint("NotifyDataSetChanged")
     private fun setContactList(data: ArrayList<ContactChats>) {
         super.onResume()

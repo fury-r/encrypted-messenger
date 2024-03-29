@@ -2,39 +2,42 @@ package controller
 
 import (
 	"context"
+	"fmt"
 
+	"cloud.google.com/go/firestore"
 	"example.com/messenger/firebase"
 	"example.com/messenger/pb"
 	"example.com/messenger/utils"
-	"google.golang.org/api/iterator"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 func BlockUserController(ctx context.Context, req *pb.BlockRequest) (*pb.BlockResponse, error) {
-
+	fmt.Println("BlockUserController")
 	val, err := utils.GetTokenFromMetaDataAndValidate(ctx)
 	if err != nil {
 		return nil, err
 	}
+	var data pb.User
 
 	app, err := firebase.InitFirebase().Firestore(ctx)
 	if err != nil {
-		panic(err)
+		fmt.Println("db err", err)
+		return &pb.BlockResponse{
+			BlockedUsers: []string{},
+		}, nil
 	}
+	docs, err := app.Collection("user").Where("phoneNumber", "==", *val).Documents(ctx).GetAll()
+	if err != nil {
+		fmt.Println(err)
+		return &pb.BlockResponse{
+			BlockedUsers: []string{},
+		}, nil
+	}
+	for _, doc := range docs {
+		doc.DataTo(&data)
 
-	docs := app.Collection("user").Where("phoneNumber", "==", val).Documents(ctx)
-	defer docs.Stop()
-	for {
-		doc, err := docs.Next()
-		if err == iterator.Done {
-			break
-		}
-		if err != nil {
-			return nil, err
-		}
-		data := doc.Data()
-		var list []string = data["blocked_users"].([]string)
+		var list []string = data.BlockedUsers
 		if req.Block == true {
 			list = append(list, req.Number)
 
@@ -47,9 +50,16 @@ func BlockUserController(ctx context.Context, req *pb.BlockRequest) (*pb.BlockRe
 			}
 			list = new_list
 		}
-		app.Collection("user").Doc(doc.Ref.ID).Set(ctx, map[string]interface{}{
-			"blocked_users": list,
-		})
+		updatedData := map[string]interface{}{
+			"blockedUsers": list,
+		}
+		_, err := app.Collection("user").Doc(doc.Ref.ID).Set(ctx, updatedData, firestore.MergeAll)
+		if err != nil {
+			fmt.Println(err)
+			return &pb.BlockResponse{
+				BlockedUsers: []string{},
+			}, nil
+		}
 		return &pb.BlockResponse{
 			BlockedUsers: list,
 		}, nil

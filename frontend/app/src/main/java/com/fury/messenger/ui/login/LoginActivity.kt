@@ -26,6 +26,7 @@ import com.services.Login.LoginRequest
 import io.grpc.ManagedChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
@@ -61,6 +62,7 @@ class LoginActivity : AppCompatActivity() {
         Log.d("here sss",token.toString())
         if (token!=null) {
             startActivity(Intent(this,VerifyTokenActivity::class.java))
+            finish()
 
         }
 
@@ -83,7 +85,7 @@ class LoginActivity : AppCompatActivity() {
                        .build();
 
                 scope.launch {
-                    val response = client.login(request);
+                    val response =(async {  client.login(request) }).await();
                    runOnUiThread {  Toast.makeText(
                        this@LoginActivity,
                        if (response.hasError()) response.error + "." + response.message else (response.message),

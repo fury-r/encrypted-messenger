@@ -21,10 +21,13 @@ import com.services.Message.KeyExchange
 import com.services.Message.MessageInfo
 import com.services.Message.MessageRequest
 import com.services.Message.MessageType
+import com.services.UserOuterClass
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import java.util.function.Supplier
+import java.util.stream.Collectors
 import javax.crypto.SecretKey
 
 
@@ -267,6 +270,33 @@ object DBMessage {
 
             val client = createAuthenticationStub(CurrentUser.getToken())
             client.send(event)
+
+        }
+    }
+
+
+
+    suspend  fun blockUser(phoneNumber:String){
+        val isBlocked = CurrentUser.isBlocked(phoneNumber)
+        val client= createAuthenticationStub(CurrentUser.getToken())
+
+        val request = UserOuterClass.BlockRequest.newBuilder()
+            .setNumber(phoneNumber)
+        if (isBlocked) {
+            request.setBlock(false)
+        } else {
+            request.setBlock(true)
+        }
+
+        try{
+            val response = client.blockUser(request.build())
+            val arrayList = response.blockedUsersList.stream().collect(
+                Collectors.toCollection(
+                    Supplier { ArrayList() })
+            )
+            CurrentUser.setBlockedUser(arrayList as ArrayList<String>)
+        }catch (e:Error){
+            Log.d("Error while calling block User",e.toString())
 
         }
     }

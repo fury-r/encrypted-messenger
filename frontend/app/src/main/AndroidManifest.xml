@@ -43,6 +43,14 @@
             android:exported="true"
             android:windowSoftInputMode="adjustResize" />
         <activity
+            android:name=".Validater.VerifyTokenActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".contactlist.ContactListActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">

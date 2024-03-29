@@ -31,7 +31,7 @@ func OtpService(ctx context.Context, req *pb.OtpRequest) (*pb.AuthResponse, erro
 	for _, doc := range docs {
 		doc.DataTo(&data)
 		email := data.Email
-		fmt.Println("generating token " + *email)
+		fmt.Println("generating token " + data.PhoneNumber)
 		user, err := auth.GetUserByEmail(ctx, *email)
 		if err != nil {
 			fmt.Println(err)
@@ -40,7 +40,7 @@ func OtpService(ctx context.Context, req *pb.OtpRequest) (*pb.AuthResponse, erro
 
 		fmt.Println(user.UID)
 
-		token, err := utils.CreateToken(*email)
+		token, err := utils.CreateToken(data.PhoneNumber)
 		if err != nil {
 			fmt.Println(err)
 			errMessage := "Invalid Otp.Please try again."

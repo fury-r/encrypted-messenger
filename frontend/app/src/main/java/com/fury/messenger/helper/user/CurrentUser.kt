@@ -36,6 +36,8 @@ import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import java.time.OffsetDateTime
 import java.util.Base64
+import java.util.function.Supplier
+import java.util.stream.Collectors
 
 object CurrentUser {
 
@@ -169,12 +171,19 @@ object CurrentUser {
 
     suspend fun saveUserDetails(ctx: Context, token: String, response: AuthResponse) {
         this.setToken(token)
+        val tokenManager = TokenManager(ctx)
+        tokenManager.setToken(token)
         this.setCurrentUserPhoneNumber(response.user.phoneNumber)
         if (response.user.blockedUsersList.isNotEmpty()){
-            this.setBlockedUser(response.user.blockedUsersList as ArrayList<String>)
+            val arrayList = response.user.blockedUsersList.stream().collect(
+                Collectors.toCollection(
+                    Supplier { ArrayList() })
+            )
+            this.setBlockedUser(arrayList as ArrayList<String>)
 
         }
         val tokenManager = TokenManager(ctx)
+        tokenManager.setToken(token)
 
         val publicKey = tokenManager.getPublicKey(true)
 

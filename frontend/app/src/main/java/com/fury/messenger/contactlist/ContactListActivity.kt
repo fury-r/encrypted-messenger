@@ -7,11 +7,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.AdapterView
 import android.widget.ProgressBar
 import android.widget.SearchView
 import android.widget.Toast
@@ -20,6 +17,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fury.messenger.R
+import com.fury.messenger.data.db.DBMessage
 import com.fury.messenger.data.db.DBUser
 import com.fury.messenger.data.db.DbConnect.getDatabase
 import com.fury.messenger.editprofile.EditProfile
@@ -27,7 +25,6 @@ import com.fury.messenger.helper.contact.ContactChats
 import com.fury.messenger.helper.contact.Contacts
 import com.fury.messenger.helper.user.AppDatabase
 import com.fury.messenger.helper.user.CurrentUser
-import com.fury.messenger.main.MainActivity
 import com.fury.messenger.main.UserAdapter
 import com.fury.messenger.rsa.RSA.initRSA
 import com.fury.messenger.ui.login.LoginActivity
@@ -41,7 +38,6 @@ class ContactListActivity : AppCompatActivity() {
 
     private lateinit var userListView: RecyclerView
     private var userList: ArrayList<ContactChats> = arrayListOf<ContactChats>()
-    private lateinit var recentUsers: RecyclerView
     private lateinit var searchView: SearchView
     private lateinit var adapter: UserAdapter
     private lateinit var db: AppDatabase
@@ -130,10 +126,11 @@ class ContactListActivity : AppCompatActivity() {
 
         tokenManager = TokenManager(this)
         supportActionBar!!.setBackgroundDrawable(ColorDrawable(Color.parseColor("#696969")))
-        adapter = UserAdapter(this, userList)
-        userListView = findViewById(R.id.userslist)
+        adapter = UserAdapter(this, userList,fun(pos:Int?){
+            this.selected=pos
+        },true)
+        userListView = findViewById(R.id.contactlist)
         userListView.layoutManager = LinearLayoutManager(this)
-        recentUsers.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         registerForContextMenu(userListView)
 
@@ -148,63 +145,46 @@ class ContactListActivity : AppCompatActivity() {
 
     }
 
-    override fun onCreateContextMenu(
-        menu: ContextMenu,
-        v: View,
-        menuInfo: ContextMenu.ContextMenuInfo?
-    ) {
-        super.onCreateContextMenu(menu, v, menuInfo)
-        this.selected = (menuInfo as AdapterView.AdapterContextMenuInfo).position
-        menuInflater.inflate(R.menu.user_menu, menu)
-    }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
 
-        val deleteMenuItem = menu.findItem(R.id.deleteItem)
-        val blockMenuItem = menu.findItem(R.id.block)
-        val pinMenuItem = menu.findItem(R.id.pin)
-
-        if (this.classLoader !== MainActivity::class) {
-            deleteMenuItem.isVisible = false
-        }
-        if (this.selected != null) {
-            if (CurrentUser.isBlocked(this.userList[this.selected!!].contact.phoneNumber) == true) {
-
-                blockMenuItem.title = "Un block"
-            }
-            if (this.userList[this.selected!!].contact.isPinned == true) {
-
-                pinMenuItem.title = "Un pinned"
-            }
-        }
-        return true
-
-    }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        val info = item.menuInfo as AdapterView.AdapterContextMenuInfo
-        val selectedItem = userList[info.position]
+        val selectedItem = this.selected?.let { userList[it] }
 
-        when (item.itemId) {
+        if(selectedItem!=null){
 
-            R.id.pin -> {
-                if (selectedItem.contact.isPinned == true) {
-                    selectedItem.contact.isPinned = false
-                    db.contactDao().update(selectedItem.contact)
-                } else {
-                    selectedItem.contact.isPinned = true
-                    db.contactDao().update(selectedItem.contact)
+            when (item.itemId) {
+
+                R.id.pin->{
+
+                    scope.launch {
+                        if(selectedItem.contact.isPinned==true){
+                            selectedItem.contact.isPinned=false
+                            db.contactDao().update(selectedItem.contact)
+
+                        }
+                        else{
+                            selectedItem.contact.isPinned=true
+                            db.contactDao().update(selectedItem.contact)
+
+                        }
+
+                    }
+
                 }
+                R.id.block->{
+                    Log.d("onContextItemSelected","isPinned")
 
-            }
-
-            R.id.block -> {
-                //TODO
+                    scope.launch {
+                        DBMessage.blockUser(selectedItem.contact.phoneNumber)
+                    }
+                }
             }
         }
         return super.onContextItemSelected(item)
@@ -234,7 +214,7 @@ class ContactListActivity : AppCompatActivity() {
         super.onResume()
         Log.d("Thread-Messenger updating contacts", data.size.toString())
 
-        adapter.userList = userList
+        adapter.userList = data
 
 
         adapter.notifyDataSetChanged()

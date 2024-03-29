@@ -95,11 +95,12 @@ func GetTokenFromMetaDataAndValidate(ctx context.Context) (*string, error) {
 		return nil, status.Errorf(codes.Unauthenticated, "Authorization token not provided")
 
 	}
-	email, err := ValidateToken(token[1])
+	data, err := ValidateToken(token[1])
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "Authorization token not provided")
 
 	}
-	return &email, nil
+	fmt.Println(data)
+	return &data, nil
 
 }
