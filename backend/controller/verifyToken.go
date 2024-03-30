@@ -21,14 +21,14 @@ func VerifyTokenService(ctx context.Context, req *pb.AuthRequest) (*pb.AuthRespo
 	}
 	x := "Invalid Token"
 
-	email, err := utils.GetTokenFromMetaDataAndValidate(ctx)
+	number, err := utils.GetTokenFromMetaDataAndValidate(ctx)
 	if err != nil {
 
 		return &pb.AuthResponse{
 			Error: &x,
 		}, nil
 	}
-	docs, _ := firestore.Collection("user").Where("email", "==", *email).Limit(1).Documents(ctx).GetAll()
+	docs, _ := firestore.Collection("user").Where("phoneNumber", "==", *number).Limit(1).Documents(ctx).GetAll()
 	if docs == nil {
 		return &pb.AuthResponse{
 			Error: &x,
@@ -55,7 +55,7 @@ func VerifyTokenService(ctx context.Context, req *pb.AuthRequest) (*pb.AuthRespo
 				PhoneNumber:  data.GetPhoneNumber(),
 				Uuid:         id,
 				PubKey:       data.PubKey,
-				BlockedUsers: data.GetBlockedUsers(),
+				BlockedUsers: data.BlockedUsers,
 			},
 		}, nil
 	}
@@ -74,36 +74,23 @@ func GetUserService(ctx context.Context, req *pb.UserRequest) (*pb.UserResponse,
 		fmt.Println("Empty Request", req)
 		return nil, status.Errorf(codes.InvalidArgument, "Empty Request")
 	}
-	_, err = utils.GetTokenFromMetaDataAndValidate(ctx)
+	val, err := utils.GetTokenFromMetaDataAndValidate(ctx)
 	if err != nil {
 		return nil, err
 	}
 	fmt.Println("here", req)
-	docs := app.Collection("user").Where("phoneNumber", "==", req.PhoneNumber).Documents(ctx)
-	var blocked_users []string
-	for {
-		doc, err := docs.Next()
-		if err != nil {
-			return nil, err
-		}
+	var data pb.User
+	docs, err := app.Collection("user").Where("phoneNumber", "==", *val).Documents(ctx).GetAll()
 
-		data := doc.Data()
-		pubKey, ok := data["pubKey"]
-		key := ""
-		if ok == true {
-			key = pubKey.(string)
-		}
+	for _, doc := range docs {
+		doc.DataTo(&data)
 
-		value, ok := data["blocked_users"].([]string)
-		if ok == true {
-			blocked_users = value
-		}
-		fmt.Println(key)
 		return &pb.UserResponse{
-			PubKey:       key,
+			PubKey:       *data.PubKey,
 			PhoneNumber:  req.PhoneNumber,
-			BlockedUsers: blocked_users,
+			BlockedUsers: data.BlockedUsers,
 		}, nil
-	}
 
+	}
+	return &pb.UserResponse{}, nil
 }
