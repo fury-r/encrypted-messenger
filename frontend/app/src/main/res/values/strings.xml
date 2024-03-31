@@ -31,4 +31,7 @@
     <string name="loading">Loading...</string>
     <string name="todo">TODO</string>
     <string name="duration">duration</string>
+    <string name="search">Search</string>
+    <string name="this_is_sent_message">This is sent message</string>
+    <string name="date">Date</string>
 </resources>

@@ -3,6 +3,7 @@ package com.fury.messenger.main
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
+import android.util.Log
 import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.MenuInflater
@@ -12,11 +13,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fury.messenger.R
-import com.fury.messenger.crypto.Crypto.decryptMessage
+import com.fury.messenger.crypto.Crypto
 import com.fury.messenger.helper.contact.ContactChats
 import com.fury.messenger.helper.ui.Menu
 import com.fury.messenger.helper.user.CurrentUser
 import com.fury.messenger.messages.ChatActivity
+import com.services.Message.ContentType
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
@@ -46,10 +48,25 @@ class UserAdapter(val context: Context, var userList: ArrayList<ContactChats>, s
                 holder.count.visibility = View.GONE
             }
             if (currentUser.latestMessage != null) {
-                holder.lastMessage.text = decryptMessage(currentUser.latestMessage.message, CurrentUser.getPrivateKey())
-                if(currentUser.latestMessage.sender!=CurrentUser.phoneNumber){
-                    holder.lastMessage.setTypeface(null, Typeface.BOLD);
+                Log.d("currentUser","${currentUser.latestMessage.contentType} ${ContentType.Audio.name}" )
+                var message:String=""
+                if(currentUser.latestMessage.contentType==ContentType.Text.name){
+                     message= Crypto.decryptAESMessage(
+                        currentUser.latestMessage.message,
+                        Crypto.convertAESstringToKey(currentUser.contact.key)
+                    )
+
+                }else if(currentUser.latestMessage.contentType==ContentType.Audio.name) {
+                    message="Voice Message"
+
                 }
+                if(currentUser.latestMessage.sender!= CurrentUser.phoneNumber){
+                    holder.lastMessage.setTypeface(null, Typeface.BOLD);
+                } else {
+                    message="You:${message}"
+                }
+
+                holder.lastMessage.text = message
                 holder.datetime.text= currentUser.latestMessage.createdAt?.format(DateTimeFormatter.ofPattern("hh:mm:a"))
                     ?: ""
 
@@ -67,6 +84,7 @@ class UserAdapter(val context: Context, var userList: ArrayList<ContactChats>, s
                 val intent = Intent(context, ChatActivity::class.java)
                 intent.putExtra("Contact", currentUser.contact.name)
                 intent.putExtra("phoneNumber", currentUser.contact.phoneNumber)
+                currentUser.contact.key?.let { it1 -> Log.d("Dd", it1) }
                 intent.putExtra("key", currentUser.contact.key)
 
                 context.startActivity(intent)

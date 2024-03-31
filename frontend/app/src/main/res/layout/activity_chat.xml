@@ -6,14 +6,27 @@
     android:background="@color/dark_500"
     android:layout_height="match_parent"
     tools:context=".messages.ChatActivity">
-
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/receive_text"
+        android:layout_above="@id/chatRecyclerView"
+        android:visibility="gone"
+        android:layout_alignParentTop="true"
+        app:queryHint="Search" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
 
         android:layout_above="@id/linearlayout"
-        android:layout_alignParentTop="true"
         android:paddingHorizontal="5dp"
 
         />

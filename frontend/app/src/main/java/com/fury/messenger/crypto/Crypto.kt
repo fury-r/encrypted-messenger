@@ -7,6 +7,7 @@ import com.fury.messenger.helper.user.CurrentUser
 import com.fury.messenger.helper.user.CurrentUser.keyToString
 import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.fury.messenger.utils.Constants.APP_NAME
+import com.fury.messenger.utils.Constants.byteArrayToString
 import com.fury.messenger.utils.Constants.stringToByteArray
 import com.fury.messenger.utils.TokenManager
 import com.services.UserOuterClass
@@ -23,8 +24,9 @@ import java.security.PublicKey
 import java.security.Signature
 import java.util.Base64
 import javax.crypto.Cipher
-import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
+import javax.crypto.SecretKeyFactory
+import javax.crypto.spec.DESedeKeySpec
 import javax.crypto.spec.SecretKeySpec
 
 
@@ -39,8 +41,8 @@ object Crypto {
     private var cipher: Cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
     private lateinit var tokenManager: TokenManager
     private var scope = CoroutineScope(Dispatchers.IO)
-
-    fun generateEncryptionKeys(): List<Key> {
+    private  var ALGORITHM="DESede"
+    private fun generateEncryptionKeys(): List<Key> {
         keyPairGen = KeyPairGenerator.getInstance("RSA");
         keyPairGen.initialize(2048)
         keyPair = keyPairGen.generateKeyPair()
@@ -49,12 +51,22 @@ object Crypto {
         return listOf(keyPair.private, keyPair.public)
     }
 
-    fun getAES(): SecretKey? {
-        val keyPairGen = KeyGenerator.getInstance("AES");
-        keyPairGen.init(256)
-        val keyPair = keyPairGen.generateKey()
+    fun getAES(): SecretKey {
+//        val keyGen = KeyGenerator.getInstance("AES")
+//        keyGen.init(256)
+//
+//        return keyGen.generateKey();
 
-        return keyPair
+        val keyData = byteArrayOf(
+            0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
+            0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10,
+            0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18
+        )
+        val keySpec=DESedeKeySpec(keyData)
+        val keyFactory=SecretKeyFactory.getInstance(ALGORITHM)
+        return  keyFactory.generateSecret(keySpec)
+
+
     }
 
     fun initRSA(ctx: Context) {
@@ -112,26 +124,30 @@ object Crypto {
 
     @SuppressLint("GetInstance")
     fun encryptAESMessage(message: String, key: SecretKey?): String {
-        val messageBytes: ByteArray = stringToByteArray(message)
-        val cipher = Cipher.getInstance("AES")
+        val cipher = Cipher.getInstance(ALGORITHM)
         cipher.init(Cipher.ENCRYPT_MODE, key)
-        val encryptedBytes = cipher.doFinal(messageBytes)
-        return Base64.getEncoder().encodeToString(encryptedBytes)
+        val encryptedBytes = cipher.doFinal(stringToByteArray(message))
+        return Base64.getEncoder().encodeToString(encryptedBytes);
 
     }
     @SuppressLint("GetInstance")
     fun decryptAESMessage(message: String, key: SecretKey?): String {
-        val messageBytes: ByteArray = stringToByteArray(message)
-        val cipher = Cipher.getInstance("AES")
-        cipher.init(Cipher.DECRYPT_MODE, key)
-        val encryptedBytes = cipher.doFinal(messageBytes)
-        return Base64.getEncoder().encodeToString(encryptedBytes)
+
+        return try {
+            val cipher = Cipher.getInstance(ALGORITHM)
+            cipher.init(Cipher.DECRYPT_MODE, key)
+            val decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(String(message.toByteArray(),Charsets.UTF_8)))
+            byteArrayToString(decryptedBytes)
+        }catch (e:Exception){
+            ""
+        }
+
 
     }
 
     fun decryptMessage(message: String, privateKey: PrivateKey? = null): String {
         if (privateKey == null) {
-            throw error("Private key missing")
+             error("Private key missing")
         }
         Log.d("thread-messenger", CurrentUser.getPrivateKey().toString())
         val cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
@@ -139,8 +155,7 @@ object Crypto {
             cipher.init(Cipher.DECRYPT_MODE, privateKey)
             val encryptedBytes = Base64.getDecoder().decode(message)
             val decryptedBytes = cipher.doFinal(encryptedBytes)
-//        val decipherText:ByteArray=cipher.doFinal( stringToByteArray(message));
-            return String(decryptedBytes)
+            return String(decryptedBytes, Charsets.UTF_8)
         } catch (e: Exception) {
             e.printStackTrace()
             Log.d("decrypt error", "")
@@ -149,41 +164,16 @@ object Crypto {
     }
 
 
-    private fun runTest(publicKey: PublicKey, privateKey: PrivateKey) {
-        val TEST = "Hello world"
-        var pubKey = keyToString(publicKey.encoded)
-        Log.d(" pub key", publicKey.toString())
-        Log.d("String pub key", pubKey)
-        val pubKey_1 = CurrentUser.convertStringToKeyFactory(pubKey, 2) as PublicKey
-        Log.d(" pub key", pubKey_1.toString())
-        var privKey = keyToString(privateKey.encoded)
+
+    fun runAESTest(key: SecretKey,value: String?=null){
+        val test=value?:"Hello World!"
+        val keyString= convertAESKeyToString(key)
 
 
-        Log.d(" pub key", publicKey.toString())
-        Log.d("String pub key", privKey)
-        val privKey_1 = CurrentUser.convertStringToKeyFactory(privKey, 1) as PrivateKey
-        Log.d(" pub key", pubKey_1.toString())
-        var stringConvEncrypt = encryptMessage(TEST, pubKey_1)
-        var stringConvDecrypt = decryptMessage(TEST, privKey_1)
-        val encrypt = encryptMessage(TEST, publicKey)
-        val decrypt = decryptMessage(TEST, privateKey)
-        if (TEST == stringConvEncrypt) {
-            Log.d("Valid-x", stringConvEncrypt + " normal $stringConvDecrypt")
-        } else {
-            Log.d("in-Valid-x", stringConvEncrypt + " normal $stringConvDecrypt")
-        }
-        if (TEST == decrypt) {
-            Log.d("Valid-x", "$encrypt normal $decrypt")
-        } else {
-            Log.d("in-Valid-x", "$encrypt normal $decrypt")
+        val encryptText= encryptAESMessage(test, convertAESstringToKey(keyString))
+        val decryptText= decryptAESMessage(encryptText, convertAESstringToKey(keyString))
 
-        }
-        if (pubKey_1 == publicKey) {
-            Log.d(
-                "valid-x key",
-                (keyToString(pubKey_1.encoded) == keyToString(publicKey.encoded)).toString()
-            )
-        }
+        Log.d("runAESTest", "$test $encryptText $decryptText")
     }
 
     fun submitPublicKey(key: String, key2: String = "") {
@@ -197,17 +187,18 @@ object Crypto {
     }
 
     fun convertAESKeyToString(key: SecretKey): String {
-        return Base64.getEncoder().encodeToString(key.encoded);
+        return Base64.getEncoder().encodeToString(key.encoded)
     }
 
     fun convertAESstringToKey(key: String?): SecretKey? {
 
-        if (key?.length === 0) {
+        if (key?.length== 0) {
             return null
         }
-        val decodedKey: ByteArray = Base64.getDecoder().decode(key)
-        val restoredKey: SecretKey = SecretKeySpec(decodedKey, 0, decodedKey.size, "AES")
-        return restoredKey
+//        val decodedBytes = Base64.getDecoder().decode(key)
+//        return SecretKeySpec(decodedBytes, "AES")
+        val decodedKey = Base64.getDecoder().decode(key)
+        return SecretKeySpec(decodedKey, 0, decodedKey.size, ALGORITHM)
     }
 
 
@@ -217,24 +208,34 @@ object Crypto {
         fileInput.read(audioData)
         fileInput.close()
 
-        val cipher = Cipher.getInstance("AES")
-        cipher.init(Cipher.ENCRYPT_MODE, key)
 
+        val cipher = Cipher.getInstance(ALGORITHM)
+        cipher.init(Cipher.ENCRYPT_MODE, key)
+        val  file=File(filePath)
         val encryptedData = cipher.doFinal(audioData)
+        file.delete()
+
         return Base64.getEncoder().encodeToString(encryptedData)
 
     }
-    fun decryptAudio(data:String,key:SecretKey): File {
+    fun decryptAudio(data:String,key:SecretKey,path:String): File {
         val audioData=Base64.getDecoder().decode(data)
-        val cipher=Cipher.getInstance("AES")
+        val cipher=Cipher.getInstance(ALGORITHM)
         cipher.init(Cipher.DECRYPT_MODE,key)
         val decrypted=cipher.doFinal(audioData)
-        val outputStream=FileOutputStream("test")
-        val file=File("test")
-        file.delete()
+        val outputStream=FileOutputStream(path)
+        val file=File(path)
 
         outputStream.write(decrypted)
         outputStream.close()
         return file
+    }
+
+
+
+    fun runAESTestCrypto(){
+
+        val test= getAES()
+        runAESTest(test)
     }
 }

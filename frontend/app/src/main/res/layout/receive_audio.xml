@@ -8,9 +8,9 @@
         android:layout_width="wrap_content"
         android:background="@drawable/receive_text"
         android:padding="10dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="5dp"
+        android:layout_margin="5dp"
 
         android:layout_height="55dp"
 

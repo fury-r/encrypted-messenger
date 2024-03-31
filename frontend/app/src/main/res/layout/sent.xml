@@ -7,9 +7,9 @@ android:layout_height="wrap_content">
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="55dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
         android:background="@drawable/send_text"
         android:padding="10dp"
         tools:ignore="UselessParent">
@@ -18,7 +18,7 @@ android:layout_height="wrap_content">
             android:id="@+id/sentMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="This is sent message"
+            android:text="@string/this_is_sent_message"
             android:textColor="@color/white"
             android:textSize="17sp" />
 
@@ -36,10 +36,11 @@ android:layout_height="wrap_content">
                 android:layout_marginBottom="-15dp"
                 android:gravity="left"
                 android:text="@string/status"
-                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
                 android:layout_weight="1"
                 android:textColor="@color/black"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                tools:ignore="RtlHardcoded" />
             <TextView
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
@@ -49,8 +50,8 @@ android:layout_height="wrap_content">
                 android:gravity="right"
                 android:text="@string/time"
                 android:textColor="@color/black"
-
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                tools:ignore="RtlHardcoded" />
         </LinearLayout>
 
 

@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.fury.messenger.R
 import com.fury.messenger.Validater.VerifyTokenActivity
+import com.fury.messenger.crypto.Crypto.runAESTestCrypto
 import com.fury.messenger.main.MainActivity
 import com.fury.messenger.manageBuilder.ManageChanelBuilder
 import com.fury.messenger.manageBuilder.createAuthenticationStub
@@ -55,6 +56,7 @@ class LoginActivity : AppCompatActivity() {
                     permission[Manifest.permission.READ_CONTACTS] ?: hasReadContactPermission
 
             }
+        runAESTestCrypto()
         requestPermission()
         val tokenManager = TokenManager(this)
         val token = tokenManager.getToken()

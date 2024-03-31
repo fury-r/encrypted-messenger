@@ -14,13 +14,14 @@ class AudioRecorder (private  val ctx: Context):IAudioRecorder {
     private var recorder:MediaRecorder?=null
     override fun start(outputFile: File) {
         createMediaRecorder().apply {
+            recorder=this
+
             setAudioSource(MediaRecorder.AudioSource.MIC)
-            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-            setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+            setOutputFormat(MediaRecorder.OutputFormat.OGG)
+            setAudioEncoder(MediaRecorder.AudioEncoder.OPUS)
             setOutputFile(outputFile)
             prepare()
             start()
-            recorder=this
 
         }
 

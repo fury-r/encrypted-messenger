@@ -2,11 +2,6 @@ import * as grpc from "@grpc/grpc-js";
 import { GrpcClientService } from "../common/GrpcClientService";
 
 export const verifyToken = async (req: any, callback: any) => {
-  console.log(
-    JSON.stringify(req),
-    "verifyToken",
-    req.metadata.get("authorization")
-  );
   const metadata = new grpc.Metadata();
   metadata.add("authorization", req.metadata.get("authorization")[0]);
   const client = new GrpcClientService(undefined).getClient();

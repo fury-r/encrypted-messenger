@@ -1,6 +1,8 @@
 package com.fury.messenger.messages
 
+import ChatsByDate
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -10,17 +12,20 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fury.messenger.R
 import com.fury.messenger.crypto.Crypto
-import com.fury.messenger.data.db.model.Chat
 import com.fury.messenger.helper.audio.AudioPlayer
 import com.fury.messenger.helper.user.CurrentUser
 import com.services.Message.ContentType
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 import javax.crypto.SecretKey
 
 class MessageAdapter(
-    val context: Context, var messageList: List<Chat?>, uid: String?, var reciepentKey: SecretKey?
+    val context: Context, var messageList: ChatsByDate, uid: String?, var recipientKey: SecretKey?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
+    private  val  scope= CoroutineScope(Dispatchers.IO)
 
     private val player by lazy {
         AudioPlayer(context)
@@ -59,20 +64,19 @@ class MessageAdapter(
 
     override fun getItemViewType(position: Int): Int {
 
-        val currentMessage = messageList[position]
-        if (currentMessage != null) {
-            return if (CurrentUser.getCurrentUserPhoneNumber() == currentMessage.sender) {
-                if ((currentMessage.contentType as ContentType) == ContentType.Audio) {
-                    0
-                } else {
-                    2
-                }
+        val currentMessage = messageList.data[position]
+        Log.d("ss",currentMessage.contentType+" "+ ContentType.Audio.toString())
+        return if (CurrentUser.getCurrentUserPhoneNumber() == currentMessage.sender) {
+            if (currentMessage.contentType == ContentType.Audio.toString()) {
+                2
             } else {
-                if ((currentMessage.contentType as ContentType) == ContentType.Audio) {
-                    1
-                } else {
-                    3
-                }
+                0
+            }
+        } else {
+            if (currentMessage.contentType == ContentType.Audio.toString()) {
+                3
+            } else {
+                1
             }
         }
         return super.getItemViewType(position)
@@ -103,7 +107,7 @@ class MessageAdapter(
         }
     };
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val currentMessage = messageList[position]
+        val currentMessage = messageList.data[position]
         val touchListener= object :View.OnTouchListener {
 
             override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
@@ -111,14 +115,16 @@ class MessageAdapter(
                 if (p1 != null) {
                     when (p1.action) {
                         MotionEvent.ACTION_DOWN -> {
-                            val message = currentMessage!!.message
-                            val file = reciepentKey?.let {
-                                Crypto.decryptAudio(
-                                    message, it
-                                )
-                            }
-                            if (file != null) {
-                                player.playFile(file)
+                            scope.launch{
+                                val message = currentMessage!!.message
+                                val file = (async{recipientKey?.let {
+                                    Crypto.decryptAudio(
+                                        message, it, "${context.filesDir}/audio/test.mp3"
+                                    )
+                                }}).await()
+                                if (file != null) {
+                                    player.playFile(file)
+                                }
                             }
 
 
@@ -136,27 +142,32 @@ class MessageAdapter(
             }
 
         }
-        if (currentMessage != null) {
-            if (holder.javaClass == SentViewHolder::class.java) {
+
+        when (holder.javaClass) {
+            SentViewHolder::class.java -> {
                 val viewHolder = holder as SentViewHolder
                 viewHolder.sentMessage.text =
-                    Crypto.decryptMessage(currentMessage.message, CurrentUser.getPrivateKey())
+                    Crypto.decryptAESMessage(currentMessage.message, recipientKey)
+                Log.d("Key MessageAdapter",  currentMessage.message.toString())
+
                 //TODO: Add color to the text
                 viewHolder.status.text =
                     if (currentMessage.isSeen) "Read" else if (currentMessage.isDelivered) "Delivered" else "Sent"
                 viewHolder.time.text =
                     currentMessage.createdAt?.format(DateTimeFormatter.ofPattern("hh:mm:a")) ?: ""
 
-            } else if (holder.javaClass == ReceiveViewHolder::class.java) {
+            }
+            ReceiveViewHolder::class.java -> {
                 val viewHolder = holder as ReceiveViewHolder
 
                 viewHolder.receiveMessage.text =
-                    Crypto.decryptMessage(currentMessage.message, CurrentUser.getPrivateKey())
+                    Crypto.decryptAESMessage(currentMessage.message, recipientKey)
 
                 viewHolder.time.text =
                     currentMessage.createdAt?.format(DateTimeFormatter.ofPattern("hh:mm:a")) ?: ""
 
-            } else if (holder.javaClass == SentAudioViewHolder::class.java) {
+            }
+            SentAudioViewHolder::class.java -> {
                 val viewHolder = holder as SentAudioViewHolder
 
                 viewHolder.status.text =
@@ -167,7 +178,8 @@ class MessageAdapter(
 
                 viewHolder.playButton.setOnTouchListener(touchListener)
 
-            } else {
+            }
+            else -> {
                 val viewHolder = holder as ReceiveAudioViewHolder
 
                 viewHolder.playButton.setOnTouchListener(touchListener)
@@ -176,7 +188,7 @@ class MessageAdapter(
     }
 
     override fun getItemCount(): Int {
-        return messageList.size
+        return messageList.data.size
     }
 
 }

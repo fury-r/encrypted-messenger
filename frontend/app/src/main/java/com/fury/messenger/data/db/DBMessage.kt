@@ -6,8 +6,11 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import com.fury.messenger.crypto.Crypto
+import com.fury.messenger.crypto.Crypto.convertAESKeyToString
 import com.fury.messenger.crypto.Crypto.decryptMessage
+import com.fury.messenger.crypto.Crypto.encryptAESMessage
 import com.fury.messenger.crypto.Crypto.encryptMessage
+import com.fury.messenger.crypto.Crypto.runAESTest
 import com.fury.messenger.data.db.DbConnect.getDatabase
 import com.fury.messenger.data.db.model.Chat
 import com.fury.messenger.data.db.model.Contact
@@ -36,20 +39,18 @@ object DBMessage {
     val functions = arrayOf(::setMessages)
     private var scope = CoroutineScope(Dispatchers.Main)
     var presenfunc =
-        fun(callback: (messages: ArrayList<Chat?>, recipient: String?) -> ArrayList<Chat?>) {
-
+        fun(callback: (messages: ArrayList<Chat>, recipient: String?) -> ArrayList<Chat>) {
         }
-    var listeners: (callback: (messages: ArrayList<Chat?>, recipient: String?) -> ArrayList<Chat?>) -> Unit =
+    var listeners: ((ArrayList<Chat>, String?) -> ArrayList<Chat>) -> Unit =
         presenfunc
-    private val DB_BUFFER: ArrayList<Chat?> = arrayListOf<Chat?>()
-
+    private val DB_BUFFER: ArrayList<Chat> = arrayListOf<Chat>()
 
 
     private fun setMessages(messages: ArrayList<Chat>) {
 
     }
 
-    fun getDB_BUFFER(): ArrayList<Chat?> {
+    fun getDB_BUFFER(): ArrayList<Chat> {
         return this.DB_BUFFER
     }
 
@@ -57,7 +58,7 @@ object DBMessage {
         this.DB_BUFFER.clear()
     }
 
-    private fun addAllData(messages: ArrayList<Chat?>, recipient: String?): ArrayList<Chat?> {
+    private fun addAllData(messages: ArrayList<Chat>, recipient: String?): ArrayList<Chat> {
         messages.addAll(getDB_BUFFER())
         return messages
     }
@@ -68,22 +69,20 @@ object DBMessage {
     }
 
 
-
-
     // save handshake request in db
-     fun saveHandshake(ctx:Context,message: KeyExchange) {
+    fun saveHandshake(ctx: Context, message: KeyExchange) {
 
         val db = Room.databaseBuilder(
             ctx,
             AppDatabase::class.java, "main.db"
         ).build()
-        val contact=db.contactDao().findByNumber(message.reciever)
-        contact.key=message.key
+        val contact = db.contactDao().findByNumber(message.reciever)
+        contact.key = message.key
         db.contactDao().update(contact)
 
     }
 
-    suspend fun messageThreadHandler(ctx:Context,data: MessageRequest): Any {
+    suspend fun messageThreadHandler(ctx: Context, data: MessageRequest): Any {
         val privateKey = CurrentUser.getPrivateKey()!!
         if (data.type == com.services.Message.MessageType.INSERT) {
             val chat = Chat(
@@ -99,17 +98,18 @@ object DBMessage {
                 null
             )
 
-            insertMessage(ctx,chat)
-            chat.message=decryptMessage(data.message.text, privateKey)!!
+            insertMessage(ctx, chat)
+            chat.message = decryptMessage(data.message.text, privateKey)!!
             this.DB_BUFFER.add(chat)
 
         } else if (data.type == MessageType.UPDATE) {
             if (data.message.messageId.isEmpty()) {
-                markAllAsRead(ctx,data.message.sender)
+                markAllAsRead(ctx, data.message.sender)
 
 
             } else {
-                updateData(ctx,
+                updateData(
+                    ctx,
                     data.message.sender,
                     data.message.reciever,
                     data.message.contentType,
@@ -126,14 +126,14 @@ object DBMessage {
     }
 
 
-    private fun markAllAsRead(ctx: Context,receiver: String) {
+    private fun markAllAsRead(ctx: Context, receiver: String) {
 
-       val db = Room.databaseBuilder(
-           ctx,
-           AppDatabase::class.java, "main.db"
-       ).build()
+        val db = Room.databaseBuilder(
+            ctx,
+            AppDatabase::class.java, "main.db"
+        ).build()
 
-       db.chatsDao().markAllAsReadAndDelivered(true,true ,null,receiver)
+        db.chatsDao().markAllAsReadAndDelivered(true, true, null, receiver)
 
     }
 
@@ -147,7 +147,7 @@ object DBMessage {
         ).build()
 
 
-    db.chatsDao().insertAll(chat )
+        db.chatsDao().insertAll(chat)
     }
 
     @SuppressLint("SuspiciousIndentation")
@@ -156,8 +156,8 @@ object DBMessage {
         sender: String,
         receiver: String,
         contentType: ContentType? = ContentType.Text,
-        deliveryStatus: Boolean?= false,
-        readStatus: Boolean ?= false,
+        deliveryStatus: Boolean? = false,
+        readStatus: Boolean? = false,
         messageId: String
     ) {
         withContext(Dispatchers.IO) {
@@ -173,7 +173,7 @@ object DBMessage {
 
 
             if (deliveryStatus != null && readStatus != null) {
-                    db.chatsDao().markAllAsReadAndDelivered(deliveryStatus, readStatus ,messageId)
+                db.chatsDao().markAllAsReadAndDelivered(deliveryStatus, readStatus, messageId)
 
             }
 
@@ -193,60 +193,69 @@ object DBMessage {
         ).build()
 
 
-        return  ArrayList(db.chatsDao().loadChatsByNumber(reciever))
+        return ArrayList(db.chatsDao().loadChatsByNumber(reciever))
 
     }
-      fun initiateHandShake(recipientDetails:Contact): SecretKey {
+
+    fun initiateHandShake(recipientDetails: Contact, message: String? = null): SecretKey {
         Log.d("Initiate handshake", "Generate Symmetric key")
 
-        val client= createAuthenticationStub(CurrentUser.getToken())
+        val client = createAuthenticationStub(CurrentUser.getToken())
 
         // generate new private and public keys
-        val  encryptKey = Crypto.getAES()!!
+        val encryptKey = Crypto.getAES()
+        if (message != null) {
+            runAESTest(encryptKey, message)
+        }
         val contact =
-            DbConnect.getDatabase().contactDao().findByNumber(recipientDetails.phoneNumber!!)
-        contact.key = Crypto.convertAESKeyToString(encryptKey!!)
-        DbConnect.getDatabase().contactDao().update(contact)
+            getDatabase().contactDao().findByNumber(recipientDetails.phoneNumber)
+        contact.key = convertAESKeyToString(encryptKey)
+        getDatabase().contactDao().update(contact)
 
         val recipientPublicKey =
-            CurrentUser.convertStringToKeyFactory(recipientDetails!!.pubKey!!, 0)
+            CurrentUser.convertStringToKeyFactory(recipientDetails.pubKey!!, 0)
         val message = KeyExchange.newBuilder()
             .setSender(CurrentUser.getCurrentUserPhoneNumber())
-            .setReciever(recipientDetails!!.phoneNumber).setKey(
+            .setReciever(recipientDetails.phoneNumber).setKey(
                 contact.key!!
             ).build()
 
         val event = Event.newBuilder().setType(Message.EventType.HANDSHAKE)
             .setExchange(encryptMessage(message.toString(), recipientPublicKey))
-            .setReciever(recipientDetails!!.phoneNumber).build()
+            .setReciever(recipientDetails.phoneNumber).build()
         client.send(event)
         return encryptKey
     }
 
-     fun sendMessage(ctx: Context,chat:Chat,reciever:Contact,encryptKey:SecretKey,messageType:ContentType){
-        val client= createAuthenticationStub(CurrentUser.getToken())
+    fun sendMessage(
+        ctx: Context,
+        chat: Chat,
+        reciever: Contact,
+        encryptKey: SecretKey,
+        messageType: ContentType
+    ) {
+        val client = createAuthenticationStub(CurrentUser.getToken())
 
 
         val message =
-            MessageInfo.newBuilder().setMessageId(chat.messageId).setText(encryptMessage(chat.message,
-                CurrentUser.convertStringToKeyFactory(reciever.pubKey!!,2)))
+            MessageInfo.newBuilder().setMessageId(chat.messageId).setText(chat.message)
                 .setSender(CurrentUser.getCurrentUserPhoneNumber())
                 .setReciever(reciever.phoneNumber).setContentType(messageType)
                 .build()
-        chat.message= encryptMessage(chat.message,CurrentUser.getPublicKey())
-        this.insertMessage(ctx,
+
+        this.insertMessage(
+            ctx,
             chat
         )
 
-        Log.d("ee", message.toString())
+
         val chatRequestBuilder = MessageRequest.newBuilder().setMessage(message)
             .setType(MessageType.INSERT).build()
-        //TODO: FIX Enum issue
         val event =
             Event.newBuilder().setType(Message.EventType.MESSAGE).setReciever(
                 reciever.phoneNumber
             ).setMessage(
-                Crypto.encryptAESMessage(
+                encryptAESMessage(
                     chatRequestBuilder.toString(),
                     encryptKey
                 )
@@ -264,9 +273,16 @@ object DBMessage {
             val messageRequest =
                 MessageRequest.newBuilder().setMessage(message).setType(Message.MessageType.UPDATE)
                     .build()
-            val database=getDatabase()
+            val database = getDatabase()
             val event =
-                Event.newBuilder().setMessage(Crypto.encryptAESMessage(messageRequest.toString(),Crypto.convertAESstringToKey(database.contactDao().findByNumber(recipientNumber).key!!))).setType(Message.EventType.MESSAGE)
+                Event.newBuilder().setMessage(
+                    encryptAESMessage(
+                        messageRequest.toString(),
+                        Crypto.convertAESstringToKey(
+                            database.contactDao().findByNumber(recipientNumber).key!!
+                        )
+                    )
+                ).setType(Message.EventType.MESSAGE)
                     .build()
 
             val client = createAuthenticationStub(CurrentUser.getToken())
@@ -276,10 +292,9 @@ object DBMessage {
     }
 
 
-
-    suspend  fun blockUser(phoneNumber:String){
+    suspend fun blockUser(phoneNumber: String) {
         val isBlocked = CurrentUser.isBlocked(phoneNumber)
-        val client= createAuthenticationStub(CurrentUser.getToken())
+        val client = createAuthenticationStub(CurrentUser.getToken())
 
         val request = UserOuterClass.BlockRequest.newBuilder()
             .setNumber(phoneNumber)
@@ -289,15 +304,15 @@ object DBMessage {
             request.setBlock(true)
         }
 
-        try{
+        try {
             val response = client.blockUser(request.build())
             val arrayList = response.blockedUsersList.stream().collect(
                 Collectors.toCollection(
                     Supplier { ArrayList() })
             )
             CurrentUser.setBlockedUser(arrayList as ArrayList<String>)
-        }catch (e:Error){
-            Log.d("Error while calling block User",e.toString())
+        } catch (e: Error) {
+            Log.d("Error while calling block User", e.toString())
 
         }
     }
