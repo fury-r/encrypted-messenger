@@ -10,18 +10,28 @@ import "message.proto";
 import "auth.proto";
 // import "hello.proto";
 import "user.proto";
-import "keyexchange.proto";
+
+message UserRequest{
+        string phoneNumber=1;
+}
+message UserResponse{
+        string phoneNumber=1;
+        string pubKey=2;
+        repeated string blocked_users=3;
+
+}
+
 service Services{
         rpc Login(LoginRequest) returns (LoginResponse) {}
         rpc Register(RegisterRequest) returns (RegisterResponse) {}
-        rpc Otp(OtpRequest) returns (OtpResponse) {}
+        rpc Otp(OtpRequest) returns (AuthResponse) {}
         rpc ValidateContacts(ContactsList) returns (ContactsList) {}
         rpc Send (Event) returns (Event) {}
         rpc messageUpdate(MessageUpdateRequest) returns (MessageUpdateResponse) {}
         rpc VerifyToken(AuthRequest) returns (AuthResponse) {}
         rpc savePubKey(User) returns (User) {}
-        rpc handShake(PubKeyExchange) returns (PubKeyExchange) {}
+        rpc handShakeRequest(Event) returns (Event) {}
+        rpc getUser(UserRequest) returns (UserResponse) {}
+        rpc blockUser(BlockRequest) returns (BlockResponse) {}
         // rpc SayHello (HelloRequest) returns (HelloReply) {}
-    
-
 }

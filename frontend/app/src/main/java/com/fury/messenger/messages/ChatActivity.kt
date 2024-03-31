@@ -1,191 +1,294 @@
 package com.fury.messenger.messages
 
+import ChatsByDate
+import ParentAdapter
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.MotionEvent
+import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.SearchView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fury.messenger.R
-import com.fury.messenger.TripleDES
-import com.fury.messenger.data.db.Chat
-import com.fury.messenger.data.db.DBHelper
+import com.fury.messenger.crypto.Crypto
+import com.fury.messenger.crypto.Crypto.convertAESstringToKey
+import com.fury.messenger.crypto.Crypto.decryptAESMessage
+import com.fury.messenger.crypto.Crypto.encryptAudio
+import com.fury.messenger.crypto.Crypto.runAESTest
 import com.fury.messenger.data.db.DBMessage
 import com.fury.messenger.data.db.DBMessage.eraseDB_BUFFER
 import com.fury.messenger.data.db.DBMessage.getDB_BUFFER
-import com.fury.messenger.data.db.DBMessage.getMessageByTableName
+import com.fury.messenger.data.db.DBMessage.initiateHandShake
 import com.fury.messenger.data.db.DBMessage.listeners
 import com.fury.messenger.data.db.DBMessage.presenfunc
-import com.fury.messenger.data.db.DBMessage.sendSeenEvent
+import com.fury.messenger.data.db.DBMessage.sendMessage
 import com.fury.messenger.data.db.DBUser
-import com.fury.messenger.data.helper.contact.Contact
-import com.fury.messenger.data.helper.user.CurrentUser
-import com.fury.messenger.data.helper.user.CurrentUser.convertStringToKeyFactory
-import com.fury.messenger.manageBuilder.ManageChanelBuilder
-import com.fury.messenger.rsa.RSA.decryptMessage
-import com.fury.messenger.rsa.RSA.encryptMessage
+import com.fury.messenger.data.db.DbConnect
+import com.fury.messenger.data.db.model.Chat
+import com.fury.messenger.data.db.model.Contact
+import com.fury.messenger.helper.audio.AudioPlayer
+import com.fury.messenger.helper.audio.AudioRecorder
+import com.fury.messenger.helper.user.AppDatabase
+import com.fury.messenger.helper.user.CurrentUser
+import com.fury.messenger.helper.user.CurrentUser.convertStringToKeyFactory
+import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
 import com.services.Message
-import com.services.Message.Event
-import com.services.Message.MessageInfo
-import com.services.Message.MessageRequest
+import com.services.Message.ContentType
+import com.services.ServicesGrpc.ServicesBlockingStub
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.security.PublicKey
-import kotlin.concurrent.thread
+import java.io.File
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.OffsetDateTime
+import javax.crypto.SecretKey
 
 class ChatActivity : AppCompatActivity() {
-    private lateinit var messageRecyleView:RecyclerView 
+    private lateinit var messageRecyleView: RecyclerView
     private lateinit var messageBox: EditText
     private lateinit var sendBtn: ImageView
     private lateinit var title: TextView
-    private lateinit var messageAdapter:MessageAdapter
-    private lateinit var messageList:ArrayList<Chat>
-    private var  recipientDetails:Contact?=null
-    private   var scope= CoroutineScope(Dispatchers.Main)
-     var receiverRoom:String?=null
-      var senderRoom:String?=null
+    private lateinit var messageAdapter: ParentAdapter
+    private lateinit var messageList: ArrayList<Chat>
+    private var recipientDetails: Contact? = null
+    private var scope = CoroutineScope(Dispatchers.Main)
+    private var receiverRoom: String? = null
+    private var senderRoom: String? = null
+    private lateinit var client: ServicesBlockingStub;
+    private lateinit var progressBar: ProgressBar
+    private lateinit var db: AppDatabase
+    private lateinit var micButton: Button
+    private lateinit var directory: File
+    private lateinit var search: SearchView
+    private lateinit var phoneNumber: String
 
-
+    private var audioMessageFileName: String? = null
+    private val recorder by lazy {
+        AudioRecorder(applicationContext)
+    }
+    private val player by lazy {
+        AudioPlayer(applicationContext)
+    }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
+
         supportActionBar!!.setBackgroundDrawable(ColorDrawable(Color.parseColor("#322F2F")))
-        this.supportActionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM;
-        supportActionBar?.setDisplayShowCustomEnabled(true);
-        supportActionBar?.setCustomView(R.layout.message_titlebar);
-        val phoneNumber=intent.getStringExtra("phoneNumber")
-        val name=intent.getStringExtra("name")
+        this.supportActionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+        supportActionBar?.setDisplayShowCustomEnabled(true)
+        supportActionBar?.setCustomView(R.layout.message_titlebar)
+        phoneNumber = intent.getStringExtra("phoneNumber") ?: ""
+        val Contact = intent.getStringExtra("Contact")
 
-        val receiverUid=intent.getStringExtra("uid")
-        val uri =intent.getStringExtra("uri")
-        Log.d("uri",uri.toString())
+        val receiverUid = intent.getStringExtra("uid")
+        val uri = intent.getStringExtra("uri")
+        val key = intent.getStringExtra("key")
 
-        val channel=ManageChanelBuilder.channel
-        val client=ManageChanelBuilder.client
-
-        val senderUid=FirebaseAuth.getInstance().currentUser?.uid
-        val dbHelper=DBHelper(this)
-
-
-        senderRoom=receiverUid+senderUid
-        receiverRoom=senderUid+receiverUid
-        messageRecyleView=findViewById(R.id.chatRecyclerView)
-        messageBox=findViewById(R.id.messagebox)
-        title=findViewById(R.id.username)
-        sendBtn=findViewById(R.id.sendBtn)
-        messageList=ArrayList()
-        title.text = name!!
-        messageRecyleView=findViewById(R.id.chatRecyclerView)
-        messageAdapter=MessageAdapter(this,messageList,receiverUid)
-        DBMessage.listeners=fun(callback:(messages:ArrayList<Chat>,recipient:String?)->ArrayList<Chat>){
-
-            this. messageAdapter.messageList= callback(messageList,phoneNumber)
-            runOnUiThread {
-                messageAdapter.notifyDataSetChanged()
-            }
+        directory = File(applicationContext.filesDir, "audio")
+        if (!directory.exists()) {
+            directory.mkdir()
         }
-        messageRecyleView.layoutManager= LinearLayoutManager(this)
-        messageRecyleView.adapter=messageAdapter
+
+        client = createAuthenticationStub(CurrentUser.getToken())
+
+        val senderUid = FirebaseAuth.getInstance().currentUser?.uid
+        db = DbConnect.getDatabase(this)
+
+
+        senderRoom = receiverUid + senderUid
+        receiverRoom = senderUid + receiverUid
+        messageRecyleView = findViewById(R.id.chatRecyclerView)
+        messageBox = findViewById(R.id.messagebox)
+        title = findViewById(R.id.username)
+        sendBtn = findViewById(R.id.sendBtn)
+        progressBar = findViewById(R.id.progressBar)
+        micButton = findViewById(R.id.micButton)
+        search = findViewById(R.id.searchView)
+        messageList = ArrayList()
+        title.text = Contact!!
+        messageRecyleView = findViewById(R.id.chatRecyclerView)
+        if (key != null) {
+            Log.d("key", key)
+            convertAESstringToKey(key)?.let { runAESTest(it) }
+        }
+        messageAdapter = ParentAdapter(
+            formatMessagesByDate(messageList),
+            this,
+            receiverUid,
+            convertAESstringToKey(key)
+        )
+
+        listeners =
+            @SuppressLint("NotifyDataSetChanged")
+            fun(callback: (messages: ArrayList<Chat>, recipient: String?) -> ArrayList<Chat>) {
+
+                val message = callback(messageList, phoneNumber)
+                runOnUiThread {
+                    messageAdapter.notifyDataSetChanged()
+                }
+            }
+
+
+        messageRecyleView.layoutManager = LinearLayoutManager(this)
+        messageRecyleView.adapter = messageAdapter
+        this.progressBar.isVisible = true
+
+
         scope.launch {
 
-            withContext(Dispatchers.IO){
-                var recipientDetails=   DBUser.getDataByPhoneNumber(dbHelper,phoneNumber!!)
 
-                if (recipientDetails != null) {
+            withContext(Dispatchers.IO) {
+
+                try {
+                    val recipientDetails = DBUser.getDataByPhoneNumber(phoneNumber!!)
                     this@ChatActivity.setRecipientDetails(recipientDetails)
-                }
-                val messages=
-                    recipientDetails?.getPhoneNumber()?.let { getMessageByTableName(it,dbHelper) }
-                if (messages != null) {
-                    val hasUnread=messages.find { value->value.isSeen==false }
-                    if(hasUnread!=null && recipientDetails != null){
-                            sendSeenEvent(recipientDetails.getPhoneNumber())
+
+
+                    val messages = (async {
+                        DBMessage.getMessageByTableName(
+                            this@ChatActivity, recipientDetails.phoneNumber
+                        )
+                    }).await()
+                    Log.d("getMessageByTableName", "got Messages $messages")
+
+                    val hasUnread = messages.find { value -> value?.isSeen == false }
+                    if (hasUnread != null) {
+                        DBMessage.sendSeenEvent(recipientDetails.phoneNumber)
 
 
                     }
-                    setMessages(messages)
+
+                    setMessages(messages as ArrayList<Chat>)
+
+                } catch (err: Error) {
+                    Log.d("Error", err.toString())
+                } finally {
+                    runOnUiThread {
+                        this@ChatActivity.progressBar.isVisible = false
+                    }
+
                 }
             }
         }
-
-        sendBtn.setOnClickListener {
-        val messageText=messageBox.text.toString()
         scope.launch {
-                recipientDetails?.getPubKey()?.let { it1 -> Log.d("key", it1) }
-                val encryptedMessage=encryptMessage(messageText,
-                    recipientDetails?.getPubKey()?.let { it1 -> convertStringToKeyFactory(it1,2) } as PublicKey
-                )
+            withContext(Dispatchers.IO) {
+                this@ChatActivity.startListener()
 
-                val dbHelper=DBHelper(this@ChatActivity)
-
-                val  query="Select * FROM table_${recipientDetails!!.getPhoneNumber()}"
-                val db=dbHelper.readableDatabase
-                val result=db.rawQuery(query,null)
-                //INFO: Hashing the Id so that it creates a new string which can act as an unique ID
-                val id=CurrentUser.getPublicKey()?.let { it1 ->
-                    encryptMessage(result.count.toString(),it1)}
-                val myEncryptMessage= CurrentUser.getPublicKey()?.let { it1 ->
-                    encryptMessage(messageText,it1)}
-
-
-            if ( id!=null) {
-                setMessageClass(id,messageText)
             }
+        }
+        messageBox.setOnClickListener {
 
-
-
-            if (myEncryptMessage != null) {
-                com.fury.messenger.data.db.DBMessage.insertMessage(dbHelper, "${recipientDetails!!.getPhoneNumber()}",
-                    myEncryptMessage,
-                    CurrentUser.getPhoneNumber()!!,
-                    recipientDetails!!.getPhoneNumber()!!, messageId = id)
+            scope.launch {
+                if (recipientDetails != null) {
+                    Log.d("Create Event", Message.EventType.TYPE_UPDATE.toString())
+                    val event =
+                        Message.Event.newBuilder().setReciever(recipientDetails!!.phoneNumber)
+                            .setType(Message.EventType.TYPE_UPDATE).build()
+                    client.send(event)
+                }
             }
-
-
-
-                val message=MessageInfo.newBuilder().setMessageId(id).setText(encryptedMessage).setSender(CurrentUser.getPhoneNumber()).setReciever(recipientDetails!!.getPhoneNumber()).setContentType("text").build()
-                val chatRequestBuilder=MessageRequest.newBuilder().setMessage(message).setType(Message.MessageType.INSERT).build()
-                //TODO: FIX Enum issue
-               val event=Event.newBuilder().setType(Message.EventType.MESSAGE).setMessage(chatRequestBuilder).setToken(CurrentUser.getToken()).build()
-
-
-
-            client.send(event)
 
 
         }
-        messageBox.setText("")
 
-    }
+        sendBtn.setOnClickListener {
+            val messageText = messageBox.text.toString()
+            scope.launch {
+                sendProcessMessage(messageText, recipientDetails!!, Message.ContentType.Text)
+            }
+            messageBox.setText("")
 
+        }
+        this.micButton.setOnClickListener {
+            recorder.start(
+                File(
+                    directory,
+                    (recipientDetails?.phoneNumber ?: "") + " " + LocalDateTime.now()
+                )
+            )
+
+        }
+        this.micButton.setOnTouchListener(
+            object : View.OnTouchListener {
+
+                override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
+
+                    if (p1 != null) {
+                        when (p1.action) {
+                            MotionEvent.ACTION_DOWN -> {
+                                audioMessageFileName = (recipientDetails?.phoneNumber
+                                    ?: "") + "-" + LocalDateTime.now() + ".mp3"
+
+                                recorder.start(File(directory, audioMessageFileName))
+
+
+                            }
+
+                            MotionEvent.ACTION_UP -> {
+                                val key: SecretKey
+                                if (recipientDetails?.key == null) {
+                                    key = recipientDetails?.let { initiateHandShake(it) }!!
+                                    messageAdapter.recipientKey = key
+                                } else {
+
+                                    key = convertAESstringToKey(recipientDetails!!.key)!!
+                                }
+                                recorder.stop()
+                                if (audioMessageFileName != null) {
+                                    scope.launch {
+                                        sendProcessMessage(
+                                            encryptAudio(
+                                                directory.path + "/" + audioMessageFileName,
+                                                key!!
+                                            ), recipientDetails!!, Message.ContentType.Audio
+                                        )
+                                        this@ChatActivity.audioMessageFileName = null
+                                    }
+                                }
+                                p0?.performClick()
+                            }
+                        }
+                    }
+
+                    return true
+
+                }
+
+            })
 
     }
 
 
     override fun onDestroy() {
         super.onDestroy()
-        listeners=presenfunc
+        listeners = presenfunc
     }
-    suspend fun startListener(){
+
+    private suspend fun startListener() {
         scope.run {
-            while (true){
-                while (getDB_BUFFER().size>0){
-                    getDB_BUFFER().forEach{value->addMessage(value)}
+            while (true) {
+                while (getDB_BUFFER().size > 0) {
+                    getDB_BUFFER().forEach { value -> addMessage(value) }
                 }
                 delay(1000)
 
@@ -194,35 +297,196 @@ class ChatActivity : AppCompatActivity() {
 
         }
     }
-      private fun setMessages(messages:ArrayList<Chat>){
-          this. messageAdapter.messageList=messages
-          this.messageList=messages
-          runOnUiThread {
-              messageAdapter.notifyDataSetChanged()
-              messageRecyleView.scrollToPosition(this.messageList.size-1)
 
-          }
-      }
-    private fun setRecipientDetails(details: Contact){
-        this.recipientDetails=details
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.user_menu, menu)
+        return super.onCreateOptionsMenu(menu)
     }
-    private  fun addMessage(message:Chat){
-        this.messageList.add(message)
-        messageAdapter.messageList=messageList
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        if (menu != null) {
+            com.fury.messenger.helper.ui.Menu.onPrepareOptionsMenu(
+                menu,
+                recipientDetails!!,
+                this,
+                hideDelete = true
+            )
+        }
+
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        Log.d("ddd", "DDDDd")
+
+
+        when (item.itemId) {
+
+
+            R.id.pin -> {
+
+                scope.launch {
+                    val contact = db.contactDao().findByNumber(recipientDetails!!.phoneNumber)
+                    if (contact.isPinned == true) {
+                        contact.isPinned = false
+                        db.contactDao().update(contact)
+                        runOnUiThread {
+                            item.title = "Pin"
+                        }
+                    } else {
+                        contact.isPinned = true
+                        db.contactDao().update(contact)
+                        runOnUiThread {
+                            item.title = "Un Pin"
+                        }
+                    }
+
+                }
+
+            }
+
+            R.id.block -> {
+
+                scope.launch {
+                    DBMessage.blockUser(phoneNumber)
+                }
+
+            }
+
+            R.id.searchItem -> {
+                search.visibility = View.VISIBLE
+
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun setMessages(messages: ArrayList<Chat>) {
+
+
+        this.messageList = messages
+        this.messageAdapter.messageList = formatMessagesByDate(messages)
         runOnUiThread {
             messageAdapter.notifyDataSetChanged()
-            messageRecyleView.scrollToPosition(this.messageList.size-1)
+            messageRecyleView.scrollToPosition(this.messageList.size - 1)
 
         }
     }
 
-    private  fun setMessageClass(id:String, message: String){
-        val chat= CurrentUser.getPhoneNumber()?.let { it1 ->
-            Chat(id,
-                it1, recipientDetails!!.getPhoneNumber(),id,message,"text",false,false)
+    private fun setRecipientDetails(details: Contact) {
+        this.recipientDetails = details
+    }
+
+    private fun addMessage(message: Chat) {
+        Log.d("this.messageList", this.messageList.toString())
+
+        this.messageList.add(message)
+        this.messageAdapter.messageList = formatMessagesByDate(messageList)
+        runOnUiThread {
+            messageAdapter.notifyDataSetChanged()
+            messageRecyleView.scrollToPosition(this.messageList.size - 1)
+
+        }
+    }
+
+    private fun setMessageClass(id: String, message: String,contentType:ContentType): Chat? {
+
+        Log.d("setMessageClass", message)
+        val chat = CurrentUser.getCurrentUserPhoneNumber()?.let {
+            recipientDetails?.let { it1 ->
+                Chat(
+                    0,
+                    it,
+                    it1.phoneNumber,
+                    message,
+                    id,
+                    contentType.name,
+                    isDelivered = false,
+                    isSeen = false,
+                    Message.MessageType.INSERT.toString(),
+                    OffsetDateTime.now(),
+                    OffsetDateTime.now()
+                )
+            }
         }
         if (chat != null) {
             this.addMessage(chat)
         }
+        return chat
+
     }
+
+
+    @SuppressLint("NotifyDataSetChanged")
+    suspend fun sendProcessMessage(
+        messageText: String,
+        recipientDetails: Contact,
+        messageType: Message.ContentType
+    ) {
+        withContext(Dispatchers.IO) {
+            recipientDetails.let { it1 -> Log.d("recipientDetails", it1.phoneNumber) }
+            recipientDetails.pubKey.let { it1 ->
+                if (it1 != null) {
+                    Log.d("key", it1)
+                }
+            }
+            var encryptKey: SecretKey? = recipientDetails.key?.let { it1 ->
+                convertAESstringToKey(
+                    it1
+                )
+            }
+
+
+            // if publicKey is not present then perform handshake
+            if (encryptKey == null) {
+                Log.d("HandShake", "Initiate Handshake")
+                val handShakeEncryptKey = async { initiateHandShake(recipientDetails, messageText) }
+                encryptKey = handShakeEncryptKey.await()
+
+                runOnUiThread {
+                    messageAdapter.recipientKey = encryptKey
+
+                    this@ChatActivity.messageAdapter.notifyDataSetChanged()
+                }
+
+            }
+
+            val id = Crypto.encryptMessage(
+                DbConnect.getDatabase().chatsDao()
+                    .loadChatsByNumber(recipientDetails.phoneNumber).size.toString(),
+                convertStringToKeyFactory(recipientDetails.pubKey!!, 0)
+            )
+            val encryptedMessage = Crypto.encryptAESMessage(
+                messageText, encryptKey
+            )
+            Log.d("encrypt", encryptedMessage)
+            Log.d("decrypt", decryptAESMessage(encryptedMessage, encryptKey))
+            val chat = setMessageClass(id, encryptedMessage, messageType) as Chat
+            Log.d("testtt", chat.message)
+
+
+            sendMessage(this@ChatActivity, chat, recipientDetails, encryptKey, messageType)
+
+        }
+    }
+
+    fun formatMessagesByDate(messages: ArrayList<Chat>): ArrayList<ChatsByDate> {
+        val dateByMessage = HashMap<LocalDate, ArrayList<Chat>>()
+
+        messages.forEach {
+            val date = it!!.createdAt!!.toLocalDate()
+            if (!dateByMessage.containsKey(date)) {
+                dateByMessage[date] = arrayListOf<Chat>()
+            }
+
+            dateByMessage[date]!!.add(it)
+
+        }
+        return dateByMessage.entries.map {
+            ChatsByDate(it.key, it.value)
+        } as ArrayList<ChatsByDate>
+    }
+
 }

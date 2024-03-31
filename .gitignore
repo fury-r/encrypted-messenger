@@ -61,11 +61,9 @@ middeware/*.swo
 middeware/.DS_Store
 
 # test coverage
-middeware/coverage/
+middleware/coverage
 
-# package locks
-/middleware/yarn.lock
-/middleware/package-lock.json
+
 
 
 
@@ -92,5 +90,8 @@ backend/*.out
 node_modules
 npm-debug.log
 
-package-lock.json
-backend/utils/authToken.go
+# protobuf compiler for kotlin
+frontend/tools/protobuf/compiler
+
+# Enviroment variables
+*.env

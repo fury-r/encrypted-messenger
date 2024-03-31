@@ -2,8 +2,8 @@ package com.fury.messenger.utils
 
 import android.content.Context
 import android.util.Log
-import com.fury.messenger.data.helper.user.CurrentUser.convertStringToKeyFactory
-import com.fury.messenger.data.helper.user.CurrentUser.keyToString
+import com.fury.messenger.helper.user.CurrentUser.convertStringToKeyFactory
+import com.fury.messenger.helper.user.CurrentUser.keyToString
 import com.fury.messenger.utils.Constants.APP_NAME
 import com.fury.messenger.utils.Constants.PREFS_TOKEN
 import com.fury.messenger.utils.Constants.USER_TOKEN

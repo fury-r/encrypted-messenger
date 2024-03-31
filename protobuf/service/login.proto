@@ -10,8 +10,7 @@ option java_package = "com.services";
 message LoginRequest {
     string phoneNumber = 1;
     string password=2;
-    bool use_password=3;
-    optional string countryCode=4;
+    optional string countryCode=3;
 
 }
 message LoginResponse {

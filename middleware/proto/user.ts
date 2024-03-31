@@ -12,14 +12,13 @@ export interface User {
   'uuid'?: (string);
   'token'?: (string);
   'pubKey'?: (string);
-  'privKey'?: (string);
+  'blockedUsers'?: (string)[];
   '_username'?: "username";
   '_password'?: "password";
   '_email'?: "email";
   '_countryCode'?: "countryCode";
   '_updatedAt'?: "updatedAt";
   '_pubKey'?: "pubKey";
-  '_privKey'?: "privKey";
 }
 
 export interface User__Output {
@@ -32,5 +31,5 @@ export interface User__Output {
   'uuid'?: (string);
   'token'?: (string);
   'pubKey'?: (string);
-  'privKey'?: (string);
+  'blockedUsers'?: (string)[];
 }

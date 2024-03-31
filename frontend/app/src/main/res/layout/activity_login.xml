@@ -1,45 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/grey_500"
     tools:context=".ui.login.LoginActivity">
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="555dp"
+        android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
+        android:layout_marginTop="309dp"
         android:background="@drawable/messages_background"
         android:gravity="center"
-        android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:padding="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="0dp">
 
         <LinearLayout
             android:id="@+id/button_toggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal='true'
+            android:layout_marginBottom="120dp"
             android:background="@drawable/slider_button_bg"
             android:elevation="10dp"
-
-            android:layout_centerHorizontal='true'
-            android:layout_marginBottom="120dp">
+            android:gravity="top">
 
             <Button
                 android:id="@+id/signInBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:background="@drawable/button_capsule"
                 android:elevation="10dp"
                 android:gravity="center"
                 android:text="Login"
                 android:textColor="@color/white"
-                android:background="@drawable/button_capsule"
-
                 tools:layout_editor_absoluteX="332dp"
                 tools:layout_editor_absoluteY="146dp" />
 
@@ -50,8 +52,7 @@
                 android:background="@drawable/inactive_button"
                 android:elevation="10dp"
                 android:gravity="center"
-                android:text="Signup"
-
+                android:text="@string/signup"
                 android:textColor="@color/white"
 
                 />
@@ -67,9 +68,10 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_centerHorizontal='true'
-            android:layout_marginStart="91dp"
-            android:layout_marginTop="70dp"
-            android:layout_marginEnd="88dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="50dp"
+
             android:layout_marginBottom="20dp"
             android:gravity="top"
 
@@ -77,43 +79,24 @@
             android:selectAllOnFocus="true"
             app:layout_constraintTop_toBottomOf="@+id/button_toggle" />
 
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="212dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-
-            android:layout_centerHorizontal='true'
-            android:layout_marginStart="94dp"
-            android:layout_marginTop="130dp"
-
-            android:layout_marginEnd="94dp"
-            android:autofillHints="@string/prompt_password"
-            android:gravity="top"
-            android:hint="@string/prompt_password"
-            android:imeOptions="actionDone"
-            android:inputType="textPassword"
-            android:selectAllOnFocus="true"
-
-            app:layout_constraintTop_toBottomOf="@+id/phoneNumber" />
 
         <Button
             android:id="@+id/loginBtn"
-            android:layout_width="117dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/phoneNumber"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal='true'
-            android:layout_marginStart="155dp"
-            android:layout_marginEnd="152dp"
-            android:layout_marginBottom="215dp"
+            android:layout_marginStart="128dp"
+
+            android:layout_marginTop="72dp"
+            android:layout_marginEnd="107dp"
             android:elevation="10dp"
             android:gravity="center"
             android:text="Login"
             android:textColor="@color/white"
-            app:layout_constraintTop_toBottomOf="@+id/password" />
+            app:layout_constraintTop_toBottomOf="@+id/phoneNumber" />
 
         <ProgressBar
             android:id="@+id/loading"
@@ -129,4 +112,4 @@
     </RelativeLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

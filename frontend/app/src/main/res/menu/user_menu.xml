@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/pin"
+        android:background="@drawable/round_button"
+        android:icon="@drawable/pin_24"
+        android:title="@string/pin" />
+
+
+    <item
+        android:id="@+id/block"
+        android:background="@drawable/message_box_background"
+        android:checkable="false"
+        android:icon="@drawable/block_24"
+        android:title="@string/block" />
+
+    <item
+        android:id="@+id/deleteItem"
+        android:background="@drawable/round_button"
+        android:icon="@drawable/delete_24"
+        android:title="@string/delete" />
+    <item
+        android:id="@+id/searchItem"
+        android:background="@drawable/round_button"
+        android:icon="@drawable/search_24"
+        android:visible="false"
+        android:title="@string/search" />
+</menu>

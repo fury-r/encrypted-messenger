@@ -14,6 +14,1522 @@ public final class Service {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
+  public interface UserRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:UserRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string phoneNumber = 1;</code>
+     * @return The phoneNumber.
+     */
+    java.lang.String getPhoneNumber();
+    /**
+     * <code>string phoneNumber = 1;</code>
+     * @return The bytes for phoneNumber.
+     */
+    com.google.protobuf.ByteString
+        getPhoneNumberBytes();
+  }
+  /**
+   * Protobuf type {@code UserRequest}
+   */
+  public static final class UserRequest extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:UserRequest)
+      UserRequestOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use UserRequest.newBuilder() to construct.
+    private UserRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private UserRequest() {
+      phoneNumber_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new UserRequest();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private UserRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              phoneNumber_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.services.Service.internal_static_UserRequest_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.services.Service.internal_static_UserRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.services.Service.UserRequest.class, com.services.Service.UserRequest.Builder.class);
+    }
+
+    public static final int PHONENUMBER_FIELD_NUMBER = 1;
+    private volatile java.lang.Object phoneNumber_;
+    /**
+     * <code>string phoneNumber = 1;</code>
+     * @return The phoneNumber.
+     */
+    @java.lang.Override
+    public java.lang.String getPhoneNumber() {
+      java.lang.Object ref = phoneNumber_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        phoneNumber_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string phoneNumber = 1;</code>
+     * @return The bytes for phoneNumber.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPhoneNumberBytes() {
+      java.lang.Object ref = phoneNumber_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        phoneNumber_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getPhoneNumberBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, phoneNumber_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getPhoneNumberBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, phoneNumber_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.services.Service.UserRequest)) {
+        return super.equals(obj);
+      }
+      com.services.Service.UserRequest other = (com.services.Service.UserRequest) obj;
+
+      if (!getPhoneNumber()
+          .equals(other.getPhoneNumber())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + PHONENUMBER_FIELD_NUMBER;
+      hash = (53 * hash) + getPhoneNumber().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.services.Service.UserRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.services.Service.UserRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.services.Service.UserRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.services.Service.UserRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.services.Service.UserRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.services.Service.UserRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.services.Service.UserRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.services.Service.UserRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.services.Service.UserRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.services.Service.UserRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.services.Service.UserRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.services.Service.UserRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.services.Service.UserRequest prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code UserRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:UserRequest)
+        com.services.Service.UserRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.services.Service.internal_static_UserRequest_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.services.Service.internal_static_UserRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.services.Service.UserRequest.class, com.services.Service.UserRequest.Builder.class);
+      }
+
+      // Construct using com.services.Service.UserRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        phoneNumber_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.services.Service.internal_static_UserRequest_descriptor;
+      }
+
+      @java.lang.Override
+      public com.services.Service.UserRequest getDefaultInstanceForType() {
+        return com.services.Service.UserRequest.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.services.Service.UserRequest build() {
+        com.services.Service.UserRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.services.Service.UserRequest buildPartial() {
+        com.services.Service.UserRequest result = new com.services.Service.UserRequest(this);
+        result.phoneNumber_ = phoneNumber_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.services.Service.UserRequest) {
+          return mergeFrom((com.services.Service.UserRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.services.Service.UserRequest other) {
+        if (other == com.services.Service.UserRequest.getDefaultInstance()) return this;
+        if (!other.getPhoneNumber().isEmpty()) {
+          phoneNumber_ = other.phoneNumber_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.services.Service.UserRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.services.Service.UserRequest) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object phoneNumber_ = "";
+      /**
+       * <code>string phoneNumber = 1;</code>
+       * @return The phoneNumber.
+       */
+      public java.lang.String getPhoneNumber() {
+        java.lang.Object ref = phoneNumber_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          phoneNumber_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string phoneNumber = 1;</code>
+       * @return The bytes for phoneNumber.
+       */
+      public com.google.protobuf.ByteString
+          getPhoneNumberBytes() {
+        java.lang.Object ref = phoneNumber_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          phoneNumber_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string phoneNumber = 1;</code>
+       * @param value The phoneNumber to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPhoneNumber(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        phoneNumber_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string phoneNumber = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPhoneNumber() {
+        
+        phoneNumber_ = getDefaultInstance().getPhoneNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string phoneNumber = 1;</code>
+       * @param value The bytes for phoneNumber to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPhoneNumberBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        phoneNumber_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:UserRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:UserRequest)
+    private static final com.services.Service.UserRequest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.services.Service.UserRequest();
+    }
+
+    public static com.services.Service.UserRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<UserRequest>
+        PARSER = new com.google.protobuf.AbstractParser<UserRequest>() {
+      @java.lang.Override
+      public UserRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new UserRequest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<UserRequest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<UserRequest> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.services.Service.UserRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface UserResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:UserResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string phoneNumber = 1;</code>
+     * @return The phoneNumber.
+     */
+    java.lang.String getPhoneNumber();
+    /**
+     * <code>string phoneNumber = 1;</code>
+     * @return The bytes for phoneNumber.
+     */
+    com.google.protobuf.ByteString
+        getPhoneNumberBytes();
+
+    /**
+     * <code>string pubKey = 2;</code>
+     * @return The pubKey.
+     */
+    java.lang.String getPubKey();
+    /**
+     * <code>string pubKey = 2;</code>
+     * @return The bytes for pubKey.
+     */
+    com.google.protobuf.ByteString
+        getPubKeyBytes();
+
+    /**
+     * <code>repeated string blocked_users = 3;</code>
+     * @return A list containing the blockedUsers.
+     */
+    java.util.List<java.lang.String>
+        getBlockedUsersList();
+    /**
+     * <code>repeated string blocked_users = 3;</code>
+     * @return The count of blockedUsers.
+     */
+    int getBlockedUsersCount();
+    /**
+     * <code>repeated string blocked_users = 3;</code>
+     * @param index The index of the element to return.
+     * @return The blockedUsers at the given index.
+     */
+    java.lang.String getBlockedUsers(int index);
+    /**
+     * <code>repeated string blocked_users = 3;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the blockedUsers at the given index.
+     */
+    com.google.protobuf.ByteString
+        getBlockedUsersBytes(int index);
+  }
+  /**
+   * Protobuf type {@code UserResponse}
+   */
+  public static final class UserResponse extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:UserResponse)
+      UserResponseOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use UserResponse.newBuilder() to construct.
+    private UserResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private UserResponse() {
+      phoneNumber_ = "";
+      pubKey_ = "";
+      blockedUsers_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new UserResponse();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private UserResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              phoneNumber_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              pubKey_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                blockedUsers_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              blockedUsers_.add(s);
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+          blockedUsers_ = blockedUsers_.getUnmodifiableView();
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.services.Service.internal_static_UserResponse_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.services.Service.internal_static_UserResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.services.Service.UserResponse.class, com.services.Service.UserResponse.Builder.class);
+    }
+
+    public static final int PHONENUMBER_FIELD_NUMBER = 1;
+    private volatile java.lang.Object phoneNumber_;
+    /**
+     * <code>string phoneNumber = 1;</code>
+     * @return The phoneNumber.
+     */
+    @java.lang.Override
+    public java.lang.String getPhoneNumber() {
+      java.lang.Object ref = phoneNumber_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        phoneNumber_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string phoneNumber = 1;</code>
+     * @return The bytes for phoneNumber.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPhoneNumberBytes() {
+      java.lang.Object ref = phoneNumber_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        phoneNumber_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PUBKEY_FIELD_NUMBER = 2;
+    private volatile java.lang.Object pubKey_;
+    /**
+     * <code>string pubKey = 2;</code>
+     * @return The pubKey.
+     */
+    @java.lang.Override
+    public java.lang.String getPubKey() {
+      java.lang.Object ref = pubKey_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        pubKey_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string pubKey = 2;</code>
+     * @return The bytes for pubKey.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPubKeyBytes() {
+      java.lang.Object ref = pubKey_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        pubKey_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int BLOCKED_USERS_FIELD_NUMBER = 3;
+    private com.google.protobuf.LazyStringList blockedUsers_;
+    /**
+     * <code>repeated string blocked_users = 3;</code>
+     * @return A list containing the blockedUsers.
+     */
+    public com.google.protobuf.ProtocolStringList
+        getBlockedUsersList() {
+      return blockedUsers_;
+    }
+    /**
+     * <code>repeated string blocked_users = 3;</code>
+     * @return The count of blockedUsers.
+     */
+    public int getBlockedUsersCount() {
+      return blockedUsers_.size();
+    }
+    /**
+     * <code>repeated string blocked_users = 3;</code>
+     * @param index The index of the element to return.
+     * @return The blockedUsers at the given index.
+     */
+    public java.lang.String getBlockedUsers(int index) {
+      return blockedUsers_.get(index);
+    }
+    /**
+     * <code>repeated string blocked_users = 3;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the blockedUsers at the given index.
+     */
+    public com.google.protobuf.ByteString
+        getBlockedUsersBytes(int index) {
+      return blockedUsers_.getByteString(index);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getPhoneNumberBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, phoneNumber_);
+      }
+      if (!getPubKeyBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, pubKey_);
+      }
+      for (int i = 0; i < blockedUsers_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, blockedUsers_.getRaw(i));
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getPhoneNumberBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, phoneNumber_);
+      }
+      if (!getPubKeyBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, pubKey_);
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < blockedUsers_.size(); i++) {
+          dataSize += computeStringSizeNoTag(blockedUsers_.getRaw(i));
+        }
+        size += dataSize;
+        size += 1 * getBlockedUsersList().size();
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.services.Service.UserResponse)) {
+        return super.equals(obj);
+      }
+      com.services.Service.UserResponse other = (com.services.Service.UserResponse) obj;
+
+      if (!getPhoneNumber()
+          .equals(other.getPhoneNumber())) return false;
+      if (!getPubKey()
+          .equals(other.getPubKey())) return false;
+      if (!getBlockedUsersList()
+          .equals(other.getBlockedUsersList())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + PHONENUMBER_FIELD_NUMBER;
+      hash = (53 * hash) + getPhoneNumber().hashCode();
+      hash = (37 * hash) + PUBKEY_FIELD_NUMBER;
+      hash = (53 * hash) + getPubKey().hashCode();
+      if (getBlockedUsersCount() > 0) {
+        hash = (37 * hash) + BLOCKED_USERS_FIELD_NUMBER;
+        hash = (53 * hash) + getBlockedUsersList().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.services.Service.UserResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.services.Service.UserResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.services.Service.UserResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.services.Service.UserResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.services.Service.UserResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.services.Service.UserResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.services.Service.UserResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.services.Service.UserResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.services.Service.UserResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.services.Service.UserResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.services.Service.UserResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.services.Service.UserResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.services.Service.UserResponse prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code UserResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:UserResponse)
+        com.services.Service.UserResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.services.Service.internal_static_UserResponse_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.services.Service.internal_static_UserResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.services.Service.UserResponse.class, com.services.Service.UserResponse.Builder.class);
+      }
+
+      // Construct using com.services.Service.UserResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        phoneNumber_ = "";
+
+        pubKey_ = "";
+
+        blockedUsers_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.services.Service.internal_static_UserResponse_descriptor;
+      }
+
+      @java.lang.Override
+      public com.services.Service.UserResponse getDefaultInstanceForType() {
+        return com.services.Service.UserResponse.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.services.Service.UserResponse build() {
+        com.services.Service.UserResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.services.Service.UserResponse buildPartial() {
+        com.services.Service.UserResponse result = new com.services.Service.UserResponse(this);
+        int from_bitField0_ = bitField0_;
+        result.phoneNumber_ = phoneNumber_;
+        result.pubKey_ = pubKey_;
+        if (((bitField0_ & 0x00000001) != 0)) {
+          blockedUsers_ = blockedUsers_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        }
+        result.blockedUsers_ = blockedUsers_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.services.Service.UserResponse) {
+          return mergeFrom((com.services.Service.UserResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.services.Service.UserResponse other) {
+        if (other == com.services.Service.UserResponse.getDefaultInstance()) return this;
+        if (!other.getPhoneNumber().isEmpty()) {
+          phoneNumber_ = other.phoneNumber_;
+          onChanged();
+        }
+        if (!other.getPubKey().isEmpty()) {
+          pubKey_ = other.pubKey_;
+          onChanged();
+        }
+        if (!other.blockedUsers_.isEmpty()) {
+          if (blockedUsers_.isEmpty()) {
+            blockedUsers_ = other.blockedUsers_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureBlockedUsersIsMutable();
+            blockedUsers_.addAll(other.blockedUsers_);
+          }
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.services.Service.UserResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.services.Service.UserResponse) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object phoneNumber_ = "";
+      /**
+       * <code>string phoneNumber = 1;</code>
+       * @return The phoneNumber.
+       */
+      public java.lang.String getPhoneNumber() {
+        java.lang.Object ref = phoneNumber_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          phoneNumber_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string phoneNumber = 1;</code>
+       * @return The bytes for phoneNumber.
+       */
+      public com.google.protobuf.ByteString
+          getPhoneNumberBytes() {
+        java.lang.Object ref = phoneNumber_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          phoneNumber_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string phoneNumber = 1;</code>
+       * @param value The phoneNumber to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPhoneNumber(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        phoneNumber_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string phoneNumber = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPhoneNumber() {
+        
+        phoneNumber_ = getDefaultInstance().getPhoneNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string phoneNumber = 1;</code>
+       * @param value The bytes for phoneNumber to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPhoneNumberBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        phoneNumber_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object pubKey_ = "";
+      /**
+       * <code>string pubKey = 2;</code>
+       * @return The pubKey.
+       */
+      public java.lang.String getPubKey() {
+        java.lang.Object ref = pubKey_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          pubKey_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string pubKey = 2;</code>
+       * @return The bytes for pubKey.
+       */
+      public com.google.protobuf.ByteString
+          getPubKeyBytes() {
+        java.lang.Object ref = pubKey_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          pubKey_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string pubKey = 2;</code>
+       * @param value The pubKey to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPubKey(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        pubKey_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string pubKey = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPubKey() {
+        
+        pubKey_ = getDefaultInstance().getPubKey();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string pubKey = 2;</code>
+       * @param value The bytes for pubKey to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPubKeyBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        pubKey_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList blockedUsers_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureBlockedUsersIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          blockedUsers_ = new com.google.protobuf.LazyStringArrayList(blockedUsers_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+      /**
+       * <code>repeated string blocked_users = 3;</code>
+       * @return A list containing the blockedUsers.
+       */
+      public com.google.protobuf.ProtocolStringList
+          getBlockedUsersList() {
+        return blockedUsers_.getUnmodifiableView();
+      }
+      /**
+       * <code>repeated string blocked_users = 3;</code>
+       * @return The count of blockedUsers.
+       */
+      public int getBlockedUsersCount() {
+        return blockedUsers_.size();
+      }
+      /**
+       * <code>repeated string blocked_users = 3;</code>
+       * @param index The index of the element to return.
+       * @return The blockedUsers at the given index.
+       */
+      public java.lang.String getBlockedUsers(int index) {
+        return blockedUsers_.get(index);
+      }
+      /**
+       * <code>repeated string blocked_users = 3;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the blockedUsers at the given index.
+       */
+      public com.google.protobuf.ByteString
+          getBlockedUsersBytes(int index) {
+        return blockedUsers_.getByteString(index);
+      }
+      /**
+       * <code>repeated string blocked_users = 3;</code>
+       * @param index The index to set the value at.
+       * @param value The blockedUsers to set.
+       * @return This builder for chaining.
+       */
+      public Builder setBlockedUsers(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureBlockedUsersIsMutable();
+        blockedUsers_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string blocked_users = 3;</code>
+       * @param value The blockedUsers to add.
+       * @return This builder for chaining.
+       */
+      public Builder addBlockedUsers(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureBlockedUsersIsMutable();
+        blockedUsers_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string blocked_users = 3;</code>
+       * @param values The blockedUsers to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllBlockedUsers(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureBlockedUsersIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, blockedUsers_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string blocked_users = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearBlockedUsers() {
+        blockedUsers_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string blocked_users = 3;</code>
+       * @param value The bytes of the blockedUsers to add.
+       * @return This builder for chaining.
+       */
+      public Builder addBlockedUsersBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        ensureBlockedUsersIsMutable();
+        blockedUsers_.add(value);
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:UserResponse)
+    }
+
+    // @@protoc_insertion_point(class_scope:UserResponse)
+    private static final com.services.Service.UserResponse DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.services.Service.UserResponse();
+    }
+
+    public static com.services.Service.UserResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<UserResponse>
+        PARSER = new com.google.protobuf.AbstractParser<UserResponse>() {
+      @java.lang.Override
+      public UserResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new UserResponse(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<UserResponse> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<UserResponse> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.services.Service.UserResponse getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_UserRequest_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_UserRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_UserResponse_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_UserResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -25,19 +1541,23 @@ public final class Service {
     java.lang.String[] descriptorData = {
       "\n\rservice.proto\032\013login.proto\032\016register.p" +
       "roto\032\totp.proto\032\rcontact.proto\032\rmessage." +
-      "proto\032\nauth.proto\032\nuser.proto\032\021keyexchan" +
-      "ge.proto2\230\003\n\010Services\022(\n\005Login\022\r.LoginRe" +
-      "quest\032\016.LoginResponse\"\000\0221\n\010Register\022\020.Re" +
-      "gisterRequest\032\021.RegisterResponse\"\000\022\"\n\003Ot" +
-      "p\022\013.OtpRequest\032\014.OtpResponse\"\000\0222\n\020Valida" +
-      "teContacts\022\r.ContactsList\032\r.ContactsList" +
-      "\"\000\022\030\n\004Send\022\006.Event\032\006.Event\"\000\022@\n\rmessageU" +
-      "pdate\022\025.MessageUpdateRequest\032\026.MessageUp" +
-      "dateResponse\"\000\022,\n\013VerifyToken\022\014.AuthRequ" +
-      "est\032\r.AuthResponse\"\000\022\034\n\nsavePubKey\022\005.Use" +
-      "r\032\005.User\"\000\022/\n\thandShake\022\017.PubKeyExchange" +
-      "\032\017.PubKeyExchange\"\000B\023\n\014com.servicesZ\003/pb" +
-      "b\006proto3"
+      "proto\032\nauth.proto\032\nuser.proto\"\"\n\013UserReq" +
+      "uest\022\023\n\013phoneNumber\030\001 \001(\t\"J\n\014UserRespons" +
+      "e\022\023\n\013phoneNumber\030\001 \001(\t\022\016\n\006pubKey\030\002 \001(\t\022\025" +
+      "\n\rblocked_users\030\003 \003(\t2\346\003\n\010Services\022(\n\005Lo" +
+      "gin\022\r.LoginRequest\032\016.LoginResponse\"\000\0221\n\010" +
+      "Register\022\020.RegisterRequest\032\021.RegisterRes" +
+      "ponse\"\000\022#\n\003Otp\022\013.OtpRequest\032\r.AuthRespon" +
+      "se\"\000\0222\n\020ValidateContacts\022\r.ContactsList\032" +
+      "\r.ContactsList\"\000\022\030\n\004Send\022\006.Event\032\006.Event" +
+      "\"\000\022@\n\rmessageUpdate\022\025.MessageUpdateReque" +
+      "st\032\026.MessageUpdateResponse\"\000\022,\n\013VerifyTo" +
+      "ken\022\014.AuthRequest\032\r.AuthResponse\"\000\022\034\n\nsa" +
+      "vePubKey\022\005.User\032\005.User\"\000\022$\n\020handShakeReq" +
+      "uest\022\006.Event\032\006.Event\"\000\022(\n\007getUser\022\014.User" +
+      "Request\032\r.UserResponse\"\000\022,\n\tblockUser\022\r." +
+      "BlockRequest\032\016.BlockResponse\"\000B\023\n\014com.se" +
+      "rvicesZ\003/pbb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -49,8 +1569,19 @@ public final class Service {
           com.services.Message.getDescriptor(),
           com.services.Auth.getDescriptor(),
           com.services.UserOuterClass.getDescriptor(),
-          com.services.Keyexchange.getDescriptor(),
         });
+    internal_static_UserRequest_descriptor =
+      getDescriptor().getMessageTypes().get(0);
+    internal_static_UserRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_UserRequest_descriptor,
+        new java.lang.String[] { "PhoneNumber", });
+    internal_static_UserResponse_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_UserResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_UserResponse_descriptor,
+        new java.lang.String[] { "PhoneNumber", "PubKey", "BlockedUsers", });
     com.services.Login.getDescriptor();
     com.services.Register.getDescriptor();
     com.services.Otp.getDescriptor();
@@ -58,7 +1589,6 @@ public final class Service {
     com.services.Message.getDescriptor();
     com.services.Auth.getDescriptor();
     com.services.UserOuterClass.getDescriptor();
-    com.services.Keyexchange.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

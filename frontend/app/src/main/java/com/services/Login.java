@@ -43,23 +43,17 @@ public final class Login {
         getPasswordBytes();
 
     /**
-     * <code>bool use_password = 3;</code>
-     * @return The usePassword.
-     */
-    boolean getUsePassword();
-
-    /**
-     * <code>optional string countryCode = 4;</code>
+     * <code>string countryCode = 3;</code>
      * @return Whether the countryCode field is set.
      */
     boolean hasCountryCode();
     /**
-     * <code>optional string countryCode = 4;</code>
+     * <code>string countryCode = 3;</code>
      * @return The countryCode.
      */
     java.lang.String getCountryCode();
     /**
-     * <code>optional string countryCode = 4;</code>
+     * <code>string countryCode = 3;</code>
      * @return The bytes for countryCode.
      */
     com.google.protobuf.ByteString
@@ -126,12 +120,7 @@ public final class Login {
               password_ = s;
               break;
             }
-            case 24: {
-
-              usePassword_ = input.readBool();
-              break;
-            }
-            case 34: {
+            case 26: {
               java.lang.String s = input.readStringRequireUtf8();
               bitField0_ |= 0x00000001;
               countryCode_ = s;
@@ -246,21 +235,10 @@ public final class Login {
       }
     }
 
-    public static final int USE_PASSWORD_FIELD_NUMBER = 3;
-    private boolean usePassword_;
-    /**
-     * <code>bool use_password = 3;</code>
-     * @return The usePassword.
-     */
-    @java.lang.Override
-    public boolean getUsePassword() {
-      return usePassword_;
-    }
-
-    public static final int COUNTRYCODE_FIELD_NUMBER = 4;
+    public static final int COUNTRYCODE_FIELD_NUMBER = 3;
     private volatile java.lang.Object countryCode_;
     /**
-     * <code>optional string countryCode = 4;</code>
+     * <code>string countryCode = 3;</code>
      * @return Whether the countryCode field is set.
      */
     @java.lang.Override
@@ -268,7 +246,7 @@ public final class Login {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional string countryCode = 4;</code>
+     * <code>string countryCode = 3;</code>
      * @return The countryCode.
      */
     @java.lang.Override
@@ -285,7 +263,7 @@ public final class Login {
       }
     }
     /**
-     * <code>optional string countryCode = 4;</code>
+     * <code>string countryCode = 3;</code>
      * @return The bytes for countryCode.
      */
     @java.lang.Override
@@ -317,17 +295,14 @@ public final class Login {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(phoneNumber_)) {
+      if (!getPhoneNumberBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, phoneNumber_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(password_)) {
+      if (!getPasswordBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, password_);
       }
-      if (usePassword_ != false) {
-        output.writeBool(3, usePassword_);
-      }
       if (((bitField0_ & 0x00000001) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, countryCode_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, countryCode_);
       }
       unknownFields.writeTo(output);
     }
@@ -338,18 +313,14 @@ public final class Login {
       if (size != -1) return size;
 
       size = 0;
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(phoneNumber_)) {
+      if (!getPhoneNumberBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, phoneNumber_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(password_)) {
+      if (!getPasswordBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, password_);
       }
-      if (usePassword_ != false) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(3, usePassword_);
-      }
       if (((bitField0_ & 0x00000001) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, countryCode_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, countryCode_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -370,8 +341,6 @@ public final class Login {
           .equals(other.getPhoneNumber())) return false;
       if (!getPassword()
           .equals(other.getPassword())) return false;
-      if (getUsePassword()
-          != other.getUsePassword()) return false;
       if (hasCountryCode() != other.hasCountryCode()) return false;
       if (hasCountryCode()) {
         if (!getCountryCode()
@@ -392,9 +361,6 @@ public final class Login {
       hash = (53 * hash) + getPhoneNumber().hashCode();
       hash = (37 * hash) + PASSWORD_FIELD_NUMBER;
       hash = (53 * hash) + getPassword().hashCode();
-      hash = (37 * hash) + USE_PASSWORD_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-          getUsePassword());
       if (hasCountryCode()) {
         hash = (37 * hash) + COUNTRYCODE_FIELD_NUMBER;
         hash = (53 * hash) + getCountryCode().hashCode();
@@ -536,8 +502,6 @@ public final class Login {
 
         password_ = "";
 
-        usePassword_ = false;
-
         countryCode_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
         return this;
@@ -570,7 +534,6 @@ public final class Login {
         int to_bitField0_ = 0;
         result.phoneNumber_ = phoneNumber_;
         result.password_ = password_;
-        result.usePassword_ = usePassword_;
         if (((from_bitField0_ & 0x00000001) != 0)) {
           to_bitField0_ |= 0x00000001;
         }
@@ -631,9 +594,6 @@ public final class Login {
         if (!other.getPassword().isEmpty()) {
           password_ = other.password_;
           onChanged();
-        }
-        if (other.getUsePassword() != false) {
-          setUsePassword(other.getUsePassword());
         }
         if (other.hasCountryCode()) {
           bitField0_ |= 0x00000001;
@@ -822,47 +782,16 @@ public final class Login {
         return this;
       }
 
-      private boolean usePassword_ ;
-      /**
-       * <code>bool use_password = 3;</code>
-       * @return The usePassword.
-       */
-      @java.lang.Override
-      public boolean getUsePassword() {
-        return usePassword_;
-      }
-      /**
-       * <code>bool use_password = 3;</code>
-       * @param value The usePassword to set.
-       * @return This builder for chaining.
-       */
-      public Builder setUsePassword(boolean value) {
-        
-        usePassword_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>bool use_password = 3;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearUsePassword() {
-        
-        usePassword_ = false;
-        onChanged();
-        return this;
-      }
-
       private java.lang.Object countryCode_ = "";
       /**
-       * <code>optional string countryCode = 4;</code>
+       * <code>string countryCode = 3;</code>
        * @return Whether the countryCode field is set.
        */
       public boolean hasCountryCode() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional string countryCode = 4;</code>
+       * <code>string countryCode = 3;</code>
        * @return The countryCode.
        */
       public java.lang.String getCountryCode() {
@@ -878,7 +807,7 @@ public final class Login {
         }
       }
       /**
-       * <code>optional string countryCode = 4;</code>
+       * <code>string countryCode = 3;</code>
        * @return The bytes for countryCode.
        */
       public com.google.protobuf.ByteString
@@ -895,7 +824,7 @@ public final class Login {
         }
       }
       /**
-       * <code>optional string countryCode = 4;</code>
+       * <code>string countryCode = 3;</code>
        * @param value The countryCode to set.
        * @return This builder for chaining.
        */
@@ -910,7 +839,7 @@ public final class Login {
         return this;
       }
       /**
-       * <code>optional string countryCode = 4;</code>
+       * <code>string countryCode = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearCountryCode() {
@@ -920,7 +849,7 @@ public final class Login {
         return this;
       }
       /**
-       * <code>optional string countryCode = 4;</code>
+       * <code>string countryCode = 3;</code>
        * @param value The bytes for countryCode to set.
        * @return This builder for chaining.
        */
@@ -1005,17 +934,17 @@ public final class Login {
         getMessageBytes();
 
     /**
-     * <code>optional string error = 2;</code>
+     * <code>string error = 2;</code>
      * @return Whether the error field is set.
      */
     boolean hasError();
     /**
-     * <code>optional string error = 2;</code>
+     * <code>string error = 2;</code>
      * @return The error.
      */
     java.lang.String getError();
     /**
-     * <code>optional string error = 2;</code>
+     * <code>string error = 2;</code>
      * @return The bytes for error.
      */
     com.google.protobuf.ByteString
@@ -1155,7 +1084,7 @@ public final class Login {
     public static final int ERROR_FIELD_NUMBER = 2;
     private volatile java.lang.Object error_;
     /**
-     * <code>optional string error = 2;</code>
+     * <code>string error = 2;</code>
      * @return Whether the error field is set.
      */
     @java.lang.Override
@@ -1163,7 +1092,7 @@ public final class Login {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional string error = 2;</code>
+     * <code>string error = 2;</code>
      * @return The error.
      */
     @java.lang.Override
@@ -1180,7 +1109,7 @@ public final class Login {
       }
     }
     /**
-     * <code>optional string error = 2;</code>
+     * <code>string error = 2;</code>
      * @return The bytes for error.
      */
     @java.lang.Override
@@ -1212,7 +1141,7 @@ public final class Login {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(message_)) {
+      if (!getMessageBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, message_);
       }
       if (((bitField0_ & 0x00000001) != 0)) {
@@ -1227,7 +1156,7 @@ public final class Login {
       if (size != -1) return size;
 
       size = 0;
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(message_)) {
+      if (!getMessageBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, message_);
       }
       if (((bitField0_ & 0x00000001) != 0)) {
@@ -1608,14 +1537,14 @@ public final class Login {
 
       private java.lang.Object error_ = "";
       /**
-       * <code>optional string error = 2;</code>
+       * <code>string error = 2;</code>
        * @return Whether the error field is set.
        */
       public boolean hasError() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional string error = 2;</code>
+       * <code>string error = 2;</code>
        * @return The error.
        */
       public java.lang.String getError() {
@@ -1631,7 +1560,7 @@ public final class Login {
         }
       }
       /**
-       * <code>optional string error = 2;</code>
+       * <code>string error = 2;</code>
        * @return The bytes for error.
        */
       public com.google.protobuf.ByteString
@@ -1648,7 +1577,7 @@ public final class Login {
         }
       }
       /**
-       * <code>optional string error = 2;</code>
+       * <code>string error = 2;</code>
        * @param value The error to set.
        * @return This builder for chaining.
        */
@@ -1663,7 +1592,7 @@ public final class Login {
         return this;
       }
       /**
-       * <code>optional string error = 2;</code>
+       * <code>string error = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearError() {
@@ -1673,7 +1602,7 @@ public final class Login {
         return this;
       }
       /**
-       * <code>optional string error = 2;</code>
+       * <code>string error = 2;</code>
        * @param value The bytes for error to set.
        * @return This builder for chaining.
        */
@@ -1760,12 +1689,12 @@ public final class Login {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\013login.proto\"u\n\014LoginRequest\022\023\n\013phoneNu" +
-      "mber\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\022\024\n\014use_pass" +
-      "word\030\003 \001(\010\022\030\n\013countryCode\030\004 \001(\tH\000\210\001\001B\016\n\014" +
-      "_countryCode\">\n\rLoginResponse\022\017\n\007message" +
-      "\030\001 \001(\t\022\022\n\005error\030\002 \001(\tH\000\210\001\001B\010\n\006_errorB\023\n\014" +
-      "com.servicesZ\003/pbb\006proto3"
+      "\n\013login.proto\"_\n\014LoginRequest\022\023\n\013phoneNu" +
+      "mber\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\022\030\n\013countryC" +
+      "ode\030\003 \001(\tH\000\210\001\001B\016\n\014_countryCode\">\n\rLoginR" +
+      "esponse\022\017\n\007message\030\001 \001(\t\022\022\n\005error\030\002 \001(\tH" +
+      "\000\210\001\001B\010\n\006_errorB\023\n\014com.servicesZ\003/pbb\006pro" +
+      "to3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1776,7 +1705,7 @@ public final class Login {
     internal_static_LoginRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_LoginRequest_descriptor,
-        new java.lang.String[] { "PhoneNumber", "Password", "UsePassword", "CountryCode", "CountryCode", });
+        new java.lang.String[] { "PhoneNumber", "Password", "CountryCode", "CountryCode", });
     internal_static_LoginResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_LoginResponse_fieldAccessorTable = new

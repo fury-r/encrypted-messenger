@@ -10,10 +10,14 @@ type SubtypeConstructor<Constructor extends new (...args: any) => any, Subtype> 
 export interface ProtoGrpcType {
   AuthRequest: MessageTypeDefinition
   AuthResponse: MessageTypeDefinition
+  BlockRequest: MessageTypeDefinition
+  BlockResponse: MessageTypeDefinition
   Contact: MessageTypeDefinition
   ContactsList: MessageTypeDefinition
+  ContentType: EnumTypeDefinition
   Event: MessageTypeDefinition
   EventType: EnumTypeDefinition
+  KeyExchange: MessageTypeDefinition
   LoginRequest: MessageTypeDefinition
   LoginResponse: MessageTypeDefinition
   MessageInfo: MessageTypeDefinition
@@ -23,13 +27,12 @@ export interface ProtoGrpcType {
   MessageUpdateRequest: MessageTypeDefinition
   MessageUpdateResponse: MessageTypeDefinition
   OtpRequest: MessageTypeDefinition
-  OtpResponse: MessageTypeDefinition
-  PubKeyExchange: MessageTypeDefinition
   RegisterRequest: MessageTypeDefinition
   RegisterResponse: MessageTypeDefinition
   Services: SubtypeConstructor<typeof grpc.Client, _ServicesClient> & { service: _ServicesDefinition }
   User: MessageTypeDefinition
-  currentUser: MessageTypeDefinition
+  UserRequest: MessageTypeDefinition
+  UserResponse: MessageTypeDefinition
   google: {
     protobuf: {
       Timestamp: MessageTypeDefinition

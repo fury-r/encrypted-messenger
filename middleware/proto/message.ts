@@ -7,8 +7,10 @@ type SubtypeConstructor<Constructor extends new (...args: any) => any, Subtype> 
 };
 
 export interface ProtoGrpcType {
+  ContentType: EnumTypeDefinition
   Event: MessageTypeDefinition
   EventType: EnumTypeDefinition
+  KeyExchange: MessageTypeDefinition
   MessageInfo: MessageTypeDefinition
   MessageRequest: MessageTypeDefinition
   MessageResponse: MessageTypeDefinition

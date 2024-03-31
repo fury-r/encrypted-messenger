@@ -2,116 +2,136 @@ package com.fury.messenger.main
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
+import android.graphics.Typeface
 import android.util.Log
+import android.view.ContextMenu
 import android.view.LayoutInflater
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.fury.messenger.R
-import com.fury.messenger.TripleDES
-import com.fury.messenger.data.helper.contact.Contact
+import com.fury.messenger.crypto.Crypto
+import com.fury.messenger.helper.contact.ContactChats
+import com.fury.messenger.helper.ui.Menu
+import com.fury.messenger.helper.user.CurrentUser
 import com.fury.messenger.messages.ChatActivity
-import com.fury.messenger.messages.Message
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.ZoneId
-import java.util.*
-import kotlin.collections.ArrayList
+import com.services.Message.ContentType
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 
-class UserAdapter(val context: Context, var userList:ArrayList<Contact>): RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
-    private lateinit var dbRef: DatabaseReference
-    private lateinit var storageRef: StorageReference
-    private  var uri: String? =null
-    val decipher=TripleDES
+class UserAdapter(val context: Context, var userList: ArrayList<ContactChats>, setSelected: (Int?) -> Unit, private var view:Boolean=false) :
+    RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+
+    private var setSelected=setSelected
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
-       val view:View= LayoutInflater.from(context).inflate(R.layout.user_layout,parent,false)
+        val view: View = LayoutInflater.from(context).inflate(R.layout.user_layout, parent, false)
+
         return UserViewHolder(view)
     }
-
+  
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        val currentUser=userList[position]
-        holder.textName.text=currentUser.getName()
-//        getLastText(currentUser.uid,holder)
-        holder.itemView.setOnClickListener {
-            val intent = Intent(context, ChatActivity::class.java)
-            Log.d(currentUser.getName()+"xzzzz1",currentUser.getPhoneNumber()+""+currentUser.getPubKey())
-            intent.putExtra("name",currentUser.getName())
-            intent.putExtra("phoneNumber",currentUser.getPhoneNumber())
-//            intent.putExtra("uri",uri)
+        val currentUser = userList[position]
+        holder.textName.text = currentUser.contact.name
+        // saving position to handle operation in menuSelect
+        holder.lastMessage.tag=position
+        if(view) {
+            holder.count.text=""
+            holder.datetime.text=""
+        }else{
+            if (currentUser.messageCount > 0) {
+                holder.count.text = currentUser.messageCount.toString()
 
-            context.startActivity(intent)
+            } else {
+                holder.count.visibility = View.GONE
+            }
+            if (currentUser.latestMessage != null) {
+                Log.d("currentUser","${currentUser.latestMessage.contentType} ${ContentType.Audio.name}" )
+                var message:String=""
+                if(currentUser.latestMessage.contentType==ContentType.Text.name){
+                     message= Crypto.decryptAESMessage(
+                        currentUser.latestMessage.message,
+                        Crypto.convertAESstringToKey(currentUser.contact.key)
+                    )
+
+                }else if(currentUser.latestMessage.contentType==ContentType.Audio.name) {
+                    message="Voice Message"
+
+                }
+                if(currentUser.latestMessage.sender!= CurrentUser.phoneNumber){
+                    holder.lastMessage.setTypeface(null, Typeface.BOLD);
+                } else {
+                    message="You:${message}"
+                }
+
+                holder.lastMessage.text = message
+                holder.datetime.text= currentUser.latestMessage.createdAt?.format(DateTimeFormatter.ofPattern("hh:mm:a"))
+                    ?: ""
+
+            }
+            else{
+                holder.datetime.text=OffsetDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm:a"))
+            }
         }
 
 
+
+        if(!view){
+
+            holder.itemView.setOnClickListener {
+                val intent = Intent(context, ChatActivity::class.java)
+                intent.putExtra("Contact", currentUser.contact.name)
+                intent.putExtra("phoneNumber", currentUser.contact.phoneNumber)
+                currentUser.contact.key?.let { it1 -> Log.d("Dd", it1) }
+                intent.putExtra("key", currentUser.contact.key)
+
+                context.startActivity(intent)
+            }
+
+        }
+
+
+
     }
+
 
     override fun getItemCount(): Int {
         return userList.size
     }
-    class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        var lastMessage=itemView.findViewById<TextView>(R.id.lastMessage)
-        val textName=itemView.findViewById<TextView>(R.id.txtName)
-        val imageView=itemView.findViewById<ImageView>(R.id.profilePicture)
-        var datetime=itemView.findViewById<TextView>(R.id.datetime)
-    }
 
-//    private fun getLastText(uid:String? ,holder: UserViewHolder){
-//        val myuid:String=FirebaseAuth.getInstance()?.currentUser?.uid!!
-//        dbRef= FirebaseDatabase.getInstance().getReference()
-//        dbRef.child("chats").child(myuid+uid).child("messages").limitToLast(1)
-//            .addValueEventListener(object : ValueEventListener{
-//                override fun onDataChange(snapshot: DataSnapshot) {
-//                    for (message in snapshot.children){
-//                        val text=message.getValue(Message::class.java)
-//                        if(text?.senderId==myuid){
-//                            holder.lastMessage.text="You:"+decipher._decrypt(text?.message!!,uid+FirebaseAuth.getInstance().currentUser?.uid!!)
-//
-//                           var time= Date(text.datetime!!)
-//                            val formatter = SimpleDateFormat("MM-dd-yyyy")
-//                            val timeformat=SimpleDateFormat("hh:mm")
-//                            val date=formatter.format(time)
-//                            val currentDate=formatter.format(Date())
-//                            storageRef = FirebaseStorage.getInstance().reference
-//
-//                            storageRef?.child("profile"+uid.toString())?.downloadUrl?.addOnSuccessListener { url: Uri ->
-//
-//                                uri=url.toString()
-//                                Glide.with(context.applicationContext)
-//                                    .load(uri)
-//                                    .into(holder.imageView);
-//
-//                            }
-//
-//                            if (date!=currentDate){
-//                                        holder.datetime.text=date.toString()
-//
-//                                }
-//                            else{
-//                                holder.datetime.text=timeformat.format(time).toString()
-//                            }
-//
-//                        }
-//                        else{
-//                            holder.lastMessage.text=decipher._decrypt(text?.message!!,FirebaseAuth.getInstance().currentUser?.uid!!+uid)
-//
-//                        }
-//                    }
-//                }
-//
-//                override fun onCancelled(error: DatabaseError) {
-//                    TODO("Not yet implemented")
-//                }
-//
-//            })
-//    }
+  inner  class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),View.OnCreateContextMenuListener,View.OnLongClickListener {
+        var lastMessage: TextView = itemView.findViewById(R.id.lastMessage)
+        val textName: TextView = itemView.findViewById(R.id.txtName)
+        val imageView:ImageView = itemView.findViewById(R.id.profilePicture)
+        var datetime: TextView = itemView.findViewById(R.id.datetime)
+        var count: TextView = itemView.findViewById(R.id.count)
+        init {
+            itemView.setOnCreateContextMenuListener(this)
+            itemView.setOnLongClickListener(this)
+
+        }
+      override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
+          val inflater = MenuInflater(v.context)
+          inflater.inflate(R.menu.user_menu, menu)
+            Menu.onPrepareOptionsMenu(menu,userList[lastMessage.tag as Int ].contact,context)
+
+
+      }
+
+      override fun onLongClick(v: View?): Boolean {
+        v?.let{
+            setSelected(lastMessage.tag as Int )
+            itemView.showContextMenu()
+
+
+            return  true
+        }
+          return false
+      }
+
+  }
+
 
 }

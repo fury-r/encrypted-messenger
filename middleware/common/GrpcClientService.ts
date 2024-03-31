@@ -1,8 +1,6 @@
 import * as grpc from "@grpc/grpc-js";
 import * as protoLoader from "@grpc/proto-loader";
-import path from "path";
 import { ServicesClient } from "../proto/Services";
-import { ProtoGrpcType } from "../proto/service";
 
 export class GrpcClientService {
   private path = "";
@@ -10,6 +8,7 @@ export class GrpcClientService {
   private packageDefintion: protoLoader.PackageDefinition;
   private grpcService: any;
   private client: ServicesClient;
+  private token: string | null | undefined;
   private options: any;
   constructor(url?: string) {
     this.options = {
@@ -21,7 +20,9 @@ export class GrpcClientService {
     };
     this.path = "../protobuf/service/service.proto";
     this.packageDefintion = protoLoader.loadSync(this.path, this.options);
-
+    // const options: grpc.ChannelOptions = {
+    //   interceptors: [this.addAuthorizationInterceptor.bind(this)],
+    // };
     this.grpcService = grpc.loadPackageDefinition(
       this.packageDefintion
     ).Services;
@@ -29,6 +30,7 @@ export class GrpcClientService {
     this.client = new this.grpcService(
       url || "localhost:8082",
       grpc.credentials.createInsecure()
+      // options
     );
   }
 

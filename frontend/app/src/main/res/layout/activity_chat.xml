@@ -1,53 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@color/dark_500"
     android:layout_height="match_parent"
     tools:context=".messages.ChatActivity">
-
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/receive_text"
+        android:layout_above="@id/chatRecyclerView"
+        android:visibility="gone"
+        android:layout_alignParentTop="true"
+        app:queryHint="Search" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
 
         android:layout_above="@id/linearlayout"
-        android:layout_alignParentTop="true"
         android:paddingHorizontal="5dp"
 
         />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="85dp"
+        android:indeterminateDrawable="@drawable/progress_bg"
+
+        android:layout_height="82dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="155dp"
+        android:layout_marginTop="305dp"
+        android:visibility="invisible"
+        android:layout_marginEnd="171dp"
+        android:layout_marginBottom="343dp" />
     <LinearLayout
         android:id="@+id/linearlayout"
         android:layout_width="match_parent"
         android:background="@drawable/message_box_background"
-
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:weightSum="100"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
         android:gravity="center"
+
         >
         <EditText
             android:id="@+id/messagebox"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
-            android:paddingLeft="10dp"
+            android:layout_marginStart="10dp"
             android:background="@android:color/transparent"
             android:textColor="@color/white"
             android:fontFamily="@font/poppins_regular"
-            android:hint="Type a message"
+            android:hint="@string/type_a_message"
             android:layout_weight="90"
             />
+
+        <Button
+            android:id="@+id/micButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/circle"
+            android:drawableTop="@drawable/mic_off"
+            android:drawablePadding="5dp"
+             />
         <ImageView
             android:id="@+id/sendBtn"
             android:layout_width="35dp"
 
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_height="35dp"
-            android:src="@drawable/ic_send_black_24dp"/>
+            android:src="@drawable/ic_send_black_24dp"
+            android:contentDescription="TODO" />
+
     </LinearLayout>
 </RelativeLayout>

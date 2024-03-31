@@ -19,51 +19,51 @@ public final class UserOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional string username = 1;</code>
+     * <code>string username = 1;</code>
      * @return Whether the username field is set.
      */
     boolean hasUsername();
     /**
-     * <code>optional string username = 1;</code>
+     * <code>string username = 1;</code>
      * @return The username.
      */
     java.lang.String getUsername();
     /**
-     * <code>optional string username = 1;</code>
+     * <code>string username = 1;</code>
      * @return The bytes for username.
      */
     com.google.protobuf.ByteString
         getUsernameBytes();
 
     /**
-     * <code>optional string password = 2;</code>
+     * <code>string password = 2;</code>
      * @return Whether the password field is set.
      */
     boolean hasPassword();
     /**
-     * <code>optional string password = 2;</code>
+     * <code>string password = 2;</code>
      * @return The password.
      */
     java.lang.String getPassword();
     /**
-     * <code>optional string password = 2;</code>
+     * <code>string password = 2;</code>
      * @return The bytes for password.
      */
     com.google.protobuf.ByteString
         getPasswordBytes();
 
     /**
-     * <code>optional string email = 3;</code>
+     * <code>string email = 3;</code>
      * @return Whether the email field is set.
      */
     boolean hasEmail();
     /**
-     * <code>optional string email = 3;</code>
+     * <code>string email = 3;</code>
      * @return The email.
      */
     java.lang.String getEmail();
     /**
-     * <code>optional string email = 3;</code>
+     * <code>string email = 3;</code>
      * @return The bytes for email.
      */
     com.google.protobuf.ByteString
@@ -82,34 +82,34 @@ public final class UserOuterClass {
         getPhoneNumberBytes();
 
     /**
-     * <code>optional string countryCode = 5;</code>
+     * <code>string countryCode = 5;</code>
      * @return Whether the countryCode field is set.
      */
     boolean hasCountryCode();
     /**
-     * <code>optional string countryCode = 5;</code>
+     * <code>string countryCode = 5;</code>
      * @return The countryCode.
      */
     java.lang.String getCountryCode();
     /**
-     * <code>optional string countryCode = 5;</code>
+     * <code>string countryCode = 5;</code>
      * @return The bytes for countryCode.
      */
     com.google.protobuf.ByteString
         getCountryCodeBytes();
 
     /**
-     * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+     * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
      * @return Whether the updatedAt field is set.
      */
     boolean hasUpdatedAt();
     /**
-     * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+     * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
      * @return The updatedAt.
      */
     com.google.protobuf.Timestamp getUpdatedAt();
     /**
-     * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+     * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
      */
     com.google.protobuf.TimestampOrBuilder getUpdatedAtOrBuilder();
 
@@ -138,50 +138,46 @@ public final class UserOuterClass {
         getTokenBytes();
 
     /**
-     * <code>optional string pubKey = 9;</code>
+     * <code>string pubKey = 9;</code>
      * @return Whether the pubKey field is set.
      */
     boolean hasPubKey();
     /**
-     * <code>optional string pubKey = 9;</code>
+     * <code>string pubKey = 9;</code>
      * @return The pubKey.
      */
     java.lang.String getPubKey();
     /**
-     * <code>optional string pubKey = 9;</code>
+     * <code>string pubKey = 9;</code>
      * @return The bytes for pubKey.
      */
     com.google.protobuf.ByteString
         getPubKeyBytes();
 
     /**
-     * <pre>
-     * ⚠️WARNING: For testing.Need to be removed later
-     * </pre>
-     *
-     * <code>optional string privKey = 10;</code>
-     * @return Whether the privKey field is set.
+     * <code>repeated string blockedUsers = 10;</code>
+     * @return A list containing the blockedUsers.
      */
-    boolean hasPrivKey();
+    java.util.List<java.lang.String>
+        getBlockedUsersList();
     /**
-     * <pre>
-     * ⚠️WARNING: For testing.Need to be removed later
-     * </pre>
-     *
-     * <code>optional string privKey = 10;</code>
-     * @return The privKey.
+     * <code>repeated string blockedUsers = 10;</code>
+     * @return The count of blockedUsers.
      */
-    java.lang.String getPrivKey();
+    int getBlockedUsersCount();
     /**
-     * <pre>
-     * ⚠️WARNING: For testing.Need to be removed later
-     * </pre>
-     *
-     * <code>optional string privKey = 10;</code>
-     * @return The bytes for privKey.
+     * <code>repeated string blockedUsers = 10;</code>
+     * @param index The index of the element to return.
+     * @return The blockedUsers at the given index.
+     */
+    java.lang.String getBlockedUsers(int index);
+    /**
+     * <code>repeated string blockedUsers = 10;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the blockedUsers at the given index.
      */
     com.google.protobuf.ByteString
-        getPrivKeyBytes();
+        getBlockedUsersBytes(int index);
   }
   /**
    * Protobuf type {@code User}
@@ -204,7 +200,7 @@ public final class UserOuterClass {
       uuid_ = "";
       token_ = "";
       pubKey_ = "";
-      privKey_ = "";
+      blockedUsers_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
 
     @java.lang.Override
@@ -301,8 +297,11 @@ public final class UserOuterClass {
             }
             case 82: {
               java.lang.String s = input.readStringRequireUtf8();
-              bitField0_ |= 0x00000040;
-              privKey_ = s;
+              if (!((mutable_bitField0_ & 0x00000040) != 0)) {
+                blockedUsers_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000040;
+              }
+              blockedUsers_.add(s);
               break;
             }
             default: {
@@ -320,6 +319,9 @@ public final class UserOuterClass {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000040) != 0)) {
+          blockedUsers_ = blockedUsers_.getUnmodifiableView();
+        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -341,7 +343,7 @@ public final class UserOuterClass {
     public static final int USERNAME_FIELD_NUMBER = 1;
     private volatile java.lang.Object username_;
     /**
-     * <code>optional string username = 1;</code>
+     * <code>string username = 1;</code>
      * @return Whether the username field is set.
      */
     @java.lang.Override
@@ -349,7 +351,7 @@ public final class UserOuterClass {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional string username = 1;</code>
+     * <code>string username = 1;</code>
      * @return The username.
      */
     @java.lang.Override
@@ -366,7 +368,7 @@ public final class UserOuterClass {
       }
     }
     /**
-     * <code>optional string username = 1;</code>
+     * <code>string username = 1;</code>
      * @return The bytes for username.
      */
     @java.lang.Override
@@ -387,7 +389,7 @@ public final class UserOuterClass {
     public static final int PASSWORD_FIELD_NUMBER = 2;
     private volatile java.lang.Object password_;
     /**
-     * <code>optional string password = 2;</code>
+     * <code>string password = 2;</code>
      * @return Whether the password field is set.
      */
     @java.lang.Override
@@ -395,7 +397,7 @@ public final class UserOuterClass {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>optional string password = 2;</code>
+     * <code>string password = 2;</code>
      * @return The password.
      */
     @java.lang.Override
@@ -412,7 +414,7 @@ public final class UserOuterClass {
       }
     }
     /**
-     * <code>optional string password = 2;</code>
+     * <code>string password = 2;</code>
      * @return The bytes for password.
      */
     @java.lang.Override
@@ -433,7 +435,7 @@ public final class UserOuterClass {
     public static final int EMAIL_FIELD_NUMBER = 3;
     private volatile java.lang.Object email_;
     /**
-     * <code>optional string email = 3;</code>
+     * <code>string email = 3;</code>
      * @return Whether the email field is set.
      */
     @java.lang.Override
@@ -441,7 +443,7 @@ public final class UserOuterClass {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
-     * <code>optional string email = 3;</code>
+     * <code>string email = 3;</code>
      * @return The email.
      */
     @java.lang.Override
@@ -458,7 +460,7 @@ public final class UserOuterClass {
       }
     }
     /**
-     * <code>optional string email = 3;</code>
+     * <code>string email = 3;</code>
      * @return The bytes for email.
      */
     @java.lang.Override
@@ -517,7 +519,7 @@ public final class UserOuterClass {
     public static final int COUNTRYCODE_FIELD_NUMBER = 5;
     private volatile java.lang.Object countryCode_;
     /**
-     * <code>optional string countryCode = 5;</code>
+     * <code>string countryCode = 5;</code>
      * @return Whether the countryCode field is set.
      */
     @java.lang.Override
@@ -525,7 +527,7 @@ public final class UserOuterClass {
       return ((bitField0_ & 0x00000008) != 0);
     }
     /**
-     * <code>optional string countryCode = 5;</code>
+     * <code>string countryCode = 5;</code>
      * @return The countryCode.
      */
     @java.lang.Override
@@ -542,7 +544,7 @@ public final class UserOuterClass {
       }
     }
     /**
-     * <code>optional string countryCode = 5;</code>
+     * <code>string countryCode = 5;</code>
      * @return The bytes for countryCode.
      */
     @java.lang.Override
@@ -563,7 +565,7 @@ public final class UserOuterClass {
     public static final int UPDATEDAT_FIELD_NUMBER = 6;
     private com.google.protobuf.Timestamp updatedAt_;
     /**
-     * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+     * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
      * @return Whether the updatedAt field is set.
      */
     @java.lang.Override
@@ -571,7 +573,7 @@ public final class UserOuterClass {
       return ((bitField0_ & 0x00000010) != 0);
     }
     /**
-     * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+     * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
      * @return The updatedAt.
      */
     @java.lang.Override
@@ -579,7 +581,7 @@ public final class UserOuterClass {
       return updatedAt_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : updatedAt_;
     }
     /**
-     * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+     * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
      */
     @java.lang.Override
     public com.google.protobuf.TimestampOrBuilder getUpdatedAtOrBuilder() {
@@ -665,7 +667,7 @@ public final class UserOuterClass {
     public static final int PUBKEY_FIELD_NUMBER = 9;
     private volatile java.lang.Object pubKey_;
     /**
-     * <code>optional string pubKey = 9;</code>
+     * <code>string pubKey = 9;</code>
      * @return Whether the pubKey field is set.
      */
     @java.lang.Override
@@ -673,7 +675,7 @@ public final class UserOuterClass {
       return ((bitField0_ & 0x00000020) != 0);
     }
     /**
-     * <code>optional string pubKey = 9;</code>
+     * <code>string pubKey = 9;</code>
      * @return The pubKey.
      */
     @java.lang.Override
@@ -690,7 +692,7 @@ public final class UserOuterClass {
       }
     }
     /**
-     * <code>optional string pubKey = 9;</code>
+     * <code>string pubKey = 9;</code>
      * @return The bytes for pubKey.
      */
     @java.lang.Override
@@ -708,62 +710,39 @@ public final class UserOuterClass {
       }
     }
 
-    public static final int PRIVKEY_FIELD_NUMBER = 10;
-    private volatile java.lang.Object privKey_;
+    public static final int BLOCKEDUSERS_FIELD_NUMBER = 10;
+    private com.google.protobuf.LazyStringList blockedUsers_;
     /**
-     * <pre>
-     * ⚠️WARNING: For testing.Need to be removed later
-     * </pre>
-     *
-     * <code>optional string privKey = 10;</code>
-     * @return Whether the privKey field is set.
+     * <code>repeated string blockedUsers = 10;</code>
+     * @return A list containing the blockedUsers.
      */
-    @java.lang.Override
-    public boolean hasPrivKey() {
-      return ((bitField0_ & 0x00000040) != 0);
+    public com.google.protobuf.ProtocolStringList
+        getBlockedUsersList() {
+      return blockedUsers_;
     }
     /**
-     * <pre>
-     * ⚠️WARNING: For testing.Need to be removed later
-     * </pre>
-     *
-     * <code>optional string privKey = 10;</code>
-     * @return The privKey.
+     * <code>repeated string blockedUsers = 10;</code>
+     * @return The count of blockedUsers.
      */
-    @java.lang.Override
-    public java.lang.String getPrivKey() {
-      java.lang.Object ref = privKey_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        privKey_ = s;
-        return s;
-      }
+    public int getBlockedUsersCount() {
+      return blockedUsers_.size();
     }
     /**
-     * <pre>
-     * ⚠️WARNING: For testing.Need to be removed later
-     * </pre>
-     *
-     * <code>optional string privKey = 10;</code>
-     * @return The bytes for privKey.
+     * <code>repeated string blockedUsers = 10;</code>
+     * @param index The index of the element to return.
+     * @return The blockedUsers at the given index.
      */
-    @java.lang.Override
+    public java.lang.String getBlockedUsers(int index) {
+      return blockedUsers_.get(index);
+    }
+    /**
+     * <code>repeated string blockedUsers = 10;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the blockedUsers at the given index.
+     */
     public com.google.protobuf.ByteString
-        getPrivKeyBytes() {
-      java.lang.Object ref = privKey_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        privKey_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+        getBlockedUsersBytes(int index) {
+      return blockedUsers_.getByteString(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -789,7 +768,7 @@ public final class UserOuterClass {
       if (((bitField0_ & 0x00000004) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, email_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(phoneNumber_)) {
+      if (!getPhoneNumberBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, phoneNumber_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
@@ -798,17 +777,17 @@ public final class UserOuterClass {
       if (((bitField0_ & 0x00000010) != 0)) {
         output.writeMessage(6, getUpdatedAt());
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(uuid_)) {
+      if (!getUuidBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 7, uuid_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(token_)) {
+      if (!getTokenBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 8, token_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 9, pubKey_);
       }
-      if (((bitField0_ & 0x00000040) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, privKey_);
+      for (int i = 0; i < blockedUsers_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, blockedUsers_.getRaw(i));
       }
       unknownFields.writeTo(output);
     }
@@ -828,7 +807,7 @@ public final class UserOuterClass {
       if (((bitField0_ & 0x00000004) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, email_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(phoneNumber_)) {
+      if (!getPhoneNumberBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, phoneNumber_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
@@ -838,17 +817,22 @@ public final class UserOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(6, getUpdatedAt());
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(uuid_)) {
+      if (!getUuidBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, uuid_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(token_)) {
+      if (!getTokenBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, token_);
       }
       if (((bitField0_ & 0x00000020) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, pubKey_);
       }
-      if (((bitField0_ & 0x00000040) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, privKey_);
+      {
+        int dataSize = 0;
+        for (int i = 0; i < blockedUsers_.size(); i++) {
+          dataSize += computeStringSizeNoTag(blockedUsers_.getRaw(i));
+        }
+        size += dataSize;
+        size += 1 * getBlockedUsersList().size();
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -901,11 +885,8 @@ public final class UserOuterClass {
         if (!getPubKey()
             .equals(other.getPubKey())) return false;
       }
-      if (hasPrivKey() != other.hasPrivKey()) return false;
-      if (hasPrivKey()) {
-        if (!getPrivKey()
-            .equals(other.getPrivKey())) return false;
-      }
+      if (!getBlockedUsersList()
+          .equals(other.getBlockedUsersList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -947,9 +928,9 @@ public final class UserOuterClass {
         hash = (37 * hash) + PUBKEY_FIELD_NUMBER;
         hash = (53 * hash) + getPubKey().hashCode();
       }
-      if (hasPrivKey()) {
-        hash = (37 * hash) + PRIVKEY_FIELD_NUMBER;
-        hash = (53 * hash) + getPrivKey().hashCode();
+      if (getBlockedUsersCount() > 0) {
+        hash = (37 * hash) + BLOCKEDUSERS_FIELD_NUMBER;
+        hash = (53 * hash) + getBlockedUsersList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -1107,7 +1088,7 @@ public final class UserOuterClass {
 
         pubKey_ = "";
         bitField0_ = (bitField0_ & ~0x00000020);
-        privKey_ = "";
+        blockedUsers_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
@@ -1168,10 +1149,11 @@ public final class UserOuterClass {
           to_bitField0_ |= 0x00000020;
         }
         result.pubKey_ = pubKey_;
-        if (((from_bitField0_ & 0x00000040) != 0)) {
-          to_bitField0_ |= 0x00000040;
+        if (((bitField0_ & 0x00000040) != 0)) {
+          blockedUsers_ = blockedUsers_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000040);
         }
-        result.privKey_ = privKey_;
+        result.blockedUsers_ = blockedUsers_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1261,9 +1243,14 @@ public final class UserOuterClass {
           pubKey_ = other.pubKey_;
           onChanged();
         }
-        if (other.hasPrivKey()) {
-          bitField0_ |= 0x00000040;
-          privKey_ = other.privKey_;
+        if (!other.blockedUsers_.isEmpty()) {
+          if (blockedUsers_.isEmpty()) {
+            blockedUsers_ = other.blockedUsers_;
+            bitField0_ = (bitField0_ & ~0x00000040);
+          } else {
+            ensureBlockedUsersIsMutable();
+            blockedUsers_.addAll(other.blockedUsers_);
+          }
           onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -1298,14 +1285,14 @@ public final class UserOuterClass {
 
       private java.lang.Object username_ = "";
       /**
-       * <code>optional string username = 1;</code>
+       * <code>string username = 1;</code>
        * @return Whether the username field is set.
        */
       public boolean hasUsername() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional string username = 1;</code>
+       * <code>string username = 1;</code>
        * @return The username.
        */
       public java.lang.String getUsername() {
@@ -1321,7 +1308,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional string username = 1;</code>
+       * <code>string username = 1;</code>
        * @return The bytes for username.
        */
       public com.google.protobuf.ByteString
@@ -1338,7 +1325,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional string username = 1;</code>
+       * <code>string username = 1;</code>
        * @param value The username to set.
        * @return This builder for chaining.
        */
@@ -1353,7 +1340,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional string username = 1;</code>
+       * <code>string username = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearUsername() {
@@ -1363,7 +1350,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional string username = 1;</code>
+       * <code>string username = 1;</code>
        * @param value The bytes for username to set.
        * @return This builder for chaining.
        */
@@ -1381,14 +1368,14 @@ public final class UserOuterClass {
 
       private java.lang.Object password_ = "";
       /**
-       * <code>optional string password = 2;</code>
+       * <code>string password = 2;</code>
        * @return Whether the password field is set.
        */
       public boolean hasPassword() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>optional string password = 2;</code>
+       * <code>string password = 2;</code>
        * @return The password.
        */
       public java.lang.String getPassword() {
@@ -1404,7 +1391,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional string password = 2;</code>
+       * <code>string password = 2;</code>
        * @return The bytes for password.
        */
       public com.google.protobuf.ByteString
@@ -1421,7 +1408,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional string password = 2;</code>
+       * <code>string password = 2;</code>
        * @param value The password to set.
        * @return This builder for chaining.
        */
@@ -1436,7 +1423,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional string password = 2;</code>
+       * <code>string password = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearPassword() {
@@ -1446,7 +1433,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional string password = 2;</code>
+       * <code>string password = 2;</code>
        * @param value The bytes for password to set.
        * @return This builder for chaining.
        */
@@ -1464,14 +1451,14 @@ public final class UserOuterClass {
 
       private java.lang.Object email_ = "";
       /**
-       * <code>optional string email = 3;</code>
+       * <code>string email = 3;</code>
        * @return Whether the email field is set.
        */
       public boolean hasEmail() {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
-       * <code>optional string email = 3;</code>
+       * <code>string email = 3;</code>
        * @return The email.
        */
       public java.lang.String getEmail() {
@@ -1487,7 +1474,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional string email = 3;</code>
+       * <code>string email = 3;</code>
        * @return The bytes for email.
        */
       public com.google.protobuf.ByteString
@@ -1504,7 +1491,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional string email = 3;</code>
+       * <code>string email = 3;</code>
        * @param value The email to set.
        * @return This builder for chaining.
        */
@@ -1519,7 +1506,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional string email = 3;</code>
+       * <code>string email = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearEmail() {
@@ -1529,7 +1516,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional string email = 3;</code>
+       * <code>string email = 3;</code>
        * @param value The bytes for email to set.
        * @return This builder for chaining.
        */
@@ -1623,14 +1610,14 @@ public final class UserOuterClass {
 
       private java.lang.Object countryCode_ = "";
       /**
-       * <code>optional string countryCode = 5;</code>
+       * <code>string countryCode = 5;</code>
        * @return Whether the countryCode field is set.
        */
       public boolean hasCountryCode() {
         return ((bitField0_ & 0x00000008) != 0);
       }
       /**
-       * <code>optional string countryCode = 5;</code>
+       * <code>string countryCode = 5;</code>
        * @return The countryCode.
        */
       public java.lang.String getCountryCode() {
@@ -1646,7 +1633,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional string countryCode = 5;</code>
+       * <code>string countryCode = 5;</code>
        * @return The bytes for countryCode.
        */
       public com.google.protobuf.ByteString
@@ -1663,7 +1650,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional string countryCode = 5;</code>
+       * <code>string countryCode = 5;</code>
        * @param value The countryCode to set.
        * @return This builder for chaining.
        */
@@ -1678,7 +1665,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional string countryCode = 5;</code>
+       * <code>string countryCode = 5;</code>
        * @return This builder for chaining.
        */
       public Builder clearCountryCode() {
@@ -1688,7 +1675,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional string countryCode = 5;</code>
+       * <code>string countryCode = 5;</code>
        * @param value The bytes for countryCode to set.
        * @return This builder for chaining.
        */
@@ -1708,14 +1695,14 @@ public final class UserOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> updatedAtBuilder_;
       /**
-       * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+       * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
        * @return Whether the updatedAt field is set.
        */
       public boolean hasUpdatedAt() {
         return ((bitField0_ & 0x00000010) != 0);
       }
       /**
-       * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+       * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
        * @return The updatedAt.
        */
       public com.google.protobuf.Timestamp getUpdatedAt() {
@@ -1726,7 +1713,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+       * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
        */
       public Builder setUpdatedAt(com.google.protobuf.Timestamp value) {
         if (updatedAtBuilder_ == null) {
@@ -1742,7 +1729,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+       * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
        */
       public Builder setUpdatedAt(
           com.google.protobuf.Timestamp.Builder builderForValue) {
@@ -1756,7 +1743,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+       * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
        */
       public Builder mergeUpdatedAt(com.google.protobuf.Timestamp value) {
         if (updatedAtBuilder_ == null) {
@@ -1776,7 +1763,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+       * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
        */
       public Builder clearUpdatedAt() {
         if (updatedAtBuilder_ == null) {
@@ -1789,7 +1776,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+       * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
        */
       public com.google.protobuf.Timestamp.Builder getUpdatedAtBuilder() {
         bitField0_ |= 0x00000010;
@@ -1797,7 +1784,7 @@ public final class UserOuterClass {
         return getUpdatedAtFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+       * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
        */
       public com.google.protobuf.TimestampOrBuilder getUpdatedAtOrBuilder() {
         if (updatedAtBuilder_ != null) {
@@ -1808,7 +1795,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional .google.protobuf.Timestamp updatedAt = 6;</code>
+       * <code>.google.protobuf.Timestamp updatedAt = 6;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> 
@@ -1978,14 +1965,14 @@ public final class UserOuterClass {
 
       private java.lang.Object pubKey_ = "";
       /**
-       * <code>optional string pubKey = 9;</code>
+       * <code>string pubKey = 9;</code>
        * @return Whether the pubKey field is set.
        */
       public boolean hasPubKey() {
         return ((bitField0_ & 0x00000020) != 0);
       }
       /**
-       * <code>optional string pubKey = 9;</code>
+       * <code>string pubKey = 9;</code>
        * @return The pubKey.
        */
       public java.lang.String getPubKey() {
@@ -2001,7 +1988,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional string pubKey = 9;</code>
+       * <code>string pubKey = 9;</code>
        * @return The bytes for pubKey.
        */
       public com.google.protobuf.ByteString
@@ -2018,7 +2005,7 @@ public final class UserOuterClass {
         }
       }
       /**
-       * <code>optional string pubKey = 9;</code>
+       * <code>string pubKey = 9;</code>
        * @param value The pubKey to set.
        * @return This builder for chaining.
        */
@@ -2033,7 +2020,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional string pubKey = 9;</code>
+       * <code>string pubKey = 9;</code>
        * @return This builder for chaining.
        */
       public Builder clearPubKey() {
@@ -2043,7 +2030,7 @@ public final class UserOuterClass {
         return this;
       }
       /**
-       * <code>optional string pubKey = 9;</code>
+       * <code>string pubKey = 9;</code>
        * @param value The bytes for pubKey to set.
        * @return This builder for chaining.
        */
@@ -2059,109 +2046,112 @@ public final class UserOuterClass {
         return this;
       }
 
-      private java.lang.Object privKey_ = "";
-      /**
-       * <pre>
-       * ⚠️WARNING: For testing.Need to be removed later
-       * </pre>
-       *
-       * <code>optional string privKey = 10;</code>
-       * @return Whether the privKey field is set.
-       */
-      public boolean hasPrivKey() {
-        return ((bitField0_ & 0x00000040) != 0);
+      private com.google.protobuf.LazyStringList blockedUsers_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureBlockedUsersIsMutable() {
+        if (!((bitField0_ & 0x00000040) != 0)) {
+          blockedUsers_ = new com.google.protobuf.LazyStringArrayList(blockedUsers_);
+          bitField0_ |= 0x00000040;
+         }
       }
       /**
-       * <pre>
-       * ⚠️WARNING: For testing.Need to be removed later
-       * </pre>
-       *
-       * <code>optional string privKey = 10;</code>
-       * @return The privKey.
+       * <code>repeated string blockedUsers = 10;</code>
+       * @return A list containing the blockedUsers.
        */
-      public java.lang.String getPrivKey() {
-        java.lang.Object ref = privKey_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          privKey_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      public com.google.protobuf.ProtocolStringList
+          getBlockedUsersList() {
+        return blockedUsers_.getUnmodifiableView();
       }
       /**
-       * <pre>
-       * ⚠️WARNING: For testing.Need to be removed later
-       * </pre>
-       *
-       * <code>optional string privKey = 10;</code>
-       * @return The bytes for privKey.
+       * <code>repeated string blockedUsers = 10;</code>
+       * @return The count of blockedUsers.
+       */
+      public int getBlockedUsersCount() {
+        return blockedUsers_.size();
+      }
+      /**
+       * <code>repeated string blockedUsers = 10;</code>
+       * @param index The index of the element to return.
+       * @return The blockedUsers at the given index.
+       */
+      public java.lang.String getBlockedUsers(int index) {
+        return blockedUsers_.get(index);
+      }
+      /**
+       * <code>repeated string blockedUsers = 10;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the blockedUsers at the given index.
        */
       public com.google.protobuf.ByteString
-          getPrivKeyBytes() {
-        java.lang.Object ref = privKey_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          privKey_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+          getBlockedUsersBytes(int index) {
+        return blockedUsers_.getByteString(index);
       }
       /**
-       * <pre>
-       * ⚠️WARNING: For testing.Need to be removed later
-       * </pre>
-       *
-       * <code>optional string privKey = 10;</code>
-       * @param value The privKey to set.
+       * <code>repeated string blockedUsers = 10;</code>
+       * @param index The index to set the value at.
+       * @param value The blockedUsers to set.
        * @return This builder for chaining.
        */
-      public Builder setPrivKey(
+      public Builder setBlockedUsers(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureBlockedUsersIsMutable();
+        blockedUsers_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string blockedUsers = 10;</code>
+       * @param value The blockedUsers to add.
+       * @return This builder for chaining.
+       */
+      public Builder addBlockedUsers(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000040;
-        privKey_ = value;
+  ensureBlockedUsersIsMutable();
+        blockedUsers_.add(value);
         onChanged();
         return this;
       }
       /**
-       * <pre>
-       * ⚠️WARNING: For testing.Need to be removed later
-       * </pre>
-       *
-       * <code>optional string privKey = 10;</code>
+       * <code>repeated string blockedUsers = 10;</code>
+       * @param values The blockedUsers to add.
        * @return This builder for chaining.
        */
-      public Builder clearPrivKey() {
+      public Builder addAllBlockedUsers(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureBlockedUsersIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, blockedUsers_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string blockedUsers = 10;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearBlockedUsers() {
+        blockedUsers_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000040);
-        privKey_ = getDefaultInstance().getPrivKey();
         onChanged();
         return this;
       }
       /**
-       * <pre>
-       * ⚠️WARNING: For testing.Need to be removed later
-       * </pre>
-       *
-       * <code>optional string privKey = 10;</code>
-       * @param value The bytes for privKey to set.
+       * <code>repeated string blockedUsers = 10;</code>
+       * @param value The bytes of the blockedUsers to add.
        * @return This builder for chaining.
        */
-      public Builder setPrivKeyBytes(
+      public Builder addBlockedUsersBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-        bitField0_ |= 0x00000040;
-        privKey_ = value;
+        ensureBlockedUsersIsMutable();
+        blockedUsers_.add(value);
         onChanged();
         return this;
       }
@@ -2218,11 +2208,1298 @@ public final class UserOuterClass {
 
   }
 
+  public interface BlockRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:BlockRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>bool block = 1;</code>
+     * @return The block.
+     */
+    boolean getBlock();
+
+    /**
+     * <code>string number = 2;</code>
+     * @return The number.
+     */
+    java.lang.String getNumber();
+    /**
+     * <code>string number = 2;</code>
+     * @return The bytes for number.
+     */
+    com.google.protobuf.ByteString
+        getNumberBytes();
+  }
+  /**
+   * Protobuf type {@code BlockRequest}
+   */
+  public static final class BlockRequest extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:BlockRequest)
+      BlockRequestOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use BlockRequest.newBuilder() to construct.
+    private BlockRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private BlockRequest() {
+      number_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new BlockRequest();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private BlockRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              block_ = input.readBool();
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              number_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.services.UserOuterClass.internal_static_BlockRequest_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.services.UserOuterClass.internal_static_BlockRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.services.UserOuterClass.BlockRequest.class, com.services.UserOuterClass.BlockRequest.Builder.class);
+    }
+
+    public static final int BLOCK_FIELD_NUMBER = 1;
+    private boolean block_;
+    /**
+     * <code>bool block = 1;</code>
+     * @return The block.
+     */
+    @java.lang.Override
+    public boolean getBlock() {
+      return block_;
+    }
+
+    public static final int NUMBER_FIELD_NUMBER = 2;
+    private volatile java.lang.Object number_;
+    /**
+     * <code>string number = 2;</code>
+     * @return The number.
+     */
+    @java.lang.Override
+    public java.lang.String getNumber() {
+      java.lang.Object ref = number_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        number_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string number = 2;</code>
+     * @return The bytes for number.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getNumberBytes() {
+      java.lang.Object ref = number_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        number_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (block_ != false) {
+        output.writeBool(1, block_);
+      }
+      if (!getNumberBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, number_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (block_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, block_);
+      }
+      if (!getNumberBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, number_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.services.UserOuterClass.BlockRequest)) {
+        return super.equals(obj);
+      }
+      com.services.UserOuterClass.BlockRequest other = (com.services.UserOuterClass.BlockRequest) obj;
+
+      if (getBlock()
+          != other.getBlock()) return false;
+      if (!getNumber()
+          .equals(other.getNumber())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + BLOCK_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getBlock());
+      hash = (37 * hash) + NUMBER_FIELD_NUMBER;
+      hash = (53 * hash) + getNumber().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.services.UserOuterClass.BlockRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.services.UserOuterClass.BlockRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.services.UserOuterClass.BlockRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.services.UserOuterClass.BlockRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.services.UserOuterClass.BlockRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.services.UserOuterClass.BlockRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.services.UserOuterClass.BlockRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.services.UserOuterClass.BlockRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.services.UserOuterClass.BlockRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.services.UserOuterClass.BlockRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.services.UserOuterClass.BlockRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.services.UserOuterClass.BlockRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.services.UserOuterClass.BlockRequest prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code BlockRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:BlockRequest)
+        com.services.UserOuterClass.BlockRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.services.UserOuterClass.internal_static_BlockRequest_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.services.UserOuterClass.internal_static_BlockRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.services.UserOuterClass.BlockRequest.class, com.services.UserOuterClass.BlockRequest.Builder.class);
+      }
+
+      // Construct using com.services.UserOuterClass.BlockRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        block_ = false;
+
+        number_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.services.UserOuterClass.internal_static_BlockRequest_descriptor;
+      }
+
+      @java.lang.Override
+      public com.services.UserOuterClass.BlockRequest getDefaultInstanceForType() {
+        return com.services.UserOuterClass.BlockRequest.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.services.UserOuterClass.BlockRequest build() {
+        com.services.UserOuterClass.BlockRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.services.UserOuterClass.BlockRequest buildPartial() {
+        com.services.UserOuterClass.BlockRequest result = new com.services.UserOuterClass.BlockRequest(this);
+        result.block_ = block_;
+        result.number_ = number_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.services.UserOuterClass.BlockRequest) {
+          return mergeFrom((com.services.UserOuterClass.BlockRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.services.UserOuterClass.BlockRequest other) {
+        if (other == com.services.UserOuterClass.BlockRequest.getDefaultInstance()) return this;
+        if (other.getBlock() != false) {
+          setBlock(other.getBlock());
+        }
+        if (!other.getNumber().isEmpty()) {
+          number_ = other.number_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.services.UserOuterClass.BlockRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.services.UserOuterClass.BlockRequest) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private boolean block_ ;
+      /**
+       * <code>bool block = 1;</code>
+       * @return The block.
+       */
+      @java.lang.Override
+      public boolean getBlock() {
+        return block_;
+      }
+      /**
+       * <code>bool block = 1;</code>
+       * @param value The block to set.
+       * @return This builder for chaining.
+       */
+      public Builder setBlock(boolean value) {
+        
+        block_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool block = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearBlock() {
+        
+        block_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object number_ = "";
+      /**
+       * <code>string number = 2;</code>
+       * @return The number.
+       */
+      public java.lang.String getNumber() {
+        java.lang.Object ref = number_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          number_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string number = 2;</code>
+       * @return The bytes for number.
+       */
+      public com.google.protobuf.ByteString
+          getNumberBytes() {
+        java.lang.Object ref = number_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          number_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string number = 2;</code>
+       * @param value The number to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNumber(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        number_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string number = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearNumber() {
+        
+        number_ = getDefaultInstance().getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string number = 2;</code>
+       * @param value The bytes for number to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNumberBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        number_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:BlockRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:BlockRequest)
+    private static final com.services.UserOuterClass.BlockRequest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.services.UserOuterClass.BlockRequest();
+    }
+
+    public static com.services.UserOuterClass.BlockRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<BlockRequest>
+        PARSER = new com.google.protobuf.AbstractParser<BlockRequest>() {
+      @java.lang.Override
+      public BlockRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new BlockRequest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<BlockRequest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<BlockRequest> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.services.UserOuterClass.BlockRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface BlockResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:BlockResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated string blockedUsers = 1;</code>
+     * @return A list containing the blockedUsers.
+     */
+    java.util.List<java.lang.String>
+        getBlockedUsersList();
+    /**
+     * <code>repeated string blockedUsers = 1;</code>
+     * @return The count of blockedUsers.
+     */
+    int getBlockedUsersCount();
+    /**
+     * <code>repeated string blockedUsers = 1;</code>
+     * @param index The index of the element to return.
+     * @return The blockedUsers at the given index.
+     */
+    java.lang.String getBlockedUsers(int index);
+    /**
+     * <code>repeated string blockedUsers = 1;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the blockedUsers at the given index.
+     */
+    com.google.protobuf.ByteString
+        getBlockedUsersBytes(int index);
+  }
+  /**
+   * Protobuf type {@code BlockResponse}
+   */
+  public static final class BlockResponse extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:BlockResponse)
+      BlockResponseOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use BlockResponse.newBuilder() to construct.
+    private BlockResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private BlockResponse() {
+      blockedUsers_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new BlockResponse();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private BlockResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                blockedUsers_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              blockedUsers_.add(s);
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+          blockedUsers_ = blockedUsers_.getUnmodifiableView();
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.services.UserOuterClass.internal_static_BlockResponse_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.services.UserOuterClass.internal_static_BlockResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.services.UserOuterClass.BlockResponse.class, com.services.UserOuterClass.BlockResponse.Builder.class);
+    }
+
+    public static final int BLOCKEDUSERS_FIELD_NUMBER = 1;
+    private com.google.protobuf.LazyStringList blockedUsers_;
+    /**
+     * <code>repeated string blockedUsers = 1;</code>
+     * @return A list containing the blockedUsers.
+     */
+    public com.google.protobuf.ProtocolStringList
+        getBlockedUsersList() {
+      return blockedUsers_;
+    }
+    /**
+     * <code>repeated string blockedUsers = 1;</code>
+     * @return The count of blockedUsers.
+     */
+    public int getBlockedUsersCount() {
+      return blockedUsers_.size();
+    }
+    /**
+     * <code>repeated string blockedUsers = 1;</code>
+     * @param index The index of the element to return.
+     * @return The blockedUsers at the given index.
+     */
+    public java.lang.String getBlockedUsers(int index) {
+      return blockedUsers_.get(index);
+    }
+    /**
+     * <code>repeated string blockedUsers = 1;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the blockedUsers at the given index.
+     */
+    public com.google.protobuf.ByteString
+        getBlockedUsersBytes(int index) {
+      return blockedUsers_.getByteString(index);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      for (int i = 0; i < blockedUsers_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, blockedUsers_.getRaw(i));
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      {
+        int dataSize = 0;
+        for (int i = 0; i < blockedUsers_.size(); i++) {
+          dataSize += computeStringSizeNoTag(blockedUsers_.getRaw(i));
+        }
+        size += dataSize;
+        size += 1 * getBlockedUsersList().size();
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.services.UserOuterClass.BlockResponse)) {
+        return super.equals(obj);
+      }
+      com.services.UserOuterClass.BlockResponse other = (com.services.UserOuterClass.BlockResponse) obj;
+
+      if (!getBlockedUsersList()
+          .equals(other.getBlockedUsersList())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (getBlockedUsersCount() > 0) {
+        hash = (37 * hash) + BLOCKEDUSERS_FIELD_NUMBER;
+        hash = (53 * hash) + getBlockedUsersList().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.services.UserOuterClass.BlockResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.services.UserOuterClass.BlockResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.services.UserOuterClass.BlockResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.services.UserOuterClass.BlockResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.services.UserOuterClass.BlockResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.services.UserOuterClass.BlockResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.services.UserOuterClass.BlockResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.services.UserOuterClass.BlockResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.services.UserOuterClass.BlockResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.services.UserOuterClass.BlockResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.services.UserOuterClass.BlockResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.services.UserOuterClass.BlockResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.services.UserOuterClass.BlockResponse prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code BlockResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:BlockResponse)
+        com.services.UserOuterClass.BlockResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.services.UserOuterClass.internal_static_BlockResponse_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.services.UserOuterClass.internal_static_BlockResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.services.UserOuterClass.BlockResponse.class, com.services.UserOuterClass.BlockResponse.Builder.class);
+      }
+
+      // Construct using com.services.UserOuterClass.BlockResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        blockedUsers_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.services.UserOuterClass.internal_static_BlockResponse_descriptor;
+      }
+
+      @java.lang.Override
+      public com.services.UserOuterClass.BlockResponse getDefaultInstanceForType() {
+        return com.services.UserOuterClass.BlockResponse.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.services.UserOuterClass.BlockResponse build() {
+        com.services.UserOuterClass.BlockResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.services.UserOuterClass.BlockResponse buildPartial() {
+        com.services.UserOuterClass.BlockResponse result = new com.services.UserOuterClass.BlockResponse(this);
+        int from_bitField0_ = bitField0_;
+        if (((bitField0_ & 0x00000001) != 0)) {
+          blockedUsers_ = blockedUsers_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        }
+        result.blockedUsers_ = blockedUsers_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.services.UserOuterClass.BlockResponse) {
+          return mergeFrom((com.services.UserOuterClass.BlockResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.services.UserOuterClass.BlockResponse other) {
+        if (other == com.services.UserOuterClass.BlockResponse.getDefaultInstance()) return this;
+        if (!other.blockedUsers_.isEmpty()) {
+          if (blockedUsers_.isEmpty()) {
+            blockedUsers_ = other.blockedUsers_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureBlockedUsersIsMutable();
+            blockedUsers_.addAll(other.blockedUsers_);
+          }
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.services.UserOuterClass.BlockResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.services.UserOuterClass.BlockResponse) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private com.google.protobuf.LazyStringList blockedUsers_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureBlockedUsersIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          blockedUsers_ = new com.google.protobuf.LazyStringArrayList(blockedUsers_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+      /**
+       * <code>repeated string blockedUsers = 1;</code>
+       * @return A list containing the blockedUsers.
+       */
+      public com.google.protobuf.ProtocolStringList
+          getBlockedUsersList() {
+        return blockedUsers_.getUnmodifiableView();
+      }
+      /**
+       * <code>repeated string blockedUsers = 1;</code>
+       * @return The count of blockedUsers.
+       */
+      public int getBlockedUsersCount() {
+        return blockedUsers_.size();
+      }
+      /**
+       * <code>repeated string blockedUsers = 1;</code>
+       * @param index The index of the element to return.
+       * @return The blockedUsers at the given index.
+       */
+      public java.lang.String getBlockedUsers(int index) {
+        return blockedUsers_.get(index);
+      }
+      /**
+       * <code>repeated string blockedUsers = 1;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the blockedUsers at the given index.
+       */
+      public com.google.protobuf.ByteString
+          getBlockedUsersBytes(int index) {
+        return blockedUsers_.getByteString(index);
+      }
+      /**
+       * <code>repeated string blockedUsers = 1;</code>
+       * @param index The index to set the value at.
+       * @param value The blockedUsers to set.
+       * @return This builder for chaining.
+       */
+      public Builder setBlockedUsers(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureBlockedUsersIsMutable();
+        blockedUsers_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string blockedUsers = 1;</code>
+       * @param value The blockedUsers to add.
+       * @return This builder for chaining.
+       */
+      public Builder addBlockedUsers(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureBlockedUsersIsMutable();
+        blockedUsers_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string blockedUsers = 1;</code>
+       * @param values The blockedUsers to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllBlockedUsers(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureBlockedUsersIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, blockedUsers_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string blockedUsers = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearBlockedUsers() {
+        blockedUsers_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string blockedUsers = 1;</code>
+       * @param value The bytes of the blockedUsers to add.
+       * @return This builder for chaining.
+       */
+      public Builder addBlockedUsersBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        ensureBlockedUsersIsMutable();
+        blockedUsers_.add(value);
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:BlockResponse)
+    }
+
+    // @@protoc_insertion_point(class_scope:BlockResponse)
+    private static final com.services.UserOuterClass.BlockResponse DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.services.UserOuterClass.BlockResponse();
+    }
+
+    public static com.services.UserOuterClass.BlockResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<BlockResponse>
+        PARSER = new com.google.protobuf.AbstractParser<BlockResponse>() {
+      @java.lang.Override
+      public BlockResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new BlockResponse(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<BlockResponse> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<BlockResponse> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.services.UserOuterClass.BlockResponse getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_User_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_User_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_BlockRequest_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_BlockRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_BlockResponse_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_BlockResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -2233,16 +3510,18 @@ public final class UserOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\nuser.proto\032\037google/protobuf/timestamp." +
-      "proto\"\314\002\n\004User\022\025\n\010username\030\001 \001(\tH\000\210\001\001\022\025\n" +
+      "proto\"\300\002\n\004User\022\025\n\010username\030\001 \001(\tH\000\210\001\001\022\025\n" +
       "\010password\030\002 \001(\tH\001\210\001\001\022\022\n\005email\030\003 \001(\tH\002\210\001\001" +
       "\022\023\n\013phoneNumber\030\004 \001(\t\022\030\n\013countryCode\030\005 \001" +
       "(\tH\003\210\001\001\0222\n\tupdatedAt\030\006 \001(\0132\032.google.prot" +
       "obuf.TimestampH\004\210\001\001\022\014\n\004uuid\030\007 \001(\t\022\r\n\005tok" +
-      "en\030\010 \001(\t\022\023\n\006pubKey\030\t \001(\tH\005\210\001\001\022\024\n\007privKey" +
-      "\030\n \001(\tH\006\210\001\001B\013\n\t_usernameB\013\n\t_passwordB\010\n" +
+      "en\030\010 \001(\t\022\023\n\006pubKey\030\t \001(\tH\005\210\001\001\022\024\n\014blocked" +
+      "Users\030\n \003(\tB\013\n\t_usernameB\013\n\t_passwordB\010\n" +
       "\006_emailB\016\n\014_countryCodeB\014\n\n_updatedAtB\t\n" +
-      "\007_pubKeyB\n\n\010_privKeyB\023\n\014com.servicesZ\003/p" +
-      "bb\006proto3"
+      "\007_pubKey\"-\n\014BlockRequest\022\r\n\005block\030\001 \001(\010\022" +
+      "\016\n\006number\030\002 \001(\t\"%\n\rBlockResponse\022\024\n\014bloc" +
+      "kedUsers\030\001 \003(\tB\023\n\014com.servicesZ\003/pbb\006pro" +
+      "to3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -2254,7 +3533,19 @@ public final class UserOuterClass {
     internal_static_User_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_User_descriptor,
-        new java.lang.String[] { "Username", "Password", "Email", "PhoneNumber", "CountryCode", "UpdatedAt", "Uuid", "Token", "PubKey", "PrivKey", "Username", "Password", "Email", "CountryCode", "UpdatedAt", "PubKey", "PrivKey", });
+        new java.lang.String[] { "Username", "Password", "Email", "PhoneNumber", "CountryCode", "UpdatedAt", "Uuid", "Token", "PubKey", "BlockedUsers", "Username", "Password", "Email", "CountryCode", "UpdatedAt", "PubKey", });
+    internal_static_BlockRequest_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_BlockRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_BlockRequest_descriptor,
+        new java.lang.String[] { "Block", "Number", });
+    internal_static_BlockResponse_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_BlockResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_BlockResponse_descriptor,
+        new java.lang.String[] { "BlockedUsers", });
     com.google.protobuf.TimestampProto.getDescriptor();
   }
 

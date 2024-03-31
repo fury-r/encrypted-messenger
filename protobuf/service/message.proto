@@ -10,7 +10,7 @@ message MessageInfo{
     string messageId=2;
     string text=3;
     string reciever=4;
-    string contentType=5;
+    ContentType contentType=5;
     string timestamp=6;
     bool deliverStatus=7;
     bool readStatus=8;
@@ -21,10 +21,13 @@ enum MessageType {
     UPDATE=1;
     
 }
+enum ContentType{
+    Text=0;
+    Audio=1;
+}
 message MessageRequest{
     MessageInfo message=1;
     MessageType type=2; 
-    string token=3;
 
 }
 message MessageResponse{
@@ -34,13 +37,7 @@ message MessageResponse{
 }
 
 
-// message MessageResponse{
-//     MessageInfo message=1;
-//     bool deliverStatus=2;
-//     bool readStatus=3;
-//     string token=4;
 
-// }
 
 
 message MessageUpdateRequest{
@@ -49,7 +46,6 @@ message MessageUpdateRequest{
     string messageId=3;
     bool deliverStatus=4;
     bool readStatus=5;
-    string token=6;
 
 }
 
@@ -72,10 +68,26 @@ STATUS_UPDATE=4;
 
     
 }
+message  KeyExchange{
+    string sender = 1;
+    string reciever = 2;
+    string key = 3;
+
+}
+
+
+
+
 
 message Event{
     EventType type=1;
-    string token=2;
-    MessageRequest message=3;
+    oneof body{
+        string message=2;
+        string exchange=3;
+        string sender=4;
+    }
+    string reciever = 5;
+
     
 }
+

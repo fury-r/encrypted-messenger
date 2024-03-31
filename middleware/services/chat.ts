@@ -1,67 +1,73 @@
-import path from "path";
-import * as grpc from "@grpc/grpc-js";
-import * as protoLoader from "@grpc/proto-loader";
-import { GrpcClientService } from "../common/GrpcClientService";
-import { KafkaSetup } from "../common/kafka";
-import { Event } from "../proto/Event";
 import { RabbitMQ } from "../common/rabbitMQ";
-
-export const chatService = (): grpc.UntypedServiceImplementation => {
-  const PROTO_FILE = "../../protobuf/service/service.proto";
-
-  const client = new GrpcClientService().getClient();
-  const packageDef = protoLoader.loadSync(path.resolve(__dirname, PROTO_FILE));
-  const grpcObject: any = grpc.loadPackageDefinition(packageDef);
-  const producer = new KafkaSetup().getKafkaProducer();
+import { Metadata } from "@grpc/grpc-js";
+import { UserRequest } from "../proto/UserRequest";
+export const send = async (req: any, callback: any) => {
+  // const client = new GrpcClientService().getClient();
+  // const producer = new KafkaSetup().getKafkaProducer();
   const rabbitMQ = new RabbitMQ("amqp://guest:guest@localhost:5672", "chat");
-  return {
-    //TODO: Currently hardcoded to handle event of type message
-    send: async (
-      req: {
-        request: Event;
-      },
-      callback: any
-    ) => {
-      const data: Event = req.request as Event;
-      console.log("hit", data);
+  // const data: Event = req.request as Event;
 
-      delete req.request.token;
-      if (req.request?.message?.message?.reciever) {
-        rabbitMQ.sendToQueue(
-          JSON.stringify(req.request),
-          req.request?.message?.message?.reciever
-        );
-        console.log("Adding to Message broker");
-      } else {
-        console.log(" not ", req.request);
-      }
+  const metadata = new Metadata();
 
-      return callback(null, {});
-      let response: any = await client.VerifyToken(
-        {
-          token: req.request.token,
-        },
-        (e, result) => {
-          if (e) {
-            return callback(e, null);
-          } else {
-            return result;
-          }
-        }
-      );
-      if (response?.user) {
-        // rabbitMQ.sendToQueue(JSON.stringify(req.request));
-        // await producer?.send({
-        //   topic: req.request.to,
-        //   messages: [
-        //     {
-        //       value: req.request.message,
-        //     },
-        //   ],
-        // });
-      } else {
-        return callback("Invalid token", null);
-      }
-    },
+  metadata.add("authorization", req.metadata.get("authorization")[0]);
+
+  const request: UserRequest = {
+    phoneNumber:
+      req.request.message?.message?.reciever || req.request.exchange?.reciever,
   };
+  console.log(request);
+  // const response = await client.getUser(request, metadata, (e, res) => {
+  //   if (e) {
+  //     console.log(e, request);
+  //     console.log(res);
+  //     return callback(e, null);
+  //   } else {
+  //     console.log(req.request, request);
+  //     const publicKey = res?.pubKey;
+  //     console.log(res?.pubKey, "here");
+  //     // 2nd level of encryption
+  //     const encryptedMessage = encryptData(
+  //       JSON.stringify(req.request),
+  //       publicKey || ""
+  //     );
+  //     console.log(encryptedMessage, "s");
+
+  //   }
+  //   return callback(null, {});
+  // });
+
+  if (req.request?.message?.message?.reciever) {
+    console.log("Adding to Message broker");
+
+    rabbitMQ.sendToQueue(JSON.stringify(req.request), req.request?.reciever);
+  } else {
+    console.log(" not ", req.request);
+  }
+  return callback(null, "");
+
+  // const response: any = await client.VerifyToken(
+  //   {
+  //     token: req.request,
+  //   },
+  //   (e, result) => {
+  //     if (e) {
+  //       return callback(e, null);
+  //     } else {
+  //       return result;
+  //     }
+  //   }
+  // );
+  // if (response?.user) {
+  //   // rabbitMQ.sendToQueue(JSON.stringify(req.request));
+  //   // await producer?.send({
+  //   //   topic: req.request.to,
+  //   //   messages: [
+  //   //     {
+  //   //       value: req.request.message,
+  //   //     },
+  //   //   ],
+  //   // });
+  // } else {
+  //   return callback("Invalid token", null);
+  // }
 };

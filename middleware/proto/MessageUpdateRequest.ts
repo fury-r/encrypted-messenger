@@ -7,7 +7,6 @@ export interface MessageUpdateRequest {
   'messageId'?: (string);
   'deliverStatus'?: (boolean);
   'readStatus'?: (boolean);
-  'token'?: (string);
 }
 
 export interface MessageUpdateRequest__Output {
@@ -16,5 +15,4 @@ export interface MessageUpdateRequest__Output {
   'messageId'?: (string);
   'deliverStatus'?: (boolean);
   'readStatus'?: (boolean);
-  'token'?: (string);
 }

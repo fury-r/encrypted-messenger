@@ -1,32 +1,23 @@
-import path from "path";
 import * as grpc from "@grpc/grpc-js";
-import * as protoLoader from "@grpc/proto-loader";
 import { GrpcClientService } from "../common/GrpcClientService";
 
-export const verifyTokenService = (): grpc.UntypedServiceImplementation => {
-  const PROTO_FILE = "../../protobuf/service/service.proto";
+export const verifyToken = async (req: any, callback: any) => {
+  const metadata = new grpc.Metadata();
+  metadata.add("authorization", req.metadata.get("authorization")[0]);
+  const client = new GrpcClientService(undefined).getClient();
 
-  const client = new GrpcClientService().getClient();
-  const packageDef = protoLoader.loadSync(path.resolve(__dirname, PROTO_FILE));
-  const grpcObject: any = grpc.loadPackageDefinition(packageDef);
-
-  return {
-    verifyToken: async (req: any, callback: any) => {
-      console.log(req.request, "verifyToken");
-      let response = await client.VerifyToken(
+  const response = await client.VerifyToken({}, metadata, (e, result) => {
+    if (e) {
+      return callback(
         {
-          ...req.request,
+          code: grpc.status.UNAUTHENTICATED,
+          details: "Unauthorized - Invalid token",
         },
-        (e, result) => {
-          if (e) {
-            return callback(e, null);
-          } else {
-            return callback("", { ...result });
-          }
-        }
+        null
       );
-      console.log(response, "verifyToken");
-      return response;
-    },
-  };
+    } else {
+      return callback("", { ...result });
+    }
+  });
+  return response;
 };

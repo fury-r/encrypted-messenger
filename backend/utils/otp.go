@@ -7,12 +7,13 @@ import (
 )
 
 func GenerateOtp() string {
+	min := 100000
+	max := 999999
 
-	var otp string
+	randomNumber := rand.Intn(max - min)
 
-	for i := 0; i < 6; i++ {
-		otp = otp + strconv.Itoa(rand.Intn(6))
-	}
-	fmt.Println("Otp generated %d", otp)
-	return otp
+	randomNumber += min
+
+	fmt.Println("Otp generated ", randomNumber)
+	return strconv.Itoa(randomNumber)
 }

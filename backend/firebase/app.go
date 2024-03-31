@@ -11,7 +11,7 @@ import (
 )
 
 func InitFirebase() *firebase.App {
-	opt := option.WithCredentialsFile("D:/Messenger/backend/firebase/firebase.json")
+	opt := option.WithCredentialsFile("./firebase/firebase.json")
 	config := &firebase.Config{ProjectID: "messenger-2c2de"}
 	app, err := firebase.NewApp(context.Background(), config, opt)
 	if err != nil {

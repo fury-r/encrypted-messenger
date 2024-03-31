@@ -18,5 +18,4 @@ message Contact{
 
 message ContactsList{
     repeated Contact contacts=1;
-    string token=2;
 }

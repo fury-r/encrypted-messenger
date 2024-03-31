@@ -43,7 +43,7 @@ public object ServicesGrpcKt {
     @JvmStatic
     get() = ServicesGrpc.getRegisterMethod()
 
-  public val otpMethod: MethodDescriptor<Otp.OtpRequest, Otp.OtpResponse>
+  public val otpMethod: MethodDescriptor<Otp.OtpRequest, Auth.AuthResponse>
     @JvmStatic
     get() = ServicesGrpc.getOtpMethod()
 
@@ -69,10 +69,18 @@ public object ServicesGrpcKt {
     @JvmStatic
     get() = ServicesGrpc.getSavePubKeyMethod()
 
-  public val handShakeMethod:
-      MethodDescriptor<Keyexchange.PubKeyExchange, Keyexchange.PubKeyExchange>
+  public val handShakeRequestMethod: MethodDescriptor<Message.Event, Message.Event>
     @JvmStatic
-    get() = ServicesGrpc.getHandShakeMethod()
+    get() = ServicesGrpc.getHandShakeRequestMethod()
+
+  public val getUserMethod: MethodDescriptor<Service.UserRequest, Service.UserResponse>
+    @JvmStatic
+    get() = ServicesGrpc.getGetUserMethod()
+
+  public val blockUserMethod:
+      MethodDescriptor<UserOuterClass.BlockRequest, UserOuterClass.BlockResponse>
+    @JvmStatic
+    get() = ServicesGrpc.getBlockUserMethod()
 
   /**
    * A stub for issuing RPCs to a(n) Services service as suspending coroutines.
@@ -139,8 +147,8 @@ public object ServicesGrpcKt {
      *
      * @return The single response from the server.
      */
-    public suspend fun otp(request: Otp.OtpRequest, headers: Metadata = Metadata()): Otp.OtpResponse
-        = unaryRpc(
+    public suspend fun otp(request: Otp.OtpRequest, headers: Metadata = Metadata()):
+        Auth.AuthResponse = unaryRpc(
       channel,
       ServicesGrpc.getOtpMethod(),
       request,
@@ -265,10 +273,52 @@ public object ServicesGrpcKt {
      *
      * @return The single response from the server.
      */
-    public suspend fun handShake(request: Keyexchange.PubKeyExchange, headers: Metadata =
-        Metadata()): Keyexchange.PubKeyExchange = unaryRpc(
+    public suspend fun handShakeRequest(request: Message.Event, headers: Metadata = Metadata()):
+        Message.Event = unaryRpc(
       channel,
-      ServicesGrpc.getHandShakeMethod(),
+      ServicesGrpc.getHandShakeRequestMethod(),
+      request,
+      callOptions,
+      headers
+    )
+
+    /**
+     * Executes this RPC and returns the response message, suspending until the RPC completes
+     * with [`Status.OK`][Status].  If the RPC completes with another status, a corresponding
+     * [StatusException] is thrown.  If this coroutine is cancelled, the RPC is also cancelled
+     * with the corresponding exception as a cause.
+     *
+     * @param request The request message to send to the server.
+     *
+     * @param headers Metadata to attach to the request.  Most users will not need this.
+     *
+     * @return The single response from the server.
+     */
+    public suspend fun getUser(request: Service.UserRequest, headers: Metadata = Metadata()):
+        Service.UserResponse = unaryRpc(
+      channel,
+      ServicesGrpc.getGetUserMethod(),
+      request,
+      callOptions,
+      headers
+    )
+
+    /**
+     * Executes this RPC and returns the response message, suspending until the RPC completes
+     * with [`Status.OK`][Status].  If the RPC completes with another status, a corresponding
+     * [StatusException] is thrown.  If this coroutine is cancelled, the RPC is also cancelled
+     * with the corresponding exception as a cause.
+     *
+     * @param request The request message to send to the server.
+     *
+     * @param headers Metadata to attach to the request.  Most users will not need this.
+     *
+     * @return The single response from the server.
+     */
+    public suspend fun blockUser(request: UserOuterClass.BlockRequest, headers: Metadata =
+        Metadata()): UserOuterClass.BlockResponse = unaryRpc(
+      channel,
+      ServicesGrpc.getBlockUserMethod(),
       request,
       callOptions,
       headers
@@ -321,7 +371,7 @@ public object ServicesGrpcKt {
      *
      * @param request The request from the client.
      */
-    public open suspend fun otp(request: Otp.OtpRequest): Otp.OtpResponse = throw
+    public open suspend fun otp(request: Otp.OtpRequest): Auth.AuthResponse = throw
         StatusException(UNIMPLEMENTED.withDescription("Method Services.Otp is unimplemented"))
 
     /**
@@ -397,7 +447,7 @@ public object ServicesGrpcKt {
         StatusException(UNIMPLEMENTED.withDescription("Method Services.savePubKey is unimplemented"))
 
     /**
-     * Returns the response to an RPC for Services.handShake.
+     * Returns the response to an RPC for Services.handShakeRequest.
      *
      * If this method fails with a [StatusException], the RPC will fail with the corresponding
      * [Status].  If this method fails with a [java.util.concurrent.CancellationException], the RPC
@@ -407,9 +457,37 @@ public object ServicesGrpcKt {
      *
      * @param request The request from the client.
      */
-    public open suspend fun handShake(request: Keyexchange.PubKeyExchange):
-        Keyexchange.PubKeyExchange = throw
-        StatusException(UNIMPLEMENTED.withDescription("Method Services.handShake is unimplemented"))
+    public open suspend fun handShakeRequest(request: Message.Event): Message.Event = throw
+        StatusException(UNIMPLEMENTED.withDescription("Method Services.handShakeRequest is unimplemented"))
+
+    /**
+     * Returns the response to an RPC for Services.getUser.
+     *
+     * If this method fails with a [StatusException], the RPC will fail with the corresponding
+     * [Status].  If this method fails with a [java.util.concurrent.CancellationException], the RPC
+     * will fail
+     * with status `Status.CANCELLED`.  If this method fails for any other reason, the RPC will
+     * fail with `Status.UNKNOWN` with the exception as a cause.
+     *
+     * @param request The request from the client.
+     */
+    public open suspend fun getUser(request: Service.UserRequest): Service.UserResponse = throw
+        StatusException(UNIMPLEMENTED.withDescription("Method Services.getUser is unimplemented"))
+
+    /**
+     * Returns the response to an RPC for Services.blockUser.
+     *
+     * If this method fails with a [StatusException], the RPC will fail with the corresponding
+     * [Status].  If this method fails with a [java.util.concurrent.CancellationException], the RPC
+     * will fail
+     * with status `Status.CANCELLED`.  If this method fails for any other reason, the RPC will
+     * fail with `Status.UNKNOWN` with the exception as a cause.
+     *
+     * @param request The request from the client.
+     */
+    public open suspend fun blockUser(request: UserOuterClass.BlockRequest):
+        UserOuterClass.BlockResponse = throw
+        StatusException(UNIMPLEMENTED.withDescription("Method Services.blockUser is unimplemented"))
 
     public final override fun bindService(): ServerServiceDefinition =
         builder(getServiceDescriptor())
@@ -455,8 +533,18 @@ public object ServicesGrpcKt {
     ))
       .addMethod(unaryServerMethodDefinition(
       context = this.context,
-      descriptor = ServicesGrpc.getHandShakeMethod(),
-      implementation = ::handShake
+      descriptor = ServicesGrpc.getHandShakeRequestMethod(),
+      implementation = ::handShakeRequest
+    ))
+      .addMethod(unaryServerMethodDefinition(
+      context = this.context,
+      descriptor = ServicesGrpc.getGetUserMethod(),
+      implementation = ::getUser
+    ))
+      .addMethod(unaryServerMethodDefinition(
+      context = this.context,
+      descriptor = ServicesGrpc.getBlockUserMethod(),
+      implementation = ::blockUser
     )).build()
   }
 }

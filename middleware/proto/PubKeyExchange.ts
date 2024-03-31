@@ -1,14 +1,16 @@
-// Original file: ../protobuf/service/keyexchange.proto
+// Original file: ../protobuf/service/message.proto
 
 
 export interface PubKeyExchange {
   'sender'?: (string);
   'reciever'?: (string);
-  'encryptedKey'?: (string);
+  'publicKey'?: (string);
+  'privateKey'?: (string);
 }
 
 export interface PubKeyExchange__Output {
   'sender'?: (string);
   'reciever'?: (string);
-  'encryptedKey'?: (string);
+  'publicKey'?: (string);
+  'privateKey'?: (string);
 }

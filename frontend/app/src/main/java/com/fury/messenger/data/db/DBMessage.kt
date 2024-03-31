@@ -2,254 +2,319 @@ package com.fury.messenger.data.db
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
-import android.database.Cursor
-import android.database.sqlite.SQLiteOpenHelper
-import android.provider.BaseColumns
+import android.content.Context
 import android.util.Log
-
-import com.fury.messenger.data.helper.mutex.MutexLock
-import com.fury.messenger.data.helper.user.CurrentUser
-import com.fury.messenger.manageBuilder.ManageChanelBuilder
-import com.fury.messenger.rsa.RSA.decryptMessage
+import androidx.room.Room
+import com.fury.messenger.crypto.Crypto
+import com.fury.messenger.crypto.Crypto.convertAESKeyToString
+import com.fury.messenger.crypto.Crypto.decryptMessage
+import com.fury.messenger.crypto.Crypto.encryptAESMessage
+import com.fury.messenger.crypto.Crypto.encryptMessage
+import com.fury.messenger.crypto.Crypto.runAESTest
+import com.fury.messenger.data.db.DbConnect.getDatabase
+import com.fury.messenger.data.db.model.Chat
+import com.fury.messenger.data.db.model.Contact
+import com.fury.messenger.helper.mutex.MutexLock
+import com.fury.messenger.helper.user.AppDatabase
+import com.fury.messenger.helper.user.CurrentUser
+import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.services.Message
+import com.services.Message.ContentType
 import com.services.Message.Event
+import com.services.Message.KeyExchange
 import com.services.Message.MessageInfo
 import com.services.Message.MessageRequest
+import com.services.Message.MessageType
+import com.services.UserOuterClass
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.function.Supplier
+import java.util.stream.Collectors
+import javax.crypto.SecretKey
 
 
 object DBMessage {
-    val SQL_CREATE_QUERY=createTableQuery("Messages")
     val functions = arrayOf(::setMessages)
-    private   var scope= CoroutineScope(Dispatchers.Main)
-    var presenfunc=fun(callback:(messages:ArrayList<Chat>, recipient:String?)->ArrayList<Chat>){
+    private var scope = CoroutineScope(Dispatchers.Main)
+    var presenfunc =
+        fun(callback: (messages: ArrayList<Chat>, recipient: String?) -> ArrayList<Chat>) {
+        }
+    var listeners: ((ArrayList<Chat>, String?) -> ArrayList<Chat>) -> Unit =
+        presenfunc
+    private val DB_BUFFER: ArrayList<Chat> = arrayListOf<Chat>()
+
+
+    private fun setMessages(messages: ArrayList<Chat>) {
 
     }
-    var listeners: (callback:(messages:ArrayList<Chat>, recipient:String?)->ArrayList<Chat>)->Unit =presenfunc
-    private val DB_BUFFER:ArrayList<Chat> = arrayListOf<Chat>()
-      const val SQL_DELETE_QUERY="DROP TABLE IF EXISTS ${TableInfo.TABLE_NAME}"
-    object  TableInfo:BaseColumns{
-        const val TABLE_NAME="Messages"
-        const val COLUMN_ITEM_SENDER="sender"
-        const val  COLUMN_ITEM_RECEIVER="receiver"
-        const val COLUMN_ITEM_CONTENT_TYPE="content_type"
-        const val COLUMN_ITEM_MESSAGE="message"
-        const val COLUMN_ITEM_SEEN="seen"
-        const val COLUM_ITEM_DELIVERED="is_delivered"
-        const val COLUMN_ITEM_MESSAGE_ID="message_id"
-    }
-    private fun setMessages(messages:ArrayList<Chat>){
 
-    }
-    fun getDB_BUFFER():ArrayList<Chat>{
-        return  this.DB_BUFFER
+    fun getDB_BUFFER(): ArrayList<Chat> {
+        return this.DB_BUFFER
     }
 
-    fun eraseDB_BUFFER(){
+    fun eraseDB_BUFFER() {
         this.DB_BUFFER.clear()
     }
-    private fun addAllData(messages: ArrayList<Chat>, recipient:String?): ArrayList<Chat> {
+
+    private fun addAllData(messages: ArrayList<Chat>, recipient: String?): ArrayList<Chat> {
         messages.addAll(getDB_BUFFER())
         return messages
     }
-    fun notifyAllSubscribers(){
-        listeners(this::addAllData)
+
+    private fun notifyAllSubscribers() {
+        this.listeners(this::addAllData)
         eraseDB_BUFFER()
     }
-    fun createTableQuery(tableName: String):String{
-     return   "CREATE TABLE IF NOT EXISTS ${tableName} ("+
-                "${BaseColumns._ID} INTEGER  PRIMARY KEY,"+
-                "${TableInfo.COLUMN_ITEM_SENDER} VARCHAR ,"+
 
-                "${TableInfo.COLUMN_ITEM_RECEIVER} VARCHAR ,"+
-                "${TableInfo.COLUMN_ITEM_MESSAGE_ID} VARCHAR  UNIQUE,"+
 
-                "${TableInfo.COLUMN_ITEM_CONTENT_TYPE} VARCHAR ,"+
-                "${TableInfo.COLUMN_ITEM_MESSAGE} VARCHAR ,"+
-                "${TableInfo.COLUM_ITEM_DELIVERED} BOOL ,"+
-                "${TableInfo.COLUMN_ITEM_SEEN} BOOL )"
-    }
+    // save handshake request in db
+    fun saveHandshake(ctx: Context, message: KeyExchange) {
 
-        private fun hasMessage(id:String, tableName:String, dbHelper: SQLiteOpenHelper):Boolean{
-        val db=dbHelper.writableDatabase
-
-        val cursor: Cursor =  db.query(tableName,
-            arrayOf(BaseColumns._ID), BaseColumns._ID + " =?", arrayOf(id), null, null, null, "1");
-        return cursor.count>0
+        val db = Room.databaseBuilder(
+            ctx,
+            AppDatabase::class.java, "main.db"
+        ).build()
+        val contact = db.contactDao().findByNumber(message.reciever)
+        contact.key = message.key
+        db.contactDao().update(contact)
 
     }
 
+    suspend fun messageThreadHandler(ctx: Context, data: MessageRequest): Any {
+        val privateKey = CurrentUser.getPrivateKey()!!
+        if (data.type == com.services.Message.MessageType.INSERT) {
+            val chat = Chat(
+                1,
+                data.message.sender,
+                data.message.reciever,
+                data.message.messageId,
+                data.message.text,
+                data.message.contentType as String,
+                isDelivered = false,
+                isSeen = false,
+                MessageType.INSERT.toString(),
+                null
+            )
+
+            insertMessage(ctx, chat)
+            chat.message = decryptMessage(data.message.text, privateKey)!!
+            this.DB_BUFFER.add(chat)
+
+        } else if (data.type == MessageType.UPDATE) {
+            if (data.message.messageId.isEmpty()) {
+                markAllAsRead(ctx, data.message.sender)
 
 
-    suspend fun messageThreadHandler(data: MessageRequest, dbHelper: SQLiteOpenHelper):Any {
-        val privateKey=CurrentUser.getPrivateKey()!!
-       if(data.type==com.services.Message.MessageType.INSERT){
-           this.DB_BUFFER.add( Chat("0",
-               data.message.sender, data.message.reciever,
-             data.message.messageId,  decryptMessage(data.message.text,privateKey)!!,data.message.contentType,false,false))
-            insertMessage(dbHelper,data.message.sender,data.message.text,data.message.sender,data.message.reciever,data.message.contentType,true,false,data.message.messageId)
-
-
-        }
-        else if(data.type==com.services.Message.MessageType.UPDATE){
-            if(data.message.messageId.isEmpty()){
-                markAllAsRead(data.message.sender,dbHelper)
-
-
-            }else{
-                updateData(dbHelper,data.message.sender,data.message.text,data.message.sender,data.message.reciever,data.message.contentType,true,data.message.readStatus,data.message.messageId)
+            } else {
+                updateData(
+                    ctx,
+                    data.message.sender,
+                    data.message.reciever,
+                    data.message.contentType,
+                    true,
+                    data.message.readStatus,
+                    data.message.messageId
+                )
 
             }
 
         }
         notifyAllSubscribers()
-       return  1
+        return 1
     }
 
 
-    private  fun markAllAsRead(tableName: String, dbHelper: SQLiteOpenHelper){
-        val db=dbHelper.writableDatabase
-        db.beginTransaction()
-        try {
+    private fun markAllAsRead(ctx: Context, receiver: String) {
 
-            db.rawQuery("UPDATE table_$tableName  SET seen  = 1 " , null);
+        val db = Room.databaseBuilder(
+            ctx,
+            AppDatabase::class.java, "main.db"
+        ).build()
 
-            this.listeners((fun(messages:ArrayList<Chat>, recipient:String?):ArrayList<Chat>{
-                if (tableName.split("_")[1] ==recipient){
-                    for(message in messages){
-                        message.isSeen=true
-                    }
-                    if (recipient != null) {
-                        scope.launch{
-                            sendSeenEvent(recipient)
-                        }
-                    }
-                }
-
-                return messages
-            }))
-
-        }catch (e:Exception){
-            e.printStackTrace()
-        }finally {
-            db.endTransaction()
-        }
-
+        db.chatsDao().markAllAsReadAndDelivered(true, true, null, receiver)
 
     }
-    fun insertMessage(dbHelper:SQLiteOpenHelper, tableName:String, message:String, sender:String, receiver:String, contentType:String?="text", deliveryStatus:Boolean?=false, readStatus:Boolean?=false, messageId:String?=null){
+
+    fun insertMessage(ctx: Context, chat: Chat) {
 
         MutexLock.setDbLock(true)
-        val contentValue=ContentValues()
-        val db=dbHelper.writableDatabase
-        val  query="Select * FROM table_$tableName"
-        val result=db.rawQuery(query,null)
+        val contentValue = ContentValues()
+        val db = Room.databaseBuilder(
+            ctx,
+            AppDatabase::class.java, "main.db"
+        ).build()
 
 
-        db.beginTransaction()
-        try{
-            contentValue.put(TableInfo.COLUMN_ITEM_MESSAGE,message)
-            contentValue.put(TableInfo.COLUMN_ITEM_SENDER,sender)
-            contentValue.put(TableInfo.COLUMN_ITEM_RECEIVER,receiver)
-            contentValue.put(TableInfo.COLUMN_ITEM_MESSAGE_ID,messageId)
-
-            contentValue.put(TableInfo.COLUMN_ITEM_CONTENT_TYPE,contentType)
-            contentValue.put(TableInfo.COLUMN_ITEM_SEEN,readStatus)
-
-            contentValue.put(TableInfo.COLUM_ITEM_DELIVERED,deliveryStatus)
-            db.insert("table_$tableName",null,contentValue)
-            db.setTransactionSuccessful()
-
-
-        }
-        finally {
-            db.endTransaction()
-            db.close()
-            MutexLock.setDbLock(false)
-
-
-        }
-
+        db.chatsDao().insertAll(chat)
     }
 
     @SuppressLint("SuspiciousIndentation")
-    private  suspend fun  updateData(dbHelper:SQLiteOpenHelper, tableName:String, message:String, sender:String, receiver:String, contentType:String?="text", deliveryStatus:Boolean?=false, readStatus:Boolean?=false, messageId:String){
-        withContext(Dispatchers.IO){
-            while (MutexLock.getDbLock()){
+    private suspend fun updateData(
+        ctx: Context,
+        sender: String,
+        receiver: String,
+        contentType: ContentType? = ContentType.Text,
+        deliveryStatus: Boolean? = false,
+        readStatus: Boolean? = false,
+        messageId: String
+    ) {
+        withContext(Dispatchers.IO) {
+            while (MutexLock.getDbLock()) {
                 delay(1000)
             }
+            val db = Room.databaseBuilder(
+                ctx,
+                AppDatabase::class.java, "main.db"
+            ).build()
             MutexLock.setDbLock(true)
-            val db=dbHelper.writableDatabase
-            db.beginTransaction()
-
-            try{
-                val contentValue= ContentValues()
-                var id:String=messageId;
 
 
-                    contentValue.put(TableInfo.COLUMN_ITEM_SEEN,readStatus)
-                    contentValue.put(TableInfo.COLUMN_ITEM_SEEN,deliveryStatus)
 
-                this@DBMessage.listeners((fun(messages:ArrayList<Chat>, recipient:String?):ArrayList<Chat>{
-                    if (tableName.split("_")[1] ==recipient){
-                        for(message in messages){
-                            message.isSeen=true
-                        }
-
-                    }
-
-                    return messages
-                }))
-               db.update("table_$tableName",contentValue,"${TableInfo.COLUMN_ITEM_MESSAGE_ID}=?" ,arrayOf(id))
-
-                db.setTransactionSuccessful()
-            }finally {
-                db.endTransaction()
-                MutexLock.setDbLock(false)
+            if (deliveryStatus != null && readStatus != null) {
+                db.chatsDao().markAllAsReadAndDelivered(deliveryStatus, readStatus, messageId)
 
             }
+
         }
     }
+
     @SuppressLint("Range")
-    fun getMessageByTableName(tableName: String, dbHelper: SQLiteOpenHelper): ArrayList<Chat> {
+    fun getMessageByTableName(
+        ctx: Context,
+        reciever: String
+    ): List<Chat?> {
         val messageList: ArrayList<Chat> = arrayListOf<Chat>()
-        val db=dbHelper.readableDatabase
-        Log.d("Messages-z","start thread")
+        Log.d("Messages-z", "start thread")
+        val db = Room.databaseBuilder(
+            ctx,
+            AppDatabase::class.java, "main.db"
+        ).build()
 
-        val  query="Select * FROM table_$tableName"
-        val result=db.rawQuery(query,null)
-        if(result.moveToFirst()){
-            do{
-                val seen=result.getString(result.getColumnIndex(TableInfo.COLUMN_ITEM_SEEN))
-                val deliver=result.getString(result.getColumnIndex(TableInfo.COLUM_ITEM_DELIVERED))
 
-                val chat=Chat(result.getString(result.getColumnIndex(BaseColumns._ID)),result.getString(result.getColumnIndex(TableInfo.COLUMN_ITEM_SENDER)),result.getString(result.getColumnIndex(TableInfo.COLUMN_ITEM_RECEIVER)),result.getString(result.getColumnIndex(TableInfo.COLUMN_ITEM_MESSAGE_ID)),result.getString(result.getColumnIndex(TableInfo.COLUMN_ITEM_MESSAGE)),result.getString(result.getColumnIndex(TableInfo.COLUMN_ITEM_CONTENT_TYPE)),
-                    deliver=="1",
-                    seen=="1"
-                )
-                Log.d("thread-messenger","+" +
-                        "message  "+result.getString(result.getColumnIndex(TableInfo.COLUMN_ITEM_SEEN)))
-                chat.message=decryptMessage(chat.message)!!
-                messageList.add(chat)
-            }while (result.moveToNext())
+        return ArrayList(db.chatsDao().loadChatsByNumber(reciever))
+
+    }
+
+    fun initiateHandShake(recipientDetails: Contact, message: String? = null): SecretKey {
+        Log.d("Initiate handshake", "Generate Symmetric key")
+
+        val client = createAuthenticationStub(CurrentUser.getToken())
+
+        // generate new private and public keys
+        val encryptKey = Crypto.getAES()
+        if (message != null) {
+            runAESTest(encryptKey, message)
         }
-        return  messageList
+        val contact =
+            getDatabase().contactDao().findByNumber(recipientDetails.phoneNumber)
+        contact.key = convertAESKeyToString(encryptKey)
+        getDatabase().contactDao().update(contact)
 
-    }
-    suspend fun  sendSeenEvent(recipientNumber:String){
-    withContext(Dispatchers.IO){
-        val message=MessageInfo.newBuilder().setReciever(recipientNumber).setSender(CurrentUser.getPhoneNumber()).setReadStatus(true).build()
-        val messageRequest=MessageRequest.newBuilder().setMessage(message).setType(Message.MessageType.UPDATE).build()
-        val event=Event.newBuilder().setMessage(messageRequest).setType(Message.EventType.MESSAGE).setToken(CurrentUser.getToken()).build()
+        val recipientPublicKey =
+            CurrentUser.convertStringToKeyFactory(recipientDetails.pubKey!!, 0)
+        val message = KeyExchange.newBuilder()
+            .setSender(CurrentUser.getCurrentUserPhoneNumber())
+            .setReciever(recipientDetails.phoneNumber).setKey(
+                contact.key!!
+            ).build()
 
-        val client=ManageChanelBuilder.client
+        val event = Event.newBuilder().setType(Message.EventType.HANDSHAKE)
+            .setExchange(encryptMessage(message.toString(), recipientPublicKey))
+            .setReciever(recipientDetails.phoneNumber).build()
         client.send(event)
-
+        return encryptKey
     }
+
+    fun sendMessage(
+        ctx: Context,
+        chat: Chat,
+        reciever: Contact,
+        encryptKey: SecretKey,
+        messageType: ContentType
+    ) {
+        val client = createAuthenticationStub(CurrentUser.getToken())
+
+
+        val message =
+            MessageInfo.newBuilder().setMessageId(chat.messageId).setText(chat.message)
+                .setSender(CurrentUser.getCurrentUserPhoneNumber())
+                .setReciever(reciever.phoneNumber).setContentType(messageType)
+                .build()
+
+        this.insertMessage(
+            ctx,
+            chat
+        )
+
+
+        val chatRequestBuilder = MessageRequest.newBuilder().setMessage(message)
+            .setType(MessageType.INSERT).build()
+        val event =
+            Event.newBuilder().setType(Message.EventType.MESSAGE).setReciever(
+                reciever.phoneNumber
+            ).setMessage(
+                encryptAESMessage(
+                    chatRequestBuilder.toString(),
+                    encryptKey
+                )
+            ).build()
+
+
+
+        client.send(event)
+    }
+
+    suspend fun sendSeenEvent(recipientNumber: String) {
+        withContext(Dispatchers.IO) {
+            val message = MessageInfo.newBuilder().setReciever(recipientNumber)
+                .setSender(CurrentUser.getCurrentUserPhoneNumber()).setReadStatus(true).build()
+            val messageRequest =
+                MessageRequest.newBuilder().setMessage(message).setType(Message.MessageType.UPDATE)
+                    .build()
+            val database = getDatabase()
+            val event =
+                Event.newBuilder().setMessage(
+                    encryptAESMessage(
+                        messageRequest.toString(),
+                        Crypto.convertAESstringToKey(
+                            database.contactDao().findByNumber(recipientNumber).key!!
+                        )
+                    )
+                ).setType(Message.EventType.MESSAGE)
+                    .build()
+
+            val client = createAuthenticationStub(CurrentUser.getToken())
+            client.send(event)
+
+        }
+    }
+
+
+    suspend fun blockUser(phoneNumber: String) {
+        val isBlocked = CurrentUser.isBlocked(phoneNumber)
+        val client = createAuthenticationStub(CurrentUser.getToken())
+
+        val request = UserOuterClass.BlockRequest.newBuilder()
+            .setNumber(phoneNumber)
+        if (isBlocked) {
+            request.setBlock(false)
+        } else {
+            request.setBlock(true)
+        }
+
+        try {
+            val response = client.blockUser(request.build())
+            val arrayList = response.blockedUsersList.stream().collect(
+                Collectors.toCollection(
+                    Supplier { ArrayList() })
+            )
+            CurrentUser.setBlockedUser(arrayList as ArrayList<String>)
+        } catch (e: Error) {
+            Log.d("Error while calling block User", e.toString())
+
+        }
     }
 }
 

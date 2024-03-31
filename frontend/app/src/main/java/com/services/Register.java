@@ -67,17 +67,17 @@ public final class Register {
         getPasswordBytes();
 
     /**
-     * <code>optional string countryCode = 5;</code>
+     * <code>string countryCode = 5;</code>
      * @return Whether the countryCode field is set.
      */
     boolean hasCountryCode();
     /**
-     * <code>optional string countryCode = 5;</code>
+     * <code>string countryCode = 5;</code>
      * @return The countryCode.
      */
     java.lang.String getCountryCode();
     /**
-     * <code>optional string countryCode = 5;</code>
+     * <code>string countryCode = 5;</code>
      * @return The bytes for countryCode.
      */
     com.google.protobuf.ByteString
@@ -352,7 +352,7 @@ public final class Register {
     public static final int COUNTRYCODE_FIELD_NUMBER = 5;
     private volatile java.lang.Object countryCode_;
     /**
-     * <code>optional string countryCode = 5;</code>
+     * <code>string countryCode = 5;</code>
      * @return Whether the countryCode field is set.
      */
     @java.lang.Override
@@ -360,7 +360,7 @@ public final class Register {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional string countryCode = 5;</code>
+     * <code>string countryCode = 5;</code>
      * @return The countryCode.
      */
     @java.lang.Override
@@ -377,7 +377,7 @@ public final class Register {
       }
     }
     /**
-     * <code>optional string countryCode = 5;</code>
+     * <code>string countryCode = 5;</code>
      * @return The bytes for countryCode.
      */
     @java.lang.Override
@@ -409,16 +409,16 @@ public final class Register {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(phoneNumber_)) {
+      if (!getPhoneNumberBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, phoneNumber_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(username_)) {
+      if (!getUsernameBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, username_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(email_)) {
+      if (!getEmailBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, email_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(password_)) {
+      if (!getPasswordBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, password_);
       }
       if (((bitField0_ & 0x00000001) != 0)) {
@@ -433,16 +433,16 @@ public final class Register {
       if (size != -1) return size;
 
       size = 0;
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(phoneNumber_)) {
+      if (!getPhoneNumberBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, phoneNumber_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(username_)) {
+      if (!getUsernameBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, username_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(email_)) {
+      if (!getEmailBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, email_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(password_)) {
+      if (!getPasswordBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, password_);
       }
       if (((bitField0_ & 0x00000001) != 0)) {
@@ -1084,14 +1084,14 @@ public final class Register {
 
       private java.lang.Object countryCode_ = "";
       /**
-       * <code>optional string countryCode = 5;</code>
+       * <code>string countryCode = 5;</code>
        * @return Whether the countryCode field is set.
        */
       public boolean hasCountryCode() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional string countryCode = 5;</code>
+       * <code>string countryCode = 5;</code>
        * @return The countryCode.
        */
       public java.lang.String getCountryCode() {
@@ -1107,7 +1107,7 @@ public final class Register {
         }
       }
       /**
-       * <code>optional string countryCode = 5;</code>
+       * <code>string countryCode = 5;</code>
        * @return The bytes for countryCode.
        */
       public com.google.protobuf.ByteString
@@ -1124,7 +1124,7 @@ public final class Register {
         }
       }
       /**
-       * <code>optional string countryCode = 5;</code>
+       * <code>string countryCode = 5;</code>
        * @param value The countryCode to set.
        * @return This builder for chaining.
        */
@@ -1139,7 +1139,7 @@ public final class Register {
         return this;
       }
       /**
-       * <code>optional string countryCode = 5;</code>
+       * <code>string countryCode = 5;</code>
        * @return This builder for chaining.
        */
       public Builder clearCountryCode() {
@@ -1149,7 +1149,7 @@ public final class Register {
         return this;
       }
       /**
-       * <code>optional string countryCode = 5;</code>
+       * <code>string countryCode = 5;</code>
        * @param value The bytes for countryCode to set.
        * @return This builder for chaining.
        */
@@ -1234,17 +1234,17 @@ public final class Register {
         getMessageBytes();
 
     /**
-     * <code>optional string error = 2;</code>
+     * <code>string error = 2;</code>
      * @return Whether the error field is set.
      */
     boolean hasError();
     /**
-     * <code>optional string error = 2;</code>
+     * <code>string error = 2;</code>
      * @return The error.
      */
     java.lang.String getError();
     /**
-     * <code>optional string error = 2;</code>
+     * <code>string error = 2;</code>
      * @return The bytes for error.
      */
     com.google.protobuf.ByteString
@@ -1384,7 +1384,7 @@ public final class Register {
     public static final int ERROR_FIELD_NUMBER = 2;
     private volatile java.lang.Object error_;
     /**
-     * <code>optional string error = 2;</code>
+     * <code>string error = 2;</code>
      * @return Whether the error field is set.
      */
     @java.lang.Override
@@ -1392,7 +1392,7 @@ public final class Register {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional string error = 2;</code>
+     * <code>string error = 2;</code>
      * @return The error.
      */
     @java.lang.Override
@@ -1409,7 +1409,7 @@ public final class Register {
       }
     }
     /**
-     * <code>optional string error = 2;</code>
+     * <code>string error = 2;</code>
      * @return The bytes for error.
      */
     @java.lang.Override
@@ -1441,7 +1441,7 @@ public final class Register {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(message_)) {
+      if (!getMessageBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, message_);
       }
       if (((bitField0_ & 0x00000001) != 0)) {
@@ -1456,7 +1456,7 @@ public final class Register {
       if (size != -1) return size;
 
       size = 0;
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(message_)) {
+      if (!getMessageBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, message_);
       }
       if (((bitField0_ & 0x00000001) != 0)) {
@@ -1837,14 +1837,14 @@ public final class Register {
 
       private java.lang.Object error_ = "";
       /**
-       * <code>optional string error = 2;</code>
+       * <code>string error = 2;</code>
        * @return Whether the error field is set.
        */
       public boolean hasError() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional string error = 2;</code>
+       * <code>string error = 2;</code>
        * @return The error.
        */
       public java.lang.String getError() {
@@ -1860,7 +1860,7 @@ public final class Register {
         }
       }
       /**
-       * <code>optional string error = 2;</code>
+       * <code>string error = 2;</code>
        * @return The bytes for error.
        */
       public com.google.protobuf.ByteString
@@ -1877,7 +1877,7 @@ public final class Register {
         }
       }
       /**
-       * <code>optional string error = 2;</code>
+       * <code>string error = 2;</code>
        * @param value The error to set.
        * @return This builder for chaining.
        */
@@ -1892,7 +1892,7 @@ public final class Register {
         return this;
       }
       /**
-       * <code>optional string error = 2;</code>
+       * <code>string error = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearError() {
@@ -1902,7 +1902,7 @@ public final class Register {
         return this;
       }
       /**
-       * <code>optional string error = 2;</code>
+       * <code>string error = 2;</code>
        * @param value The bytes for error to set.
        * @return This builder for chaining.
        */

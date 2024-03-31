@@ -4,7 +4,6 @@
 export interface LoginRequest {
   'phoneNumber'?: (string);
   'password'?: (string);
-  'usePassword'?: (boolean);
   'countryCode'?: (string);
   '_countryCode'?: "countryCode";
 }
@@ -12,6 +11,5 @@ export interface LoginRequest {
 export interface LoginRequest__Output {
   'phoneNumber'?: (string);
   'password'?: (string);
-  'usePassword'?: (boolean);
   'countryCode'?: (string);
 }
