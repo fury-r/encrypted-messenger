@@ -25,10 +25,8 @@
         android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:layout_above="@id/linearlayout"
         android:paddingHorizontal="5dp"
-
         />
     <ProgressBar
         android:id="@+id/progressBar"
@@ -77,8 +75,9 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:background="@drawable/circle"
-            android:drawableTop="@drawable/mic_off"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:drawableTop="@drawable/mic_button_selector"
+            android:background="@drawable/capsule"
             android:drawablePadding="5dp"
              />
         <ImageView

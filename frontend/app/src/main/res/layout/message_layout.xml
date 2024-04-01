@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@color/dark_500"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
     >
 
     <TextView
         android:id="@+id/chatdatetime"
-        android:layout_width="50dp"
-        android:layout_height="20dp"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
         android:padding="0px"
         android:layout_centerHorizontal="true"
         android:background="@drawable/capsule"
@@ -18,12 +19,13 @@
         android:text="@string/date"
         android:textSize="12sp"
         tools:ignore="SmallSp"
+        android:layout_margin="5dp"
         tools:layout_editor_absoluteY="0dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:paddingHorizontal="5dp"
 

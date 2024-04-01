@@ -1,4 +1,5 @@
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,10 +13,12 @@ import com.fury.messenger.crypto.Crypto
 import com.fury.messenger.data.db.model.Chat
 import com.fury.messenger.messages.MessageAdapter
 import java.time.LocalDate
+import java.time.Period
+import java.time.format.DateTimeFormatter
 import javax.crypto.SecretKey
 
 class  ChatsByDate(val date:LocalDate,var data: ArrayList<Chat> = arrayListOf())
-class ParentAdapter(var messageList: List<ChatsByDate?>, val context: Context, var uid: String?, var recipientKey: SecretKey?) : RecyclerView.Adapter<ParentAdapter.ParentViewHolder>() {
+class ParentAdapter(var messageList: List<ChatsByDate?>, val context: Context, var uid: String?, var recipientKey: SecretKey?,private  val setSelected: (String?) -> Unit) : RecyclerView.Adapter<ParentAdapter.ParentViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParentViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.message_layout, parent, false)
@@ -37,21 +40,29 @@ class ParentAdapter(var messageList: List<ChatsByDate?>, val context: Context, v
         private val childRecyclerView: RecyclerView = itemView.findViewById(R.id.chatRecyclerView)
         private val date: TextView =itemView.findViewById(R.id.chatdatetime)
 
+
+        @SuppressLint("SetTextI18n")
         fun setupChildRecyclerView(data: ChatsByDate) {
+
             if(recipientKey!=null){
                 Log.d("Key ParentMessageAdapter", Crypto.convertAESKeyToString(recipientKey!!))
 
             }
+            childRecyclerView.isNestedScrollingEnabled = false
+
+            childRecyclerView.smoothScrollToPosition(data.data.size-1)
             val layoutManager = LinearLayoutManager(itemView.context)
             childRecyclerView.layoutManager = layoutManager
-            val adapter = MessageAdapter(context,data,uid,recipientKey)
+
+
+            val adapter = MessageAdapter(context,data,uid,recipientKey,setSelected)
             childRecyclerView.adapter = adapter
-            Log.d("here",date.toString())
 
-            date.text=data.date.toString()
+            date.text= data.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
 
-            if(data.date.isAfter(LocalDate.now())){
+            if(Period.between(LocalDate.now(),data.date).days==-1){
                 date.text="Yesterday"
+
             }
             else  if(data.date.isEqual(LocalDate.now())){
                 date.text="Today"

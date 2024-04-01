@@ -120,7 +120,6 @@ class MainActivity : AppCompatActivity() {
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                // Handle search query submission
                 return false
             }
 
@@ -158,6 +157,7 @@ class MainActivity : AppCompatActivity() {
                     contacts.getContactsFromPhone()
                     contacts.validateContacts()
                     val data = contacts.getAllVerifiedContacts()
+                    Log.d("sda",data.toString())
                     val contactsList = DBUser.getAllLastMessagesForContact(
                         this@MainActivity,
                         data

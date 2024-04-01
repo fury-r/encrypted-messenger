@@ -223,8 +223,12 @@ object Crypto {
         val cipher=Cipher.getInstance(ALGORITHM)
         cipher.init(Cipher.DECRYPT_MODE,key)
         val decrypted=cipher.doFinal(audioData)
-        val outputStream=FileOutputStream(path)
         val file=File(path)
+        val outputStream=FileOutputStream(path)
+
+
+
+
 
         outputStream.write(decrypted)
         outputStream.close()

@@ -2,8 +2,6 @@ package com.fury.messenger.helper.audio
 
 import android.content.Context
 import android.media.MediaPlayer
-import android.util.Log
-import androidx.core.net.toUri
 import java.io.File
 
 interface  IAudioPlayer{
@@ -24,9 +22,7 @@ class AudioPlayer(private val ctx: Context) :IAudioPlayer{
             setDataSource(file.absolutePath)
             prepare()
             setOnCompletionListener { stop() }
-
             this@AudioPlayer.file=file
-            Log.d("file",file.exists().toString()+" "+file.toUri())
             start()
         }
 

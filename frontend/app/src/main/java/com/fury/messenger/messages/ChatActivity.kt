@@ -17,6 +17,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.SearchView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -26,7 +27,6 @@ import com.fury.messenger.R
 import com.fury.messenger.crypto.Crypto
 import com.fury.messenger.crypto.Crypto.convertAESstringToKey
 import com.fury.messenger.crypto.Crypto.decryptAESMessage
-import com.fury.messenger.crypto.Crypto.encryptAudio
 import com.fury.messenger.crypto.Crypto.runAESTest
 import com.fury.messenger.data.db.DBMessage
 import com.fury.messenger.data.db.DBMessage.eraseDB_BUFFER
@@ -79,6 +79,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var directory: File
     private lateinit var search: SearchView
     private lateinit var phoneNumber: String
+    private  var selected:String?=null
 
     private var audioMessageFileName: String? = null
     private val recorder by lazy {
@@ -135,7 +136,9 @@ class ChatActivity : AppCompatActivity() {
             formatMessagesByDate(messageList),
             this,
             receiverUid,
-            convertAESstringToKey(key)
+            convertAESstringToKey(key),fun(selected:String?){
+                this.selected=selected
+            }
         )
 
         listeners =
@@ -145,6 +148,8 @@ class ChatActivity : AppCompatActivity() {
                 val message = callback(messageList, phoneNumber)
                 runOnUiThread {
                     messageAdapter.notifyDataSetChanged()
+                    messageRecyleView.smoothScrollToPosition(messageAdapter.itemCount -1);
+
                 }
             }
 
@@ -190,6 +195,18 @@ class ChatActivity : AppCompatActivity() {
                 }
             }
         }
+
+//        messageRecyleView.getViewTreeObserver().addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+//            override fun onGlobalLayout() {
+//                // Ensure we don't call this listener again
+//                messageRecyleView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+//
+//                // Scroll to the last element smoothly
+//                if(messageAdapter.itemCount>0){
+//                    messageRecyleView.smoothScrollToPosition(messageAdapter.messageList.size -1);
+//                }
+//            }
+//        })
         scope.launch {
             withContext(Dispatchers.IO) {
                 this@ChatActivity.startListener()
@@ -238,29 +255,21 @@ class ChatActivity : AppCompatActivity() {
                             MotionEvent.ACTION_DOWN -> {
                                 audioMessageFileName = (recipientDetails?.phoneNumber
                                     ?: "") + "-" + LocalDateTime.now() + ".mp3"
-
+                                messageBox.hint="Voice Message"
                                 recorder.start(File(directory, audioMessageFileName))
 
 
                             }
 
                             MotionEvent.ACTION_UP -> {
-                                val key: SecretKey
-                                if (recipientDetails?.key == null) {
-                                    key = recipientDetails?.let { initiateHandShake(it) }!!
-                                    messageAdapter.recipientKey = key
-                                } else {
+                                messageBox.hint="Type a Message"
 
-                                    key = convertAESstringToKey(recipientDetails!!.key)!!
-                                }
+
                                 recorder.stop()
                                 if (audioMessageFileName != null) {
                                     scope.launch {
                                         sendProcessMessage(
-                                            encryptAudio(
-                                                directory.path + "/" + audioMessageFileName,
-                                                key!!
-                                            ), recipientDetails!!, Message.ContentType.Audio
+                                            directory.path + "/" + audioMessageFileName, recipientDetails!!, ContentType.Audio
                                         )
                                         this@ChatActivity.audioMessageFileName = null
                                     }
@@ -361,6 +370,35 @@ class ChatActivity : AppCompatActivity() {
 
         return super.onOptionsItemSelected(item)
     }
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        val selectedItem = this.messageList.find { it.messageId==this.selected }
+
+        if (selectedItem != null) {
+
+            when (item.itemId) {
+                R.id.deleteItem -> {
+                    scope.launch {
+                        this@ChatActivity.db.chatsDao()
+                            .delete(selectedItem)
+
+                    }
+                    this.messageList.remove(selectedItem)
+                    this.messageAdapter.messageList=formatMessagesByDate(this.messageList)
+                    this.messageAdapter.notifyDataSetChanged()
+                    Toast.makeText(
+                        this,
+                        "Deleted Message",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return true
+
+                }
+
+
+            }
+        }
+        return super.onContextItemSelected(item)
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun setMessages(messages: ArrayList<Chat>) {
@@ -369,8 +407,11 @@ class ChatActivity : AppCompatActivity() {
         this.messageList = messages
         this.messageAdapter.messageList = formatMessagesByDate(messages)
         runOnUiThread {
+
             messageAdapter.notifyDataSetChanged()
-            messageRecyleView.scrollToPosition(this.messageList.size - 1)
+        if(this.messageList.size>0){
+            messageRecyleView.smoothScrollToPosition(messageAdapter.itemCount -1);
+        }
 
         }
     }
@@ -379,6 +420,7 @@ class ChatActivity : AppCompatActivity() {
         this.recipientDetails = details
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun addMessage(message: Chat) {
         Log.d("this.messageList", this.messageList.toString())
 
@@ -386,7 +428,7 @@ class ChatActivity : AppCompatActivity() {
         this.messageAdapter.messageList = formatMessagesByDate(messageList)
         runOnUiThread {
             messageAdapter.notifyDataSetChanged()
-            messageRecyleView.scrollToPosition(this.messageList.size - 1)
+            messageRecyleView.smoothScrollToPosition(this.messageAdapter.itemCount - 1)
 
         }
     }
@@ -423,7 +465,7 @@ class ChatActivity : AppCompatActivity() {
     suspend fun sendProcessMessage(
         messageText: String,
         recipientDetails: Contact,
-        messageType: Message.ContentType
+        messageType: ContentType
     ) {
         withContext(Dispatchers.IO) {
             recipientDetails.let { it1 -> Log.d("recipientDetails", it1.phoneNumber) }
@@ -458,13 +500,24 @@ class ChatActivity : AppCompatActivity() {
                     .loadChatsByNumber(recipientDetails.phoneNumber).size.toString(),
                 convertStringToKeyFactory(recipientDetails.pubKey!!, 0)
             )
-            val encryptedMessage = Crypto.encryptAESMessage(
-                messageText, encryptKey
-            )
+            val encryptedMessage:String;
+            if(messageType==ContentType.Audio){
+                 encryptedMessage = Crypto.encryptAudio(
+                    messageText, encryptKey
+                )
+            } else if(messageType==ContentType.Text){
+                encryptedMessage = Crypto.encryptAESMessage(
+                    messageText, encryptKey
+                )
+            }
+            else{
+                encryptedMessage=""
+            }
+
+
             Log.d("encrypt", encryptedMessage)
             Log.d("decrypt", decryptAESMessage(encryptedMessage, encryptKey))
             val chat = setMessageClass(id, encryptedMessage, messageType) as Chat
-            Log.d("testtt", chat.message)
 
 
             sendMessage(this@ChatActivity, chat, recipientDetails, encryptKey, messageType)

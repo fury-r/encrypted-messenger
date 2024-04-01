@@ -91,7 +91,7 @@ interface ChatsDao {
     fun update(chat: Chat)
 
     @Delete
-    fun delete(contact: Chat)
+    fun delete(cha: Chat)
     @Query("Delete from  chats where receiver= :number or sender= :number")
     fun deleteAllChats(number: String)
     @Query(" Update chats set isDelivered= :isDelivered , isSeen= :isSeen where messageId= :messageId  or receiver= :receiver")
