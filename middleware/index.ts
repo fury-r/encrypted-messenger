@@ -14,7 +14,7 @@ import {
   send,
   validateContacts,
   verifyToken,
-} from "./services";
+} from "./src/services";
 
 const main = async () => {
   console.log("starting up middleware");
