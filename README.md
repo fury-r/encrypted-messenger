@@ -71,7 +71,10 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
    - generate types by running `sh proto.sh`
    - Run    `go mod download` to download all modules.
    - Run `go run main.go` to start the backend server.
-
+4. **RabbitMQ server**
+   - Installation:[link](https://www.rabbitmq.com/docs/install-windows-manual)
+   - Make sure rabbitMQ is running.
+   - Configure client and admin credetials at [link](http://localhost:15672/)
 
 ### End to End encryption
 ## How It Works
