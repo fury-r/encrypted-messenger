@@ -115,6 +115,7 @@ class MainActivity : AppCompatActivity() {
 
         contactButton.setOnClickListener {
             startActivity(Intent(this, ContactListActivity::class.java))
+
         }
 
 
@@ -183,7 +184,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         scope.launch {
-            CurrentUser.startMessageThread(ctx)
+            CurrentUser.subscribeToMessageQueue(ctx)
 
         }
 

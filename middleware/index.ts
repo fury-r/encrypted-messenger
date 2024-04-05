@@ -1,8 +1,10 @@
 import path from "path";
 import * as grpc from "@grpc/grpc-js";
 import * as protoLoader from "@grpc/proto-loader";
+import { configDotenv } from "dotenv";
+configDotenv();
 
-const PORT = 8081;
+const PORT = process.env.SERVER_PORT || 8081;
 
 import {
   blockUser,
@@ -29,7 +31,7 @@ const main = async () => {
         console.error(err);
         return;
       }
-      console.log(`Server running at http://0.0.0.0:${port}`);
+      console.log(`Middleware running on http://0.0.0.0:${port}`);
       server.start();
     }
   );

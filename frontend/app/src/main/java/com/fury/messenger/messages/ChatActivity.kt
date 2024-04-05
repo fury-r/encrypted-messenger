@@ -39,7 +39,6 @@ import com.fury.messenger.data.db.DBUser
 import com.fury.messenger.data.db.DbConnect
 import com.fury.messenger.data.db.model.Chat
 import com.fury.messenger.data.db.model.Contact
-import com.fury.messenger.helper.audio.AudioPlayer
 import com.fury.messenger.helper.audio.AudioRecorder
 import com.fury.messenger.helper.user.AppDatabase
 import com.fury.messenger.helper.user.CurrentUser
@@ -59,6 +58,8 @@ import java.io.File
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
+import java.time.Period
+import java.time.format.DateTimeFormatter
 import javax.crypto.SecretKey
 
 class ChatActivity : AppCompatActivity() {
@@ -72,7 +73,8 @@ class ChatActivity : AppCompatActivity() {
     private var scope = CoroutineScope(Dispatchers.Main)
     private var receiverRoom: String? = null
     private var senderRoom: String? = null
-    private lateinit var client: ServicesBlockingStub;
+    private lateinit var status:TextView
+    private lateinit var client: ServicesBlockingStub
     private lateinit var progressBar: ProgressBar
     private lateinit var db: AppDatabase
     private lateinit var micButton: Button
@@ -85,10 +87,6 @@ class ChatActivity : AppCompatActivity() {
     private val recorder by lazy {
         AudioRecorder(applicationContext)
     }
-    private val player by lazy {
-        AudioPlayer(applicationContext)
-    }
-
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,10 +97,10 @@ class ChatActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowCustomEnabled(true)
         supportActionBar?.setCustomView(R.layout.message_titlebar)
         phoneNumber = intent.getStringExtra("phoneNumber") ?: ""
-        val Contact = intent.getStringExtra("Contact")
+        val contact = intent.getStringExtra("Contact")
 
         val receiverUid = intent.getStringExtra("uid")
-        val uri = intent.getStringExtra("uri")
+//        val uri = intent.getStringExtra("uri")
         val key = intent.getStringExtra("key")
 
         directory = File(applicationContext.filesDir, "audio")
@@ -125,8 +123,10 @@ class ChatActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progressBar)
         micButton = findViewById(R.id.micButton)
         search = findViewById(R.id.searchView)
+        status=findViewById(R.id.status)
+        status.text=""
         messageList = ArrayList()
-        title.text = Contact!!
+        title.text = contact!!
         messageRecyleView = findViewById(R.id.chatRecyclerView)
         if (key != null) {
             Log.d("key", key)
@@ -147,8 +147,11 @@ class ChatActivity : AppCompatActivity() {
 
                 val message = callback(messageList, phoneNumber)
                 runOnUiThread {
+                    this.messageList.addAll(message)
+                    this.messageAdapter.messageList=formatMessagesByDate(this.messageList)
                     messageAdapter.notifyDataSetChanged()
-                    messageRecyleView.smoothScrollToPosition(messageAdapter.itemCount -1);
+
+                    messageRecyleView.smoothScrollToPosition(messageAdapter.itemCount -1)
 
                 }
             }
@@ -156,16 +159,16 @@ class ChatActivity : AppCompatActivity() {
 
         messageRecyleView.layoutManager = LinearLayoutManager(this)
         messageRecyleView.adapter = messageAdapter
-        this.progressBar.isVisible = true
 
 
         scope.launch {
 
 
             withContext(Dispatchers.IO) {
+                this@ChatActivity.progressBar.isVisible = true
 
                 try {
-                    val recipientDetails = DBUser.getDataByPhoneNumber(phoneNumber!!)
+                    val recipientDetails = DBUser.getDataByPhoneNumber(phoneNumber)
                     this@ChatActivity.setRecipientDetails(recipientDetails)
 
 
@@ -196,17 +199,6 @@ class ChatActivity : AppCompatActivity() {
             }
         }
 
-//        messageRecyleView.getViewTreeObserver().addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-//            override fun onGlobalLayout() {
-//                // Ensure we don't call this listener again
-//                messageRecyleView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-//
-//                // Scroll to the last element smoothly
-//                if(messageAdapter.itemCount>0){
-//                    messageRecyleView.smoothScrollToPosition(messageAdapter.messageList.size -1);
-//                }
-//            }
-//        })
         scope.launch {
             withContext(Dispatchers.IO) {
                 this@ChatActivity.startListener()
@@ -227,11 +219,14 @@ class ChatActivity : AppCompatActivity() {
 
 
         }
+        scope.launch {
+            CurrentUser.subscribeToMessageQueue(this@ChatActivity)
 
+        }
         sendBtn.setOnClickListener {
             val messageText = messageBox.text.toString()
             scope.launch {
-                sendProcessMessage(messageText, recipientDetails!!, Message.ContentType.Text)
+                sendProcessMessage(messageText, recipientDetails!!, ContentType.Text)
             }
             messageBox.setText("")
 
@@ -410,14 +405,28 @@ class ChatActivity : AppCompatActivity() {
 
             messageAdapter.notifyDataSetChanged()
         if(this.messageList.size>0){
-            messageRecyleView.smoothScrollToPosition(messageAdapter.itemCount -1);
+            messageRecyleView.smoothScrollToPosition(messageAdapter.itemCount -1)
         }
 
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setRecipientDetails(details: Contact) {
         this.recipientDetails = details
+        this.status.text= details.typeTime?.format(DateTimeFormatter.ofPattern("dd/MM/yyyy:hh:mm:a")) ?: ""
+
+        if(details.typeTime!=null){
+            if(Period.between(LocalDate.now(), details.typeTime!!.toLocalDate()).days==-1){
+                this.status.text="Last seen yesterday ${details.typeTime!!.format(DateTimeFormatter.ofPattern("hh:mm:a"))}"
+
+            }
+            else  if(details.typeTime!!.toLocalDate().isEqual(LocalDate.now())){
+                this.status.text="Last seen today ${details.typeTime!!.format(DateTimeFormatter.ofPattern("hh:mm:a"))}"
+
+            }
+        }
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -439,7 +448,6 @@ class ChatActivity : AppCompatActivity() {
         val chat = CurrentUser.getCurrentUserPhoneNumber()?.let {
             recipientDetails?.let { it1 ->
                 Chat(
-                    0,
                     it,
                     it1.phoneNumber,
                     message,
@@ -481,7 +489,7 @@ class ChatActivity : AppCompatActivity() {
             }
 
 
-            // if publicKey is not present then perform handshake
+            // if symmetric is not present then perform handshake
             if (encryptKey == null) {
                 Log.d("HandShake", "Initiate Handshake")
                 val handShakeEncryptKey = async { initiateHandShake(recipientDetails, messageText) }
@@ -500,18 +508,16 @@ class ChatActivity : AppCompatActivity() {
                     .loadChatsByNumber(recipientDetails.phoneNumber).size.toString(),
                 convertStringToKeyFactory(recipientDetails.pubKey!!, 0)
             )
-            val encryptedMessage:String;
-            if(messageType==ContentType.Audio){
-                 encryptedMessage = Crypto.encryptAudio(
+            val encryptedMessage:String = if(messageType==ContentType.Audio){
+                Crypto.encryptAudio(
                     messageText, encryptKey
                 )
             } else if(messageType==ContentType.Text){
-                encryptedMessage = Crypto.encryptAESMessage(
+                Crypto.encryptAESMessage(
                     messageText, encryptKey
                 )
-            }
-            else{
-                encryptedMessage=""
+            } else{
+                ""
             }
 
 
@@ -525,13 +531,13 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-    fun formatMessagesByDate(messages: ArrayList<Chat>): ArrayList<ChatsByDate> {
+    private fun formatMessagesByDate(messages: ArrayList<Chat>): ArrayList<ChatsByDate> {
         val dateByMessage = HashMap<LocalDate, ArrayList<Chat>>()
 
         messages.forEach {
-            val date = it!!.createdAt!!.toLocalDate()
+            val date = it.createdAt!!.toLocalDate()
             if (!dateByMessage.containsKey(date)) {
-                dateByMessage[date] = arrayListOf<Chat>()
+                dateByMessage[date] = arrayListOf()
             }
 
             dateByMessage[date]!!.add(it)

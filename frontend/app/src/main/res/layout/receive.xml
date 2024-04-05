@@ -23,6 +23,17 @@
             android:text="This is sent message"
             android:textColor="@color/white"
             android:textSize="17sp" />
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/receiveMessage"
+            android:layout_marginBottom="-15dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="@string/time"
+            android:textColor="@color/black"
 
+            android:textSize="10sp" />
     </RelativeLayout>
 </RelativeLayout>

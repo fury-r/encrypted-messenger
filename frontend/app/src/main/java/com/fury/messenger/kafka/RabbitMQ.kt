@@ -32,13 +32,18 @@ class RabbitMQ {
         factory.virtualHost = ConfigConstants.VIRTUAL_HOST;
         factory.host = ConfigConstants.HOSTNAME;
         factory.port = ConfigConstants.PORT;
-        this.createConnection()
-        if (conn != null) {
-            setIsConnectionInitialized(true)
-        }
-        this.createChannel()
-        if (channel != null) {
-            setIsChannelInitialized(true)
+        try{
+            this.createConnection()
+            if (conn != null) {
+                setIsConnectionInitialized(true)
+            }
+            this.createChannel()
+            if (channel != null) {
+                setIsChannelInitialized(true)
+            }
+            isConnectionInitialized=true
+        }catch (e:Exception){
+            e.printStackTrace()
         }
 
     }

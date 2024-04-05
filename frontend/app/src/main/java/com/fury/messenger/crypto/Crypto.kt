@@ -136,10 +136,11 @@ object Crypto {
         return try {
             val cipher = Cipher.getInstance(ALGORITHM)
             cipher.init(Cipher.DECRYPT_MODE, key)
-            val decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(String(message.toByteArray(),Charsets.UTF_8)))
+            val decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(String(message.toByteArray())))
             byteArrayToString(decryptedBytes)
         }catch (e:Exception){
-            ""
+            e.printStackTrace()
+            "Error"
         }
 
 

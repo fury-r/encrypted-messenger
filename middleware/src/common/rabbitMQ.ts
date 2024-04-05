@@ -17,7 +17,6 @@ export class RabbitMQ {
   }
 
   async createChannel() {
-    console.log(this.connection);
     this.channel = await this.connection!.createChannel();
     console.log("Channel created for RabbitMQ");
   }
@@ -30,6 +29,7 @@ export class RabbitMQ {
     });
   }
   async sendToQueue(message: string, queue: string) {
+    console.log("send to queue",queue)
     await this.channel!.assertQueue(queue, {
       durable: false,
       arguments: "",
@@ -41,6 +41,7 @@ export class RabbitMQ {
   }
 
   closeConnection() {
+    console.log("Connection closed");
     this.connection!.close();
   }
 }

@@ -3,6 +3,7 @@ package com.fury.messenger.messages
 import ChatsByDate
 import android.content.Context
 import android.media.MediaMetadataRetriever
+
 import android.net.Uri
 import android.util.Log
 import android.view.ContextMenu
@@ -156,7 +157,7 @@ class MessageAdapter(
         } else {
             //receive audio
             val view: View =
-                LayoutInflater.from(context).inflate(R.layout.sent_audio, parent, false)
+                LayoutInflater.from(context).inflate(R.layout.receive_audio, parent, false)
             ReceiveAudioViewHolder(view)
         }
     };
@@ -216,21 +217,34 @@ class MessageAdapter(
                 viewHolder.time.text =
                     currentMessage.createdAt?.format(DateTimeFormatter.ofPattern("hh:mm:a")) ?: ""
 
+
             }
             ReceiveViewHolder::class.java -> {
                 val viewHolder = holder as ReceiveViewHolder
                 viewHolder.receiveMessage.tag=currentMessage.messageId
+                Log.d("Key MessageAdapter r",  currentMessage.message)
+                Log.d("Key MessageAdapter r key", recipientKey.toString())
 
-                viewHolder.receiveMessage.text =
-                    Crypto.decryptAESMessage(currentMessage.message, recipientKey)
+                viewHolder.receiveMessage.text=Crypto.decryptAESMessage(currentMessage.message, recipientKey)
+                Log.d(",esss0",currentMessage.toString())
+                viewHolder.time.text= currentMessage.createdAt?.toLocalTime()?.format(DateTimeFormatter.ofPattern("hh:mm:a"))
+                    ?: ""
 
-                viewHolder.time.text =
-                    currentMessage.createdAt?.format(DateTimeFormatter.ofPattern("hh:mm:a")) ?: ""
+//                if(currentMessage.createdAt==null ){
+//                    viewHolder.time.text = OffsetDateTime.now()?.format(DateTimeFormatter.ofPattern("hh:mm:a")) ?: ""
+//
+//                }else{
+//                    viewHolder.time.text =
+//                        currentMessage.createdAt?.format(DateTimeFormatter.ofPattern("hh:mm:a")) ?: ""
+//                }
+
 
             }
             SentAudioViewHolder::class.java -> {
                 val viewHolder = holder as SentAudioViewHolder
                 viewHolder.playButton.tag=currentMessage.messageId
+                viewHolder.time.text= currentMessage.createdAt?.toLocalTime()?.format(DateTimeFormatter.ofPattern("hh:mm:a"))
+                    ?:""
 
                 viewHolder.status.text =
                     if (currentMessage.isSeen) "Read" else if (currentMessage.isDelivered) "Delivered" else "Sent"
@@ -247,6 +261,8 @@ class MessageAdapter(
             }
             else -> {
                 val viewHolder = holder as ReceiveAudioViewHolder
+                viewHolder.time.text= currentMessage.createdAt?.toLocalTime()?.format(DateTimeFormatter.ofPattern("hh:mm:a"))
+                    ?:""
                 viewHolder.playButton.tag=currentMessage.messageId
                 if(file!=null){
                     viewHolder.duration.text=duration

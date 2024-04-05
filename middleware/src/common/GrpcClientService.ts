@@ -18,7 +18,7 @@ export class GrpcClientService {
       defaults: true,
       oneofs: true,
     };
-    this.path = "../../protobuf/service/service.proto";
+    this.path = "../protobuf/service/service.proto";
     this.packageDefintion = protoLoader.loadSync(this.path, this.options);
     // const options: grpc.ChannelOptions = {
     //   interceptors: [this.addAuthorizationInterceptor.bind(this)],

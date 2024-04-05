@@ -137,10 +137,6 @@ class ContactListActivity : AppCompatActivity() {
 
         userListView.adapter = adapter
 
-        scope.launch {
-            CurrentUser.startMessageThread(ctx)
-
-        }
 
 
     }
