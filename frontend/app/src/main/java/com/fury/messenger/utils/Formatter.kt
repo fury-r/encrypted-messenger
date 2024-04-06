@@ -1,6 +1,6 @@
 package com.fury.messenger.utils
 
-fun formateMilliSeccond(milliseconds: Long): String {
+fun formatMilliSeconds(milliseconds: Long): String {
     var finalTimerString = ""
     var secondsString = ""
 

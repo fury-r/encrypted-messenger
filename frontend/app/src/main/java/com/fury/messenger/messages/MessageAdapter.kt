@@ -18,6 +18,8 @@ import com.fury.messenger.R
 import com.fury.messenger.crypto.Crypto
 import com.fury.messenger.helper.audio.AudioPlayer
 import com.fury.messenger.helper.user.CurrentUser
+import com.fury.messenger.utils.formatMilliSeconds
+import com.google.android.material.slider.Slider
 import com.services.Message.ContentType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -62,6 +64,7 @@ class MessageAdapter(
         val playButton = itemView.findViewById<Button>(R.id.play)
         val status = itemView.findViewById<TextView>(R.id.status)
         val time = itemView.findViewById<TextView>(R.id.time)
+        val slider=itemView.findViewById<Slider>(R.id.playSlider)
 
         var duration = itemView.findViewById<TextView>(R.id.duration)
         override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
@@ -100,7 +103,7 @@ class MessageAdapter(
         val playButton: Button = itemView.findViewById(R.id.play)
         val time: TextView = itemView.findViewById(R.id.time)
         val duration = itemView.findViewById<TextView>(R.id.duration)
-
+        val slider=itemView.findViewById<Slider>(R.id.playSlider)
         override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
             val inflater = MenuInflater(v.context)
             inflater.inflate(R.menu.chat_menu, menu)
@@ -165,7 +168,11 @@ class MessageAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentMessage = messageList.data[position]
         var file:File?=null
-        fun getDuration(duration: TextView) {
+        var playing=false
+        fun getDuration(view: View) {
+            val duration=view.findViewById<TextView>(R.id.duration)
+            val playSlider=view.findViewById<Slider>(R.id.playSlider)
+            Log.d("here", (currentMessage.contentType==ContentType.Audio.name).toString())
             if (currentMessage.contentType==ContentType.Audio.name){
                 scope.launch{
                     val filePath="${context.filesDir}/audio/${currentMessage.sender}-${currentMessage.createdAt.toString().replace("+","-").replace(":","-")}.mp3"
@@ -177,14 +184,23 @@ class MessageAdapter(
                     }}).await()
                     val uri = Uri.parse(filePath)
                     val mmr = MediaMetadataRetriever()
-                    mmr.setDataSource(context, uri)
+                    Log.d("ddd mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)",
+                        mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?:""
+                    )
                     this@MessageAdapter.context.runCatching{
-                        mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.let {
-                            Log.d("ddd mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)",
-                                it
-                            )
+
+
+
+                        mmr.setDataSource(filePath)
+                        val ms =
+                            mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+                        mmr.release()
+                        if (ms != null) {
+                            duration.text =  formatMilliSeconds(ms.toLong())
                         }
-                        duration.text =  mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+                        if (ms != null) {
+                            playSlider.valueTo=ms.toFloat()
+                        }
 
                     }
                 }
@@ -194,20 +210,34 @@ class MessageAdapter(
 
         fun audioPlayback(it:View){
             scope.launch {
-                if(it.tag!=="playing"){
-                    this@MessageAdapter.context.runCatching{
-                        it.setBackgroundResource(R.drawable.baseline_pause_circle_24)
+                val slider=it.findViewById<Slider>(R.id.playSlider)
+                if(!playing){
 
-                    }
 
+                    playing=true
                     if (file != null) {
-                        player.playFile(file!!)
+                        player.playFile(file!!,fun(){
+
+                            this@MessageAdapter.context.runCatching{
+                                it.setBackgroundResource(R.drawable.play_circle)
+
+                            }
+
+                        })
+
+                        this@MessageAdapter.context.runCatching{
+                            it.setBackgroundResource(R.drawable.baseline_pause_circle_24)
+
+                        }
                     }
                 }
                 else{
+                    playing=false
                     player.stop()
                     this@MessageAdapter.context.runCatching {
                         it.setBackgroundResource(R.drawable.play_circle)
+                        slider.visibility=View.GONE
+
                     }
                 }
 
@@ -227,7 +257,6 @@ class MessageAdapter(
                     if (currentMessage.isSeen) "Read" else if (currentMessage.isDelivered) "Delivered" else "Sent"
                 viewHolder.time.text =
                     currentMessage.createdAt?.format(DateTimeFormatter.ofPattern("hh:mm:a")) ?: ""
-
 
             }
             ReceiveViewHolder::class.java -> {
@@ -263,29 +292,34 @@ class MessageAdapter(
                 viewHolder.time.text =
                     currentMessage.createdAt?.format(DateTimeFormatter.ofPattern("hh:mm:a")) ?: ""
 
-                if(file!=null){
-                    getDuration(viewHolder.duration)
-                }
+                    getDuration(viewHolder.itemView)
+
                 viewHolder.playButton.setBackgroundResource(R.drawable.play_circle)
 
 
                 viewHolder.playButton.setOnClickListener{
                     audioPlayback(it)
                 }
+                viewHolder.slider.setLabelFormatter{
+                    formatMilliSeconds(it.toLong())
 
+                }
             }
             else -> {
                 val viewHolder = holder as ReceiveAudioViewHolder
                 viewHolder.time.text= currentMessage.createdAt?.toLocalTime()?.format(DateTimeFormatter.ofPattern("hh:mm:a"))
                     ?:""
                 viewHolder.playButton.tag=currentMessage.messageId
-                if(file!=null){
-                    getDuration(viewHolder.duration)
-                }
+                    getDuration(viewHolder.itemView)
+
                 viewHolder.playButton.setBackgroundResource(R.drawable.play_circle)
 
                 viewHolder.playButton.setOnClickListener{
                     audioPlayback(it)
+                }
+                viewHolder.slider.setLabelFormatter{
+                     formatMilliSeconds(it.toLong())
+
                 }
             }
         }

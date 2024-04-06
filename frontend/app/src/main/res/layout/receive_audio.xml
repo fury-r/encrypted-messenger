@@ -1,68 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:background="@drawable/receive_text">
+    android:weightSum="2"
+   >
 
-    <RelativeLayout
-        android:layout_width="100dp"
-        android:layout_height="62dp"
-        android:layout_margin="5dp"
-        android:clickable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        tools:ignore="UselessParent">
-
-
-        <RelativeLayout
-            android:id="@+id/layout_top"
-            android:layout_width="match_parent"
-            android:layout_height="40dp">
-
-            <Button
-                android:id="@+id/play"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="2dp"
-                android:background="@drawable/circle"
-
-                android:padding="5dp"
-
-                />
-
-            <TextView
-                android:id="@+id/duration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="10dp"
-                android:layout_toEndOf="@id/play"
-                android:text="@string/duration"
-                android:textSize="10sp"
-                tools:ignore="SmallSp" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/layout_top"
-            android:orientation="horizontal">
+   <RelativeLayout
+       android:background="@drawable/receive_text"
+       android:layout_height="wrap_content"
+       android:layout_margin="5dp"
+       android:clickable="true"
+       android:layout_weight="1"
+       android:padding="4dp"
+       android:foreground="?android:attr/selectableItemBackground"
+       tools:ignore="UselessParent"
+       android:layout_width="0dp">
+       <LinearLayout
+           android:id="@+id/top"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+        >
 
 
-            <TextView
-                android:id="@+id/time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="-15dp"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:text="@string/time"
-                android:textColor="@color/black"
-                android:textSize="10sp" />
-        </LinearLayout>
+           <RelativeLayout
+               android:id="@+id/layout_top"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:orientation="vertical">
 
 
-    </RelativeLayout>
+               <Button
+                   android:id="@+id/play"
+                   android:layout_width="40dp"
+                   android:layout_height="40dp"
+                   android:layout_margin="2dp"
+                   android:background="@drawable/circle"
+                   android:layout_marginBottom="20dp"
+                   android:padding="5dp"
 
-</RelativeLayout>
+                   />
+
+           </RelativeLayout>
+
+           <RelativeLayout
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content">
+
+               <com.google.android.material.slider.Slider
+                   android:id="@+id/playSlider"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+
+                   android:valueFrom="0.0"
+                   android:valueTo="100.0" />
+               <TextView
+                   android:id="@+id/duration"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="10dp"
+                   android:text="@string/duration"
+                   android:textSize="10sp"
+                   android:layout_alignBottom="@+id/playSlider"
+                   tools:ignore="SmallSp" />
+
+
+           </RelativeLayout>
+
+
+
+       </LinearLayout>
+
+       <TextView
+           android:id="@+id/time"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/time"
+           android:textColor="@color/black"
+           android:layout_below="@id/top"
+           android:layout_alignParentEnd="true"
+           android:textSize="10sp"
+           tools:ignore="SmallSp" />
+   </RelativeLayout>
+
+
+</LinearLayout>

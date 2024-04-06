@@ -242,6 +242,7 @@ class ChatActivity : AppCompatActivity() {
             )
 
         }
+        this.micButton.setBackgroundResource(R.drawable.mic_on)
         this.micButton.setOnTouchListener(
             object : View.OnTouchListener {
 
@@ -255,6 +256,7 @@ class ChatActivity : AppCompatActivity() {
                                 messageBox.hint="Voice Message"
                                 recorder.start(File(directory, audioMessageFileName))
 
+                                this@ChatActivity.micButton.setBackgroundResource(R.drawable.mic_off)
 
                             }
 
@@ -271,6 +273,8 @@ class ChatActivity : AppCompatActivity() {
                                         this@ChatActivity.audioMessageFileName = null
                                     }
                                 }
+                                this@ChatActivity.micButton.setBackgroundResource(R.drawable.mic_on)
+
                                 p0?.performClick()
                             }
                         }

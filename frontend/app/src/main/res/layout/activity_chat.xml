@@ -76,7 +76,6 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:foreground="?android:attr/selectableItemBackground"
-            android:drawableTop="@drawable/mic_button_selector"
             android:background="@drawable/capsule"
             android:drawablePadding="5dp"
              />

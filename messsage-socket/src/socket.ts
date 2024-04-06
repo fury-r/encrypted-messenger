@@ -1,6 +1,6 @@
-import { Metadata } from "@grpc/grpc-js";
-import { GrpcClientService } from "./common/GrpcClientService";
-import { AuthResponse } from "../proto-types/AuthResponse";
+// import { Metadata } from "@grpc/grpc-js";
+// import { GrpcClientService } from "./common/GrpcClientService";
+// import { AuthResponse } from "../proto-types/AuthResponse";
 import { RabbitMQ } from "./common/rabbitMQ";
 import express from "express";
 import { Server } from "socket.io";
@@ -15,7 +15,7 @@ const app = express();
 export const server = http.createServer(app);
 
 const io = new Server(server);
-const client = new GrpcClientService().getClient();
+// const client = new GrpcClientService().getClient();
 let channel: amqp.Channel;
 
 const rabbitMQClient = new RabbitMQ("chat");
@@ -25,7 +25,7 @@ io.on("connection", (socket) => {
     console.log(args);
     const clientAddress = `${args.remoteAddress}:${args.remotePort}`;
     console.log(`new client connected: ${clientAddress} ${args}`);
-    const metadata = new Metadata();
+    // const metadata = new Metadata();
     channel = rabbitMQClient.channel as amqp.Channel;
     // metadata.add("authorization", args.header.get("authorization")[0]);
 
@@ -40,7 +40,7 @@ io.on("connection", (socket) => {
     // });
     // console.log(user)
     // if (user) {
-    const queue = "9527698053";
+    const queue = "";
     // || (user as AuthResponse).user?.phoneNumber;
     if (queue) {
       console.log("connected to queue");
