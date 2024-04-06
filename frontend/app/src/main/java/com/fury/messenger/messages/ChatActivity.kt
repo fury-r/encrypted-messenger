@@ -87,7 +87,7 @@ class ChatActivity : AppCompatActivity() {
     private val recorder by lazy {
         AudioRecorder(applicationContext)
     }
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint("MissingInflatedId", "ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
@@ -165,7 +165,9 @@ class ChatActivity : AppCompatActivity() {
 
 
             withContext(Dispatchers.IO) {
-                this@ChatActivity.progressBar.isVisible = true
+                runOnUiThread{
+                    this@ChatActivity.progressBar.isVisible = true
+                }
 
                 try {
                     val recipientDetails = DBUser.getDataByPhoneNumber(phoneNumber)
@@ -308,7 +310,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        if (menu != null) {
+        if (menu != null &&recipientDetails!=null) {
             com.fury.messenger.helper.ui.Menu.onPrepareOptionsMenu(
                 menu,
                 recipientDetails!!,
@@ -414,16 +416,18 @@ class ChatActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun setRecipientDetails(details: Contact) {
         this.recipientDetails = details
-        this.status.text= details.typeTime?.format(DateTimeFormatter.ofPattern("dd/MM/yyyy:hh:mm:a")) ?: ""
+        runOnUiThread{
+            this.status.text= details.typeTime?.format(DateTimeFormatter.ofPattern("dd/MM/yyyy:hh:mm:a")) ?: ""
 
-        if(details.typeTime!=null){
-            if(Period.between(LocalDate.now(), details.typeTime!!.toLocalDate()).days==-1){
-                this.status.text="Last seen yesterday ${details.typeTime!!.format(DateTimeFormatter.ofPattern("hh:mm:a"))}"
+            if(details.typeTime!=null){
+                if(Period.between(LocalDate.now(), details.typeTime!!.toLocalDate()).days==-1){
+                    this.status.text="Last seen yesterday ${details.typeTime!!.format(DateTimeFormatter.ofPattern("hh:mm:a"))}"
 
-            }
-            else  if(details.typeTime!!.toLocalDate().isEqual(LocalDate.now())){
-                this.status.text="Last seen today ${details.typeTime!!.format(DateTimeFormatter.ofPattern("hh:mm:a"))}"
+                }
+                else  if(details.typeTime!!.toLocalDate().isEqual(LocalDate.now())){
+                    this.status.text="Last seen today ${details.typeTime!!.format(DateTimeFormatter.ofPattern("hh:mm:a"))}"
 
+                }
             }
         }
 

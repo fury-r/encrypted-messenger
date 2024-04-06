@@ -1,15 +1,14 @@
 package com.fury.messenger.messages
 
 import ChatsByDate
+import android.annotation.SuppressLint
 import android.content.Context
 import android.media.MediaMetadataRetriever
-
 import android.net.Uri
 import android.util.Log
 import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.MenuInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -63,6 +62,7 @@ class MessageAdapter(
         val playButton = itemView.findViewById<Button>(R.id.play)
         val status = itemView.findViewById<TextView>(R.id.status)
         val time = itemView.findViewById<TextView>(R.id.time)
+
         var duration = itemView.findViewById<TextView>(R.id.duration)
         override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
             val inflater = MenuInflater(v.context)
@@ -161,47 +161,58 @@ class MessageAdapter(
             ReceiveAudioViewHolder(view)
         }
     };
+    @SuppressLint("ResourceType")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentMessage = messageList.data[position]
         var file:File?=null
-        var duration:String?=null
-        if (currentMessage.contentType==ContentType.Audio.name){
-            scope.launch{
-                val filePath="${context.filesDir}/audio/${currentMessage.sender}-${currentMessage.createdAt.toString().replace("+","-").replace(":","-")}.mp3"
-                val message = currentMessage.message
-                file = (async{recipientKey?.let {
-                    Crypto.decryptAudio(
-                        message, it, filePath
-                    )
-                }}).await()
-                val uri = Uri.parse(filePath)
-                val mmr = MediaMetadataRetriever()
-                mmr.setDataSource(context, uri)
-                duration = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
-            }
-        }
-        val touchListener= View.OnTouchListener { p0, p1 ->
-            if (p1 != null) {
-                when (p1.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        scope.launch {
-
-                            if (file != null) {
-                                player.playFile(file!!)
-                            }
-
-
+        fun getDuration(duration: TextView) {
+            if (currentMessage.contentType==ContentType.Audio.name){
+                scope.launch{
+                    val filePath="${context.filesDir}/audio/${currentMessage.sender}-${currentMessage.createdAt.toString().replace("+","-").replace(":","-")}.mp3"
+                    val message = currentMessage.message
+                    file = (async{recipientKey?.let {
+                        Crypto.decryptAudio(
+                            message, it, filePath
+                        )
+                    }}).await()
+                    val uri = Uri.parse(filePath)
+                    val mmr = MediaMetadataRetriever()
+                    mmr.setDataSource(context, uri)
+                    this@MessageAdapter.context.runCatching{
+                        mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.let {
+                            Log.d("ddd mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)",
+                                it
+                            )
                         }
-                    }
+                        duration.text =  mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
 
-                    MotionEvent.ACTION_UP -> {
-                        player.stop()
-                        p0?.performClick()
                     }
                 }
             }
+        }
 
-            true
+
+        fun audioPlayback(it:View){
+            scope.launch {
+                if(it.tag!=="playing"){
+                    this@MessageAdapter.context.runCatching{
+                        it.setBackgroundResource(R.drawable.baseline_pause_circle_24)
+
+                    }
+
+                    if (file != null) {
+                        player.playFile(file!!)
+                    }
+                }
+                else{
+                    player.stop()
+                    this@MessageAdapter.context.runCatching {
+                        it.setBackgroundResource(R.drawable.play_circle)
+                    }
+                }
+
+
+            }
         }
 
         when (holder.javaClass) {
@@ -240,6 +251,7 @@ class MessageAdapter(
 
 
             }
+
             SentAudioViewHolder::class.java -> {
                 val viewHolder = holder as SentAudioViewHolder
                 viewHolder.playButton.tag=currentMessage.messageId
@@ -252,11 +264,14 @@ class MessageAdapter(
                     currentMessage.createdAt?.format(DateTimeFormatter.ofPattern("hh:mm:a")) ?: ""
 
                 if(file!=null){
-                    viewHolder.duration.text=duration
+                    getDuration(viewHolder.duration)
                 }
+                viewHolder.playButton.setBackgroundResource(R.drawable.play_circle)
 
 
-                viewHolder.playButton.setOnTouchListener(touchListener)
+                viewHolder.playButton.setOnClickListener{
+                    audioPlayback(it)
+                }
 
             }
             else -> {
@@ -265,9 +280,13 @@ class MessageAdapter(
                     ?:""
                 viewHolder.playButton.tag=currentMessage.messageId
                 if(file!=null){
-                    viewHolder.duration.text=duration
+                    getDuration(viewHolder.duration)
                 }
-                viewHolder.playButton.setOnTouchListener(touchListener)
+                viewHolder.playButton.setBackgroundResource(R.drawable.play_circle)
+
+                viewHolder.playButton.setOnClickListener{
+                    audioPlayback(it)
+                }
             }
         }
     }
