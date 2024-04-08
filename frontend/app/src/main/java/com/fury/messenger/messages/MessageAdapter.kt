@@ -197,15 +197,15 @@ class MessageAdapter(
         val slider = it.findViewById<Slider>(R.id.playSlider)
         timer.schedule(object : TimerTask() {
             override fun run() {
-                if (player.isPlaying()) { // Only update if timer is running
-                    val duration = (durationTextView.tag as Int) - player.getPosition() / 1000;
-                    Log.d(
-                        "update time stamp 1 ${player.isPlaying()} ",
-                        durationTextView.text as String
-                    )
+                if (player.isPlaying()) {
+                    val position=player.getPosition()
+                    val duration = (durationTextView.tag  as String).toInt() -position
 
-                    durationTextView.text = duration.toString()
-                    slider.value = duration.toFloat()
+
+                    it.context.runCatching {
+                        durationTextView.text = formatMilliSeconds(duration.toLong())
+                        slider.value = position.toFloat()
+                    }
 
                 }
             }
@@ -234,7 +234,7 @@ class MessageAdapter(
                         mmr.release()
                         if (ms != null) {
                             durationTextView.text = formatMilliSeconds(ms.toLong())
-                            durationTextView.tag = formatMilliSeconds(ms.toLong())
+                            durationTextView.tag = ms
                         }
                         if (ms != null) {
                             playSlider.valueTo = ms.toFloat()
@@ -243,6 +243,13 @@ class MessageAdapter(
                     }
                 }
             }
+        }
+
+        fun formatProgressLabel(it: Float, duration:TextView): String {
+            val  formattedString=formatMilliSeconds(it.toLong())
+            player.seekTo(it.toInt())
+            duration.text=formattedString
+            return formattedString
         }
 
 
@@ -299,6 +306,8 @@ class MessageAdapter(
             }
         }
 
+
+
         when (holder.javaClass) {
             SentViewHolder::class.java -> {
                 val viewHolder = holder as SentViewHolder
@@ -317,23 +326,14 @@ class MessageAdapter(
             ReceiveViewHolder::class.java -> {
                 val viewHolder = holder as ReceiveViewHolder
                 viewHolder.receiveMessage.tag = currentMessage.messageId
-                Log.d("Key MessageAdapter r", currentMessage.message)
-                Log.d("Key MessageAdapter r key", recipientKey.toString())
+
 
                 viewHolder.receiveMessage.text =
                     Crypto.decryptAESMessage(currentMessage.message, recipientKey)
-                Log.d(",esss0", currentMessage.toString())
                 viewHolder.time.text = currentMessage.createdAt?.toLocalTime()
                     ?.format(DateTimeFormatter.ofPattern("hh:mm:a"))
                     ?: ""
 
-//                if(currentMessage.createdAt==null ){
-//                    viewHolder.time.text = OffsetDateTime.now()?.format(DateTimeFormatter.ofPattern("hh:mm:a")) ?: ""
-//
-//                }else{
-//                    viewHolder.time.text =
-//                        currentMessage.createdAt?.format(DateTimeFormatter.ofPattern("hh:mm:a")) ?: ""
-//                }
 
 
             }
@@ -358,11 +358,9 @@ class MessageAdapter(
                 viewHolder.playButton.setOnClickListener {
                     audioPlayback(viewHolder.itemView)
                 }
+
                 viewHolder.slider.setLabelFormatter {
-                    player.seekTo(it.toInt())
-                    formatMilliSeconds(it.toLong())
-
-
+                    formatProgressLabel(it,viewHolder.duration)
                 }
             }
 
@@ -379,9 +377,9 @@ class MessageAdapter(
                 viewHolder.playButton.setOnClickListener {
                     audioPlayback(viewHolder.itemView)
                 }
-                viewHolder.slider.setLabelFormatter {
-                    formatMilliSeconds(it.toLong())
 
+                viewHolder.slider.setLabelFormatter {
+                 formatProgressLabel(it,viewHolder.duration)
                 }
             }
         }
