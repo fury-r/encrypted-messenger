@@ -21,42 +21,46 @@ let channel: amqp.Channel;
 const rabbitMQClient = new RabbitMQ("chat");
 io.on("connection", (socket) => {
   const token = socket.handshake.headers.authorization || "";
-  console.log(token);
 
   socket.on("message", async (...args: any) => {
     const clientAddress = `${args.remoteAddress}:${args.remotePort}`;
     console.log(`new client connected: ${clientAddress} ${args}`);
     const metadata = new Metadata();
     channel = rabbitMQClient.channel as amqp.Channel;
-    metadata.add("authorization", token);
+    metadata.add("authorization", `Bearer ${token}`);
 
     let user: AuthResponse | undefined = undefined;
 
-    client.verifyToken({}, metadata, (e, res: AuthResponse | undefined) => {
-      if (e || res?.error) {
-        console.log(e);
-
-        return e;
-      } else {
-        user = res;
-      }
-    });
-    console.log("user", user);
-    if (user) {
-      const queue = (user as AuthResponse).user?.phoneNumber;
-      // || (user  AuthResponse).user?.phoneNumber;
-      if (queue) {
-        console.log("connected to queue");
-        await channel.assertQueue(queue, { durable: false });
-        await channel.consume(queue, (message: amqp.ConsumeMessage | null) => {
-          if (message) {
-            console.log(message.content);
-            io.emit("message", message.content);
-            channel.ack(message, true);
+    client.verifyToken(
+      {},
+      metadata,
+      async (e, res: AuthResponse | undefined) => {
+        if (e || res?.error) {
+          return e;
+        } else {
+          user = res;
+          console.log("user", user);
+          if (user) {
+            const queue = (user as AuthResponse).user?.phoneNumber;
+            // || (user  AuthResponse).user?.phoneNumber;
+            if (queue) {
+              console.log("connected to queue");
+              await channel.assertQueue(queue, { durable: false });
+              await channel.consume(
+                queue,
+                (message: amqp.ConsumeMessage | null) => {
+                  if (message) {
+                    console.log(message.content);
+                    io.emit("message", message.content);
+                    channel.ack(message, true);
+                  }
+                }
+              );
+            }
           }
-        });
+        }
       }
-    }
+    );
   });
 });
 
