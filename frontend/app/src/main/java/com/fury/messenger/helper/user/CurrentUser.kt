@@ -14,7 +14,7 @@ import com.fury.messenger.data.db.model.ChatsDao
 import com.fury.messenger.data.db.model.Contact
 import com.fury.messenger.data.db.model.ContactsDao
 import com.fury.messenger.helper.socket.SocketHandler
-import com.fury.messenger.kafka.ConsumerThread
+import com.fury.messenger.messagebroker.ConsumerThread
 import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.fury.messenger.utils.TokenManager
 import com.google.protobuf.util.JsonFormat

@@ -1,6 +1,6 @@
 package com.fury.messenger.helper.threads
 
-import com.fury.messenger.kafka.ConsumerThread
+import com.fury.messenger.messagebroker.ConsumerThread
 
 object Threads {
 

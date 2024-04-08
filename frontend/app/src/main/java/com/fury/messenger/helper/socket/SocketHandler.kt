@@ -2,7 +2,7 @@ package com.fury.messenger.helper.socket
 
 import android.util.Log
 import com.fury.messenger.helper.user.CurrentUser
-import com.fury.messenger.kafka.ConfigConstants
+import com.fury.messenger.messagebroker.ConfigConstants
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.engineio.client.transports.Polling
