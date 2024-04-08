@@ -329,7 +329,7 @@ object CurrentUser {
     }
 
     suspend fun subscribeToMessageQueue(ctx: Context) {
-        var scope = CoroutineScope(Dispatchers.IO)
+        val scope = CoroutineScope(Dispatchers.IO)
         withContext(Dispatchers.Main) {
             val db = getDatabase(ctx)
             val socket = (async { SocketHandler.setSocket() }).await()

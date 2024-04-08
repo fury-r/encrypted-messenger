@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fury.messenger.R
 import com.fury.messenger.crypto.Crypto
+import com.fury.messenger.crypto.Crypto.convertAESKeyToString
 import com.fury.messenger.crypto.Crypto.convertAESstringToKey
 import com.fury.messenger.crypto.Crypto.decryptAESMessage
 import com.fury.messenger.crypto.Crypto.runAESTest
@@ -62,6 +63,7 @@ import java.time.Period
 import java.time.format.DateTimeFormatter
 import javax.crypto.SecretKey
 
+
 class ChatActivity : AppCompatActivity() {
     private lateinit var messageRecyleView: RecyclerView
     private lateinit var messageBox: EditText
@@ -81,6 +83,8 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var directory: File
     private lateinit var search: SearchView
     private lateinit var phoneNumber: String
+    private lateinit var key: String
+
     private  var selected:String?=null
 
     private var audioMessageFileName: String? = null
@@ -101,7 +105,7 @@ class ChatActivity : AppCompatActivity() {
 
         val receiverUid = intent.getStringExtra("uid")
 //        val uri = intent.getStringExtra("uri")
-        val key = intent.getStringExtra("key")
+         key = intent.getStringExtra("key")!!
 
         directory = File(applicationContext.filesDir, "audio")
         if (!directory.exists()) {
@@ -187,8 +191,26 @@ class ChatActivity : AppCompatActivity() {
 
 
                     }
+                    DbConnect.getDatabase(this@ChatActivity).chatsDao().markAsRead()
+                    if(recipientDetails.key!=null){
+                        key=recipientDetails.key!!
+                    }
 
-                    setMessages(messages as ArrayList<Chat>)
+                    setMessages( messages.map {
+
+                        if( it?.contentType==ContentType.Audio.name ){
+
+                            val filePath="${this@ChatActivity.filesDir}/audio/${it?.sender}-${it?.createdAt.toString().replace("+","-").replace(":","-")}.mp3"
+                            (async{key.let {key->
+                                Crypto.decryptAudio(
+                                    it.message, convertAESstringToKey(key)!!, filePath
+                                )
+                            }}).await()
+                            it.message=filePath
+
+                        }
+                        return@map it
+                    } as ArrayList<Chat>)
 
                 } catch (err: Error) {
                     Log.d("Error", err.toString())
@@ -292,6 +314,8 @@ class ChatActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         listeners = presenfunc
+
+        for (child in directory.listFiles()!!) child.delete()
     }
 
     private suspend fun startListener() {
@@ -505,6 +529,7 @@ class ChatActivity : AppCompatActivity() {
 
                 runOnUiThread {
                     messageAdapter.recipientKey = encryptKey
+                    this@ChatActivity.recipientDetails!!.key= convertAESKeyToString(encryptKey)
 
                     this@ChatActivity.messageAdapter.notifyDataSetChanged()
                 }

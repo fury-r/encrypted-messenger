@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
 
+//Not used (logic moved to socket server)
 class RabbitMQ {
     var factory = ConnectionFactory()
     private var conn: Connection? = null;
@@ -27,8 +28,8 @@ class RabbitMQ {
     }
 
     private fun setUp() {
-        factory.username = ConfigConstants.USERNAME;
-        factory.password = ConfigConstants.PASSWORD;
+        factory.username = "";
+        factory.password = "";
         factory.virtualHost = ConfigConstants.VIRTUAL_HOST;
         factory.host = ConfigConstants.HOSTNAME;
         factory.port = ConfigConstants.PORT;

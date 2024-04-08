@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.SearchView
 import android.widget.Toast
@@ -36,6 +35,7 @@ import com.fury.messenger.helper.user.CurrentUser
 import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.fury.messenger.ui.login.LoginActivity
 import com.fury.messenger.utils.TokenManager
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.services.ServicesGrpc
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private var selected: Int? = null
     private lateinit var client: ServicesGrpc.ServicesBlockingStub
-    private lateinit var contactButton: Button
+    private lateinit var contactButton: FloatingActionButton
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,7 +90,6 @@ class MainActivity : AppCompatActivity() {
 
         contactButton = findViewById(R.id.contactButton)
 
-        Log.d("Contact-z", userList.size.toString())
 
         tokenManager = TokenManager(this)
         supportActionBar!!.setBackgroundDrawable(ColorDrawable(Color.parseColor("#696969")))

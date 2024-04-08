@@ -225,6 +225,9 @@ object Crypto {
         cipher.init(Cipher.DECRYPT_MODE,key)
         val decrypted=cipher.doFinal(audioData)
         val file=File(path)
+        if(file.exists()){
+            return  file
+        }
         val outputStream=FileOutputStream(path)
 
 

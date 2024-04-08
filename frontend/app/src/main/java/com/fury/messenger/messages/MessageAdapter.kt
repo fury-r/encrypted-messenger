@@ -4,7 +4,6 @@ import ChatsByDate
 import android.annotation.SuppressLint
 import android.content.Context
 import android.media.MediaMetadataRetriever
-import android.net.Uri
 import android.util.Log
 import android.view.ContextMenu
 import android.view.LayoutInflater
@@ -23,7 +22,6 @@ import com.google.android.material.slider.Slider
 import com.services.Message.ContentType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.io.File
 import java.time.format.DateTimeFormatter
@@ -164,39 +162,48 @@ class MessageAdapter(
             ReceiveAudioViewHolder(view)
         }
     };
+
+
+    private fun updateDuration(it:View): Unit? {
+        val durationTextView=it.findViewById<TextView>(R.id.duration)
+        val slider=it.findViewById<Slider>(R.id.playSlider)
+        Log.d("update time stamp 1 ${player.isPlaying()} ", durationTextView.text as String)
+
+        return if (player.isPlaying() == true || player.init ) {
+            val duration =(durationTextView.tag as Int) - player.getPosition() / 1000;
+            Log.d("update time stamp", duration.toString())
+
+            durationTextView.text = formatMilliSeconds(duration.toLong())
+            slider.value=duration.toFloat()
+            updateDuration(it)
+
+        }else{
+            null
+        }
+
+    }
     @SuppressLint("ResourceType")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentMessage = messageList.data[position]
         var file:File?=null
-        var playing=false
+
+        var playing=player.isPlaying()
         fun getDuration(view: View) {
-            val duration=view.findViewById<TextView>(R.id.duration)
             val playSlider=view.findViewById<Slider>(R.id.playSlider)
-            Log.d("here", (currentMessage.contentType==ContentType.Audio.name).toString())
+            val durationTextView=view.findViewById<TextView>(R.id.duration)
             if (currentMessage.contentType==ContentType.Audio.name){
                 scope.launch{
-                    val filePath="${context.filesDir}/audio/${currentMessage.sender}-${currentMessage.createdAt.toString().replace("+","-").replace(":","-")}.mp3"
-                    val message = currentMessage.message
-                    file = (async{recipientKey?.let {
-                        Crypto.decryptAudio(
-                            message, it, filePath
-                        )
-                    }}).await()
-                    val uri = Uri.parse(filePath)
+
                     val mmr = MediaMetadataRetriever()
-                    Log.d("ddd mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)",
-                        mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?:""
-                    )
+
                     this@MessageAdapter.context.runCatching{
-
-
-
-                        mmr.setDataSource(filePath)
+                        mmr.setDataSource(currentMessage.message)
                         val ms =
                             mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
                         mmr.release()
                         if (ms != null) {
-                            duration.text =  formatMilliSeconds(ms.toLong())
+                            durationTextView.text =  formatMilliSeconds(ms.toLong())
+                            durationTextView.tag =  formatMilliSeconds(ms.toLong())
                         }
                         if (ms != null) {
                             playSlider.valueTo=ms.toFloat()
@@ -209,33 +216,52 @@ class MessageAdapter(
 
 
         fun audioPlayback(it:View){
+            val slider=it.findViewById<Slider>(R.id.playSlider)
+            val button=it.findViewById<Button>(R.id.play)
+
+
             scope.launch {
-                val slider=it.findViewById<Slider>(R.id.playSlider)
-                if(!playing){
+
+                if(playing==null){
 
 
                     playing=true
-                    if (file != null) {
-                        player.playFile(file!!,fun(){
+                    if(!player.init){
+
+
+                        player.playFile(File(currentMessage.message),0,fun(){
+                            this@MessageAdapter.context.runCatching {
+                                updateDuration(it)
+
+                            }
+                        } ,fun(){
 
                             this@MessageAdapter.context.runCatching{
-                                it.setBackgroundResource(R.drawable.play_circle)
-
+                                button.setBackgroundResource(R.drawable.play_circle)
                             }
 
                         })
 
+
+
+
+                    }
+                        else{
+                            player.resume()
+
+                    }
                         this@MessageAdapter.context.runCatching{
-                            it.setBackgroundResource(R.drawable.baseline_pause_circle_24)
+                            button.setBackgroundResource(R.drawable.baseline_pause_circle_24)
 
                         }
-                    }
+
+
                 }
                 else{
                     playing=false
-                    player.stop()
+                    player.pause()
                     this@MessageAdapter.context.runCatching {
-                        it.setBackgroundResource(R.drawable.play_circle)
+                        button.setBackgroundResource(R.drawable.play_circle)
                         slider.visibility=View.GONE
 
                     }
@@ -298,10 +324,12 @@ class MessageAdapter(
 
 
                 viewHolder.playButton.setOnClickListener{
-                    audioPlayback(it)
+                    audioPlayback(viewHolder.itemView)
                 }
                 viewHolder.slider.setLabelFormatter{
+                    player.seekTo(it.toInt())
                     formatMilliSeconds(it.toLong())
+
 
                 }
             }
@@ -315,7 +343,7 @@ class MessageAdapter(
                 viewHolder.playButton.setBackgroundResource(R.drawable.play_circle)
 
                 viewHolder.playButton.setOnClickListener{
-                    audioPlayback(it)
+                    audioPlayback(viewHolder.itemView)
                 }
                 viewHolder.slider.setLabelFormatter{
                      formatMilliSeconds(it.toLong())

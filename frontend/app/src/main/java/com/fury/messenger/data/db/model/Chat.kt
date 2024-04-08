@@ -93,6 +93,8 @@ interface ChatsDao {
 
     @Update
     fun update(chat: Chat)
+    @Query("Update chats set isSeen=true where isSeen=false")
+    fun markAsRead()
 
     @Delete
     fun delete(cha: Chat)
