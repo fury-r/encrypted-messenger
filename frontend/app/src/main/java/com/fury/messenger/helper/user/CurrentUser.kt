@@ -13,19 +13,16 @@ import com.fury.messenger.data.db.model.Chat
 import com.fury.messenger.data.db.model.ChatsDao
 import com.fury.messenger.data.db.model.Contact
 import com.fury.messenger.data.db.model.ContactsDao
-import com.fury.messenger.kafka.ConsumerThread
-import com.fury.messenger.kafka.RabbitMQ
+import com.fury.messenger.helper.socket.SocketHandler
+import com.fury.messenger.messagebroker.ConsumerThread
 import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.fury.messenger.utils.TokenManager
 import com.google.protobuf.util.JsonFormat
-import com.rabbitmq.client.AMQP
-import com.rabbitmq.client.Channel
-import com.rabbitmq.client.DefaultConsumer
-import com.rabbitmq.client.Envelope
 import com.services.Auth.AuthResponse
 import com.services.Message
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.security.Key
@@ -174,7 +171,7 @@ object CurrentUser {
         val tokenManager = TokenManager(ctx)
         tokenManager.setToken(token)
         this.setCurrentUserPhoneNumber(response.user.phoneNumber)
-        if (response.user.blockedUsersList.isNotEmpty()){
+        if (response.user.blockedUsersList.isNotEmpty()) {
             val arrayList = response.user.blockedUsersList.stream().collect(
                 Collectors.toCollection(
                     Supplier { ArrayList() })
@@ -201,162 +198,157 @@ object CurrentUser {
         }
     }
 
-    suspend fun startMessageThread(ctx: Context) {
-        val scope = CoroutineScope(Dispatchers.Main)
 
-        withContext(Dispatchers.IO) {
-            val database = getDatabase()
+    private suspend fun processMessageAndSave(body: ByteArray, ctx: Context) {
+        val message = String(body, charset("UTF-8"))
+        Log.d("here", message)
+        val decryptMessage =
+            Crypto.decryptMessage(message, getPrivateKey())
 
-            if (MessageThread == null || (MessageThread?.isAlive == false)) {
-
-                val rabbitMq = RabbitMQ()
-                var channel: Channel? = null
-
-                val queueName = phoneNumber
-                if (queueName != null) {
-                    channel = rabbitMq.getChannel(queueName)
+        val messageBuilder = Message.Event.newBuilder()
+        JsonFormat.parser().merge(message, messageBuilder)
+        val event = messageBuilder.build()
+        val db = getDatabase(ctx)
 
 
-                    val consumer = object : DefaultConsumer(channel) {
-
-                        override fun handleDelivery(
-                            consumerTag: String?,
-                            envelope: Envelope?,
-                            properties: AMQP.BasicProperties?,
-                            body: ByteArray?
-                        ) {
-
-                            val message = body?.let {
-                                String(it, charset("UTF-8"))
-                            }
-                            if (message != null) {
-                                val decryptMessage =
-                                    Crypto.decryptMessage(message, getPrivateKey())
-                                val routingKey = envelope!!.routingKey
-                                val contentType = properties!!.contentType
-                                val deliveryTag = envelope.deliveryTag
-                                val messageBuilder = Message.Event.newBuilder()
-                                JsonFormat.parser().merge(decryptMessage, messageBuilder)
-                                val event = messageBuilder.build()
-                                val db = getDatabase(ctx)
-
-                                channel.basicAck(deliveryTag, false)
-
-                                if (!envelope.isRedeliver) {
 
 
-                                    if (!isBlocked(event.reciever)) {
-                                        //TODO: SQL Triggers
+        if (!isBlocked(event.reciever)) {
+            //TODO: SQL Triggers
 
-                                        val key = Crypto.convertAESstringToKey(
-                                            database.contactDao().findByNumber(event.reciever).key!!
-                                        )
+            val key = Crypto.convertAESstringToKey(
+                db.contactDao().findByNumber(event.reciever).key!!
+            )
 
-                                        when (event.type) {
-                                            Message.EventType.MESSAGE -> {
-                                                val messageBuilder =
-                                                    Message.MessageRequest.newBuilder()
-                                                val contact =
-                                                    db.contactDao().findByNumber(event.reciever)
-                                                JsonFormat.parser().merge(
-                                                    Crypto.decryptAESMessage(
-                                                        event.message,
-                                                        Crypto.convertAESstringToKey(contact.key)
-                                                    ), messageBuilder
-                                                )
-                                                val messageObj = messageBuilder.build()
-                                                scope.launch {
-                                                    DBMessage.messageThreadHandler(
-                                                        ctx,
-                                                        messageObj
-                                                    )
-                                                }
-                                                when (messageObj.type) {
-                                                    Message.MessageType.INSERT -> {
-                                                        val request =
-                                                            Message.MessageRequest.newBuilder()
-                                                                .setType(Message.MessageType.UPDATE)
-                                                        val messageInfo =
-                                                            Message.MessageInfo.newBuilder()
-                                                                .setMessageId(messageObj.message.messageId)
-                                                                .setSender(messageObj.message.reciever)
-                                                                .setReciever(messageObj.message.sender)
-                                                                .setDeliverStatus(true).build()
-                                                        val eventBuild = Message.Event.newBuilder()
-                                                            .setMessage(
-                                                                Crypto.encryptAESMessage(
-                                                                    request.setMessage(
-                                                                        messageInfo
-                                                                    ).toString(), key
-                                                                )
-                                                            ).setType(Message.EventType.MESSAGE)
-                                                            .build()
-                                                        val client =
-                                                            createAuthenticationStub(getToken())
-                                                        client.send(eventBuild)
-                                                    }
+            when (event.type) {
+                Message.EventType.MESSAGE -> {
+                    val messageBuilder =
+                        Message.MessageRequest.newBuilder()
+                    val contact =
+                        db.contactDao().findByNumber(event.reciever)
+                    Log.d(
+                        "message", Crypto.decryptAESMessage(
+                            event.message,
+                            Crypto.convertAESstringToKey(contact.key)
+                        )
+                    )
+                    JsonFormat.parser().merge(
+                        Crypto.decryptAESMessage(
+                            event.message,
+                            Crypto.convertAESstringToKey(contact.key)
+                        ), messageBuilder
+                    )
 
-                                                    else -> {
-                                                        Log.d(
-                                                            "Messenger logs",
-                                                            "Message type case not handle yet for reply."
-                                                        )
-
-                                                    }
-                                                }
-
-                                            }
-
-                                            Message.EventType.HANDSHAKE -> {
-                                                val messageBuilder =
-                                                    Message.KeyExchange.newBuilder()
-                                                val decryptMessage = Crypto.decryptMessage(
-                                                    event.message,
-                                                    privateKey
-                                                )
-
-                                                JsonFormat.parser()
-                                                    .merge(decryptMessage, messageBuilder)
-                                                val messageObj = messageBuilder.build()
-                                                scope.launch {
-                                                    DBMessage.saveHandshake(
-                                                        ctx,
-                                                        messageObj
-                                                    )
-                                                }
-
-                                            }
-
-                                            Message.EventType.TYPE_UPDATE -> {
-                                                val contact =
-                                                    db.contactDao().findByNumber(event.sender)
-                                                contact.typeTime = OffsetDateTime.now()
-                                                db.contactDao().update(contact)
-                                            }
-
-                                            else -> {
-                                                Log.d(
-                                                    "Messenger: Event handler",
-                                                    "Event type case not handle yet."
-                                                )
-                                            }
-                                        }
+                    val messageObj = messageBuilder.build()
+                    Log.d(
+                        "message", Crypto.decryptAESMessage(
+                            event.message,
+                            Crypto.convertAESstringToKey(contact.key)
+                        )
+                    )
 
 
-                                    }
-                                }
-                            }
+                    when (messageObj.type) {
+                        Message.MessageType.INSERT -> {
+                            DBMessage.messageThreadHandler(
+                                ctx,
+                                messageObj
+                            )
+                            val request =
+                                Message.MessageRequest.newBuilder()
+                                    .setType(Message.MessageType.UPDATE)
+                            val messageInfo =
+                                Message.MessageInfo.newBuilder()
+                                    .setMessageId(messageObj.message.messageId)
+                                    .setSender(messageObj.message.reciever)
+                                    .setReciever(messageObj.message.sender)
+                                    .setDeliverStatus(true).build()
+                            val eventBuild = Message.Event.newBuilder()
+                                .setMessage(
+                                    Crypto.encryptAESMessage(
+                                        request.setMessage(
+                                            messageInfo
+                                        ).toString(), key
+                                    )
+                                ).setType(Message.EventType.MESSAGE)
+                                .build()
+                            val client =
+                                createAuthenticationStub(getToken())
+                            client.send(eventBuild)
+                        }
+
+                        else -> {
+                            Log.d(
+                                "Messenger logs",
+                                "Message type case not handle yet for reply."
+                            )
+
                         }
                     }
-                    getCurrentUserPhoneNumber().let { channel.basicConsume(it, consumer) }
 
                 }
+
+                Message.EventType.HANDSHAKE -> {
+                    // TODO handle handhsake request even though previously handshake was done
+                    val messageBuilder =
+                        Message.KeyExchange.newBuilder()
+                    val decryptMessage = Crypto.decryptMessage(
+                        event.message,
+                        privateKey
+                    )
+
+                    JsonFormat.parser()
+                        .merge(decryptMessage, messageBuilder)
+                    val messageObj = messageBuilder.build()
+                    DBMessage.saveHandshake(
+                        ctx,
+                        messageObj
+                    )
+
+
+                }
+
+                Message.EventType.TYPE_UPDATE -> {
+                    val contact =
+                        db.contactDao().findByNumber(event.sender)
+                    contact.typeTime = OffsetDateTime.now()
+                    db.contactDao().update(contact)
+                }
+
+                else -> {
+                    Log.d(
+                        "Messenger: Event handler",
+                        "Event type case not handle yet."
+                    )
+                }
             }
+
 
         }
 
     }
 
+    suspend fun subscribeToMessageQueue(ctx: Context) {
+        val scope = CoroutineScope(Dispatchers.IO)
+        withContext(Dispatchers.Main) {
+            val db = getDatabase(ctx)
+            val socket = (async { SocketHandler.setSocket() }).await()
+
+            socket?.emit("message")
+            socket?.on("message") { args ->
+                scope.launch {
+                    args.map {
+                        if (it::class.java == ByteArray::class.java) {
+                            Log.d("processMessage", it.toString())
+                            processMessageAndSave(it as ByteArray, ctx)
+                        }
+                    }
+                }
+
+            } ?: ""
+            socket?.connect()
+        }
+    }
 
     fun killMessageThread() {
         MessageThread!!.join()
@@ -365,7 +357,7 @@ object CurrentUser {
 }
 
 
-@Database(entities = [Contact::class, Chat::class], version = 1)
+@Database(entities = [Contact::class, Chat::class], version = 2)
 @TypeConverters(*[DateTypeConverters::class])
 abstract class AppDatabase : RoomDatabase() {
     abstract fun contactDao(): ContactsDao

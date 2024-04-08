@@ -65,6 +65,9 @@ class Contacts(private var ctx: Context) {
 
     @SuppressLint("Range")
     suspend fun getContactsFromPhone() {
+        while (CurrentUser.phoneNumber.isNullOrEmpty()){
+
+        }
 
         withContext(Dispatchers.IO) {
             val contactList: ArrayList<Contact> = arrayListOf()
@@ -90,7 +93,11 @@ class Contacts(private var ctx: Context) {
                             arrayOf(id),
                             null
                         )
-                        if (phoneNumberValue != null && phoneNumberValue.count > 0  && phoneNumber.toString()!=CurrentUser.phoneNumber) {
+                        if(phoneNumber.toString()=="9527698053" || phoneNumber.toString()=="9158907407"){
+                            Log.d("check", phoneNumber.toString()+""+CurrentUser.phoneNumber)
+
+                        }
+                        if (phoneNumberValue != null && phoneNumberValue.count > 0  ) {
                             while (phoneNumberValue.moveToNext()) {
                                 val phoneNumValue = phoneNumberValue.getString(
                                     phoneNumberValue.getColumnIndex(
@@ -104,7 +111,9 @@ class Contacts(private var ctx: Context) {
                                     val contact = Contact(
                                         id.toInt(), name, phoneNumValue.split(" ").joinToString(""), image
                                     )
-                                    contactList.add(contact)
+                                   if(contact.phoneNumber!=CurrentUser.phoneNumber){
+                                       contactList.add(contact)
+                                   }
                                 }
                             }
                             phoneNumberValue.close()
@@ -117,12 +126,10 @@ class Contacts(private var ctx: Context) {
                 phones.close()
             }
 
-            if (contactList != null) {
-                setContactList(contactList)
-                updateDb(contactList)
-                Log.d("list length", contactList.count().toString())
+            setContactList(contactList)
+            updateDb(contactList)
+            Log.d("list length", contactList.count().toString())
 
-            }
         }
     }
     suspend fun validateContacts(){
@@ -136,17 +143,19 @@ class Contacts(private var ctx: Context) {
                     run {
 
                         val countryCode=contact.countryCode
-                        if(countryCode!=null){
-                            val subRequest =ContactOuterClass.Contact.newBuilder().setId(index.toString())
-                                .setPhoneNumber(contact.phoneNumber).setName(contact.name)
-                                .setIsVerified(contact.isVerified).setCountryCode(countryCode).build()
-                            request.addContacts( subRequest)
+                        if(contact.phoneNumber!=CurrentUser.phoneNumber){
+                            if(countryCode!=null){
+                                val subRequest =ContactOuterClass.Contact.newBuilder().setId(index.toString())
+                                    .setPhoneNumber(contact.phoneNumber).setName(contact.name)
+                                    .setIsVerified(contact.isVerified).setCountryCode(countryCode).build()
+                                request.addContacts( subRequest)
 
-                        }else{
-                            val subRequest = ContactOuterClass.Contact.newBuilder().setId(index.toString())
-                                .setPhoneNumber(contact.phoneNumber).setName(contact.name)
-                                .setIsVerified(contact.isVerified).build()
-                            request.addContacts(subRequest)
+                            }else{
+                                val subRequest = ContactOuterClass.Contact.newBuilder().setId(index.toString())
+                                    .setPhoneNumber(contact.phoneNumber).setName(contact.name)
+                                    .setIsVerified(contact.isVerified).build()
+                                request.addContacts(subRequest)
+                            }
                         }
                     }
                 }

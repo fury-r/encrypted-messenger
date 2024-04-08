@@ -7,7 +7,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Entity
-import androidx.room.Index
 import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
@@ -46,9 +45,9 @@ import java.time.OffsetDateTime
 //    }
 //}
 
-@Entity(tableName = "chats", indices = [Index(value = ["messageId"], unique = true)])
+//indices = [Index(value = ["messageId"], unique = true)]
+@Entity(tableName = "chats")
 data class Chat(
-    @PrimaryKey(autoGenerate = true) var id: Int = 1,
     @ColumnInfo(name = "sender") var sender: String,
     @ColumnInfo(name = "receiver") var receiver: String,
     @ColumnInfo(name = "message") var message: String,
@@ -60,13 +59,17 @@ data class Chat(
     @ColumnInfo(name = "createdAt") var createdAt: OffsetDateTime? = null,
     @ColumnInfo(name = "updatedAt") var updatedAt: OffsetDateTime? = null
 
-)
+){
+    @PrimaryKey(autoGenerate = true)
+    var id : Int? = null
+}
 
 @Dao
 interface ChatsDao {
     @Query("SELECT * FROM chats")
     fun getAll(): List<Chat>
-
+    @Query("SELECT COUNT(*) FROM chats")
+    fun count(): Int
     @Query("SELECT * FROM chats WHERE id IN (:chatIds)")
     fun loadAllByIds(chatIds: IntArray): List<Chat>
 
@@ -83,15 +86,18 @@ interface ChatsDao {
     @Query("SELECT * FROM chats WHERE receiver = :number  or sender=:number  Order by createdAt")
     fun loadChatsByNumber(number: String): List<Chat>
 
-
+    @Query("SELECT COUNT(*) FROM chats WHERE receiver = :number  or sender=:number  Order by createdAt")
+    fun countChatsByNumber(number: String): Int
     @Insert
     fun insertAll(vararg contact: Chat)
 
     @Update
     fun update(chat: Chat)
+    @Query("Update chats set isSeen=true where isSeen=false")
+    fun markAsRead()
 
     @Delete
-    fun delete(contact: Chat)
+    fun delete(cha: Chat)
     @Query("Delete from  chats where receiver= :number or sender= :number")
     fun deleteAllChats(number: String)
     @Query(" Update chats set isDelivered= :isDelivered , isSeen= :isSeen where messageId= :messageId  or receiver= :receiver")

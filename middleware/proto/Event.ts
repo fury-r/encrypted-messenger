@@ -8,7 +8,6 @@ export interface Event {
   'exchange'?: (string);
   'sender'?: (string);
   'reciever'?: (string);
-  'body'?: "message"|"exchange"|"sender";
 }
 
 export interface Event__Output {

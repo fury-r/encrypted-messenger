@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"fmt"
+	"log"
 
 	"example.com/messenger/firebase"
 	"example.com/messenger/pb"
@@ -17,19 +17,21 @@ func VerifyTokenService(ctx context.Context, req *pb.AuthRequest) (*pb.AuthRespo
 	firestore, err := app.Firestore(ctx)
 	auth, _ := app.Auth(ctx)
 	if err != nil {
-		return nil, status.Errorf(codes.Unauthenticated, "Authorization token not provided")
+		return nil, status.Errorf(codes.Internal, "Internal server error")
 	}
 	x := "Invalid Token"
 
 	number, err := utils.GetTokenFromMetaDataAndValidate(ctx)
 	if err != nil {
-
+		log.Default().Println("Error", err)
 		return &pb.AuthResponse{
 			Error: &x,
 		}, nil
 	}
 	docs, _ := firestore.Collection("user").Where("phoneNumber", "==", *number).Limit(1).Documents(ctx).GetAll()
 	if docs == nil {
+		log.Default().Println("Error", err)
+
 		return &pb.AuthResponse{
 			Error: &x,
 		}, nil
@@ -46,7 +48,7 @@ func VerifyTokenService(ctx context.Context, req *pb.AuthRequest) (*pb.AuthRespo
 		IsVerified := true
 		email := data.Email
 		id := doc.Ref.ID
-		fmt.Println("Valid token")
+		log.Default().Println("Valid token")
 		return &pb.AuthResponse{
 			Token:      &token,
 			IsVerified: &IsVerified,
@@ -71,14 +73,14 @@ func GetUserService(ctx context.Context, req *pb.UserRequest) (*pb.UserResponse,
 		panic(err)
 	}
 	if len(req.PhoneNumber) == 0 {
-		fmt.Println("Empty Request", req)
+		log.Default().Println("Empty Request", req)
 		return nil, status.Errorf(codes.InvalidArgument, "Empty Request")
 	}
 	val, err := utils.GetTokenFromMetaDataAndValidate(ctx)
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("here", req)
+	log.Default().Println("here", req)
 	var data pb.User
 	docs, err := app.Collection("user").Where("phoneNumber", "==", *val).Documents(ctx).GetAll()
 

@@ -1,35 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:weightSum="2"
+   >
 
-    android:layout_height="wrap_content">
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:background="@drawable/receive_text"
-        android:padding="10dp"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="5dp"
-        android:layout_margin="5dp"
+   <RelativeLayout
+       android:background="@drawable/receive_text"
+       android:layout_height="wrap_content"
+       android:layout_margin="5dp"
+       android:clickable="true"
+       android:layout_weight="1"
+       android:padding="5dp"
+       android:foreground="?android:attr/selectableItemBackground"
+       tools:ignore="UselessParent"
+       android:layout_width="0dp">
+       <LinearLayout
+           android:id="@+id/top"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+        >
 
-        android:layout_height="55dp"
 
-        tools:ignore="UselessParent">
-        <Button
-            android:id="@+id/play"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/circle"
-            android:drawableTop="@drawable/play_circle"
+           <RelativeLayout
+               android:id="@+id/layout_top"
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent"
+               android:orientation="vertical">
 
-            />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/play"
-            android:layout_centerVertical="true"
-            android:text="duration"/>
-    </RelativeLayout>
-</RelativeLayout>
+               <Button
+                   android:id="@+id/play"
+                   android:layout_width="30dp"
+                   android:layout_height="30dp"
+                   android:layout_margin="2dp"
+                   android:background="@drawable/circle"
+                   android:layout_marginBottom="20dp"
+                   android:padding="5dp"
+                   android:layout_centerVertical="true"
+                   />
+
+           </RelativeLayout>
+
+           <RelativeLayout
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content">
+
+               <com.google.android.material.slider.Slider
+                   android:id="@+id/playSlider"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+
+                   android:valueFrom="0.0"
+                   android:valueTo="100.0" />
+               <TextView
+                   android:id="@+id/duration"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="10dp"
+                   android:text="@string/duration"
+                   android:textSize="10sp"
+                   android:layout_alignBottom="@+id/playSlider"
+                   tools:ignore="SmallSp" />
+
+
+           </RelativeLayout>
+
+
+
+       </LinearLayout>
+
+       <TextView
+           android:id="@+id/time"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/time"
+           android:textColor="@color/black"
+           android:layout_below="@id/top"
+           android:layout_alignParentEnd="true"
+           android:textSize="10sp"
+           tools:ignore="SmallSp" />
+   </RelativeLayout>
+
+
+</LinearLayout>

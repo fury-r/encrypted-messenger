@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"fmt"
+	"log"
 	"math/rand"
 	"strconv"
 )
@@ -14,6 +14,6 @@ func GenerateOtp() string {
 
 	randomNumber += min
 
-	fmt.Println("Otp generated ", randomNumber)
+	log.Default().Println("Otp generated ", randomNumber)
 	return strconv.Itoa(randomNumber)
 }

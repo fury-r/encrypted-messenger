@@ -7,7 +7,7 @@ import android.util.Log
 import androidx.room.Room
 import com.fury.messenger.crypto.Crypto
 import com.fury.messenger.crypto.Crypto.convertAESKeyToString
-import com.fury.messenger.crypto.Crypto.decryptMessage
+import com.fury.messenger.crypto.Crypto.decryptAESMessage
 import com.fury.messenger.crypto.Crypto.encryptAESMessage
 import com.fury.messenger.crypto.Crypto.encryptMessage
 import com.fury.messenger.crypto.Crypto.runAESTest
@@ -18,6 +18,7 @@ import com.fury.messenger.helper.mutex.MutexLock
 import com.fury.messenger.helper.user.AppDatabase
 import com.fury.messenger.helper.user.CurrentUser
 import com.fury.messenger.manageBuilder.createAuthenticationStub
+import com.google.protobuf.util.JsonFormat
 import com.services.Message
 import com.services.Message.ContentType
 import com.services.Message.Event
@@ -30,6 +31,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import java.time.OffsetDateTime
 import java.util.function.Supplier
 import java.util.stream.Collectors
 import javax.crypto.SecretKey
@@ -83,23 +85,23 @@ object DBMessage {
     }
 
     suspend fun messageThreadHandler(ctx: Context, data: MessageRequest): Any {
-        val privateKey = CurrentUser.getPrivateKey()!!
-        if (data.type == com.services.Message.MessageType.INSERT) {
+
+        if (data.type == MessageType.INSERT) {
+
             val chat = Chat(
-                1,
-                data.message.sender,
-                data.message.reciever,
-                data.message.messageId,
-                data.message.text,
-                data.message.contentType as String,
+                sender =   data.message.sender,
+                receiver =data.message.reciever,
+                message = data.message.text,
+                messageId =  data.message.messageId,
+                contentType =  data.message.contentType.name,
                 isDelivered = false,
                 isSeen = false,
-                MessageType.INSERT.toString(),
-                null
+                type= MessageType.INSERT.name,
+                createdAt =  OffsetDateTime.now(),
+                updatedAt = OffsetDateTime.now()
             )
 
             insertMessage(ctx, chat)
-            chat.message = decryptMessage(data.message.text, privateKey)!!
             this.DB_BUFFER.add(chat)
 
         } else if (data.type == MessageType.UPDATE) {
@@ -137,17 +139,22 @@ object DBMessage {
 
     }
 
-    fun insertMessage(ctx: Context, chat: Chat) {
+    private fun insertMessage(ctx: Context, chat: Chat) {
 
-        MutexLock.setDbLock(true)
-        val contentValue = ContentValues()
-        val db = Room.databaseBuilder(
-            ctx,
-            AppDatabase::class.java, "main.db"
-        ).build()
+     try{
+         MutexLock.setDbLock(true)
+         val contentValue = ContentValues()
+         val db = Room.databaseBuilder(
+             ctx,
+             AppDatabase::class.java, "main.db"
+         ).build()
 
-
-        db.chatsDao().insertAll(chat)
+         val count= db.chatsDao().count()
+         db.chatsDao().insertAll(chat)
+     }catch (e:Exception){
+         e.printStackTrace()
+         Log.d("gfgdgfdgdfgdfg",chat.toString())
+     }
     }
 
     @SuppressLint("SuspiciousIndentation")
@@ -237,7 +244,7 @@ object DBMessage {
         val client = createAuthenticationStub(CurrentUser.getToken())
 
 
-        val message =
+        val messageInfo =
             MessageInfo.newBuilder().setMessageId(chat.messageId).setText(chat.message)
                 .setSender(CurrentUser.getCurrentUserPhoneNumber())
                 .setReciever(reciever.phoneNumber).setContentType(messageType)
@@ -248,20 +255,34 @@ object DBMessage {
             chat
         )
 
+        val jsonPrinter = JsonFormat.printer().includingDefaultValueFields()
 
-        val chatRequestBuilder = MessageRequest.newBuilder().setMessage(message)
-            .setType(MessageType.INSERT).build()
+        val messageRequestBuilder = MessageRequest.newBuilder().setType(MessageType.INSERT).setMessage(messageInfo)
+           .build()
+
         val event =
             Event.newBuilder().setType(Message.EventType.MESSAGE).setReciever(
                 reciever.phoneNumber
             ).setMessage(
                 encryptAESMessage(
-                    chatRequestBuilder.toString(),
+                    jsonPrinter.print(messageRequestBuilder),
                     encryptKey
                 )
             ).build()
 
+        val decryptObj=  decryptAESMessage(
+            event.message,
+            encryptKey
+        )
+        Log.d("message--x",decryptObj.toString())
+        var messageR=MessageRequest.newBuilder()
+        JsonFormat.parser().merge(decryptObj,messageR)
 
+        val message= decryptAESMessage(messageR.build().message.text,encryptKey)
+        Log.d("message--x",message)
+
+
+        Log.d("Sensssd", jsonPrinter.print(event))
 
         client.send(event)
     }

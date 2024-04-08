@@ -63,11 +63,10 @@ HANDSHAKE=1;
 DETAILS_UPDATE=2;
 TYPE_UPDATE=3;
 STATUS_UPDATE=4;
-
-
-
     
 }
+
+
 message  KeyExchange{
     string sender = 1;
     string reciever = 2;
@@ -81,11 +80,11 @@ message  KeyExchange{
 
 message Event{
     EventType type=1;
-    oneof body{
-        string message=2;
-        string exchange=3;
-        string sender=4;
-    }
+    //not used oneOf because kotlin Json parser fails
+    string message=2;
+    string exchange=3;
+    string sender=4;
+    
     string reciever = 5;
 
     

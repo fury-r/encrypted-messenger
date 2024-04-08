@@ -29,7 +29,7 @@ frontend/app/google-services.json
 local.properties
 /frontend/output.json
 
-
+*.env
 
 
 backend/firebase/firebase.json

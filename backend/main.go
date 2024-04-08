@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 	"net"
 	"net/http"
 
@@ -14,7 +15,7 @@ import (
 )
 
 func Alive(w http.ResponseWriter, _ *http.Request) {
-	fmt.Println("Server Alive")
+	log.Default().Println("Server Alive")
 	w.Write([]byte("Server Alive"))
 }
 
@@ -33,9 +34,9 @@ func (s *Server) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResp
 }
 
 func (s *Server) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterResponse, error) {
-	fmt.Println((req.String()))
+	log.Default().Println((req.String()))
 	message, err := service.RegisterService(ctx, req)
-	fmt.Println(message)
+	log.Default().Println(message)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
@@ -115,11 +116,11 @@ func main() {
 
 	s := grpc.NewServer()
 	pb.RegisterServicesServer(s, &Server{})
-	fmt.Println("Server running on PORT 8082")
+	log.Default().Println("Server running on PORT 8082")
 
 	if err := s.Serve(listener); err != nil {
 		panic(err)
 	}
-	fmt.Println("Server running on PORT 8082")
+	log.Default().Println("Server running on PORT 8082")
 
 }

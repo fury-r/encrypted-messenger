@@ -1,74 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:weightSum="2"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:id="@+id/block"
+        android:orientation="horizontal" />
     <RelativeLayout
-        android:layout_width="100dp"
-        android:background="@drawable/send_text"
-        android:layout_alignParentEnd="true"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:layout_height="62dp">
+        android:gravity="right"
+        android:background="@drawable/send_text"
+        android:clickable="true"
+
+        android:foreground="?android:attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        tools:ignore="UselessParent">
+
+        <LinearLayout
+            android:id="@+id/top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
 
-
-        <RelativeLayout
-            android:id="@+id/layout_top"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            >
-            <Button
-                android:id="@+id/play"
-                android:layout_width="40dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/circle"
-                android:drawableTop="@drawable/play_circle"
-
-                />
-
-            <TextView
+            <RelativeLayout
+                android:id="@+id/layout_top"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_toEndOf="@id/play"
-                android:textSize="10sp"
-                android:layout_centerVertical="true"
-                android:text="@string/duration"
-                tools:ignore="SmallSp" />
-        </RelativeLayout>
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/play"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="2dp"
+                    android:background="@drawable/circle"
+                    android:layout_centerVertical="true"
+                    android:padding="5dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/playSlider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:valueFrom="0.0"
+                    android:valueTo="100.0" />
+
+                <TextView
+                    android:id="@+id/duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/playSlider"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/duration"
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp" />
+
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/layout_top"
-            android:orientation="horizontal"
-            >
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/top"
+            android:layout_alignParentEnd="true">
 
             <TextView
                 android:id="@+id/status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
                 android:layout_marginBottom="-15dp"
                 android:gravity="left"
                 android:text="@string/status"
-                android:layout_marginRight="20dp"
-                android:layout_weight="1"
                 android:textColor="@color/black"
                 android:textSize="10sp" />
+
             <TextView
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginBottom="-15dp"
                 android:gravity="right"
                 android:text="@string/time"
                 android:textColor="@color/black"
-
                 android:textSize="10sp" />
         </LinearLayout>
-
-
     </RelativeLayout>
-</RelativeLayout>
+
+</LinearLayout>

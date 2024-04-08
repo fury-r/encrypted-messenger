@@ -6142,11 +6142,19 @@ public final class Message {
     com.services.Message.EventType getType();
 
     /**
+     * <pre>
+     *not used oneOf because kotlin Json parser fails
+     * </pre>
+     *
      * <code>string message = 2;</code>
      * @return The message.
      */
     java.lang.String getMessage();
     /**
+     * <pre>
+     *not used oneOf because kotlin Json parser fails
+     * </pre>
+     *
      * <code>string message = 2;</code>
      * @return The bytes for message.
      */
@@ -6188,8 +6196,6 @@ public final class Message {
      */
     com.google.protobuf.ByteString
         getRecieverBytes();
-
-    public com.services.Message.Event.BodyCase getBodyCase();
   }
   /**
    * Protobuf type {@code Event}
@@ -6205,6 +6211,9 @@ public final class Message {
     }
     private Event() {
       type_ = 0;
+      message_ = "";
+      exchange_ = "";
+      sender_ = "";
       reciever_ = "";
     }
 
@@ -6246,20 +6255,20 @@ public final class Message {
             }
             case 18: {
               java.lang.String s = input.readStringRequireUtf8();
-              bodyCase_ = 2;
-              body_ = s;
+
+              message_ = s;
               break;
             }
             case 26: {
               java.lang.String s = input.readStringRequireUtf8();
-              bodyCase_ = 3;
-              body_ = s;
+
+              exchange_ = s;
               break;
             }
             case 34: {
               java.lang.String s = input.readStringRequireUtf8();
-              bodyCase_ = 4;
-              body_ = s;
+
+              sender_ = s;
               break;
             }
             case 42: {
@@ -6300,49 +6309,6 @@ public final class Message {
               com.services.Message.Event.class, com.services.Message.Event.Builder.class);
     }
 
-    private int bodyCase_ = 0;
-    private java.lang.Object body_;
-    public enum BodyCase
-        implements com.google.protobuf.Internal.EnumLite,
-            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
-      MESSAGE(2),
-      EXCHANGE(3),
-      SENDER(4),
-      BODY_NOT_SET(0);
-      private final int value;
-      private BodyCase(int value) {
-        this.value = value;
-      }
-      /**
-       * @param value The number of the enum to look for.
-       * @return The enum associated with the given number.
-       * @deprecated Use {@link #forNumber(int)} instead.
-       */
-      @java.lang.Deprecated
-      public static BodyCase valueOf(int value) {
-        return forNumber(value);
-      }
-
-      public static BodyCase forNumber(int value) {
-        switch (value) {
-          case 2: return MESSAGE;
-          case 3: return EXCHANGE;
-          case 4: return SENDER;
-          case 0: return BODY_NOT_SET;
-          default: return null;
-        }
-      }
-      public int getNumber() {
-        return this.value;
-      }
-    };
-
-    public BodyCase
-    getBodyCase() {
-      return BodyCase.forNumber(
-          bodyCase_);
-    }
-
     public static final int TYPE_FIELD_NUMBER = 1;
     private int type_;
     /**
@@ -6363,44 +6329,45 @@ public final class Message {
     }
 
     public static final int MESSAGE_FIELD_NUMBER = 2;
+    private volatile java.lang.Object message_;
     /**
+     * <pre>
+     *not used oneOf because kotlin Json parser fails
+     * </pre>
+     *
      * <code>string message = 2;</code>
      * @return The message.
      */
+    @java.lang.Override
     public java.lang.String getMessage() {
-      java.lang.Object ref = "";
-      if (bodyCase_ == 2) {
-        ref = body_;
-      }
+      java.lang.Object ref = message_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        if (bodyCase_ == 2) {
-          body_ = s;
-        }
+        message_ = s;
         return s;
       }
     }
     /**
+     * <pre>
+     *not used oneOf because kotlin Json parser fails
+     * </pre>
+     *
      * <code>string message = 2;</code>
      * @return The bytes for message.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getMessageBytes() {
-      java.lang.Object ref = "";
-      if (bodyCase_ == 2) {
-        ref = body_;
-      }
+      java.lang.Object ref = message_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        if (bodyCase_ == 2) {
-          body_ = b;
-        }
+        message_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -6408,24 +6375,21 @@ public final class Message {
     }
 
     public static final int EXCHANGE_FIELD_NUMBER = 3;
+    private volatile java.lang.Object exchange_;
     /**
      * <code>string exchange = 3;</code>
      * @return The exchange.
      */
+    @java.lang.Override
     public java.lang.String getExchange() {
-      java.lang.Object ref = "";
-      if (bodyCase_ == 3) {
-        ref = body_;
-      }
+      java.lang.Object ref = exchange_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        if (bodyCase_ == 3) {
-          body_ = s;
-        }
+        exchange_ = s;
         return s;
       }
     }
@@ -6433,19 +6397,15 @@ public final class Message {
      * <code>string exchange = 3;</code>
      * @return The bytes for exchange.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getExchangeBytes() {
-      java.lang.Object ref = "";
-      if (bodyCase_ == 3) {
-        ref = body_;
-      }
+      java.lang.Object ref = exchange_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        if (bodyCase_ == 3) {
-          body_ = b;
-        }
+        exchange_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -6453,24 +6413,21 @@ public final class Message {
     }
 
     public static final int SENDER_FIELD_NUMBER = 4;
+    private volatile java.lang.Object sender_;
     /**
      * <code>string sender = 4;</code>
      * @return The sender.
      */
+    @java.lang.Override
     public java.lang.String getSender() {
-      java.lang.Object ref = "";
-      if (bodyCase_ == 4) {
-        ref = body_;
-      }
+      java.lang.Object ref = sender_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        if (bodyCase_ == 4) {
-          body_ = s;
-        }
+        sender_ = s;
         return s;
       }
     }
@@ -6478,19 +6435,15 @@ public final class Message {
      * <code>string sender = 4;</code>
      * @return The bytes for sender.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getSenderBytes() {
-      java.lang.Object ref = "";
-      if (bodyCase_ == 4) {
-        ref = body_;
-      }
+      java.lang.Object ref = sender_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        if (bodyCase_ == 4) {
-          body_ = b;
-        }
+        sender_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -6552,14 +6505,14 @@ public final class Message {
       if (type_ != com.services.Message.EventType.MESSAGE.getNumber()) {
         output.writeEnum(1, type_);
       }
-      if (bodyCase_ == 2) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, body_);
+      if (!getMessageBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, message_);
       }
-      if (bodyCase_ == 3) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, body_);
+      if (!getExchangeBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, exchange_);
       }
-      if (bodyCase_ == 4) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, body_);
+      if (!getSenderBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, sender_);
       }
       if (!getRecieverBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, reciever_);
@@ -6577,14 +6530,14 @@ public final class Message {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(1, type_);
       }
-      if (bodyCase_ == 2) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, body_);
+      if (!getMessageBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, message_);
       }
-      if (bodyCase_ == 3) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, body_);
+      if (!getExchangeBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, exchange_);
       }
-      if (bodyCase_ == 4) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, body_);
+      if (!getSenderBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, sender_);
       }
       if (!getRecieverBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, reciever_);
@@ -6605,25 +6558,14 @@ public final class Message {
       com.services.Message.Event other = (com.services.Message.Event) obj;
 
       if (type_ != other.type_) return false;
+      if (!getMessage()
+          .equals(other.getMessage())) return false;
+      if (!getExchange()
+          .equals(other.getExchange())) return false;
+      if (!getSender()
+          .equals(other.getSender())) return false;
       if (!getReciever()
           .equals(other.getReciever())) return false;
-      if (!getBodyCase().equals(other.getBodyCase())) return false;
-      switch (bodyCase_) {
-        case 2:
-          if (!getMessage()
-              .equals(other.getMessage())) return false;
-          break;
-        case 3:
-          if (!getExchange()
-              .equals(other.getExchange())) return false;
-          break;
-        case 4:
-          if (!getSender()
-              .equals(other.getSender())) return false;
-          break;
-        case 0:
-        default:
-      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -6637,24 +6579,14 @@ public final class Message {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + TYPE_FIELD_NUMBER;
       hash = (53 * hash) + type_;
+      hash = (37 * hash) + MESSAGE_FIELD_NUMBER;
+      hash = (53 * hash) + getMessage().hashCode();
+      hash = (37 * hash) + EXCHANGE_FIELD_NUMBER;
+      hash = (53 * hash) + getExchange().hashCode();
+      hash = (37 * hash) + SENDER_FIELD_NUMBER;
+      hash = (53 * hash) + getSender().hashCode();
       hash = (37 * hash) + RECIEVER_FIELD_NUMBER;
       hash = (53 * hash) + getReciever().hashCode();
-      switch (bodyCase_) {
-        case 2:
-          hash = (37 * hash) + MESSAGE_FIELD_NUMBER;
-          hash = (53 * hash) + getMessage().hashCode();
-          break;
-        case 3:
-          hash = (37 * hash) + EXCHANGE_FIELD_NUMBER;
-          hash = (53 * hash) + getExchange().hashCode();
-          break;
-        case 4:
-          hash = (37 * hash) + SENDER_FIELD_NUMBER;
-          hash = (53 * hash) + getSender().hashCode();
-          break;
-        case 0:
-        default:
-      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -6790,10 +6722,14 @@ public final class Message {
         super.clear();
         type_ = 0;
 
+        message_ = "";
+
+        exchange_ = "";
+
+        sender_ = "";
+
         reciever_ = "";
 
-        bodyCase_ = 0;
-        body_ = null;
         return this;
       }
 
@@ -6821,17 +6757,10 @@ public final class Message {
       public com.services.Message.Event buildPartial() {
         com.services.Message.Event result = new com.services.Message.Event(this);
         result.type_ = type_;
-        if (bodyCase_ == 2) {
-          result.body_ = body_;
-        }
-        if (bodyCase_ == 3) {
-          result.body_ = body_;
-        }
-        if (bodyCase_ == 4) {
-          result.body_ = body_;
-        }
+        result.message_ = message_;
+        result.exchange_ = exchange_;
+        result.sender_ = sender_;
         result.reciever_ = reciever_;
-        result.bodyCase_ = bodyCase_;
         onBuilt();
         return result;
       }
@@ -6883,32 +6812,21 @@ public final class Message {
         if (other.type_ != 0) {
           setTypeValue(other.getTypeValue());
         }
+        if (!other.getMessage().isEmpty()) {
+          message_ = other.message_;
+          onChanged();
+        }
+        if (!other.getExchange().isEmpty()) {
+          exchange_ = other.exchange_;
+          onChanged();
+        }
+        if (!other.getSender().isEmpty()) {
+          sender_ = other.sender_;
+          onChanged();
+        }
         if (!other.getReciever().isEmpty()) {
           reciever_ = other.reciever_;
           onChanged();
-        }
-        switch (other.getBodyCase()) {
-          case MESSAGE: {
-            bodyCase_ = 2;
-            body_ = other.body_;
-            onChanged();
-            break;
-          }
-          case EXCHANGE: {
-            bodyCase_ = 3;
-            body_ = other.body_;
-            onChanged();
-            break;
-          }
-          case SENDER: {
-            bodyCase_ = 4;
-            body_ = other.body_;
-            onChanged();
-            break;
-          }
-          case BODY_NOT_SET: {
-            break;
-          }
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -6938,21 +6856,6 @@ public final class Message {
         }
         return this;
       }
-      private int bodyCase_ = 0;
-      private java.lang.Object body_;
-      public BodyCase
-          getBodyCase() {
-        return BodyCase.forNumber(
-            bodyCase_);
-      }
-
-      public Builder clearBody() {
-        bodyCase_ = 0;
-        body_ = null;
-        onChanged();
-        return this;
-      }
-
 
       private int type_ = 0;
       /**
@@ -7008,52 +6911,53 @@ public final class Message {
         return this;
       }
 
+      private java.lang.Object message_ = "";
       /**
+       * <pre>
+       *not used oneOf because kotlin Json parser fails
+       * </pre>
+       *
        * <code>string message = 2;</code>
        * @return The message.
        */
-      @java.lang.Override
       public java.lang.String getMessage() {
-        java.lang.Object ref = "";
-        if (bodyCase_ == 2) {
-          ref = body_;
-        }
+        java.lang.Object ref = message_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          if (bodyCase_ == 2) {
-            body_ = s;
-          }
+          message_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
         }
       }
       /**
+       * <pre>
+       *not used oneOf because kotlin Json parser fails
+       * </pre>
+       *
        * <code>string message = 2;</code>
        * @return The bytes for message.
        */
-      @java.lang.Override
       public com.google.protobuf.ByteString
           getMessageBytes() {
-        java.lang.Object ref = "";
-        if (bodyCase_ == 2) {
-          ref = body_;
-        }
+        java.lang.Object ref = message_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          if (bodyCase_ == 2) {
-            body_ = b;
-          }
+          message_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
+       * <pre>
+       *not used oneOf because kotlin Json parser fails
+       * </pre>
+       *
        * <code>string message = 2;</code>
        * @param value The message to set.
        * @return This builder for chaining.
@@ -7063,24 +6967,30 @@ public final class Message {
         if (value == null) {
     throw new NullPointerException();
   }
-  bodyCase_ = 2;
-        body_ = value;
+  
+        message_ = value;
         onChanged();
         return this;
       }
       /**
+       * <pre>
+       *not used oneOf because kotlin Json parser fails
+       * </pre>
+       *
        * <code>string message = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearMessage() {
-        if (bodyCase_ == 2) {
-          bodyCase_ = 0;
-          body_ = null;
-          onChanged();
-        }
+        
+        message_ = getDefaultInstance().getMessage();
+        onChanged();
         return this;
       }
       /**
+       * <pre>
+       *not used oneOf because kotlin Json parser fails
+       * </pre>
+       *
        * <code>string message = 2;</code>
        * @param value The bytes for message to set.
        * @return This builder for chaining.
@@ -7091,29 +7001,24 @@ public final class Message {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-        bodyCase_ = 2;
-        body_ = value;
+        
+        message_ = value;
         onChanged();
         return this;
       }
 
+      private java.lang.Object exchange_ = "";
       /**
        * <code>string exchange = 3;</code>
        * @return The exchange.
        */
-      @java.lang.Override
       public java.lang.String getExchange() {
-        java.lang.Object ref = "";
-        if (bodyCase_ == 3) {
-          ref = body_;
-        }
+        java.lang.Object ref = exchange_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          if (bodyCase_ == 3) {
-            body_ = s;
-          }
+          exchange_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -7123,20 +7028,14 @@ public final class Message {
        * <code>string exchange = 3;</code>
        * @return The bytes for exchange.
        */
-      @java.lang.Override
       public com.google.protobuf.ByteString
           getExchangeBytes() {
-        java.lang.Object ref = "";
-        if (bodyCase_ == 3) {
-          ref = body_;
-        }
+        java.lang.Object ref = exchange_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          if (bodyCase_ == 3) {
-            body_ = b;
-          }
+          exchange_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -7152,8 +7051,8 @@ public final class Message {
         if (value == null) {
     throw new NullPointerException();
   }
-  bodyCase_ = 3;
-        body_ = value;
+  
+        exchange_ = value;
         onChanged();
         return this;
       }
@@ -7162,11 +7061,9 @@ public final class Message {
        * @return This builder for chaining.
        */
       public Builder clearExchange() {
-        if (bodyCase_ == 3) {
-          bodyCase_ = 0;
-          body_ = null;
-          onChanged();
-        }
+        
+        exchange_ = getDefaultInstance().getExchange();
+        onChanged();
         return this;
       }
       /**
@@ -7180,29 +7077,24 @@ public final class Message {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-        bodyCase_ = 3;
-        body_ = value;
+        
+        exchange_ = value;
         onChanged();
         return this;
       }
 
+      private java.lang.Object sender_ = "";
       /**
        * <code>string sender = 4;</code>
        * @return The sender.
        */
-      @java.lang.Override
       public java.lang.String getSender() {
-        java.lang.Object ref = "";
-        if (bodyCase_ == 4) {
-          ref = body_;
-        }
+        java.lang.Object ref = sender_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          if (bodyCase_ == 4) {
-            body_ = s;
-          }
+          sender_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -7212,20 +7104,14 @@ public final class Message {
        * <code>string sender = 4;</code>
        * @return The bytes for sender.
        */
-      @java.lang.Override
       public com.google.protobuf.ByteString
           getSenderBytes() {
-        java.lang.Object ref = "";
-        if (bodyCase_ == 4) {
-          ref = body_;
-        }
+        java.lang.Object ref = sender_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          if (bodyCase_ == 4) {
-            body_ = b;
-          }
+          sender_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -7241,8 +7127,8 @@ public final class Message {
         if (value == null) {
     throw new NullPointerException();
   }
-  bodyCase_ = 4;
-        body_ = value;
+  
+        sender_ = value;
         onChanged();
         return this;
       }
@@ -7251,11 +7137,9 @@ public final class Message {
        * @return This builder for chaining.
        */
       public Builder clearSender() {
-        if (bodyCase_ == 4) {
-          bodyCase_ = 0;
-          body_ = null;
-          onChanged();
-        }
+        
+        sender_ = getDefaultInstance().getSender();
+        onChanged();
         return this;
       }
       /**
@@ -7269,8 +7153,8 @@ public final class Message {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-        bodyCase_ = 4;
-        body_ = value;
+        
+        sender_ = value;
         onChanged();
         return this;
       }
@@ -7463,15 +7347,14 @@ public final class Message {
       "ver\030\002 \001(\t\022\021\n\tmessageId\030\003 \001(\t\022\025\n\rdeliverS" +
       "tatus\030\004 \001(\010\022\022\n\nreadStatus\030\005 \001(\010\"<\n\013KeyEx" +
       "change\022\016\n\006sender\030\001 \001(\t\022\020\n\010reciever\030\002 \001(\t" +
-      "\022\013\n\003key\030\003 \001(\t\"t\n\005Event\022\030\n\004type\030\001 \001(\0162\n.E" +
-      "ventType\022\021\n\007message\030\002 \001(\tH\000\022\022\n\010exchange\030" +
-      "\003 \001(\tH\000\022\020\n\006sender\030\004 \001(\tH\000\022\020\n\010reciever\030\005 " +
-      "\001(\tB\006\n\004body*%\n\013MessageType\022\n\n\006INSERT\020\000\022\n" +
-      "\n\006UPDATE\020\001*\"\n\013ContentType\022\010\n\004Text\020\000\022\t\n\005A" +
-      "udio\020\001*_\n\tEventType\022\013\n\007MESSAGE\020\000\022\r\n\tHAND" +
-      "SHAKE\020\001\022\022\n\016DETAILS_UPDATE\020\002\022\017\n\013TYPE_UPDA" +
-      "TE\020\003\022\021\n\rSTATUS_UPDATE\020\004B\023\n\014com.servicesZ" +
-      "\003/pbb\006proto3"
+      "\022\013\n\003key\030\003 \001(\t\"f\n\005Event\022\030\n\004type\030\001 \001(\0162\n.E" +
+      "ventType\022\017\n\007message\030\002 \001(\t\022\020\n\010exchange\030\003 " +
+      "\001(\t\022\016\n\006sender\030\004 \001(\t\022\020\n\010reciever\030\005 \001(\t*%\n" +
+      "\013MessageType\022\n\n\006INSERT\020\000\022\n\n\006UPDATE\020\001*\"\n\013" +
+      "ContentType\022\010\n\004Text\020\000\022\t\n\005Audio\020\001*_\n\tEven" +
+      "tType\022\013\n\007MESSAGE\020\000\022\r\n\tHANDSHAKE\020\001\022\022\n\016DET" +
+      "AILS_UPDATE\020\002\022\017\n\013TYPE_UPDATE\020\003\022\021\n\rSTATUS" +
+      "_UPDATE\020\004B\023\n\014com.servicesZ\003/pbb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -7518,7 +7401,7 @@ public final class Message {
     internal_static_Event_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Event_descriptor,
-        new java.lang.String[] { "Type", "Message", "Exchange", "Sender", "Reciever", "Body", });
+        new java.lang.String[] { "Type", "Message", "Exchange", "Sender", "Reciever", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -3,6 +3,7 @@ package utils
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 	"strings"
 	"time"
@@ -82,25 +83,32 @@ func ValidateToken(tokenString string) (string, error) {
 
 func GetTokenFromMetaDataAndValidate(ctx context.Context) (*string, error) {
 	md, ok := metadata.FromIncomingContext(ctx)
-
+	log.Default().Println("metadata", md)
 	if !ok {
 		return nil, status.Errorf(codes.Unauthenticated, "Metadata not found")
 	}
 	authorization := md.Get("authorization")
+
 	if len(authorization) == 0 {
+		log.Default().Println("authorization not in metadata", authorization)
+
 		return nil, status.Errorf(codes.Unauthenticated, "Authorization token not provided")
 	}
 	token := strings.Split(authorization[0], " ")
 	if len(token) == 1 {
+		log.Default().Println("authorization not in metadata", authorization)
+
 		return nil, status.Errorf(codes.Unauthenticated, "Authorization token not provided")
 
 	}
 	data, err := ValidateToken(token[1])
 	if err != nil {
+		log.Default().Println("authorization toke is invalid", err)
+
 		return nil, status.Errorf(codes.Unauthenticated, "Authorization token not provided")
 
 	}
-	fmt.Println("GetTokenFromMetaDataAndValidate", token, data)
+	log.Default().Println("GetTokenFromMetaDataAndValidate", token, data)
 	return &data, nil
 
 }

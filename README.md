@@ -21,7 +21,8 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
 - **Go Backend Server:** The backend server is implemented in the Go programming language, providing a robust and performant infrastructure for managing user accounts, storing messages, and handling various application functionalities.
 
 ## Architechure
-![ArchitechureMessenger drawio](https://github.com/fury-r/messenger/assets/79844581/b7b883e2-87a6-4097-b6ff-25aee1cd5c3b)
+![ArchitechureMessenger drawio (4)](https://github.com/fury-r/encrypted-messenger/assets/79844581/8928de14-1a11-4258-aa4a-7690aa6dc10d)
+
 ### Description
 - Client: This refers to the mobile application that users interact with to send and receive messages. Written Kotlin(Android App).
 - Client Db: This represents the database used by the mobile client to store information locally on the device. Here, SQLite is being used.
@@ -70,7 +71,10 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
    - generate types by running `sh proto.sh`
    - Run    `go mod download` to download all modules.
    - Run `go run main.go` to start the backend server.
-
+4. **RabbitMQ server**
+   - Installation:[link](https://www.rabbitmq.com/docs/install-windows-manual)
+   - Make sure rabbitMQ is running.
+   - Configure client and admin credetials at [link](http://localhost:15672/)
 
 ### End to End encryption
 ## How It Works

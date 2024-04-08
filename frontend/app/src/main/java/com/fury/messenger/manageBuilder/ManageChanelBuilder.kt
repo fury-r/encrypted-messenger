@@ -1,6 +1,6 @@
 package com.fury.messenger.manageBuilder
 
-import com.fury.messenger.kafka.ConfigConstants
+import com.fury.messenger.messagebroker.ConfigConstants
 import com.services.ServicesGrpc
 import io.grpc.ManagedChannel
 import io.grpc.ManagedChannelBuilder
