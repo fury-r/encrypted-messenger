@@ -2,7 +2,6 @@ package firebase
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	firebase "firebase.google.com/go/v4"
@@ -27,7 +26,7 @@ func CreateUser(ctx context.Context, client *auth.Client, email, password string
 
 	user, err := client.CreateUser(ctx, params)
 	if err != nil {
-		fmt.Println(err)
+		log.Default().Println(err)
 		return nil, err
 	}
 

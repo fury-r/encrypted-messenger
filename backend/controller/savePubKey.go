@@ -2,7 +2,7 @@ package controller
 
 import (
 	"context"
-	"fmt"
+	"log"
 	"time"
 
 	"cloud.google.com/go/firestore"
@@ -24,7 +24,7 @@ func SavePubKeyService(ctx context.Context, req *pb.User) (*pb.User, error) {
 	docs, _ := app.Collection("user").Where("email", "==", *email).Documents(ctx).GetAll()
 
 	for _, doc := range docs {
-		fmt.Println("updating firestore")
+		log.Default().Println("updating firestore")
 		updateData := map[string]interface{}{
 			"pubKey": req.GetPubKey(),
 
@@ -33,7 +33,7 @@ func SavePubKeyService(ctx context.Context, req *pb.User) (*pb.User, error) {
 
 		_, err := app.Collection("user").Doc(doc.Ref.ID).Set(ctx, updateData, firestore.MergeAll)
 		if err != nil {
-			fmt.Println("Firebase update error")
+			log.Default().Println("Firebase update error")
 		}
 	}
 	return req, err

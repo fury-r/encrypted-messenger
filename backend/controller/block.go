@@ -2,7 +2,7 @@ package controller
 
 import (
 	"context"
-	"fmt"
+	"log"
 
 	"cloud.google.com/go/firestore"
 	"example.com/messenger/firebase"
@@ -13,7 +13,7 @@ import (
 )
 
 func BlockUserController(ctx context.Context, req *pb.BlockRequest) (*pb.BlockResponse, error) {
-	fmt.Println("BlockUserController")
+	log.Default().Println("BlockUserController")
 	val, err := utils.GetTokenFromMetaDataAndValidate(ctx)
 	if err != nil {
 		return nil, err
@@ -22,14 +22,14 @@ func BlockUserController(ctx context.Context, req *pb.BlockRequest) (*pb.BlockRe
 
 	app, err := firebase.InitFirebase().Firestore(ctx)
 	if err != nil {
-		fmt.Println("db err", err)
+		log.Default().Println("db err", err)
 		return &pb.BlockResponse{
 			BlockedUsers: []string{},
 		}, nil
 	}
 	docs, err := app.Collection("user").Where("phoneNumber", "==", *val).Documents(ctx).GetAll()
 	if err != nil {
-		fmt.Println(err)
+		log.Default().Println(err)
 		return &pb.BlockResponse{
 			BlockedUsers: []string{},
 		}, nil
@@ -55,7 +55,7 @@ func BlockUserController(ctx context.Context, req *pb.BlockRequest) (*pb.BlockRe
 		}
 		_, err := app.Collection("user").Doc(doc.Ref.ID).Set(ctx, updatedData, firestore.MergeAll)
 		if err != nil {
-			fmt.Println(err)
+			log.Default().Println(err)
 			return &pb.BlockResponse{
 				BlockedUsers: []string{},
 			}, nil

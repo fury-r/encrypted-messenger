@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"log"
 
 	"time"
 
@@ -15,11 +16,11 @@ import (
 )
 
 func LoginService(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
-	fmt.Println("Login")
+	log.Default().Println("Login")
 
 	app, firebaseerr := firebase.InitFirebase().Firestore(ctx)
 	if firebaseerr != nil {
-		fmt.Println("Error", firebaseerr)
+		log.Default().Println("Error", firebaseerr)
 		return nil, status.Error(codes.Internal, "Internal server Error")
 	}
 	userCheck := app.Collection("user").Where("phoneNumber", "==", req.GetPhoneNumber()).Documents(ctx)
@@ -43,7 +44,7 @@ func LoginService(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse,
 			firestore.MergeAll,
 		)
 		if err != nil {
-			fmt.Println("Error", firebaseerr)
+			log.Default().Println("Error", firebaseerr)
 			return nil, status.Error(codes.Internal, "Internal server Error")
 		}
 	}

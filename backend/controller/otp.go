@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"log"
 
 	"example.com/messenger/firebase"
 	"example.com/messenger/pb"
@@ -31,18 +32,18 @@ func OtpService(ctx context.Context, req *pb.OtpRequest) (*pb.AuthResponse, erro
 	for _, doc := range docs {
 		doc.DataTo(&data)
 		email := data.Email
-		fmt.Println("generating token " + data.PhoneNumber)
+		log.Default().Println("generating token " + data.PhoneNumber)
 		user, err := auth.GetUserByEmail(ctx, *email)
 		if err != nil {
-			fmt.Println(err)
+			log.Default().Println(err)
 			panic(err)
 		}
 
-		fmt.Println(user.UID)
+		log.Default().Println(user.UID)
 
 		token, err := utils.CreateToken(data.PhoneNumber)
 		if err != nil {
-			fmt.Println(err)
+			log.Default().Println(err)
 			errMessage := "Invalid Otp.Please try again."
 			return &pb.AuthResponse{
 				Error: &errMessage,
@@ -51,7 +52,7 @@ func OtpService(ctx context.Context, req *pb.OtpRequest) (*pb.AuthResponse, erro
 		_, e := utils.ValidateToken(token)
 
 		if e != nil {
-			fmt.Println(err)
+			log.Default().Println(err)
 			errMessage := "Invalid Otp.Please try again."
 			return &pb.AuthResponse{
 				Error: &errMessage,

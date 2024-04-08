@@ -2,7 +2,6 @@ package controller
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"example.com/messenger/firebase"
@@ -12,7 +11,7 @@ import (
 )
 
 func ContactService(ctx context.Context, req *pb.ContactsList) (*pb.ContactsList, error) {
-	fmt.Println("Validating  contacts")
+	log.Default().Println("Validating  contacts")
 	app, err := firebase.InitFirebase().Firestore(ctx)
 	if err != nil {
 		return nil, err
@@ -35,7 +34,7 @@ func ContactService(ctx context.Context, req *pb.ContactsList) (*pb.ContactsList
 		iterations++
 	}
 	contactList := []*pb.Contact{}
-	fmt.Println(batchSize, iterations)
+	log.Default().Println(batchSize, iterations)
 	for i := 0; i < iterations; i++ {
 
 		docs := app.Collection("user").Where("phoneNumber", "in", phonesList[start:start+batchSize]).Documents(ctx)
@@ -49,11 +48,11 @@ func ContactService(ctx context.Context, req *pb.ContactsList) (*pb.ContactsList
 				log.Fatalf("Failed to iterate over query results: %v", err)
 			}
 			if doc == nil {
-				fmt.Println("Document is nil")
+				log.Default().Println("Document is nil")
 			} else {
 				verified := true
 				data := doc.Data()
-				fmt.Println("looping over iter " + data["phoneNumber"].(string))
+				log.Default().Println("looping over iter " + data["phoneNumber"].(string))
 				pubKey, ok := data["pubKey"]
 				key := ""
 				if ok == true {
@@ -74,7 +73,7 @@ func ContactService(ctx context.Context, req *pb.ContactsList) (*pb.ContactsList
 		start += batchSize
 	}
 
-	fmt.Println("ContactList ", len(contactList))
+	log.Default().Println("ContactList ", len(contactList))
 	return &pb.ContactsList{
 		Contacts: contactList,
 	}, nil

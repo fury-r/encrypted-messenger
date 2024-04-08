@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"fmt"
+	"log"
 
 	"example.com/messenger/firebase"
 	"example.com/messenger/pb"
@@ -10,16 +10,16 @@ import (
 )
 
 func RegisterService(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterResponse, error) {
-	fmt.Println("Register")
-	fmt.Println(req.GetEmail()+" "+req.String(), req.PhoneNumber)
+	log.Default().Println("Register")
+	log.Default().Println(req.GetEmail()+" "+req.String(), req.PhoneNumber)
 	firestore, initerr := firebase.InitFirebase().Firestore(ctx)
-	fmt.Println(initerr)
+	log.Default().Println(initerr)
 	auth, _ := firebase.InitFirebase().Auth(ctx)
 
 	emailCheck, _ := firestore.Collection("user").Where("email", "==", req.GetEmail()).Documents(ctx).GetAll()
 
 	if len(emailCheck) > 0 {
-		fmt.Println("User Exist")
+		log.Default().Println("User Exist")
 
 		errorMessage := req.GetEmail() + " in use"
 		return &pb.RegisterResponse{
@@ -29,7 +29,7 @@ func RegisterService(ctx context.Context, req *pb.RegisterRequest) (*pb.Register
 	}
 	phoneNumberCheck, _ := firestore.Collection("user").Where("phoneNumber", "==", req.GetPhoneNumber()).Documents(ctx).GetAll()
 	if len(phoneNumberCheck) > 0 {
-		fmt.Println("User Exist")
+		log.Default().Println("User Exist")
 
 		errorMessage := req.GetPhoneNumber() + " in use"
 		return &pb.RegisterResponse{
@@ -50,7 +50,7 @@ func RegisterService(ctx context.Context, req *pb.RegisterRequest) (*pb.Register
 	})
 
 	firebase.CreateUser(ctx, auth, req.GetEmail(), password)
-	fmt.Println("Saved and otp generated")
+	log.Default().Println("Saved and otp generated")
 	return &pb.RegisterResponse{
 		Message: "Otp sent",
 	}, nil
