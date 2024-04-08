@@ -56,9 +56,10 @@ class EditProfile : AppCompatActivity() {
         }
     }
 
+    //Move to backend
     private fun getImage() {
-        storageRef?.child("profile/" + FirebaseAuth.getInstance().currentUser?.uid.toString())?.downloadUrl?.addOnSuccessListener { uri: Uri ->
-            Glide.with(getApplicationContext())
+        storageRef.child("profile/" + FirebaseAuth.getInstance().currentUser?.uid.toString()).downloadUrl.addOnSuccessListener { uri: Uri ->
+            Glide.with(applicationContext)
                 .load(uri.toString())
                 .into(imageView);
 
@@ -66,18 +67,12 @@ class EditProfile : AppCompatActivity() {
 
     }
 
-    private fun saveImage() {
-        val images =
-            storageRef.child("profile/${FirebaseAuth.getInstance().currentUser?.uid.toString()}");
-        val image = storageRef.child("${FirebaseAuth.getInstance().currentUser?.uid.toString()}");
 
-
-    }
 
     // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
-    val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         val ref =
-            storageRef?.child("profile/" + FirebaseAuth.getInstance().currentUser?.uid.toString())
+            storageRef.child("profile/" + FirebaseAuth.getInstance().currentUser?.uid.toString())
         ref?.putFile(uri!!)
         Toast.makeText(this, "Profile Picture Updated", Toast.LENGTH_SHORT).show()
         getImage()

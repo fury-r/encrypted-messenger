@@ -38,10 +38,11 @@
 
                 <Button
                     android:id="@+id/play"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_margin="2dp"
                     android:background="@drawable/circle"
+                    android:layout_centerVertical="true"
                     android:padding="5dp" />
 
             </RelativeLayout>
@@ -55,7 +56,6 @@
                     android:id="@+id/playSlider"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:valueFrom="0.0"
                     android:valueTo="100.0" />
 
@@ -86,7 +86,6 @@
                 android:id="@+id/status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/play"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="-15dp"
                 android:gravity="left"
@@ -98,7 +97,6 @@
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/duration"
                 android:gravity="right"
                 android:text="@string/time"
                 android:textColor="@color/black"

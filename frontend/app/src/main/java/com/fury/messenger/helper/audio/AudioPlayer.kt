@@ -35,6 +35,7 @@ class AudioPlayer(private val ctx: Context) :IAudioPlayer{
                 prepare()
                 seekTo(0)
 
+
                 setOnCompletionListener {
                     this@AudioPlayer.stop()
                     Log.d("Ddd","finished")
@@ -84,8 +85,9 @@ class AudioPlayer(private val ctx: Context) :IAudioPlayer{
         return mediaPlayer?.currentPosition ?: 0
     }
 
-    override fun isPlaying(): Boolean? {
-        return  mediaPlayer?.isPlaying
+    override fun isPlaying(): Boolean {
+        if(mediaPlayer==null)return false
+        return  mediaPlayer!!.isPlaying
     }
 
 }

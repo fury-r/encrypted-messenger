@@ -25,14 +25,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.time.format.DateTimeFormatter
+import java.util.Timer
+import java.util.TimerTask
 import javax.crypto.SecretKey
 
 
 class MessageAdapter(
-    val context: Context, var messageList: ChatsByDate, uid: String?, var recipientKey: SecretKey?,  val setSelect: (String?) -> Unit
+    val context: Context,
+    var messageList: ChatsByDate,
+    uid: String?,
+    var recipientKey: SecretKey?,
+    val setSelect: (String?) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private  val  scope= CoroutineScope(Dispatchers.IO)
-    private var setSelected=setSelect
+    private val scope = CoroutineScope(Dispatchers.IO)
+    private var setSelected = setSelect
     private val player by lazy {
         AudioPlayer(context)
     }
@@ -40,17 +46,23 @@ class MessageAdapter(
     val ITEM_SENT = 2
     val uid2 = uid
 
-    inner class SentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),View.OnCreateContextMenuListener,View.OnClickListener {
+    inner class SentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+        View.OnCreateContextMenuListener, View.OnClickListener {
         val sentMessage = itemView.findViewById<TextView>(R.id.sentMessage)
         val status = itemView.findViewById<TextView>(R.id.status)
         val time = itemView.findViewById<TextView>(R.id.time)
-        override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
+        override fun onCreateContextMenu(
+            menu: ContextMenu,
+            v: View,
+            menuInfo: ContextMenu.ContextMenuInfo?
+        ) {
             val inflater = MenuInflater(v.context)
             inflater.inflate(R.menu.chat_menu, menu)
         }
+
         override fun onClick(v: View?) {
-            v?.let{
-                setSelected(sentMessage.tag as String )
+            v?.let {
+                setSelected(sentMessage.tag as String)
                 itemView.showContextMenu()
 
 
@@ -58,20 +70,26 @@ class MessageAdapter(
         }
     }
 
-    inner class SentAudioViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),View.OnCreateContextMenuListener,View.OnClickListener {
+    inner class SentAudioViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+        View.OnCreateContextMenuListener, View.OnClickListener {
         val playButton = itemView.findViewById<Button>(R.id.play)
         val status = itemView.findViewById<TextView>(R.id.status)
         val time = itemView.findViewById<TextView>(R.id.time)
-        val slider=itemView.findViewById<Slider>(R.id.playSlider)
+        val slider = itemView.findViewById<Slider>(R.id.playSlider)
 
         var duration = itemView.findViewById<TextView>(R.id.duration)
-        override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
+        override fun onCreateContextMenu(
+            menu: ContextMenu,
+            v: View,
+            menuInfo: ContextMenu.ContextMenuInfo?
+        ) {
             val inflater = MenuInflater(v.context)
             inflater.inflate(R.menu.chat_menu, menu)
         }
+
         override fun onClick(v: View?) {
-            v?.let{
-                setSelected(playButton.tag as String )
+            v?.let {
+                setSelected(playButton.tag as String)
                 itemView.showContextMenu()
 
 
@@ -79,17 +97,23 @@ class MessageAdapter(
         }
     }
 
-    inner class ReceiveViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),View.OnCreateContextMenuListener ,View.OnClickListener{
+    inner class ReceiveViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+        View.OnCreateContextMenuListener, View.OnClickListener {
         val receiveMessage = itemView.findViewById<TextView>(R.id.receiveMessage)
 
         val time = itemView.findViewById<TextView>(R.id.time)
-        override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
+        override fun onCreateContextMenu(
+            menu: ContextMenu,
+            v: View,
+            menuInfo: ContextMenu.ContextMenuInfo?
+        ) {
             val inflater = MenuInflater(v.context)
             inflater.inflate(R.menu.chat_menu, menu)
         }
+
         override fun onClick(v: View?) {
-            v?.let{
-                setSelected(receiveMessage.tag as String )
+            v?.let {
+                setSelected(receiveMessage.tag as String)
                 itemView.showContextMenu()
 
 
@@ -97,21 +121,25 @@ class MessageAdapter(
         }
     }
 
-    inner  class ReceiveAudioViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),View.OnCreateContextMenuListener,View.OnClickListener{
+    inner class ReceiveAudioViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+        View.OnCreateContextMenuListener, View.OnClickListener {
         val playButton: Button = itemView.findViewById(R.id.play)
         val time: TextView = itemView.findViewById(R.id.time)
         val duration = itemView.findViewById<TextView>(R.id.duration)
-        val slider=itemView.findViewById<Slider>(R.id.playSlider)
-        override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
+        val slider = itemView.findViewById<Slider>(R.id.playSlider)
+        override fun onCreateContextMenu(
+            menu: ContextMenu,
+            v: View,
+            menuInfo: ContextMenu.ContextMenuInfo?
+        ) {
             val inflater = MenuInflater(v.context)
             inflater.inflate(R.menu.chat_menu, menu)
 
         }
 
         override fun onClick(v: View) {
-                setSelected(playButton.tag as String )
-                itemView.showContextMenu()
-
+            setSelected(playButton.tag as String)
+            itemView.showContextMenu()
 
 
         }
@@ -121,7 +149,7 @@ class MessageAdapter(
     override fun getItemViewType(position: Int): Int {
 
         val currentMessage = messageList.data[position]
-        Log.d("ss",currentMessage.contentType+" "+ ContentType.Audio.toString())
+        Log.d("ss", currentMessage.contentType + " " + ContentType.Audio.toString())
         return if (CurrentUser.getCurrentUserPhoneNumber() == currentMessage.sender) {
             if (currentMessage.contentType == ContentType.Audio.toString()) {
                 2
@@ -164,49 +192,52 @@ class MessageAdapter(
     };
 
 
-    private fun updateDuration(it:View): Unit? {
-        val durationTextView=it.findViewById<TextView>(R.id.duration)
-        val slider=it.findViewById<Slider>(R.id.playSlider)
-        Log.d("update time stamp 1 ${player.isPlaying()} ", durationTextView.text as String)
+    private fun updateDuration(it: View, timer: Timer) {
+        val durationTextView = it.findViewById<TextView>(R.id.duration)
+        val slider = it.findViewById<Slider>(R.id.playSlider)
+        timer.schedule(object : TimerTask() {
+            override fun run() {
+                if (player.isPlaying()) { // Only update if timer is running
+                    val duration = (durationTextView.tag as Int) - player.getPosition() / 1000;
+                    Log.d(
+                        "update time stamp 1 ${player.isPlaying()} ",
+                        durationTextView.text as String
+                    )
 
-        return if (player.isPlaying() == true || player.init ) {
-            val duration =(durationTextView.tag as Int) - player.getPosition() / 1000;
-            Log.d("update time stamp", duration.toString())
+                    durationTextView.text = duration.toString()
+                    slider.value = duration.toFloat()
 
-            durationTextView.text = formatMilliSeconds(duration.toLong())
-            slider.value=duration.toFloat()
-            updateDuration(it)
-
-        }else{
-            null
-        }
+                }
+            }
+        }, 0, 1000)
 
     }
+
     @SuppressLint("ResourceType")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentMessage = messageList.data[position]
-        var file:File?=null
+        var file: File? = null
 
-        var playing=player.isPlaying()
+        var playing = player.isPlaying()
         fun getDuration(view: View) {
-            val playSlider=view.findViewById<Slider>(R.id.playSlider)
-            val durationTextView=view.findViewById<TextView>(R.id.duration)
-            if (currentMessage.contentType==ContentType.Audio.name){
-                scope.launch{
+            val playSlider = view.findViewById<Slider>(R.id.playSlider)
+            val durationTextView = view.findViewById<TextView>(R.id.duration)
+            if (currentMessage.contentType == ContentType.Audio.name) {
+                scope.launch {
 
                     val mmr = MediaMetadataRetriever()
 
-                    this@MessageAdapter.context.runCatching{
+                    this@MessageAdapter.context.runCatching {
                         mmr.setDataSource(currentMessage.message)
                         val ms =
                             mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
                         mmr.release()
                         if (ms != null) {
-                            durationTextView.text =  formatMilliSeconds(ms.toLong())
-                            durationTextView.tag =  formatMilliSeconds(ms.toLong())
+                            durationTextView.text = formatMilliSeconds(ms.toLong())
+                            durationTextView.tag = formatMilliSeconds(ms.toLong())
                         }
                         if (ms != null) {
-                            playSlider.valueTo=ms.toFloat()
+                            playSlider.valueTo = ms.toFloat()
                         }
 
                     }
@@ -215,54 +246,51 @@ class MessageAdapter(
         }
 
 
-        fun audioPlayback(it:View){
-            val slider=it.findViewById<Slider>(R.id.playSlider)
-            val button=it.findViewById<Button>(R.id.play)
+        fun audioPlayback(it: View) {
+            val slider = it.findViewById<Slider>(R.id.playSlider)
+            val button = it.findViewById<Button>(R.id.play)
 
 
             scope.launch {
-
-                if(playing==null){
-
-
-                    playing=true
-                    if(!player.init){
+                if (!playing) {
 
 
-                        player.playFile(File(currentMessage.message),0,fun(){
+                    playing = true
+                    if (!player.init) {
+
+                        val timer = Timer()
+
+                        player.playFile(File(currentMessage.message), 0, fun() {
                             this@MessageAdapter.context.runCatching {
-                                updateDuration(it)
+                                updateDuration(it, timer)
 
                             }
-                        } ,fun(){
+                        }, fun() {
 
-                            this@MessageAdapter.context.runCatching{
+                            this@MessageAdapter.context.runCatching {
                                 button.setBackgroundResource(R.drawable.play_circle)
+                                timer.cancel()
                             }
 
                         })
 
 
-
-
-                    }
-                        else{
-                            player.resume()
+                    } else {
+                        player.resume()
 
                     }
-                        this@MessageAdapter.context.runCatching{
-                            button.setBackgroundResource(R.drawable.baseline_pause_circle_24)
+                    this@MessageAdapter.context.runCatching {
+                        button.setBackgroundResource(R.drawable.baseline_pause_circle_24)
 
-                        }
+                    }
 
 
-                }
-                else{
-                    playing=false
+                } else {
+                    playing = false
                     player.pause()
                     this@MessageAdapter.context.runCatching {
                         button.setBackgroundResource(R.drawable.play_circle)
-                        slider.visibility=View.GONE
+                        slider.visibility = View.GONE
 
                     }
                 }
@@ -276,8 +304,8 @@ class MessageAdapter(
                 val viewHolder = holder as SentViewHolder
                 viewHolder.sentMessage.text =
                     Crypto.decryptAESMessage(currentMessage.message, recipientKey)
-                Log.d("Key MessageAdapter",  currentMessage.message.toString())
-                viewHolder.sentMessage.tag=currentMessage.messageId
+                Log.d("Key MessageAdapter", currentMessage.message.toString())
+                viewHolder.sentMessage.tag = currentMessage.messageId
                 //TODO: Add color to the text
                 viewHolder.status.text =
                     if (currentMessage.isSeen) "Read" else if (currentMessage.isDelivered) "Delivered" else "Sent"
@@ -285,15 +313,18 @@ class MessageAdapter(
                     currentMessage.createdAt?.format(DateTimeFormatter.ofPattern("hh:mm:a")) ?: ""
 
             }
+
             ReceiveViewHolder::class.java -> {
                 val viewHolder = holder as ReceiveViewHolder
-                viewHolder.receiveMessage.tag=currentMessage.messageId
-                Log.d("Key MessageAdapter r",  currentMessage.message)
+                viewHolder.receiveMessage.tag = currentMessage.messageId
+                Log.d("Key MessageAdapter r", currentMessage.message)
                 Log.d("Key MessageAdapter r key", recipientKey.toString())
 
-                viewHolder.receiveMessage.text=Crypto.decryptAESMessage(currentMessage.message, recipientKey)
-                Log.d(",esss0",currentMessage.toString())
-                viewHolder.time.text= currentMessage.createdAt?.toLocalTime()?.format(DateTimeFormatter.ofPattern("hh:mm:a"))
+                viewHolder.receiveMessage.text =
+                    Crypto.decryptAESMessage(currentMessage.message, recipientKey)
+                Log.d(",esss0", currentMessage.toString())
+                viewHolder.time.text = currentMessage.createdAt?.toLocalTime()
+                    ?.format(DateTimeFormatter.ofPattern("hh:mm:a"))
                     ?: ""
 
 //                if(currentMessage.createdAt==null ){
@@ -309,44 +340,47 @@ class MessageAdapter(
 
             SentAudioViewHolder::class.java -> {
                 val viewHolder = holder as SentAudioViewHolder
-                viewHolder.playButton.tag=currentMessage.messageId
-                viewHolder.time.text= currentMessage.createdAt?.toLocalTime()?.format(DateTimeFormatter.ofPattern("hh:mm:a"))
-                    ?:""
+                viewHolder.playButton.tag = currentMessage.messageId
+                viewHolder.time.text = currentMessage.createdAt?.toLocalTime()
+                    ?.format(DateTimeFormatter.ofPattern("hh:mm:a"))
+                    ?: ""
 
                 viewHolder.status.text =
                     if (currentMessage.isSeen) "Read" else if (currentMessage.isDelivered) "Delivered" else "Sent"
                 viewHolder.time.text =
                     currentMessage.createdAt?.format(DateTimeFormatter.ofPattern("hh:mm:a")) ?: ""
 
-                    getDuration(viewHolder.itemView)
+                getDuration(viewHolder.itemView)
 
                 viewHolder.playButton.setBackgroundResource(R.drawable.play_circle)
 
 
-                viewHolder.playButton.setOnClickListener{
+                viewHolder.playButton.setOnClickListener {
                     audioPlayback(viewHolder.itemView)
                 }
-                viewHolder.slider.setLabelFormatter{
+                viewHolder.slider.setLabelFormatter {
                     player.seekTo(it.toInt())
                     formatMilliSeconds(it.toLong())
 
 
                 }
             }
+
             else -> {
                 val viewHolder = holder as ReceiveAudioViewHolder
-                viewHolder.time.text= currentMessage.createdAt?.toLocalTime()?.format(DateTimeFormatter.ofPattern("hh:mm:a"))
-                    ?:""
-                viewHolder.playButton.tag=currentMessage.messageId
-                    getDuration(viewHolder.itemView)
+                viewHolder.time.text = currentMessage.createdAt?.toLocalTime()
+                    ?.format(DateTimeFormatter.ofPattern("hh:mm:a"))
+                    ?: ""
+                viewHolder.playButton.tag = currentMessage.messageId
+                getDuration(viewHolder.itemView)
 
                 viewHolder.playButton.setBackgroundResource(R.drawable.play_circle)
 
-                viewHolder.playButton.setOnClickListener{
+                viewHolder.playButton.setOnClickListener {
                     audioPlayback(viewHolder.itemView)
                 }
-                viewHolder.slider.setLabelFormatter{
-                     formatMilliSeconds(it.toLong())
+                viewHolder.slider.setLabelFormatter {
+                    formatMilliSeconds(it.toLong())
 
                 }
             }
