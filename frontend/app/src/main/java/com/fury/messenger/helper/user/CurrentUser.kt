@@ -14,8 +14,8 @@ import com.fury.messenger.data.db.model.ChatsDao
 import com.fury.messenger.data.db.model.Contact
 import com.fury.messenger.data.db.model.ContactsDao
 import com.fury.messenger.helper.socket.SocketHandler
-import com.fury.messenger.messagebroker.ConsumerThread
 import com.fury.messenger.manageBuilder.createAuthenticationStub
+import com.fury.messenger.messagebroker.ConsumerThread
 import com.fury.messenger.utils.TokenManager
 import com.google.protobuf.util.JsonFormat
 import com.services.Auth.AuthResponse
@@ -44,17 +44,25 @@ object CurrentUser {
     private var phoneCountryCode: String? = null
     private var token: String = ""
     private var email: String? = null
-    private var username: String? = null
+    private var username: String? = ""
     private var privateKey: PrivateKey? = null
     private var publicKey: PublicKey? = null
     private var MessageThread: ConsumerThread? = null
     private var blockedUsers: ArrayList<String> = arrayListOf()
     private var NotificationThread: ConsumerThread? = null
+    private var image: String? = null
+    private var status: String? = null
 
     fun keyToString(key: ByteArray): String {
         return Base64.getEncoder().encodeToString(key)
     }
 
+    fun getImage():String?{
+        return  image
+    }
+    fun getStatus():String?{
+        return  status
+    }
     fun setBlockedUser(blockedUsers: ArrayList<String>) {
         this.blockedUsers = blockedUsers
     }
@@ -166,11 +174,15 @@ object CurrentUser {
 
     }
 
-    suspend fun saveUserDetails(ctx: Context, token: String, response: AuthResponse) {
+    fun saveUserDetails(ctx: Context, token: String, response: AuthResponse) {
         this.setToken(token)
         val tokenManager = TokenManager(ctx)
         tokenManager.setToken(token)
         this.setCurrentUserPhoneNumber(response.user.phoneNumber)
+        this.image=response.user.image
+        this.status=response.user.status
+        this.username=response.user.username
+
         if (response.user.blockedUsersList.isNotEmpty()) {
             val arrayList = response.user.blockedUsersList.stream().collect(
                 Collectors.toCollection(
@@ -185,7 +197,6 @@ object CurrentUser {
 
         this.setEmail(response.user.email)
         if (response.user.pubKey != publicKey && response.user.pubKey.isNotEmpty()) {
-            Log.d("Messenger", "Keys are different.Saving new key $publicKey")
             if (publicKey == null) {
                 Crypto.initRSA(ctx)
 

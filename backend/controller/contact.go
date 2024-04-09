@@ -11,7 +11,6 @@ import (
 )
 
 func ContactService(ctx context.Context, req *pb.ContactsList) (*pb.ContactsList, error) {
-	log.Default().Println("Validating  contacts")
 	app, err := firebase.InitFirebase().Firestore(ctx)
 	if err != nil {
 		return nil, err

@@ -33,5 +33,7 @@ service Services{
         rpc handShakeRequest(Event) returns (Event) {}
         rpc getUser(UserRequest) returns (UserResponse) {}
         rpc blockUser(BlockRequest) returns (BlockResponse) {}
+        rpc updateUser(User) returns (User) {}
+
         // rpc SayHello (HelloRequest) returns (HelloReply) {}
 }

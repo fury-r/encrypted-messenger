@@ -8,3 +8,4 @@ export * from "./register";
 export * from "./savePubkey";
 export * from "./verifyToken";
 export * from "./blockUser";
+export * from "./updateUser";

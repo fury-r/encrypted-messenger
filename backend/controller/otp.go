@@ -67,6 +67,7 @@ func OtpService(ctx context.Context, req *pb.OtpRequest) (*pb.AuthResponse, erro
 				PhoneNumber:  data.GetPhoneNumber(),
 				Uuid:         id,
 				BlockedUsers: data.GetBlockedUsers(),
+				Image:        data.Image,
 			},
 			Token: &token,
 		}, nil

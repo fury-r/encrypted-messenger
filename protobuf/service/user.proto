@@ -15,8 +15,8 @@ message User {
   string token = 8;
   optional string pubKey=9;
   repeated string blockedUsers=10;
-
-
+  string status = 11;
+  string image = 12;
 
 }
 

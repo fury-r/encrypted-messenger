@@ -356,6 +356,37 @@ public final class ServicesGrpc {
     return getBlockUserMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<com.services.UserOuterClass.User,
+      com.services.UserOuterClass.User> getUpdateUserMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "updateUser",
+      requestType = com.services.UserOuterClass.User.class,
+      responseType = com.services.UserOuterClass.User.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.services.UserOuterClass.User,
+      com.services.UserOuterClass.User> getUpdateUserMethod() {
+    io.grpc.MethodDescriptor<com.services.UserOuterClass.User, com.services.UserOuterClass.User> getUpdateUserMethod;
+    if ((getUpdateUserMethod = ServicesGrpc.getUpdateUserMethod) == null) {
+      synchronized (ServicesGrpc.class) {
+        if ((getUpdateUserMethod = ServicesGrpc.getUpdateUserMethod) == null) {
+          ServicesGrpc.getUpdateUserMethod = getUpdateUserMethod =
+              io.grpc.MethodDescriptor.<com.services.UserOuterClass.User, com.services.UserOuterClass.User>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "updateUser"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.services.UserOuterClass.User.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.services.UserOuterClass.User.getDefaultInstance()))
+              .setSchemaDescriptor(new ServicesMethodDescriptorSupplier("updateUser"))
+              .build();
+        }
+      }
+    }
+    return getUpdateUserMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -480,6 +511,13 @@ public final class ServicesGrpc {
         io.grpc.stub.StreamObserver<com.services.UserOuterClass.BlockResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getBlockUserMethod(), responseObserver);
     }
+
+    /**
+     */
+    default void updateUser(com.services.UserOuterClass.User request,
+        io.grpc.stub.StreamObserver<com.services.UserOuterClass.User> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getUpdateUserMethod(), responseObserver);
+    }
   }
 
   /**
@@ -596,6 +634,14 @@ public final class ServicesGrpc {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getBlockUserMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void updateUser(com.services.UserOuterClass.User request,
+        io.grpc.stub.StreamObserver<com.services.UserOuterClass.User> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getUpdateUserMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -689,6 +735,13 @@ public final class ServicesGrpc {
     public com.services.UserOuterClass.BlockResponse blockUser(com.services.UserOuterClass.BlockRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getBlockUserMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public com.services.UserOuterClass.User updateUser(com.services.UserOuterClass.User request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getUpdateUserMethod(), getCallOptions(), request);
     }
   }
 
@@ -795,6 +848,14 @@ public final class ServicesGrpc {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getBlockUserMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.services.UserOuterClass.User> updateUser(
+        com.services.UserOuterClass.User request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getUpdateUserMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_LOGIN = 0;
@@ -808,6 +869,7 @@ public final class ServicesGrpc {
   private static final int METHODID_HAND_SHAKE_REQUEST = 8;
   private static final int METHODID_GET_USER = 9;
   private static final int METHODID_BLOCK_USER = 10;
+  private static final int METHODID_UPDATE_USER = 11;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -869,6 +931,10 @@ public final class ServicesGrpc {
         case METHODID_BLOCK_USER:
           serviceImpl.blockUser((com.services.UserOuterClass.BlockRequest) request,
               (io.grpc.stub.StreamObserver<com.services.UserOuterClass.BlockResponse>) responseObserver);
+          break;
+        case METHODID_UPDATE_USER:
+          serviceImpl.updateUser((com.services.UserOuterClass.User) request,
+              (io.grpc.stub.StreamObserver<com.services.UserOuterClass.User>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -965,6 +1031,13 @@ public final class ServicesGrpc {
               com.services.UserOuterClass.BlockRequest,
               com.services.UserOuterClass.BlockResponse>(
                 service, METHODID_BLOCK_USER)))
+        .addMethod(
+          getUpdateUserMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              com.services.UserOuterClass.User,
+              com.services.UserOuterClass.User>(
+                service, METHODID_UPDATE_USER)))
         .build();
   }
 
@@ -1024,6 +1097,7 @@ public final class ServicesGrpc {
               .addMethod(getHandShakeRequestMethod())
               .addMethod(getGetUserMethod())
               .addMethod(getBlockUserMethod())
+              .addMethod(getUpdateUserMethod())
               .build();
         }
       }

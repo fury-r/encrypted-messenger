@@ -82,6 +82,10 @@ public object ServicesGrpcKt {
     @JvmStatic
     get() = ServicesGrpc.getBlockUserMethod()
 
+  public val updateUserMethod: MethodDescriptor<UserOuterClass.User, UserOuterClass.User>
+    @JvmStatic
+    get() = ServicesGrpc.getUpdateUserMethod()
+
   /**
    * A stub for issuing RPCs to a(n) Services service as suspending coroutines.
    */
@@ -323,6 +327,27 @@ public object ServicesGrpcKt {
       callOptions,
       headers
     )
+
+    /**
+     * Executes this RPC and returns the response message, suspending until the RPC completes
+     * with [`Status.OK`][Status].  If the RPC completes with another status, a corresponding
+     * [StatusException] is thrown.  If this coroutine is cancelled, the RPC is also cancelled
+     * with the corresponding exception as a cause.
+     *
+     * @param request The request message to send to the server.
+     *
+     * @param headers Metadata to attach to the request.  Most users will not need this.
+     *
+     * @return The single response from the server.
+     */
+    public suspend fun updateUser(request: UserOuterClass.User, headers: Metadata = Metadata()):
+        UserOuterClass.User = unaryRpc(
+      channel,
+      ServicesGrpc.getUpdateUserMethod(),
+      request,
+      callOptions,
+      headers
+    )
   }
 
   /**
@@ -489,6 +514,20 @@ public object ServicesGrpcKt {
         UserOuterClass.BlockResponse = throw
         StatusException(UNIMPLEMENTED.withDescription("Method Services.blockUser is unimplemented"))
 
+    /**
+     * Returns the response to an RPC for Services.updateUser.
+     *
+     * If this method fails with a [StatusException], the RPC will fail with the corresponding
+     * [Status].  If this method fails with a [java.util.concurrent.CancellationException], the RPC
+     * will fail
+     * with status `Status.CANCELLED`.  If this method fails for any other reason, the RPC will
+     * fail with `Status.UNKNOWN` with the exception as a cause.
+     *
+     * @param request The request from the client.
+     */
+    public open suspend fun updateUser(request: UserOuterClass.User): UserOuterClass.User = throw
+        StatusException(UNIMPLEMENTED.withDescription("Method Services.updateUser is unimplemented"))
+
     public final override fun bindService(): ServerServiceDefinition =
         builder(getServiceDescriptor())
       .addMethod(unaryServerMethodDefinition(
@@ -545,6 +584,11 @@ public object ServicesGrpcKt {
       context = this.context,
       descriptor = ServicesGrpc.getBlockUserMethod(),
       implementation = ::blockUser
+    ))
+      .addMethod(unaryServerMethodDefinition(
+      context = this.context,
+      descriptor = ServicesGrpc.getUpdateUserMethod(),
+      implementation = ::updateUser
     )).build()
   }
 }
