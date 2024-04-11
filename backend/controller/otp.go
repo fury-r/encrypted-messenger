@@ -11,7 +11,7 @@ import (
 )
 
 func OtpService(ctx context.Context, req *pb.OtpRequest) (*pb.AuthResponse, error) {
-	fmt.Print(req.Otp, "validating otp ", req.PhoneNumber)
+	fmt.Println(req.Otp, "validating otp ", req.PhoneNumber)
 	app := firebase.InitFirebase()
 	firestore, err := app.Firestore(ctx)
 	auth, _ := app.Auth(ctx)

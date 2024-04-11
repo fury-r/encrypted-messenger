@@ -57,11 +57,14 @@ func ContactService(ctx context.Context, req *pb.ContactsList) (*pb.ContactsList
 				if ok == true {
 					key = pubKey.(string)
 				}
+
 				value := pb.Contact{
 					Id:          " ",
 					Name:        data["username"].(string),
 					PhoneNumber: data["phoneNumber"].(string),
 					PubKey:      &key,
+					Image:       data["image"].(string),
+					Status:      data["status"].(string),
 					Uuid:        &doc.Ref.ID,
 					IsVerified:  &verified,
 				}

@@ -14,7 +14,7 @@ import (
 
 func UpdateUserService(ctx context.Context, req *pb.User) (*pb.User, error) {
 
-	app, err := firebase.InitFirebase().Firestore(ctx)
+	app, _ := firebase.InitFirebase().Firestore(ctx)
 	number, err := utils.GetTokenFromMetaDataAndValidate(ctx)
 	if err != nil {
 		log.Default().Println("Validation failed", err)

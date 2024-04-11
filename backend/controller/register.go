@@ -45,7 +45,8 @@ func RegisterService(ctx context.Context, req *pb.RegisterRequest) (*pb.Register
 		"phoneNumber":  req.GetPhoneNumber(),
 		"email":        req.GetEmail(),
 		"password":     password,
-		"image":        nil,
+		"image":        "",
+		"status":       "",
 		"otp":          utils.GenerateOtp(),
 		"blockedUsers": []interface{}{},
 	})
