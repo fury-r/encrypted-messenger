@@ -25,7 +25,7 @@ import com.fury.messenger.R
 import com.fury.messenger.contactlist.ContactListActivity
 import com.fury.messenger.crypto.Crypto.initRSA
 import com.fury.messenger.data.db.DBMessage
-import com.fury.messenger.data.db.DBUser
+import com.fury.messenger.data.db.DBUser.getAllContactsWithMessages
 import com.fury.messenger.data.db.DbConnect
 import com.fury.messenger.editprofile.EditProfile
 import com.fury.messenger.helper.contact.ContactChats
@@ -40,7 +40,6 @@ import com.services.ServicesGrpc
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -73,7 +72,8 @@ class MainActivity : AppCompatActivity() {
                     permission[Manifest.permission.WRITE_EXTERNAL_STORAGE] ?: hasStoragePermission
                 hasReadContactPermission =
                     permission[Manifest.permission.READ_CONTACTS] ?: hasReadContactPermission
-                hasAudioRecordPermission=permission[Manifest.permission.RECORD_AUDIO]?:hasAudioRecordPermission
+                hasAudioRecordPermission =
+                    permission[Manifest.permission.RECORD_AUDIO] ?: hasAudioRecordPermission
 
             }
         requestPermission()
@@ -149,39 +149,40 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
         })
-        scope.launch {
-
-            withContext(Dispatchers.IO) {
-                try {
-
-                    contacts.getContactsFromPhone()
-                    contacts.validateContacts()
-                    val data = contacts.getAllVerifiedContacts()
-                    Log.d("sda",data.toString())
-                    val contactsList = DBUser.getAllLastMessagesForContact(
-                        this@MainActivity,
-                        data
-                    )
-
-                    runOnUiThread {
-                        this@MainActivity.setContactList(
-                            contactsList
-                        )
-
-                    }
-                } catch (e: Error) {
-                    Log.d("Error", e.toString())
-
-                } finally {
-                    runOnUiThread {
-                        this@MainActivity.progressBar.isVisible = false
-
-                    }
-
-                }
-
-            }
-        }
+//        scope.launch {
+//
+//            withContext(Dispatchers.IO) {
+//                try {
+//
+//                    contacts.getContactsFromPhone()
+//                    contacts.validateContacts()
+//                    val data = contacts.getAllVerifiedContacts()
+//                    Log.d("sda", data.toString())
+//                    val contactsList = DBUser.getAllLastMessagesForContact(
+//                        this@MainActivity,
+//                        data
+//                    ).filter { it.latestMessage != null } as ArrayList<ContactChats>
+//
+//                    runOnUiThread {
+//                        this@MainActivity.setContactList(
+//                            contactsList
+//                        )
+//
+//                    }
+//                } catch (e: Error) {
+//                    Log.d("Error", e.toString())
+//
+//                } finally {
+//                    runOnUiThread {
+//                        this@MainActivity.progressBar.isVisible = false
+//
+//                    }
+//
+//                }
+//
+//            }
+//        }
+        getContacts()
         scope.launch {
             CurrentUser.subscribeToMessageQueue(ctx)
 
@@ -196,20 +197,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.logout->{
+        when (item.itemId) {
+            R.id.logout -> {
                 val intent = Intent(this, LoginActivity::class.java)
 
                 startActivity(intent)
                 return true
             }
-            R.id.editProfile->{
+
+            R.id.editProfile -> {
                 val intent = Intent(this, EditProfile::class.java)
 
                 startActivity(intent)
                 return true
             }
 
+            R.id.refresh -> {
+                if(!this@MainActivity.progressBar.isVisible){
+                    getContacts()
+                }
+
+
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -233,7 +242,7 @@ class MainActivity : AppCompatActivity() {
         if (!hasReadContactPermission) {
             permissionRequest.add(Manifest.permission.READ_CONTACTS)
         }
-        if(!hasAudioRecordPermission){
+        if (!hasAudioRecordPermission) {
             permissionRequest.add(Manifest.permission.RECORD_AUDIO)
             permissionRequest.add(Manifest.permission.CAPTURE_AUDIO_OUTPUT)
 
@@ -325,7 +334,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.block -> {
 
                     scope.launch {
-                       DBMessage.blockUser(selectedItem.contact.phoneNumber)
+                        DBMessage.blockUser(selectedItem.contact.phoneNumber)
                     }
 
                 }
@@ -345,5 +354,32 @@ class MainActivity : AppCompatActivity() {
         pinnedUserAdapter.notifyDataSetChanged()
         adapter.notifyDataSetChanged()
 
+    }
+
+    private fun getContacts() {
+        scope.launch {
+            try {
+                runOnUiThread{
+                    this@MainActivity.progressBar.isVisible = true
+
+                }
+                val contactList = getAllContactsWithMessages(this@MainActivity)
+
+                runOnUiThread {
+                    this@MainActivity.setContactList(
+                        contactList
+                    )
+
+                }
+            } catch (e: Error) {
+                e.printStackTrace()
+            } finally {
+                runOnUiThread {
+                    this@MainActivity.progressBar.isVisible = false
+
+                }
+
+            }
+        }
     }
 }

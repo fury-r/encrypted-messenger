@@ -79,7 +79,7 @@ class EditProfile : AppCompatActivity() {
 
             val client= createAuthenticationStub(CurrentUser.getToken())
             Log.d("username", username.toString())
-            val request= UserOuterClass.User.newBuilder().setUsername(username.text as String?).setImage(image).build()
+            val request= UserOuterClass.User.newBuilder().setUsername(username.text.toString()).setStatus(statusField.text.toString()).setImage(image).build()
 
 
             scope.launch {

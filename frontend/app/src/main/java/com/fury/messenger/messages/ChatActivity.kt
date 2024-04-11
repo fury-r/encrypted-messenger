@@ -62,6 +62,7 @@ import java.time.OffsetDateTime
 import java.time.Period
 import java.time.format.DateTimeFormatter
 import javax.crypto.SecretKey
+import kotlin.collections.set
 
 
 class ChatActivity : AppCompatActivity() {
@@ -576,9 +577,15 @@ class ChatActivity : AppCompatActivity() {
             dateByMessage[date]!!.add(it)
 
         }
-        return dateByMessage.entries.map {
+        val chats=(dateByMessage.entries.map {
             ChatsByDate(it.key, it.value)
-        } as ArrayList<ChatsByDate>
+        } as ArrayList<ChatsByDate>)
+        if(chats.isEmpty()){
+            return  arrayListOf()
+        }
+        return chats
     }
+
+
 
 }

@@ -66,26 +66,37 @@ class VerifyTokenActivity : AppCompatActivity() {
 
 
             val ctx = this
-            var intent: Intent
+            var intent: Intent?=null
             scope.launch {
 
                 withContext(Dispatchers.IO) {
                     val request = AuthRequest.newBuilder().build()
 
-                    val response = client.verifyToken(request)
-                    Log.d("setting user details", response.token)
-                    val tokenManager = TokenManager(this@VerifyTokenActivity)
+                 try{
+                     val response = client.verifyToken(request)
+                     Log.d("setting user details", response.token)
+                     val tokenManager = TokenManager(this@VerifyTokenActivity)
 
-                    intent = if (response.hasError()) {
-                        tokenManager.deleteToken()
-                        Intent(ctx, LoginActivity::class.java)
+                     intent = if (response.hasError()) {
+                         tokenManager.deleteToken()
+                         Intent(ctx, LoginActivity::class.java)
 
 
-                    } else {
-                        CurrentUser.saveUserDetails(this@VerifyTokenActivity, token, response)
-                        Intent(ctx, MainActivity::class.java)
+                     } else {
+                         CurrentUser.saveUserDetails(this@VerifyTokenActivity, token, response)
+                         Intent(ctx, MainActivity::class.java)
+                     }
+                 }catch (e:Exception){
+                     tokenManager.deleteToken()
+
+                     intent = Intent(ctx, LoginActivity::class.java)
+
+                 }finally {
+
+                       if(intent!=null){
+                           startActivity(intent)
+                       }
                     }
-                    startActivity(intent)
 
                 }
 

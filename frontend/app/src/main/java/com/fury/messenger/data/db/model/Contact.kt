@@ -46,6 +46,7 @@ data class  Contact   (
     @ColumnInfo(name="name") var name: String? = null,
     @ColumnInfo(name="phoneNumber") var phoneNumber: String = "",
     @ColumnInfo(name="image") var image: String? = null,
+    @ColumnInfo(name="status") var status: String? = null,
     @ColumnInfo(name="pubKey") var pubKey: String? = null,
     @ColumnInfo(name="key") var key: String? = null,
     @ColumnInfo(name="countryCode") var countryCode: String? = null,
@@ -64,8 +65,8 @@ interface  ContactsDao{
 
     @Query("SELECT * FROM contacts WHERE id IN (:contactsIds)")
     fun loadAllByIds(contactsIds: IntArray): List<Contact>
-    @Query("SELECT * FROM contacts WHERE isVerified=1")
-    fun loadAllVerified(): List<Contact>
+    @Query("SELECT * FROM contacts WHERE isVerified= :verified")
+    fun loadAllVerified(verified:Int=1): List<Contact>
 
     @Query("SELECT * FROM contacts WHERE phoneNumber LIKE :number  " +
             "LIMIT 1")

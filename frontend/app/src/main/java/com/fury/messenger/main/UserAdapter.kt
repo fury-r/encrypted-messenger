@@ -40,6 +40,7 @@ class UserAdapter(val context: Context, var userList: ArrayList<ContactChats>, s
         if(view) {
             holder.count.text=""
             holder.datetime.text=""
+            holder.lastMessage.text=currentUser.contact.status
         }else{
             if (currentUser.messageCount > 0) {
                 holder.count.text = currentUser.messageCount.toString()
@@ -78,7 +79,6 @@ class UserAdapter(val context: Context, var userList: ArrayList<ContactChats>, s
 
 
 
-        if(!view){
 
             holder.itemView.setOnClickListener {
                 val intent = Intent(context, ChatActivity::class.java)
@@ -90,7 +90,7 @@ class UserAdapter(val context: Context, var userList: ArrayList<ContactChats>, s
                 context.startActivity(intent)
             }
 
-        }
+
 
 
 

@@ -368,7 +368,7 @@ object CurrentUser {
 }
 
 
-@Database(entities = [Contact::class, Chat::class], version = 2)
+@Database(entities = [Contact::class, Chat::class], version = 1)
 @TypeConverters(*[DateTypeConverters::class])
 abstract class AppDatabase : RoomDatabase() {
     abstract fun contactDao(): ContactsDao

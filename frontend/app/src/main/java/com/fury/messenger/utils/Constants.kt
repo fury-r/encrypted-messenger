@@ -1,10 +1,11 @@
 package com.fury.messenger.utils
 
+import com.google.common.base.Charsets
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 
 object Constants {
 
-    const val  API="http://192.168.0.102"
+    const val  API="http://192.168.0.104"
     const val  PREFS_TOKEN="MESSENGER_TOKEN_X"
     const val  USER_TOKEN="USER_TOKEN"
     const val APP_NAME="MESSENGER_X"

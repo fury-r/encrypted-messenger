@@ -132,6 +132,30 @@ public final class ContactOuterClass {
      */
     com.google.protobuf.ByteString
         getPubKeyBytes();
+
+    /**
+     * <code>string image = 9;</code>
+     * @return The image.
+     */
+    java.lang.String getImage();
+    /**
+     * <code>string image = 9;</code>
+     * @return The bytes for image.
+     */
+    com.google.protobuf.ByteString
+        getImageBytes();
+
+    /**
+     * <code>string status = 10;</code>
+     * @return The status.
+     */
+    java.lang.String getStatus();
+    /**
+     * <code>string status = 10;</code>
+     * @return The bytes for status.
+     */
+    com.google.protobuf.ByteString
+        getStatusBytes();
   }
   /**
    * Protobuf type {@code Contact}
@@ -153,6 +177,8 @@ public final class ContactOuterClass {
       profilePicture_ = "";
       uuid_ = "";
       pubKey_ = "";
+      image_ = "";
+      status_ = "";
     }
 
     @java.lang.Override
@@ -231,6 +257,18 @@ public final class ContactOuterClass {
               java.lang.String s = input.readStringRequireUtf8();
               bitField0_ |= 0x00000010;
               pubKey_ = s;
+              break;
+            }
+            case 74: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              image_ = s;
+              break;
+            }
+            case 82: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              status_ = s;
               break;
             }
             default: {
@@ -583,6 +621,82 @@ public final class ContactOuterClass {
       }
     }
 
+    public static final int IMAGE_FIELD_NUMBER = 9;
+    private volatile java.lang.Object image_;
+    /**
+     * <code>string image = 9;</code>
+     * @return The image.
+     */
+    @java.lang.Override
+    public java.lang.String getImage() {
+      java.lang.Object ref = image_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        image_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string image = 9;</code>
+     * @return The bytes for image.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getImageBytes() {
+      java.lang.Object ref = image_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        image_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int STATUS_FIELD_NUMBER = 10;
+    private volatile java.lang.Object status_;
+    /**
+     * <code>string status = 10;</code>
+     * @return The status.
+     */
+    @java.lang.Override
+    public java.lang.String getStatus() {
+      java.lang.Object ref = status_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        status_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string status = 10;</code>
+     * @return The bytes for status.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getStatusBytes() {
+      java.lang.Object ref = status_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        status_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -621,6 +735,12 @@ public final class ContactOuterClass {
       if (((bitField0_ & 0x00000010) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 8, pubKey_);
       }
+      if (!getImageBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, image_);
+      }
+      if (!getStatusBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, status_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -654,6 +774,12 @@ public final class ContactOuterClass {
       }
       if (((bitField0_ & 0x00000010) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, pubKey_);
+      }
+      if (!getImageBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, image_);
+      }
+      if (!getStatusBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, status_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -701,6 +827,10 @@ public final class ContactOuterClass {
         if (!getPubKey()
             .equals(other.getPubKey())) return false;
       }
+      if (!getImage()
+          .equals(other.getImage())) return false;
+      if (!getStatus()
+          .equals(other.getStatus())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -739,6 +869,10 @@ public final class ContactOuterClass {
         hash = (37 * hash) + PUBKEY_FIELD_NUMBER;
         hash = (53 * hash) + getPubKey().hashCode();
       }
+      hash = (37 * hash) + IMAGE_FIELD_NUMBER;
+      hash = (53 * hash) + getImage().hashCode();
+      hash = (37 * hash) + STATUS_FIELD_NUMBER;
+      hash = (53 * hash) + getStatus().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -888,6 +1022,10 @@ public final class ContactOuterClass {
         bitField0_ = (bitField0_ & ~0x00000008);
         pubKey_ = "";
         bitField0_ = (bitField0_ & ~0x00000010);
+        image_ = "";
+
+        status_ = "";
+
         return this;
       }
 
@@ -939,6 +1077,8 @@ public final class ContactOuterClass {
           to_bitField0_ |= 0x00000010;
         }
         result.pubKey_ = pubKey_;
+        result.image_ = image_;
+        result.status_ = status_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1021,6 +1161,14 @@ public final class ContactOuterClass {
         if (other.hasPubKey()) {
           bitField0_ |= 0x00000010;
           pubKey_ = other.pubKey_;
+          onChanged();
+        }
+        if (!other.getImage().isEmpty()) {
+          image_ = other.image_;
+          onChanged();
+        }
+        if (!other.getStatus().isEmpty()) {
+          status_ = other.status_;
           onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -1648,6 +1796,158 @@ public final class ContactOuterClass {
   checkByteStringIsUtf8(value);
         bitField0_ |= 0x00000010;
         pubKey_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object image_ = "";
+      /**
+       * <code>string image = 9;</code>
+       * @return The image.
+       */
+      public java.lang.String getImage() {
+        java.lang.Object ref = image_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          image_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string image = 9;</code>
+       * @return The bytes for image.
+       */
+      public com.google.protobuf.ByteString
+          getImageBytes() {
+        java.lang.Object ref = image_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          image_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string image = 9;</code>
+       * @param value The image to set.
+       * @return This builder for chaining.
+       */
+      public Builder setImage(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        image_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string image = 9;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearImage() {
+        
+        image_ = getDefaultInstance().getImage();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string image = 9;</code>
+       * @param value The bytes for image to set.
+       * @return This builder for chaining.
+       */
+      public Builder setImageBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        image_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object status_ = "";
+      /**
+       * <code>string status = 10;</code>
+       * @return The status.
+       */
+      public java.lang.String getStatus() {
+        java.lang.Object ref = status_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          status_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string status = 10;</code>
+       * @return The bytes for status.
+       */
+      public com.google.protobuf.ByteString
+          getStatusBytes() {
+        java.lang.Object ref = status_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          status_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string status = 10;</code>
+       * @param value The status to set.
+       * @return This builder for chaining.
+       */
+      public Builder setStatus(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        status_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string status = 10;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearStatus() {
+        
+        status_ = getDefaultInstance().getStatus();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string status = 10;</code>
+       * @param value The bytes for status to set.
+       * @return This builder for chaining.
+       */
+      public Builder setStatusBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        status_ = value;
         onChanged();
         return this;
       }
@@ -2516,15 +2816,16 @@ public final class ContactOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\rcontact.proto\"\366\001\n\007Contact\022\n\n\002id\030\001 \001(\t\022" +
+      "\n\rcontact.proto\"\225\002\n\007Contact\022\n\n\002id\030\001 \001(\t\022" +
       "\014\n\004name\030\002 \001(\t\022\023\n\013phoneNumber\030\003 \001(\t\022\030\n\013co" +
       "untryCode\030\004 \001(\tH\000\210\001\001\022\033\n\016profilePicture\030\005" +
       " \001(\tH\001\210\001\001\022\027\n\nisVerified\030\006 \001(\010H\002\210\001\001\022\021\n\004uu" +
-      "id\030\007 \001(\tH\003\210\001\001\022\023\n\006pubKey\030\010 \001(\tH\004\210\001\001B\016\n\014_c" +
-      "ountryCodeB\021\n\017_profilePictureB\r\n\013_isVeri" +
-      "fiedB\007\n\005_uuidB\t\n\007_pubKey\"*\n\014ContactsList" +
-      "\022\032\n\010contacts\030\001 \003(\0132\010.ContactB\023\n\014com.serv" +
-      "icesZ\003/pbb\006proto3"
+      "id\030\007 \001(\tH\003\210\001\001\022\023\n\006pubKey\030\010 \001(\tH\004\210\001\001\022\r\n\005im" +
+      "age\030\t \001(\t\022\016\n\006status\030\n \001(\tB\016\n\014_countryCod" +
+      "eB\021\n\017_profilePictureB\r\n\013_isVerifiedB\007\n\005_" +
+      "uuidB\t\n\007_pubKey\"*\n\014ContactsList\022\032\n\010conta" +
+      "cts\030\001 \003(\0132\010.ContactB\023\n\014com.servicesZ\003/pb" +
+      "b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -2535,7 +2836,7 @@ public final class ContactOuterClass {
     internal_static_Contact_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Contact_descriptor,
-        new java.lang.String[] { "Id", "Name", "PhoneNumber", "CountryCode", "ProfilePicture", "IsVerified", "Uuid", "PubKey", "CountryCode", "ProfilePicture", "IsVerified", "Uuid", "PubKey", });
+        new java.lang.String[] { "Id", "Name", "PhoneNumber", "CountryCode", "ProfilePicture", "IsVerified", "Uuid", "PubKey", "Image", "Status", "CountryCode", "ProfilePicture", "IsVerified", "Uuid", "PubKey", });
     internal_static_ContactsList_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_ContactsList_fieldAccessorTable = new
