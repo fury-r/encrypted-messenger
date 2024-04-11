@@ -1,4 +1,4 @@
-version: '3'
+version: "3.7"
 
 services:
   rabbitmq:
@@ -9,11 +9,45 @@ services:
     volumes:
       - ./rabbitmq:/var/lib/rabbitmq
     environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_DEFAULT_USER=test
+      - RABBITMQ_DEFAULT_PASS=test
     networks:
-      - rmq
-
+      - service
+  socket-server:
+    build:
+      context: .
+      dockerfile: ./message-socket
+    container_name: socket-server
+    restart: always
+    image: socket-server:v1
+    ports:
+      - 3001:3001
+    depends_on:
+      - backend
+    networks:
+      - service
+  middleware:
+    build:
+      context: .
+      dockerfile: ./middleware
+    container_name: middleware
+    restart: always
+    image: middleware:v1
+    ports:
+      - 3001:8001
+    networks:
+      - service
+  backend:
+    build:
+      context: .
+      dockerfile: ./backend
+    container_name: backend
+    restart: always
+    image: backend:v1
+    ports:
+      - 3001:8002
+    networks:
+      - service
 networks:
-  rmq:
+  service:
     external: false
