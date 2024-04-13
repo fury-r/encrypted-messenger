@@ -31,6 +31,7 @@ const (
 	Services_GetUser_FullMethodName          = "/Services/getUser"
 	Services_BlockUser_FullMethodName        = "/Services/blockUser"
 	Services_UpdateUser_FullMethodName       = "/Services/updateUser"
+	Services_RegenerateOtp_FullMethodName    = "/Services/RegenerateOtp"
 )
 
 // ServicesClient is the client API for Services service.
@@ -49,6 +50,7 @@ type ServicesClient interface {
 	GetUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error)
 	BlockUser(ctx context.Context, in *BlockRequest, opts ...grpc.CallOption) (*BlockResponse, error)
 	UpdateUser(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error)
+	RegenerateOtp(ctx context.Context, in *ReSendOtpRequest, opts ...grpc.CallOption) (*ReSendOtpRequest, error)
 }
 
 type servicesClient struct {
@@ -167,6 +169,15 @@ func (c *servicesClient) UpdateUser(ctx context.Context, in *User, opts ...grpc.
 	return out, nil
 }
 
+func (c *servicesClient) RegenerateOtp(ctx context.Context, in *ReSendOtpRequest, opts ...grpc.CallOption) (*ReSendOtpRequest, error) {
+	out := new(ReSendOtpRequest)
+	err := c.cc.Invoke(ctx, Services_RegenerateOtp_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ServicesServer is the server API for Services service.
 // All implementations must embed UnimplementedServicesServer
 // for forward compatibility
@@ -183,6 +194,7 @@ type ServicesServer interface {
 	GetUser(context.Context, *UserRequest) (*UserResponse, error)
 	BlockUser(context.Context, *BlockRequest) (*BlockResponse, error)
 	UpdateUser(context.Context, *User) (*User, error)
+	RegenerateOtp(context.Context, *ReSendOtpRequest) (*ReSendOtpRequest, error)
 	mustEmbedUnimplementedServicesServer()
 }
 
@@ -225,6 +237,9 @@ func (UnimplementedServicesServer) BlockUser(context.Context, *BlockRequest) (*B
 }
 func (UnimplementedServicesServer) UpdateUser(context.Context, *User) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
+}
+func (UnimplementedServicesServer) RegenerateOtp(context.Context, *ReSendOtpRequest) (*ReSendOtpRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RegenerateOtp not implemented")
 }
 func (UnimplementedServicesServer) mustEmbedUnimplementedServicesServer() {}
 
@@ -455,6 +470,24 @@ func _Services_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Services_RegenerateOtp_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReSendOtpRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServicesServer).RegenerateOtp(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Services_RegenerateOtp_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServicesServer).RegenerateOtp(ctx, req.(*ReSendOtpRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Services_ServiceDesc is the grpc.ServiceDesc for Services service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -509,6 +542,10 @@ var Services_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "updateUser",
 			Handler:    _Services_UpdateUser_Handler,
+		},
+		{
+			MethodName: "RegenerateOtp",
+			Handler:    _Services_RegenerateOtp_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

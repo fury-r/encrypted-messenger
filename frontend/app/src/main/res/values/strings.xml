@@ -36,4 +36,5 @@
     <string name="date">Date</string>
     <string name="refresh">Refresh</string>
     <string name="edit_profile">Edit Profile</string>
+    <string name="resend_otp">Resend Otp</string>
 </resources>

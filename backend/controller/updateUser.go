@@ -33,6 +33,10 @@ func UpdateUserService(ctx context.Context, req *pb.User) (*pb.User, error) {
 			updateData["image"] = req.Image
 
 		}
+		if data.Status != req.Status {
+			updateData["status"] = req.Status
+
+		}
 		_, err := app.Collection("user").Doc(doc.Ref.ID).Set(ctx, updateData, firestore.MergeAll)
 
 		if err != nil {

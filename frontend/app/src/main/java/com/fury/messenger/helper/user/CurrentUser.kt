@@ -66,6 +66,15 @@ object CurrentUser {
     fun setBlockedUser(blockedUsers: ArrayList<String>) {
         this.blockedUsers = blockedUsers
     }
+    fun setStatus(status: String) {
+        this.status = status
+    }
+
+
+    fun setImage(image: String) {
+
+        this.image = image
+    }
 
     fun convertStringToKeyFactory(key: String, type: Int): Key? {
 

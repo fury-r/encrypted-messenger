@@ -1,7 +1,6 @@
 package com.fury.messenger.data.db
 
 import android.annotation.SuppressLint
-import android.content.ContentValues
 import android.content.Context
 import android.util.Log
 import androidx.room.Room
@@ -15,6 +14,7 @@ import com.fury.messenger.data.db.DbConnect.getDatabase
 import com.fury.messenger.data.db.model.Chat
 import com.fury.messenger.data.db.model.Contact
 import com.fury.messenger.helper.mutex.MutexLock
+import com.fury.messenger.helper.notification.Notifications
 import com.fury.messenger.helper.user.AppDatabase
 import com.fury.messenger.helper.user.CurrentUser
 import com.fury.messenger.manageBuilder.createAuthenticationStub
@@ -143,13 +143,11 @@ object DBMessage {
 
      try{
          MutexLock.setDbLock(true)
-         val contentValue = ContentValues()
          val db = Room.databaseBuilder(
              ctx,
              AppDatabase::class.java, "main.db"
          ).build()
 
-         val count= db.chatsDao().count()
          db.chatsDao().insertAll(chat)
      }catch (e:Exception){
          e.printStackTrace()
@@ -285,6 +283,10 @@ object DBMessage {
         Log.d("Sensssd", jsonPrinter.print(event))
 
         client.send(event)
+        val x=chat.receiver
+        chat.receiver=chat.sender
+        chat.sender=x
+        Notifications.generateNotification(chat,ctx)
     }
 
     suspend fun sendSeenEvent(recipientNumber: String) {
@@ -310,6 +312,7 @@ object DBMessage {
             client.send(event)
 
         }
+
     }
 
 

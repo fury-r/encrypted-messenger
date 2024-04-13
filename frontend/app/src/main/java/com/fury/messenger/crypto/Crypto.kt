@@ -212,9 +212,7 @@ object Crypto {
 
         val cipher = Cipher.getInstance(ALGORITHM)
         cipher.init(Cipher.ENCRYPT_MODE, key)
-        val  file=File(filePath)
         val encryptedData = cipher.doFinal(audioData)
-        file.delete()
 
         return Base64.getEncoder().encodeToString(encryptedData)
 

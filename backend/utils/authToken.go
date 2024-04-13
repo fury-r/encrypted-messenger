@@ -103,12 +103,12 @@ func GetTokenFromMetaDataAndValidate(ctx context.Context) (*string, error) {
 	}
 	data, err := ValidateToken(token[1])
 	if err != nil {
-		log.Default().Println("authorization toke is invalid", err)
+		log.Default().Println("authorization token is invalid", err)
 
 		return nil, status.Errorf(codes.Unauthenticated, "Authorization token not provided")
 
 	}
-	log.Default().Println("GetTokenFromMetaDataAndValidate", token, data)
+	log.Default().Println("Success:GetTokenFromMetaDataAndValidate")
 	return &data, nil
 
 }

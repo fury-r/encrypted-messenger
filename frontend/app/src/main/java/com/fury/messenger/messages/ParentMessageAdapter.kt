@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter
 import javax.crypto.SecretKey
 
 class  ChatsByDate(val date:LocalDate,var data: ArrayList<Chat> = arrayListOf())
-class ParentAdapter(var messageList: List<ChatsByDate?>, val context: Context, var uid: String?, var recipientKey: SecretKey?,private  val setSelected: (String?) -> Unit) : RecyclerView.Adapter<ParentAdapter.ParentViewHolder>() {
+class ParentAdapter(var messageList: ArrayList<ChatsByDate?>, val context: Context, var uid: String?, var recipientKey: SecretKey?,private  val setSelected: (String?) -> Unit) : RecyclerView.Adapter<ParentAdapter.ParentViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParentViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.message_layout, parent, false)

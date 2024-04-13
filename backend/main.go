@@ -137,6 +137,17 @@ func (s *Server) UpdateUser(ctx context.Context, req *pb.User) (*pb.User, error)
 
 	return message, err
 }
+
+func (s *Server) RegenerateOtp(ctx context.Context, req *pb.ReSendOtpRequest) (*pb.ReSendOtpRequest, error) {
+	log.Default().Println("UpdateUser Started.")
+
+	message, err := service.RegenerateOtpService(ctx, req)
+
+	log.Default().Println("UpdateUser Ended.")
+
+	return message, err
+}
+
 func main() {
 	// mux := http.NewServeMux()
 

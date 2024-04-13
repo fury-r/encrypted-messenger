@@ -1,15 +1,10 @@
 package controller
 
 import (
-	"fmt"
 	"log"
 
-	"time"
-
-	"cloud.google.com/go/firestore"
 	"example.com/messenger/firebase"
 	"example.com/messenger/pb"
-	"example.com/messenger/utils"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -31,24 +26,10 @@ func LoginService(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse,
 			Error:   &errorMessage,
 		}, nil
 	}
-	docs, _ := app.Collection("user").Where("phoneNumber", "==", req.GetPhoneNumber()).Documents(ctx).GetAll()
-	for _, doc := range docs {
-		updateData := map[string]interface{}{
-			"otp":       utils.GenerateOtp(),
-			"updatedAt": time.Now(),
-		}
-
-		_, err := app.Collection("user").Doc(doc.Ref.ID).Set(
-			ctx,
-			updateData,
-			firestore.MergeAll,
-		)
-		if err != nil {
-			log.Default().Println("Error", firebaseerr)
-			return nil, status.Error(codes.Internal, "Internal server Error")
-		}
+	_, err := RegenerateOtpService(ctx, &pb.ReSendOtpRequest{PhoneNumber: &req.PhoneNumber})
+	if err != nil {
+		return nil, status.Error(codes.Internal, "Failed to generate Otp")
 	}
-	fmt.Sprintln("OTP has been sent ", req.GetPhoneNumber())
 	return &pb.LoginResponse{
 		Message: "OTP has been sent " + req.GetPhoneNumber(), Error: nil,
 	}, nil

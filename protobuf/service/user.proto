@@ -17,6 +17,7 @@ message User {
   repeated string blockedUsers=10;
   string status = 11;
   string image = 12;
+  
 
 }
 

@@ -17,6 +17,7 @@ import {
   validateContacts,
   verifyToken,
   updateUser,
+  regenerateOtp,
 } from "./src/services";
 
 const main = async () => {
@@ -64,6 +65,7 @@ function getServer() {
     send,
     blockUser,
     updateUser,
+    regenerateOtp,
   });
   return server;
 }

@@ -16,6 +16,7 @@ import com.fury.messenger.R
 import com.fury.messenger.crypto.Crypto
 import com.fury.messenger.helper.contact.ContactChats
 import com.fury.messenger.helper.ui.Menu
+import com.fury.messenger.helper.ui.base64StringToImage
 import com.fury.messenger.helper.user.CurrentUser
 import com.fury.messenger.messages.ChatActivity
 import com.services.Message.ContentType
@@ -37,10 +38,16 @@ class UserAdapter(val context: Context, var userList: ArrayList<ContactChats>, s
         holder.textName.text = currentUser.contact.name
         // saving position to handle operation in menuSelect
         holder.lastMessage.tag=position
+        if(currentUser.contact.image?.isNotEmpty() == true){
+            holder.imageView.setImageBitmap(base64StringToImage(currentUser.contact.image?:""))
+
+        }
         if(view) {
             holder.count.text=""
+
             holder.datetime.text=""
             holder.lastMessage.text=currentUser.contact.status
+
         }else{
             if (currentUser.messageCount > 0) {
                 holder.count.text = currentUser.messageCount.toString()
@@ -49,7 +56,6 @@ class UserAdapter(val context: Context, var userList: ArrayList<ContactChats>, s
                 holder.count.visibility = View.GONE
             }
             if (currentUser.latestMessage != null) {
-                Log.d("currentUser","${currentUser.latestMessage.contentType} ${ContentType.Audio.name}" )
                 var message:String=""
                 if(currentUser.latestMessage.contentType==ContentType.Text.name){
                      message= Crypto.decryptAESMessage(

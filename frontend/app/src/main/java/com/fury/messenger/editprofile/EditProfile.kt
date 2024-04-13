@@ -15,6 +15,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.fury.messenger.R
+import com.fury.messenger.helper.ui.base64StringToImage
 import com.fury.messenger.helper.user.CurrentUser
 import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.google.firebase.auth.FirebaseAuth
@@ -52,7 +53,13 @@ class EditProfile : AppCompatActivity() {
         statusField = findViewById(R.id.status)
         username.text = CurrentUser.getUsername()
         statusField.text = CurrentUser.getStatus()
-        var image: String? =null
+
+
+        var image: String? =CurrentUser.getImage()
+        if(image!=null){
+            imageView.setImageBitmap( base64StringToImage(image) )
+
+        }
 
         val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             // Callback is invoked after the user selects a media item or closes the
@@ -81,12 +88,18 @@ class EditProfile : AppCompatActivity() {
             Log.d("username", username.toString())
             val request= UserOuterClass.User.newBuilder().setUsername(username.text.toString()).setStatus(statusField.text.toString()).setImage(image).build()
 
+            CurrentUser.setUsername(username.text.toString())
+            CurrentUser.setStatus(statusField.text.toString())
+            CurrentUser.setImage(request.image)
 
             scope.launch {
-                saveButton.isEnabled=false
+              runOnUiThread{
+                  saveButton.isEnabled=false
+              }
                 client.updateUser(request)
-                saveButton.isEnabled=true
-
+                runOnUiThread {
+                    saveButton.isEnabled = true
+                }
             }
 
         }
@@ -106,22 +119,22 @@ class EditProfile : AppCompatActivity() {
         Toast.makeText(this, "Profile Picture Updated", Toast.LENGTH_SHORT).show()
         getImage()
     }
-    fun convertImageToBase64String(uri: Uri): String? {
+    private fun convertImageToBase64String(uri: Uri): String? {
         val inputStream = contentResolver.openInputStream(uri)
-        val bitmap = BitmapFactory.decodeStream(inputStream)
-        inputStream?.close()
+        val options = BitmapFactory.Options()
+        options.inSampleSize = 2
+
+
 
         val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        BitmapFactory.decodeStream(inputStream, null, options)
+            ?.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream)
+        inputStream?.close()
+
         val byteArray = byteArrayOutputStream.toByteArray()
         return Base64.encodeToString(byteArray, Base64.DEFAULT)
 
     }
 
-    fun base64StringToImage(base64String:String): Bitmap? {
-        val decodedBytes = Base64.decode(base64String, Base64.DEFAULT)
-        val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
-        return decodedBitmap
 
-    }
 }

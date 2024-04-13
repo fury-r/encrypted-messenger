@@ -199,13 +199,16 @@ class MessageAdapter(
             override fun run() {
                 if (player.isPlaying()) {
                     val position=player.getPosition()
-                    val duration = (durationTextView.tag  as String).toInt() -position
-
-
-                    it.context.runCatching {
-                        durationTextView.text = formatMilliSeconds(duration.toLong())
-                        slider.value = position.toFloat()
+                    if(durationTextView.tag!=null){
+                        val duration =( (durationTextView.tag  as? String)?:"0").toInt()-position
+                        it.context.runCatching {
+                            durationTextView.text = formatMilliSeconds(duration.toLong())
+                            slider.value = position.toFloat()
+                        }
                     }
+
+
+
 
                 }
             }

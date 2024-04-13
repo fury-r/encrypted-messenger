@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"example.com/messenger/firebase"
 	"example.com/messenger/pb"
@@ -60,6 +61,19 @@ func OtpService(ctx context.Context, req *pb.OtpRequest) (*pb.AuthResponse, erro
 		}
 		id := doc.Ref.ID
 		email = data.Email
+		otpData := doc.Data()
+		otpTime, ok := otpData["otpTime"].(string)
+
+		if ok {
+			parseTime, err := time.Parse("January 2, 2006 at 3:04:05 PM MST-07:00", otpTime)
+			if err == nil {
+				currenTime := time.Now()
+				if currenTime.Sub(parseTime).Minutes() > 5 {
+					message := "otp Expired"
+					return &pb.AuthResponse{Error: &message}, nil
+				}
+			}
+		}
 
 		return &pb.AuthResponse{
 			User: &pb.User{
@@ -68,6 +82,8 @@ func OtpService(ctx context.Context, req *pb.OtpRequest) (*pb.AuthResponse, erro
 				Uuid:         id,
 				BlockedUsers: data.GetBlockedUsers(),
 				Image:        data.Image,
+				Status:       data.Status,
+				Username:     data.Username,
 			},
 			Token: &token,
 		}, nil
