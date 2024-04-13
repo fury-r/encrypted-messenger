@@ -100,6 +100,7 @@ object DBMessage {
                 createdAt =  OffsetDateTime.now(),
                 updatedAt = OffsetDateTime.now()
             )
+            Notifications.generateNotification(chat,ctx)
 
             insertMessage(ctx, chat)
             this.DB_BUFFER.add(chat)
@@ -283,10 +284,8 @@ object DBMessage {
         Log.d("Sensssd", jsonPrinter.print(event))
 
         client.send(event)
-        val x=chat.receiver
-        chat.receiver=chat.sender
-        chat.sender=x
-        Notifications.generateNotification(chat,ctx)
+
+
     }
 
     suspend fun sendSeenEvent(recipientNumber: String) {
