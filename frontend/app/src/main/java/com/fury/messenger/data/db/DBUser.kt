@@ -52,8 +52,8 @@ object DBUser {
 
 
 
-            contacts.getContactsFromPhone()
-            contacts.validateContacts()
+        contacts.getContactsFromPhone()
+        contacts.validateContacts()
 
         return if (all) {
             val data = contacts.getAllContacts()
@@ -68,7 +68,7 @@ object DBUser {
             getAllLastMessagesForContact(
                 ctx,
                 data
-            ).filter { it.latestMessage!=null  } as ArrayList<ContactChats>
+            ).filter { it.latestMessage != null } as ArrayList<ContactChats>
 
         }
 
