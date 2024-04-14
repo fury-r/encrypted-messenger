@@ -67,11 +67,16 @@ class ContactListActivity : AppCompatActivity() {
                             ?: false
                     }
                     if (filteredList.isEmpty()) {
-                        Toast.makeText(this@ContactListActivity, "No contacts found", Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            this@ContactListActivity,
+                            "No contacts found",
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
 
                     } else {
-                        this@ContactListActivity.adapter.userList = filteredList as ArrayList<ContactChats>
+                        this@ContactListActivity.adapter.userList =
+                            filteredList as ArrayList<ContactChats>
                     }
 
 
@@ -88,9 +93,9 @@ class ContactListActivity : AppCompatActivity() {
         getContacts()
         tokenManager = TokenManager(this)
         supportActionBar!!.setBackgroundDrawable(ColorDrawable(Color.parseColor("#696969")))
-        adapter = UserAdapter(this, userList,fun(pos:Int?){
-            this.selected=pos
-        },true)
+        adapter = UserAdapter(this, userList, fun(pos: Int?) {
+            this.selected = pos
+        }, true)
         userListView = findViewById(R.id.contactlist)
         userListView.layoutManager = LinearLayoutManager(this)
 
@@ -98,7 +103,6 @@ class ContactListActivity : AppCompatActivity() {
 
 
         userListView.adapter = adapter
-
 
 
     }
@@ -110,28 +114,23 @@ class ContactListActivity : AppCompatActivity() {
     }
 
 
-
-
-
-
     @SuppressLint("NotifyDataSetChanged")
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val selectedItem = this.selected?.let { userList[it] }
 
-        if(selectedItem!=null){
+        if (selectedItem != null) {
 
             when (item.itemId) {
 
-                R.id.pin->{
+                R.id.pin -> {
 
                     scope.launch {
-                        if(selectedItem.contact.isPinned==true){
-                            selectedItem.contact.isPinned=false
+                        if (selectedItem.contact.isPinned == true) {
+                            selectedItem.contact.isPinned = false
                             db.contactDao().update(selectedItem.contact)
 
-                        }
-                        else{
-                            selectedItem.contact.isPinned=true
+                        } else {
+                            selectedItem.contact.isPinned = true
                             db.contactDao().update(selectedItem.contact)
 
                         }
@@ -139,8 +138,9 @@ class ContactListActivity : AppCompatActivity() {
                     }
 
                 }
-                R.id.block->{
-                    Log.d("onContextItemSelected","isPinned")
+
+                R.id.block -> {
+                    Log.d("onContextItemSelected", "isPinned")
 
                     scope.launch {
                         DBMessage.blockUser(selectedItem.contact.phoneNumber)
@@ -152,21 +152,23 @@ class ContactListActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.logout->{
+        when (item.itemId) {
+            R.id.logout -> {
                 val intent = Intent(this, LoginActivity::class.java)
 
                 startActivity(intent)
                 return true
             }
-            R.id.editProfile->{
+
+            R.id.editProfile -> {
                 val intent = Intent(this, EditProfile::class.java)
 
                 startActivity(intent)
                 return true
             }
-            R.id.refresh->{
-                getContacts()
+
+            R.id.refresh -> {
+                getContacts(true)
             }
 
         }
@@ -186,19 +188,34 @@ class ContactListActivity : AppCompatActivity() {
 
     }
 
-    private fun getContacts() {
+    private fun getContacts(api:Boolean=false) {
         scope.launch {
             try {
-                runOnUiThread{
+                runOnUiThread {
                     this@ContactListActivity.progressBar.isVisible = true
 
                 }
-                val contactList = DBUser.getAllContactsWithMessages(this@ContactListActivity,all=true)
+                val contactList =
+                    DBUser.getAllContactsWithMessages(this@ContactListActivity, all = true,api)
+
+                val contacts= arrayListOf<ContactChats>()
+                val verified = contactList.filter {
+                      it.contact.isVerified
+                 }.sortedBy { it.contact.createdAt }
+                    contacts.addAll(verified)
+
+
+                val unverified =
+                    contactList.filter { !it.contact.isVerified }.sortedBy { it.contact.name }.toList()
+                contacts.addAll(unverified)
+
 
                 runOnUiThread {
-                    this@ContactListActivity.setContactList(
-                        contactList
-                    )
+                    if (verified != null) {
+                        this@ContactListActivity.setContactList(
+                            contacts
+                        )
+                    }
 
                 }
             } catch (e: Error) {

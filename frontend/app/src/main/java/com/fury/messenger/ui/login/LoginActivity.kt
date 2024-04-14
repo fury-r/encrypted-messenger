@@ -15,14 +15,12 @@ import androidx.core.content.ContextCompat
 import com.fury.messenger.R
 import com.fury.messenger.Validater.VerifyTokenActivity
 import com.fury.messenger.crypto.Crypto.runAESTestCrypto
-import com.fury.messenger.main.MainActivity
 import com.fury.messenger.manageBuilder.ManageChanelBuilder
 import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.fury.messenger.otp.OtpActivity
 import com.fury.messenger.signup.SignupActivity
 import com.fury.messenger.utils.Constants
 import com.fury.messenger.utils.TokenManager
-import com.google.firebase.auth.FirebaseAuth
 import com.services.Login.LoginRequest
 import io.grpc.ManagedChannel
 import kotlinx.coroutines.CoroutineScope
@@ -33,7 +31,6 @@ import kotlinx.coroutines.launch
 class LoginActivity : AppCompatActivity() {
     private lateinit var editPhoneNumber: EditText
     private lateinit var loginBtn: Button
-    private lateinit var mAuth: FirebaseAuth
     private lateinit var signupBtn: Button
     private lateinit var channel: ManagedChannel
     private var hasReadContactPermission: Boolean = false
@@ -140,21 +137,6 @@ class LoginActivity : AppCompatActivity() {
         permissionLauncher.launch(permissionRequest.toTypedArray())
     }
 
-    private fun loginFirebase(email: String, password: String) {
-        Log.d("myTag", "$email $password")
-        mAuth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    finish()
 
-                    startActivity(intent)
-
-                } else {
-                    Toast.makeText(this@LoginActivity, "Invalid Credentials", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-    }
 }
 

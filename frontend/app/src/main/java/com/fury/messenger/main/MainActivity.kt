@@ -23,19 +23,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fury.messenger.R
 import com.fury.messenger.contactlist.ContactListActivity
-import com.fury.messenger.crypto.Crypto.initRSA
 import com.fury.messenger.data.db.DBMessage
 import com.fury.messenger.data.db.DBUser.getAllContactsWithMessages
 import com.fury.messenger.data.db.DbConnect
+import com.fury.messenger.data.db.UserEvent
 import com.fury.messenger.editprofile.EditProfile
 import com.fury.messenger.helper.contact.ContactChats
-import com.fury.messenger.helper.contact.Contacts
 import com.fury.messenger.helper.user.AppDatabase
 import com.fury.messenger.helper.user.CurrentUser
 import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.fury.messenger.ui.login.LoginActivity
 import com.fury.messenger.utils.TokenManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.services.Message.EventType
 import com.services.ServicesGrpc
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -77,12 +77,10 @@ class MainActivity : AppCompatActivity() {
 
             }
         requestPermission()
-        val contacts = Contacts(this)
         db = DbConnect.getDatabase(this)
         progressBar = findViewById(R.id.progressBar)
         searchView = findViewById(R.id.searchView)
         val ctx = this
-        initRSA(ctx)
         this@MainActivity.progressBar.isVisible = true
         searchView.clearFocus()
         client = createAuthenticationStub(CurrentUser.getToken())
@@ -149,45 +147,53 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
         })
-//        scope.launch {
-//
-//            withContext(Dispatchers.IO) {
-//                try {
-//
-//                    contacts.getContactsFromPhone()
-//                    contacts.validateContacts()
-//                    val data = contacts.getAllVerifiedContacts()
-//                    Log.d("sda", data.toString())
-//                    val contactsList = DBUser.getAllLastMessagesForContact(
-//                        this@MainActivity,
-//                        data
-//                    ).filter { it.latestMessage != null } as ArrayList<ContactChats>
-//
-//                    runOnUiThread {
-//                        this@MainActivity.setContactList(
-//                            contactsList
-//                        )
-//
-//                    }
-//                } catch (e: Error) {
-//                    Log.d("Error", e.toString())
-//
-//                } finally {
-//                    runOnUiThread {
-//                        this@MainActivity.progressBar.isVisible = false
-//
-//                    }
-//
-//                }
-//
-//            }
-//        }
+
         getContacts()
         scope.launch {
             CurrentUser.subscribeToMessageQueue(ctx)
 
         }
+        DBMessage.listeners =
+            @SuppressLint("NotifyDataSetChanged")
+            fun(callback: (messages: ArrayList<UserEvent>, recipient: String?) -> ArrayList<UserEvent>) {
+                val messageList = arrayListOf<UserEvent>()
+                val events = callback(messageList, "")
+                events.forEach { event ->
+                    val message = event.message
+                    val userPosition = this.userList.filter { it.contact.name === message?.sender }
 
+
+
+                    if (userPosition.isNotEmpty()) {
+                        if (event.eventType == EventType.MESSAGE) {
+                            val position = userList.indexOf(userPosition[0])
+
+                            userPosition[0].messageCount += 1
+                            userPosition[0].latestMessage = message
+                            userList[position] = userPosition[0]
+                        } else {
+
+                            if (message != null) {
+                                userPosition[0].contact.typeTime = message.createdAt
+                            }
+
+
+                        }
+                    } else {
+                        val sender = message?.let { db.contactDao().findByNumber(it.sender) }
+                        sender?.let { ContactChats(it, 1, message) }?.let { this.userList.add(it) }
+
+                    }
+
+                }
+                runOnUiThread {
+                    this.userList=userList.sortedBy { it.latestMessage!!.createdAt }.toList() as ArrayList<ContactChats>
+                    this.adapter.userList = userList
+                    adapter.notifyDataSetChanged()
+
+
+                }
+            }
 
     }
 
@@ -199,6 +205,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.logout -> {
+                tokenManager.deleteToken()
                 val intent = Intent(this, LoginActivity::class.java)
 
                 startActivity(intent)
@@ -213,7 +220,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.refresh -> {
-                if(!this@MainActivity.progressBar.isVisible){
+                if (!this@MainActivity.progressBar.isVisible) {
                     getContacts()
                 }
 
@@ -359,16 +366,22 @@ class MainActivity : AppCompatActivity() {
     private fun getContacts() {
         scope.launch {
             try {
-                runOnUiThread{
+                runOnUiThread {
                     this@MainActivity.progressBar.isVisible = true
 
                 }
                 val contactList = getAllContactsWithMessages(this@MainActivity)
 
                 runOnUiThread {
-                    this@MainActivity.setContactList(
-                        contactList
-                    )
+                    if(contactList.isNotEmpty()){
+                        this@MainActivity.setContactList(
+                            contactList.sortedBy { it.latestMessage!!.createdAt }.toList().map {
+                                it
+                            } as ArrayList<ContactChats>
+
+                        )
+
+                    }
 
                 }
             } catch (e: Error) {
@@ -381,5 +394,11 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        DBMessage.listeners = DBMessage.presenfunc
+
     }
 }

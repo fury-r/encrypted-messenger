@@ -3,7 +3,7 @@ package com.fury.messenger.main
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
-import android.util.Log
+import android.os.CountDownTimer
 import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.MenuInflater
@@ -19,7 +19,9 @@ import com.fury.messenger.helper.ui.Menu
 import com.fury.messenger.helper.ui.base64StringToImage
 import com.fury.messenger.helper.user.CurrentUser
 import com.fury.messenger.messages.ChatActivity
+import com.fury.messenger.utils.ChatActivityIntentProps
 import com.services.Message.ContentType
+import java.time.Duration
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
@@ -35,7 +37,7 @@ class UserAdapter(val context: Context, var userList: ArrayList<ContactChats>, s
   
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val currentUser = userList[position]
-        holder.textName.text = currentUser.contact.name
+        holder.textName.text = currentUser.contact.name?:currentUser.contact.phoneNumber
         // saving position to handle operation in menuSelect
         holder.lastMessage.tag=position
         if(currentUser.contact.image?.isNotEmpty() == true){
@@ -47,6 +49,7 @@ class UserAdapter(val context: Context, var userList: ArrayList<ContactChats>, s
 
             holder.datetime.text=""
             holder.lastMessage.text=currentUser.contact.status
+            holder.itemView.isEnabled=currentUser.contact.isVerified
 
         }else{
             if (currentUser.messageCount > 0) {
@@ -56,25 +59,35 @@ class UserAdapter(val context: Context, var userList: ArrayList<ContactChats>, s
                 holder.count.visibility = View.GONE
             }
             if (currentUser.latestMessage != null) {
-                var message:String=""
-                if(currentUser.latestMessage.contentType==ContentType.Text.name){
-                     message= Crypto.decryptAESMessage(
-                        currentUser.latestMessage.message,
-                        Crypto.convertAESstringToKey(currentUser.contact.key)
-                    )
 
-                }else if(currentUser.latestMessage.contentType==ContentType.Audio.name) {
-                    message="Voice Message"
+
+
+               if(currentUser.contact.typeTime!=null) {
+                    val diffInSeconds=Duration.between(currentUser.contact.typeTime,OffsetDateTime.now()).seconds.toInt()
+                    if(diffInSeconds<10){
+                        holder.lastMessage.text = "Typing..."
+                        holder.lastMessage.setTypeface(null, Typeface.BOLD);
+
+                        val  countDownTimer=object : CountDownTimer((diffInSeconds*1000).toLong(),1000){
+                            override fun onTick(p0: Long) {
+
+                            }
+
+                            override fun onFinish() {
+                                this@UserAdapter.setLastMessage(currentUser,holder)
+                            }
+
+
+                        }
+                        countDownTimer.start()
+                    }
+                }
+                else{
+                    this@UserAdapter.setLastMessage(currentUser,holder)
 
                 }
-                if(currentUser.latestMessage.sender!= CurrentUser.phoneNumber){
-                    holder.lastMessage.setTypeface(null, Typeface.BOLD);
-                } else {
-                    message="You:${message}"
-                }
 
-                holder.lastMessage.text = message
-                holder.datetime.text= currentUser.latestMessage.createdAt?.format(DateTimeFormatter.ofPattern("hh:mm:a"))
+                holder.datetime.text= currentUser.latestMessage!!.createdAt?.format(DateTimeFormatter.ofPattern("hh:mm:a"))
                     ?: ""
 
             }
@@ -88,11 +101,7 @@ class UserAdapter(val context: Context, var userList: ArrayList<ContactChats>, s
 
             holder.itemView.setOnClickListener {
                 val intent = Intent(context, ChatActivity::class.java)
-                intent.putExtra("Contact", currentUser.contact.name)
-                intent.putExtra("phoneNumber", currentUser.contact.phoneNumber)
-                currentUser.contact.key?.let { it1 -> Log.d("Dd", it1) }
-                intent.putExtra("key", currentUser.contact.key)
-
+                ChatActivityIntentProps(intent,currentUser.contact)
                 context.startActivity(intent)
             }
 
@@ -105,6 +114,25 @@ class UserAdapter(val context: Context, var userList: ArrayList<ContactChats>, s
 
     override fun getItemCount(): Int {
         return userList.size
+    }
+    fun setLastMessage(currentUser:ContactChats,holder:UserViewHolder){
+        var message:String=""
+        if(currentUser.latestMessage!!.contentType==ContentType.Text.name){
+            message= Crypto.decryptAESMessage(
+                currentUser.latestMessage!!.message,
+                Crypto.convertAESstringToKey(currentUser.contact.key)
+            )
+
+        }else if(currentUser.latestMessage!!.contentType==ContentType.Audio.name) {
+            message="Voice Message"
+
+        }
+        if(currentUser.latestMessage!!.sender!= CurrentUser.phoneNumber){
+            holder.lastMessage.setTypeface(null, Typeface.BOLD);
+        } else {
+            message="You:${message}"
+        }
+        holder.lastMessage.text = message
     }
 
   inner  class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),View.OnCreateContextMenuListener,View.OnLongClickListener {

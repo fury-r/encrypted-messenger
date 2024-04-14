@@ -6,9 +6,9 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil
 object Constants {
 
     const val  API="http://192.168.0.104"
-    const val  PREFS_TOKEN="MESSENGER_TOKEN_X"
+    const val  PREFS_TOKEN="E_MESSENGER_TOKEN"
     const val  USER_TOKEN="USER_TOKEN"
-    const val APP_NAME="MESSENGER_X"
+    const val APP_NAME="E_MESSENGER"
 
 
     fun getCountryCodeFromPhone(phoneNumber:String): String {

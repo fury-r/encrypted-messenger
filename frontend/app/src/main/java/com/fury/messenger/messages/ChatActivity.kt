@@ -4,8 +4,10 @@ import ChatsByDate
 import ParentAdapter
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -37,6 +39,7 @@ import com.fury.messenger.data.db.DBMessage.presenfunc
 import com.fury.messenger.data.db.DBMessage.sendMessage
 import com.fury.messenger.data.db.DBUser
 import com.fury.messenger.data.db.DbConnect
+import com.fury.messenger.data.db.UserEvent
 import com.fury.messenger.data.db.model.Chat
 import com.fury.messenger.data.db.model.Contact
 import com.fury.messenger.helper.audio.AudioRecorder
@@ -47,6 +50,7 @@ import com.fury.messenger.helper.user.CurrentUser.convertStringToKeyFactory
 import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.services.Message
 import com.services.Message.ContentType
+import com.services.Message.EventType
 import com.services.ServicesGrpc.ServicesBlockingStub
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -56,6 +60,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
@@ -125,7 +130,7 @@ class ChatActivity : AppCompatActivity() {
 
         val receiverUid = intent.getStringExtra("uid")
 //        val uri = intent.getStringExtra("uri")
-        key = intent.getStringExtra("key")!!
+        key = intent.getStringExtra("key")?:""
 
         directory = File(applicationContext.filesDir, "audio")
         if (!directory.exists()) {
@@ -144,7 +149,6 @@ class ChatActivity : AppCompatActivity() {
         messageList = ArrayList()
         title.text = contact!!
         messageRecyleView = findViewById(R.id.chatRecyclerView)
-        Log.d("key", key)
         convertAESstringToKey(key)?.let { runAESTest(it) }
         messageAdapter = ParentAdapter(
             formatMessagesByDate(messageList),
@@ -157,11 +161,12 @@ class ChatActivity : AppCompatActivity() {
 
         listeners =
             @SuppressLint("NotifyDataSetChanged")
-            fun(callback: (messages: ArrayList<Chat>, recipient: String?) -> ArrayList<Chat>) {
+            fun(callback: (messages: ArrayList<UserEvent>, recipient: String?) -> ArrayList<UserEvent>) {
+                val messageList = arrayListOf<UserEvent>()
 
                 val message = callback(messageList, phoneNumber)
                 runOnUiThread {
-                    this.messageList.addAll(message)
+                    this.messageList.addAll(message.filter { it.eventType==EventType.MESSAGE } as ArrayList<Chat>)
                     this.messageAdapter.messageList = formatMessagesByDate(this.messageList)
                     messageAdapter.notifyDataSetChanged()
 
@@ -211,7 +216,7 @@ class ChatActivity : AppCompatActivity() {
                         if (it?.contentType == ContentType.Audio.name) {
 
                             val filePath = "${this@ChatActivity.filesDir}/audio/${it?.sender}-${
-                                it?.createdAt.toString().replace("+", "-").replace(":", "-")
+                                it.createdAt.toString().replace("+", "-").replace(":", "-")
                             }.mp3"
                             (async {
                                 key.let { key ->
@@ -257,10 +262,7 @@ class ChatActivity : AppCompatActivity() {
 
 
         }
-        scope.launch {
-            CurrentUser.subscribeToMessageQueue(this@ChatActivity)
 
-        }
         sendBtn.setOnClickListener {
             val messageText = messageBox.text.toString()
             scope.launch {
@@ -336,8 +338,32 @@ class ChatActivity : AppCompatActivity() {
         scope.run {
             while (true) {
                 while (getDB_BUFFER().size > 0) {
-                    getDB_BUFFER().forEach { value -> addMessage(value) }
+                val buffer=getDB_BUFFER()
+                    buffer.filter { it.eventType===EventType.MESSAGE }.forEach { value -> addMessage(value.message!!) }
+
+                    val findTypeEvent=buffer.findLast { it.eventType===EventType.TYPE_UPDATE }
+                    if(findTypeEvent!=null){
+                        val diffInSeconds= Duration.between(findTypeEvent.message?.createdAt,OffsetDateTime.now()).seconds
+                        if(diffInSeconds<10){
+                            this@ChatActivity.status.text= "Typing..."
+                            this@ChatActivity.status.setTypeface(null, Typeface.BOLD);
+                            recipientDetails!!.typeTime= findTypeEvent.message?.createdAt
+                            val  countDownTimer=object : CountDownTimer(diffInSeconds*1000,1000){
+                                override fun onTick(p0: Long) {
+
+                                }
+
+                                override fun onFinish() {
+                                    setLastSeen()
+                                }
+
+
+                            }
+                            countDownTimer.start()
+                        }
+                    }
                 }
+
                 delay(1000)
 
                 eraseDB_BUFFER()
@@ -364,8 +390,23 @@ class ChatActivity : AppCompatActivity() {
         return super.onPrepareOptionsMenu(menu)
     }
 
+
+    fun setLastSeen(){
+      if(recipientDetails?.typeTime !=null){
+          val diffBetWeenTime= Duration.between(this@ChatActivity.recipientDetails!!.typeTime,OffsetDateTime.now())
+
+          if(diffBetWeenTime.toDays().toInt() ==0 && this@ChatActivity.recipientDetails!=null){
+              status.text= this@ChatActivity.recipientDetails!!.typeTime?.let { String.format("Last seen at %d", it.format(DateTimeFormatter.ofPattern("hh:mm"))) }
+
+          }
+          else{
+              status.text= this@ChatActivity.recipientDetails!!.typeTime?.let { String.format("Last seen on %d", it.format(DateTimeFormatter.ofPattern("dd/MM/yyyy:hh:mm:ss"))) }
+
+          }
+      }
+
+    }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Log.d("ddd", "DDDDd")
 
 
         when (item.itemId) {
@@ -477,6 +518,8 @@ class ChatActivity : AppCompatActivity() {
 
                 }
             }
+            setLastSeen()
+
         }
 
     }
@@ -599,11 +642,13 @@ class ChatActivity : AppCompatActivity() {
         }
         val chats = (dateByMessage.entries.sortedBy { it.key }.map {
             ChatsByDate(it.key, arrayListOf(*it.value.sortedBy {value-> value.createdAt }.toTypedArray()))
-        }.sortedBy { it.date })
+        }.sortedBy { it.date }).toList().map {
+            it
+        }
         if (chats.isEmpty()) {
             return arrayListOf()
         }
-        return chats.toList() as ArrayList<ChatsByDate?>
+        return chats as ArrayList<ChatsByDate?>
     }
 
     private  fun startTimer(){

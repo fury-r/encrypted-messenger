@@ -46,14 +46,17 @@ object DBUser {
 
     suspend fun getAllContactsWithMessages(
         ctx: Context,
-        all: Boolean = false
+        all: Boolean = false,
+        api:Boolean=true
     ): ArrayList<ContactChats> {
         val contacts = Contacts(ctx)
 
 
 
-        contacts.getContactsFromPhone()
-        contacts.validateContacts()
+        if(api){
+            contacts.getContactsFromPhone()
+            contacts.validateContacts()
+        }
 
         return if (all) {
             val data = contacts.getAllContacts()

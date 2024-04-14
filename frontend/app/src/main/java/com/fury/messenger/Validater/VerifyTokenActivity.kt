@@ -18,7 +18,6 @@ import com.fury.messenger.manageBuilder.ManageChanelBuilder
 import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.fury.messenger.ui.login.LoginActivity
 import com.fury.messenger.utils.TokenManager
-import com.google.firebase.auth.FirebaseAuth
 import com.services.Auth.AuthRequest
 import io.grpc.ManagedChannel
 import kotlinx.coroutines.CoroutineScope
@@ -29,7 +28,6 @@ import kotlinx.coroutines.withContext
 class VerifyTokenActivity : AppCompatActivity() {
     private lateinit var editPhoneNumber: EditText
     private lateinit var loginBtn: Button
-    private lateinit var mAuth: FirebaseAuth
     private lateinit var signupBtn: Button
     private lateinit var channel: ManagedChannel
     private var hasReadContactPermission: Boolean = false

@@ -56,7 +56,7 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
    - Open the SecureMessenger Android project in Android Studio.
    - Open terminal in wsl or in your linux os
    - generate the types if not you have made any change
-   ``sh
+   ``
       sh linux_proto.sh
    ``
    - Build and run the application on an emulator or physical device.
@@ -75,6 +75,8 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
    - Installation:[link](https://www.rabbitmq.com/docs/install-windows-manual)
    - Make sure rabbitMQ is running.
    - Configure client and admin credetials at [link](http://localhost:15672/)
+4. **Protobufs**
+   - Installation:[link](https://protobuf.dev/)
 
 ### End to End encryption
 ## How It Works
@@ -138,6 +140,13 @@ This setup ensures end-to-end encryption of communication between users, providi
 ## Configuration
 
 - Update the necessary configuration parameters in the Android app, middleware, and backend server to match your environment, such as API endpoints, database connections, and encryption keys.
+
+
+### Further Enhancements
+
+- Save voice messages in the firestore db.Show user that message is recieved, give a option to download the voice message so the user can decide when to download.(Types have been already declared)
+- Send other forms of media
+- Send otp To Device using sms
 
 ## Contact
 

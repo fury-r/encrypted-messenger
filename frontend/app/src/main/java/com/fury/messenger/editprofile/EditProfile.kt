@@ -1,11 +1,8 @@
 package com.fury.messenger.editprofile
 
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
@@ -16,20 +13,18 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.fury.messenger.R
 import com.fury.messenger.helper.ui.base64StringToImage
+import com.fury.messenger.helper.ui.convertImageToBase64String
 import com.fury.messenger.helper.user.CurrentUser
 import com.fury.messenger.manageBuilder.createAuthenticationStub
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.storage.StorageReference
+
 import com.services.UserOuterClass
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.ByteArrayOutputStream
 
 
 class EditProfile : AppCompatActivity() {
     private val PICK_IMAGE_REQUEST = 71
-    private lateinit var auth: FirebaseAuth
     private lateinit var uploadBtn: Button
     private lateinit var username: TextView
     private lateinit var statusField: TextView
@@ -37,7 +32,6 @@ class EditProfile : AppCompatActivity() {
     private val pickImage: Int = 100
     lateinit var imageView: ImageView
     private var imageUri: Uri? = null
-    private lateinit var storageRef: StorageReference
     private lateinit var saveButton: Button
     private  var file: Uri?=null
     private  var scope=CoroutineScope(Dispatchers.IO)
@@ -65,7 +59,7 @@ class EditProfile : AppCompatActivity() {
             // Callback is invoked after the user selects a media item or closes the
             // photo picker.
             if (uri != null) {
-                image= convertImageToBase64String(uri)
+                image= convertImageToBase64String(uri,this)
 
                 imageView.setImageBitmap(image?.let { it1 -> base64StringToImage(it1) })
 
@@ -118,22 +112,6 @@ class EditProfile : AppCompatActivity() {
 
         Toast.makeText(this, "Profile Picture Updated", Toast.LENGTH_SHORT).show()
         getImage()
-    }
-    private fun convertImageToBase64String(uri: Uri): String? {
-        val inputStream = contentResolver.openInputStream(uri)
-        val options = BitmapFactory.Options()
-        options.inSampleSize = 2
-
-
-
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        BitmapFactory.decodeStream(inputStream, null, options)
-            ?.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream)
-        inputStream?.close()
-
-        val byteArray = byteArrayOutputStream.toByteArray()
-        return Base64.encodeToString(byteArray, Base64.DEFAULT)
-
     }
 
 

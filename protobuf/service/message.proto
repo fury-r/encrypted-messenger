@@ -84,9 +84,20 @@ message Event{
     string message=2;
     string exchange=3;
     string sender=4;
-    
     string reciever = 5;
+    ContentType contentType=6;
+    string cloudId=7;
 
-    
 }
 
+message RequestDownload{
+   
+    ContentType contentType=1;
+    string cloudId=2;
+
+}
+message ResponseDownload{
+   
+    string message=1;
+
+}

@@ -35,6 +35,7 @@ service Services{
         rpc blockUser(BlockRequest) returns (BlockResponse) {}
         rpc updateUser(User) returns (User) {}
         rpc RegenerateOtp(ReSendOtpRequest) returns (ReSendOtpRequest) {}
+        rpc downloadFromServer(RequestDownload) returns (ResponseDownload) {}
 
         // rpc SayHello (HelloRequest) returns (HelloReply) {}
 }

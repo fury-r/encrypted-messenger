@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.PrimaryKey
@@ -11,36 +12,8 @@ import androidx.room.Query
 import androidx.room.Update
 import java.time.OffsetDateTime
 
-//data class Contact(
-//    val id: String,
-//    val name: String? = null,
-//    val phoneNumber: String = "",
-//    val image: String? = null,
-//    val pubKey: String? = null,
-//    val chatPublickey: String? = null,
-//    val chatPrivateKey: String? = null,
-//    val countryCode: String? = null,
-//    val isVerified: Boolean = false,
-//    val uuid: String? = null,
-//    val createdAt: LocalDateTime? = null
-//)
 
-//object ContactsModel : IntIdTable() {
-//    val name = varchar("name", 50)
-//    val countryCode = varchar("countryCode", 50).nullable()
-//    val phoneNumber = varchar("phoneNumber", 50)
-//    val image = varchar("image", 999999999).nullable()
-//    val pubKey = varchar("pubKey", 100).nullable()
-//    val chatPublickey = varchar("chatPubkey", 100).nullable()
-//    val chatPrivateKey = varchar("chatPrivKey", 100).nullable()
-//    val isVerified = bool("isVerified")
-//    val uuid = varchar("uuid", 100)
-//    val createdAt = datetime("createdAt").defaultExpression(CurrentDateTime)
-//    val updatedAt = datetime("updatedAt").defaultExpression(CurrentDateTime)
-//}
-
-
-@Entity(tableName = "contacts")
+@Entity(tableName = "contacts",indices = [Index(value = ["phoneNumber"], unique = true)])
 data class  Contact   (
     @PrimaryKey(autoGenerate = true) var id: Int=1,
     @ColumnInfo(name="name") var name: String? = null,
@@ -78,6 +51,8 @@ interface  ContactsDao{
     fun insertAll(vararg contact: Contact)
     @Update
     fun update( contact: Contact)
+    @Update(onConflict=OnConflictStrategy.REPLACE)
+    fun updateAll( vararg contact: Contact)
     @Delete
     fun delete(contact: Contact)
 }

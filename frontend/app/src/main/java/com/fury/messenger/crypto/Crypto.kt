@@ -93,9 +93,8 @@ object Crypto {
             this.tokenManager.saveKeys("${APP_NAME}_PUB_KEY", publicKeyString)
 
 
-            // ⚠️WARNING: For testing.Need to be removed private key later
 
-            submitPublicKey(publicKeyString, privateKeyString)
+            submitPublicKey(publicKeyString)
 
             Log.d("Messenger-x", " setting keys to the user")
 
@@ -103,16 +102,13 @@ object Crypto {
         }
         CurrentUser.setPublicKey(publicKey)
         CurrentUser.setPrivateKey(privateKey)
-        Log.d("asKey", hasPublicKey.toString())
 
         sign = Signature.getInstance("SHA256withRSA")
-        //this.cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
-        //   runTest(publicKey, privateKey)
+
 
     }
 
 
-    //TODO: Fix encryption and decryption.Currently decryption does not show the original data
     fun encryptMessage(message: String, publicKey: Key?): String {
         val messageBytes: ByteArray = stringToByteArray(message)
         val cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
@@ -177,7 +173,7 @@ object Crypto {
         Log.d("runAESTest", "$test $encryptText $decryptText")
     }
 
-    fun submitPublicKey(key: String, key2: String = "") {
+    fun submitPublicKey(key: String) {
         val client = createAuthenticationStub(CurrentUser.getToken())
         val request =
             UserOuterClass.User.newBuilder().setPhoneNumber(CurrentUser.getCurrentUserPhoneNumber())

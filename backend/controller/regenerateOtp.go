@@ -24,8 +24,11 @@ func RegenerateOtpService(ctx context.Context, req *pb.ReSendOtpRequest) (*pb.Re
 
 	docs, _ := app.Collection("user").Where("phoneNumber", "==", req.GetPhoneNumber()).Documents(ctx).GetAll()
 	for _, doc := range docs {
+		// add logic to send otp  to user device via SMS
+		otp := utils.GenerateOtp()
 		updateData := map[string]interface{}{
-			"otp":       utils.GenerateOtp(),
+			"otp":       otp,
+			"otpUsed":   false,
 			"otpTime":   time.Now(),
 			"updatedAt": time.Now(),
 		}

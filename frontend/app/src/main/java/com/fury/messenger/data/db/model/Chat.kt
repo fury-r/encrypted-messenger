@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
@@ -12,8 +13,8 @@ import java.time.OffsetDateTime
 
 
 
-//indices = [Index(value = ["messageId"], unique = true)]
-@Entity(tableName = "chats")
+//
+@Entity(tableName = "chats",indices = [Index(value = ["messageId"], unique = true)])
 data class Chat(
     @ColumnInfo(name = "sender") var sender: String,
     @ColumnInfo(name = "receiver") var receiver: String,
