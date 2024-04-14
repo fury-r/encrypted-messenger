@@ -3,6 +3,8 @@ This code is an improvement over my old project which is private:[link](https://
 
 [![Workflow status](https://github.com/fury-dev/erp/actions/workflows/actions.yaml/badge.svg?branch=master)](https://github.com/fury-dev/erp/actions/workflows/actions.yaml)
 
+![messenger](https://github.com/fury-r/encrypted-messenger/assets/79844581/66a70d5b-6978-4114-9a72-cd559901d8fd)
+
 
 SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging application designed to prioritize user privacy and data security. The application is written in Kotlin for the Android platform, utilizes gRPC for communication, employs Protocol Buffers for efficient data serialization, and includes middleware written in Node.js using TypeScript. The backend server is implemented in the Go programming language.
 
@@ -21,7 +23,7 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
 - **Go Backend Server:** The backend server is implemented in the Go programming language, providing a robust and performant infrastructure for managing user accounts, storing messages, and handling various application functionalities.
 
 ## Architechure
-![ArchitechureMessenger drawio (4)](https://github.com/fury-r/encrypted-messenger/assets/79844581/8928de14-1a11-4258-aa4a-7690aa6dc10d)
+![ArchitechureMessenger drawio (5)](https://github.com/fury-r/encrypted-messenger/assets/79844581/52ad568b-6c70-47e2-8a0a-9d7bdab76c7d)
 
 ### Description
 - Client: This refers to the mobile application that users interact with to send and receive messages. Written Kotlin(Android App).
