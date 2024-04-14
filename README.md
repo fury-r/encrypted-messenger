@@ -143,6 +143,8 @@ This setup ensures end-to-end encryption of communication between users, providi
 
 - Update the necessary configuration parameters in the Android app, middleware, and backend server to match your environment, such as API endpoints, database connections, and encryption keys.
 
+### Notice
+- Might have some bugs
 
 ### Further Enhancements
 
