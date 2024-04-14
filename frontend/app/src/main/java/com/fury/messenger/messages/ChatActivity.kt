@@ -75,8 +75,8 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var messageBox: EditText
     private lateinit var sendBtn: ImageView
     private lateinit var profilePicture: ImageView
-    private  var timer: Job?=null
-    private  var seconds: Int=0
+    private var timer: Job? = null
+    private var seconds: Int = 0
 
     private lateinit var title: TextView
     private lateinit var messageAdapter: ParentAdapter
@@ -130,7 +130,7 @@ class ChatActivity : AppCompatActivity() {
 
         val receiverUid = intent.getStringExtra("uid")
 //        val uri = intent.getStringExtra("uri")
-        key = intent.getStringExtra("key")?:""
+        key = intent.getStringExtra("key") ?: ""
 
         directory = File(applicationContext.filesDir, "audio")
         if (!directory.exists()) {
@@ -166,7 +166,7 @@ class ChatActivity : AppCompatActivity() {
 
                 val message = callback(messageList, phoneNumber)
                 runOnUiThread {
-                    this.messageList.addAll(message.filter { it.eventType==EventType.MESSAGE } as ArrayList<Chat>)
+                    this.messageList.addAll(message.filter { it.eventType == EventType.MESSAGE } as ArrayList<Chat>)
                     this.messageAdapter.messageList = formatMessagesByDate(this.messageList)
                     messageAdapter.notifyDataSetChanged()
 
@@ -338,27 +338,32 @@ class ChatActivity : AppCompatActivity() {
         scope.run {
             while (true) {
                 while (getDB_BUFFER().size > 0) {
-                val buffer=getDB_BUFFER()
-                    buffer.filter { it.eventType===EventType.MESSAGE }.forEach { value -> addMessage(value.message!!) }
+                    val buffer = getDB_BUFFER()
+                    buffer.filter { it.eventType === EventType.MESSAGE }
+                        .forEach { value -> addMessage(value.message!!) }
 
-                    val findTypeEvent=buffer.findLast { it.eventType===EventType.TYPE_UPDATE }
-                    if(findTypeEvent!=null){
-                        val diffInSeconds= Duration.between(findTypeEvent.message?.createdAt,OffsetDateTime.now()).seconds
-                        if(diffInSeconds<10){
-                            this@ChatActivity.status.text= "Typing..."
+                    val findTypeEvent = buffer.findLast { it.eventType === EventType.TYPE_UPDATE }
+                    if (findTypeEvent != null) {
+                        val diffInSeconds = Duration.between(
+                            findTypeEvent.message?.createdAt,
+                            OffsetDateTime.now()
+                        ).seconds
+                        if (diffInSeconds < 10) {
+                            this@ChatActivity.status.text = "Typing..."
                             this@ChatActivity.status.setTypeface(null, Typeface.BOLD);
-                            recipientDetails!!.typeTime= findTypeEvent.message?.createdAt
-                            val  countDownTimer=object : CountDownTimer(diffInSeconds*1000,1000){
-                                override fun onTick(p0: Long) {
+                            recipientDetails!!.typeTime = findTypeEvent.message?.createdAt
+                            val countDownTimer =
+                                object : CountDownTimer(diffInSeconds * 1000, 1000) {
+                                    override fun onTick(p0: Long) {
+
+                                    }
+
+                                    override fun onFinish() {
+                                        setLastSeen()
+                                    }
+
 
                                 }
-
-                                override fun onFinish() {
-                                    setLastSeen()
-                                }
-
-
-                            }
                             countDownTimer.start()
                         }
                     }
@@ -391,21 +396,36 @@ class ChatActivity : AppCompatActivity() {
     }
 
 
-    fun setLastSeen(){
-      if(recipientDetails?.typeTime !=null){
-          val diffBetWeenTime= Duration.between(this@ChatActivity.recipientDetails!!.typeTime,OffsetDateTime.now())
+    fun setLastSeen() {
+        if (recipientDetails?.typeTime != null) {
+            val diffBetWeenTime = Duration.between(
+                this@ChatActivity.recipientDetails!!.typeTime,
+                OffsetDateTime.now()
+            )
 
-          if(diffBetWeenTime.toDays().toInt() ==0 && this@ChatActivity.recipientDetails!=null){
-              status.text= this@ChatActivity.recipientDetails!!.typeTime?.let { String.format("Last seen at %d", it.format(DateTimeFormatter.ofPattern("hh:mm"))) }
+            if (diffBetWeenTime.toDays()
+                    .toInt() == 0 && this@ChatActivity.recipientDetails != null
+            ) {
+                status.text = this@ChatActivity.recipientDetails!!.typeTime?.let {
+                    String.format(
+                        "Last seen at %d",
+                        it.format(DateTimeFormatter.ofPattern("hh:mm"))
+                    )
+                }
 
-          }
-          else{
-              status.text= this@ChatActivity.recipientDetails!!.typeTime?.let { String.format("Last seen on %d", it.format(DateTimeFormatter.ofPattern("dd/MM/yyyy:hh:mm:ss"))) }
+            } else {
+                status.text = this@ChatActivity.recipientDetails!!.typeTime?.let {
+                    String.format(
+                        "Last seen on %d",
+                        it.format(DateTimeFormatter.ofPattern("dd/MM/yyyy:hh:mm:ss"))
+                    )
+                }
 
-          }
-      }
+            }
+        }
 
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
 
@@ -616,7 +636,7 @@ class ChatActivity : AppCompatActivity() {
 
 //            Log.d("encrypt", encryptedMessage)
 //            Log.d("decrypt", decryptAESMessage(encryptedMessage, encryptKey))
-            val chat =setMessageClass(id, encryptedMessage, messageType) as Chat
+            val chat = setMessageClass(id, encryptedMessage, messageType) as Chat
 
 
 
@@ -641,7 +661,10 @@ class ChatActivity : AppCompatActivity() {
 
         }
         val chats = (dateByMessage.entries.sortedBy { it.key }.map {
-            ChatsByDate(it.key, arrayListOf(*it.value.sortedBy {value-> value.createdAt }.toTypedArray()))
+            ChatsByDate(
+                it.key,
+                arrayListOf(*it.value.sortedBy { value -> value.createdAt }.toTypedArray())
+            )
         }.sortedBy { it.date }).toList().map {
             it
         }
@@ -651,15 +674,15 @@ class ChatActivity : AppCompatActivity() {
         return chats as ArrayList<ChatsByDate?>
     }
 
-    private  fun startTimer(){
-        timer=scope.launch {
-            while (true){
+    private fun startTimer() {
+        timer = scope.launch {
+            while (true) {
                 delay(1000)
-                this@ChatActivity.seconds+=1
+                this@ChatActivity.seconds += 1
                 val minutes = seconds / 60
                 val seconds = (seconds % 60)
                 val timeLeftFormatted = String.format("%02d:%02d", minutes, seconds)
-                runOnUiThread{
+                runOnUiThread {
 
                     messageBox.hint = "Voice Message  $timeLeftFormatted"
                 }
@@ -668,11 +691,10 @@ class ChatActivity : AppCompatActivity() {
     }
 
 
-    private  fun stopTimer(){
+    private fun stopTimer() {
         timer?.cancel()
-        seconds=0
+        seconds = 0
     }
-
 
 
 }
