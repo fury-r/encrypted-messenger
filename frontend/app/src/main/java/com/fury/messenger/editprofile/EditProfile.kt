@@ -92,6 +92,7 @@ class EditProfile : AppCompatActivity() {
               }
                 client.updateUser(request)
                 runOnUiThread {
+                    Toast.makeText(this@EditProfile,"Details Saved",Toast.LENGTH_SHORT)
                     saveButton.isEnabled = true
                 }
             }
