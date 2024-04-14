@@ -108,7 +108,7 @@ class Contacts(private var ctx: Context) {
                                         phoneNumValue.split(" ").joinToString(""),
                                         image
                                     )
-                                    if (contact.phoneNumber != CurrentUser.phoneNumber) {
+                                    if (!contact.phoneNumber.contains(CurrentUser.phoneNumber!!)) {
                                         contactList.add(contact)
                                     }
                                 }
