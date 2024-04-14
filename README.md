@@ -22,8 +22,8 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
 
 - **Go Backend Server:** The backend server is implemented in the Go programming language, providing a robust and performant infrastructure for managing user accounts, storing messages, and handling various application functionalities.
 
-## Architechure
-![ArchitechureMessenger drawio (5)](https://github.com/fury-r/encrypted-messenger/assets/79844581/52ad568b-6c70-47e2-8a0a-9d7bdab76c7d)
+## Architecture
+![Architecture drawio (5)](https://github.com/fury-r/encrypted-messenger/assets/79844581/52ad568b-6c70-47e2-8a0a-9d7bdab76c7d)
 
 ### Description
 - Client: This refers to the mobile application that users interact with to send and receive messages. Written Kotlin(Android App).
