@@ -13,6 +13,7 @@ import type { LoginResponse as _LoginResponse, LoginResponse__Output as _LoginRe
 import type { MessageUpdateRequest as _MessageUpdateRequest, MessageUpdateRequest__Output as _MessageUpdateRequest__Output } from './MessageUpdateRequest';
 import type { MessageUpdateResponse as _MessageUpdateResponse, MessageUpdateResponse__Output as _MessageUpdateResponse__Output } from './MessageUpdateResponse';
 import type { OtpRequest as _OtpRequest, OtpRequest__Output as _OtpRequest__Output } from './OtpRequest';
+import type { ReSendOtpRequest as _ReSendOtpRequest, ReSendOtpRequest__Output as _ReSendOtpRequest__Output } from './ReSendOtpRequest';
 import type { RegisterRequest as _RegisterRequest, RegisterRequest__Output as _RegisterRequest__Output } from './RegisterRequest';
 import type { RegisterResponse as _RegisterResponse, RegisterResponse__Output as _RegisterResponse__Output } from './RegisterResponse';
 import type { User as _User, User__Output as _User__Output } from './User';
@@ -37,6 +38,15 @@ export interface ServicesClient extends grpc.Client {
   otp(argument: _OtpRequest, metadata: grpc.Metadata, callback: grpc.requestCallback<_AuthResponse__Output>): grpc.ClientUnaryCall;
   otp(argument: _OtpRequest, options: grpc.CallOptions, callback: grpc.requestCallback<_AuthResponse__Output>): grpc.ClientUnaryCall;
   otp(argument: _OtpRequest, callback: grpc.requestCallback<_AuthResponse__Output>): grpc.ClientUnaryCall;
+  
+  RegenerateOtp(argument: _ReSendOtpRequest, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_ReSendOtpRequest__Output>): grpc.ClientUnaryCall;
+  RegenerateOtp(argument: _ReSendOtpRequest, metadata: grpc.Metadata, callback: grpc.requestCallback<_ReSendOtpRequest__Output>): grpc.ClientUnaryCall;
+  RegenerateOtp(argument: _ReSendOtpRequest, options: grpc.CallOptions, callback: grpc.requestCallback<_ReSendOtpRequest__Output>): grpc.ClientUnaryCall;
+  RegenerateOtp(argument: _ReSendOtpRequest, callback: grpc.requestCallback<_ReSendOtpRequest__Output>): grpc.ClientUnaryCall;
+  regenerateOtp(argument: _ReSendOtpRequest, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_ReSendOtpRequest__Output>): grpc.ClientUnaryCall;
+  regenerateOtp(argument: _ReSendOtpRequest, metadata: grpc.Metadata, callback: grpc.requestCallback<_ReSendOtpRequest__Output>): grpc.ClientUnaryCall;
+  regenerateOtp(argument: _ReSendOtpRequest, options: grpc.CallOptions, callback: grpc.requestCallback<_ReSendOtpRequest__Output>): grpc.ClientUnaryCall;
+  regenerateOtp(argument: _ReSendOtpRequest, callback: grpc.requestCallback<_ReSendOtpRequest__Output>): grpc.ClientUnaryCall;
   
   Register(argument: _RegisterRequest, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_RegisterResponse__Output>): grpc.ClientUnaryCall;
   Register(argument: _RegisterRequest, metadata: grpc.Metadata, callback: grpc.requestCallback<_RegisterResponse__Output>): grpc.ClientUnaryCall;
@@ -119,12 +129,23 @@ export interface ServicesClient extends grpc.Client {
   savePubKey(argument: _User, options: grpc.CallOptions, callback: grpc.requestCallback<_User__Output>): grpc.ClientUnaryCall;
   savePubKey(argument: _User, callback: grpc.requestCallback<_User__Output>): grpc.ClientUnaryCall;
   
+  updateUser(argument: _User, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_User__Output>): grpc.ClientUnaryCall;
+  updateUser(argument: _User, metadata: grpc.Metadata, callback: grpc.requestCallback<_User__Output>): grpc.ClientUnaryCall;
+  updateUser(argument: _User, options: grpc.CallOptions, callback: grpc.requestCallback<_User__Output>): grpc.ClientUnaryCall;
+  updateUser(argument: _User, callback: grpc.requestCallback<_User__Output>): grpc.ClientUnaryCall;
+  updateUser(argument: _User, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_User__Output>): grpc.ClientUnaryCall;
+  updateUser(argument: _User, metadata: grpc.Metadata, callback: grpc.requestCallback<_User__Output>): grpc.ClientUnaryCall;
+  updateUser(argument: _User, options: grpc.CallOptions, callback: grpc.requestCallback<_User__Output>): grpc.ClientUnaryCall;
+  updateUser(argument: _User, callback: grpc.requestCallback<_User__Output>): grpc.ClientUnaryCall;
+  
 }
 
 export interface ServicesHandlers extends grpc.UntypedServiceImplementation {
   Login: grpc.handleUnaryCall<_LoginRequest__Output, _LoginResponse>;
   
   Otp: grpc.handleUnaryCall<_OtpRequest__Output, _AuthResponse>;
+  
+  RegenerateOtp: grpc.handleUnaryCall<_ReSendOtpRequest__Output, _ReSendOtpRequest>;
   
   Register: grpc.handleUnaryCall<_RegisterRequest__Output, _RegisterResponse>;
   
@@ -144,11 +165,14 @@ export interface ServicesHandlers extends grpc.UntypedServiceImplementation {
   
   savePubKey: grpc.handleUnaryCall<_User__Output, _User>;
   
+  updateUser: grpc.handleUnaryCall<_User__Output, _User>;
+  
 }
 
 export interface ServicesDefinition extends grpc.ServiceDefinition {
   Login: MethodDefinition<_LoginRequest, _LoginResponse, _LoginRequest__Output, _LoginResponse__Output>
   Otp: MethodDefinition<_OtpRequest, _AuthResponse, _OtpRequest__Output, _AuthResponse__Output>
+  RegenerateOtp: MethodDefinition<_ReSendOtpRequest, _ReSendOtpRequest, _ReSendOtpRequest__Output, _ReSendOtpRequest__Output>
   Register: MethodDefinition<_RegisterRequest, _RegisterResponse, _RegisterRequest__Output, _RegisterResponse__Output>
   Send: MethodDefinition<_Event, _Event, _Event__Output, _Event__Output>
   ValidateContacts: MethodDefinition<_ContactsList, _ContactsList, _ContactsList__Output, _ContactsList__Output>
@@ -158,4 +182,5 @@ export interface ServicesDefinition extends grpc.ServiceDefinition {
   handShakeRequest: MethodDefinition<_Event, _Event, _Event__Output, _Event__Output>
   messageUpdate: MethodDefinition<_MessageUpdateRequest, _MessageUpdateResponse, _MessageUpdateRequest__Output, _MessageUpdateResponse__Output>
   savePubKey: MethodDefinition<_User, _User, _User__Output, _User__Output>
+  updateUser: MethodDefinition<_User, _User, _User__Output, _User__Output>
 }

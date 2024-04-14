@@ -1,5 +1,13 @@
 package com.fury.messenger.utils
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Base64
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileInputStream
+
+
 fun formatMilliSeconds(milliseconds: Long): String {
     var finalTimerString = ""
     var secondsString = ""
@@ -22,3 +30,4 @@ fun formatMilliSeconds(milliseconds: Long): String {
 
     return finalTimerString
 }
+

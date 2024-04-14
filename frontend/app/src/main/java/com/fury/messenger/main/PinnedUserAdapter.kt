@@ -14,13 +14,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fury.messenger.R
 import com.fury.messenger.helper.contact.ContactChats
 import com.fury.messenger.helper.ui.Menu
+import com.fury.messenger.helper.ui.base64StringToImage
 import com.fury.messenger.messages.ChatActivity
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.storage.StorageReference
+import com.fury.messenger.utils.ChatActivityIntentProps
+
 
 class PinnedUserAdapter(val context: Context, var userList:ArrayList<ContactChats>, setSelected: (Int?) -> Unit): RecyclerView.Adapter<PinnedUserAdapter.RecentViewHolder>() {
-    private lateinit var dbRef: DatabaseReference
-    private lateinit var storageRef: StorageReference
+
     private  var uri: String? =null
     private var setSelected=setSelected
 
@@ -32,27 +32,20 @@ class PinnedUserAdapter(val context: Context, var userList:ArrayList<ContactChat
     override fun onBindViewHolder(holder: RecentViewHolder, position: Int) {
         val currentUser=userList[position]
         Log.d("username",currentUser.contact.name.toString())
-        holder.textName.text=currentUser.contact.name
+        holder.textName.text= currentUser.contact.name?:currentUser.contact.phoneNumber
         // saving position to handle operation in menuSelect
         holder.textName.tag=currentUser.contact.name
 
-        //storageRef = FirebaseStorage.getInstance().reference
-        val url=""
-//        storageRef?.child("profile"+currentUser.getPhoneNumber())?.downloadUrl?.addOnSuccessListener { url: Uri ->
-//            uri=url.toString()
-//
-//            Glide.with(context.applicationContext)
-//                .load(uri)
-//                .into(holder.imageView);
-//
-//        }
-        //holder.profilePicture.src=currentUser.profile
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ChatActivity::class.java)
-            intent.putExtra("Contact",currentUser.contact.name)
-            intent.putExtra("phoneNumber",currentUser.contact.phoneNumber)
-//            intent.putExtra("uri",url)
+
+            ChatActivityIntentProps(intent,currentUser.contact)
+
             context.startActivity(intent)
+
+            if (currentUser.contact.image?.isNotEmpty() == true){
+                holder.imageView.setImageBitmap(base64StringToImage(currentUser.contact.image!!))
+            }
         }
 
 

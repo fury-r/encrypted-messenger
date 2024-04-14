@@ -24,22 +24,25 @@ type Server struct {
 }
 
 func (s *Server) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
+	log.Default().Println("Login Started.")
 	message, err := service.LoginService(ctx, req)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
-
+	log.Default().Println("Login Ended.")
 	return message, nil
 
 }
 
 func (s *Server) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterResponse, error) {
-	log.Default().Println((req.String()))
+	log.Default().Println("Register Started.")
 	message, err := service.RegisterService(ctx, req)
 	log.Default().Println(message)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
+
+	log.Default().Println("Register Ended.")
 
 	return &pb.RegisterResponse{
 		Message: message.Message,
@@ -48,57 +51,100 @@ func (s *Server) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.Reg
 }
 
 func (s *Server) ValidateContacts(ctx context.Context, req *pb.ContactsList) (*pb.ContactsList, error) {
+	log.Default().Println("ValidateContacts Started.")
+
 	message, err := service.ContactService(ctx, req)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
+
+	log.Default().Println("ValidateContacts Ended.")
 
 	return message, nil
 
 }
 
 func (s *Server) VerifyToken(ctx context.Context, req *pb.AuthRequest) (*pb.AuthResponse, error) {
+	log.Default().Println("VerifyToken Started.")
+
 	message, err := service.VerifyTokenService(ctx, req)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
+	log.Default().Println("VerifyToken Ended.")
 
 	return message, nil
 
 }
 
 func (s *Server) SavePubKey(ctx context.Context, req *pb.User) (*pb.User, error) {
+	log.Default().Println("SavePubKey Started.")
+
 	message, err := service.SavePubKeyService(ctx, req)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
+
+	log.Default().Println("SavePubKey Ended.")
 
 	return message, nil
 
 }
 
 func (s *Server) Otp(ctx context.Context, req *pb.OtpRequest) (*pb.AuthResponse, error) {
+	log.Default().Println("Otp Started.")
+
 	message, err := service.OtpService(ctx, req)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
+
+	log.Default().Println("Otp Ended.")
 
 	return message, nil
 
 }
 
 func (s *Server) GetUser(ctx context.Context, req *pb.UserRequest) (*pb.UserResponse, error) {
+	log.Default().Println("GetUser Started.")
+
 	message, err := service.GetUserService(ctx, req)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
+
+	log.Default().Println("GetUser Ended.")
+
 	return message, nil
 
 }
 
 func (s *Server) BlockUser(ctx context.Context, req *pb.BlockRequest) (*pb.BlockResponse, error) {
+	log.Default().Println("BlockUser Started.")
 
 	message, err := service.BlockUserController(ctx, req)
+	log.Default().Println("BlockUser Ended.")
+
+	return message, err
+}
+
+func (s *Server) UpdateUser(ctx context.Context, req *pb.User) (*pb.User, error) {
+	log.Default().Println("UpdateUser Started.")
+
+	message, err := service.UpdateUserService(ctx, req)
+
+	log.Default().Println("UpdateUser Ended.")
+
+	return message, err
+}
+
+func (s *Server) RegenerateOtp(ctx context.Context, req *pb.ReSendOtpRequest) (*pb.ReSendOtpRequest, error) {
+	log.Default().Println("UpdateUser Started.")
+
+	message, err := service.RegenerateOtpService(ctx, req)
+
+	log.Default().Println("UpdateUser Ended.")
+
 	return message, err
 }
 

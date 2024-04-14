@@ -19,13 +19,19 @@
     "baseUrl": "./src",
     "paths": {
       "app": ["./"],
-      "app/*": ["./*"]
+      "app/*": ["./*"],
+      "shared-types": ["../ts-proto/*"]
     }
   },
   "typeAcquisition": {
     "include": ["jest"]
   },
-  "include": ["src/**/*", "test/**/*", "tsconfig.build.json"],
+  "include": [
+    "src/**/*",
+    "test/**/*",
+    "tsconfig.build.json",
+    "../ts-proto/**/*"
+  ],
   "exclude": ["node_modules", "dist"],
   "typeRoots": ["node_modules/@types", "src/types"]
 }

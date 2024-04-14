@@ -12,6 +12,8 @@ message Contact{
     optional bool isVerified=6;
     optional  string uuid=7;
     optional  string pubKey=8;
+      string image=9;
+      string status=10;
 
 }
 

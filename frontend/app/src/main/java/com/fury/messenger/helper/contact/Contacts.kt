@@ -1,31 +1,21 @@
 package com.fury.messenger.helper.contact
 
-//import com.fury.messenger.data.db.model.ContactsModel
-//import com.fury.messenger.data.db.model.ContactsModel.chatPrivateKey
-//import com.fury.messenger.data.db.model.ContactsModel.chatPublickey
-//import com.fury.messenger.data.db.model.ContactsModel.countryCode
-//import com.fury.messenger.data.db.model.ContactsModel.createdAt
-//import com.fury.messenger.data.db.model.ContactsModel.id
-//import com.fury.messenger.data.db.model.ContactsModel.image
-//import com.fury.messenger.data.db.model.ContactsModel.isVerified
-//import com.fury.messenger.data.db.model.ContactsModel.name
-//import com.fury.messenger.data.db.model.ContactsModel.phoneNumber
-//import com.fury.messenger.data.db.model.ContactsModel.pubKey
-//import com.fury.messenger.data.db.model.ContactsModel.uuid
+
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
 import android.provider.ContactsContract
 import android.util.Log
 import com.fury.messenger.data.db.DbConnect
 import com.fury.messenger.data.db.model.Chat
 import com.fury.messenger.data.db.model.Contact
+import com.fury.messenger.helper.ui.convertImageToBase64String
 import com.fury.messenger.helper.user.CurrentUser
 import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.services.ContactOuterClass
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-//import org.jetbrains.exposed.sql.selectAll
 
 class Contacts(private var ctx: Context) {
     private var contactList: ArrayList<Contact>? = null
@@ -35,37 +25,42 @@ class Contacts(private var ctx: Context) {
 
     }
 
+    suspend fun addToContactList(contactlistRequest: ContactOuterClass.ContactsList) {
+        val contacts = contactlistRequest.contactsList.map {
+            Contact(
+                0,
+                it.name,
+                it.phoneNumber,
+                "",
+                "",
+                it.pubKey,
+                "",
+                it.countryCode,
+                it.isVerified
+            )
+        } as ArrayList<Contact>
+        this.contactList?.addAll(contacts)
+
+        updateDb(contacts)
+    }
+
     suspend fun listAllContacts(): ArrayList<Contact> {
         return withContext(Dispatchers.IO) {
-            val db  by lazy { DbConnect.getDatabase() }
+            val db by lazy { DbConnect.getDatabase() }
 
             val contacts = db.contactDao().loadAllVerified()
-//            val users = ContactsModel.selectAll().where { isVerified eq true }.map {
-//                Contact(
-//                    it[id].toString(),
-//                    it[name],
-//                    it[phoneNumber],
-//                    it[image],
-//                    it[pubKey],
-//                    it[chatPublickey],
-//                    it[chatPrivateKey],
-//                    it[countryCode],
-//                    it[isVerified],
-//                    it[uuid],
-//                    it[createdAt]
-//                )
-//            }
+
 
 
             setContactList(ArrayList(contacts) as ArrayList<Contact>)
-            return@withContext  ArrayList(contacts) as ArrayList<Contact>
+            return@withContext ArrayList(contacts) as ArrayList<Contact>
         }
 
     }
 
     @SuppressLint("Range")
     suspend fun getContactsFromPhone() {
-        while (CurrentUser.phoneNumber.isNullOrEmpty()){
+        while (CurrentUser.phoneNumber.isNullOrEmpty()) {
 
         }
 
@@ -82,8 +77,10 @@ class Contacts(private var ctx: Context) {
                     val phoneNumber =
                         phones.getString(phones.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))
                             .toInt()
-                    val image =
-                        phones.getString(phones.getColumnIndex(ContactsContract.Contacts.PHOTO_URI))
+                    Log.d("ddd", phones.toString())
+                    val imageindex = phones.getColumnIndex(ContactsContract.Contacts.PHOTO_URI)
+                    val image = if (imageindex == -1) null else phones.getString(imageindex)
+                        ?.let { it -> convertImageToBase64String(Uri.parse(it), ctx) }
 
                     if (phoneNumber > 0) {
                         val phoneNumberValue = ctx.contentResolver.query(
@@ -93,11 +90,8 @@ class Contacts(private var ctx: Context) {
                             arrayOf(id),
                             null
                         )
-                        if(phoneNumber.toString()=="9527698053" || phoneNumber.toString()=="9158907407"){
-                            Log.d("check", phoneNumber.toString()+""+CurrentUser.phoneNumber)
 
-                        }
-                        if (phoneNumberValue != null && phoneNumberValue.count > 0  ) {
+                        if (phoneNumberValue != null && phoneNumberValue.count > 0) {
                             while (phoneNumberValue.moveToNext()) {
                                 val phoneNumValue = phoneNumberValue.getString(
                                     phoneNumberValue.getColumnIndex(
@@ -109,13 +103,18 @@ class Contacts(private var ctx: Context) {
                                 }
                                 if (hasNumber == null) {
                                     val contact = Contact(
-                                        id.toInt(), name, phoneNumValue.split(" ").joinToString(""), image
+                                        id.toInt(),
+                                        name,
+                                        phoneNumValue.split(" ").joinToString(""),
+                                        image
                                     )
-                                   if(contact.phoneNumber!=CurrentUser.phoneNumber){
-                                       contactList.add(contact)
-                                   }
+                                    if (!contact.phoneNumber.contains(CurrentUser.phoneNumber!!)) {
+                                        contactList.add(contact)
+                                    }
                                 }
                             }
+                            DbConnect.getDatabase(ctx).contactDao()
+                                .insertAll(*contactList.toTypedArray())
                             phoneNumberValue.close()
 
                         }
@@ -132,40 +131,55 @@ class Contacts(private var ctx: Context) {
 
         }
     }
-    suspend fun validateContacts(){
-        withContext(Dispatchers.IO){
-            if(this@Contacts.contactList!=null){
-                val client= createAuthenticationStub(CurrentUser.getToken())
-                val request= ContactOuterClass.ContactsList.newBuilder()
+
+    suspend fun validateContacts() {
+        withContext(Dispatchers.IO) {
+            if (this@Contacts.contactList != null) {
+                val client = createAuthenticationStub(CurrentUser.getToken())
+                val request = ContactOuterClass.ContactsList.newBuilder()
                 Log.d("validating", contactList.toString())
 
                 this@Contacts.contactList?.forEachIndexed { index, contact ->
                     run {
 
-                        val countryCode=contact.countryCode
-                        if(contact.phoneNumber!=CurrentUser.phoneNumber){
-                            if(countryCode!=null){
-                                val subRequest =ContactOuterClass.Contact.newBuilder().setId(index.toString())
-                                    .setPhoneNumber(contact.phoneNumber).setName(contact.name)
-                                    .setIsVerified(contact.isVerified).setCountryCode(countryCode).build()
-                                request.addContacts( subRequest)
+                        val countryCode = contact.countryCode
 
-                            }else{
-                                val subRequest = ContactOuterClass.Contact.newBuilder().setId(index.toString())
-                                    .setPhoneNumber(contact.phoneNumber).setName(contact.name)
-                                    .setIsVerified(contact.isVerified).build()
+                        if (!contact.phoneNumber.contains(CurrentUser.phoneNumber!!)) {
+                            if (countryCode != null) {
+                                val subRequest =
+                                    ContactOuterClass.Contact.newBuilder().setId(index.toString())
+                                        .setPhoneNumber(contact.phoneNumber).setName(contact.name)
+                                        .setIsVerified(contact.isVerified)
+                                        .setCountryCode(countryCode).build()
+                                request.addContacts(subRequest)
+
+                            } else {
+                                val subRequest =
+                                    ContactOuterClass.Contact.newBuilder().setId(index.toString())
+                                        .setPhoneNumber(contact.phoneNumber).setName(contact.name)
+                                        .setIsVerified(contact.isVerified).build()
                                 request.addContacts(subRequest)
                             }
                         }
                     }
                 }
-                val response= client.validateContacts(request.build())
+                val response = client.validateContacts(request.build())
 
 
-            Log.d("response for contacts" ,response.contactsList.size.toString())
-                if (response.contactsList.size>0){
+                Log.d("response for contacts", response.contactsList.size.toString())
+                if (response.contactsList.size > 0) {
                     updateDb(response.contactsList.map {
-                         Contact(0,it.name,it.phoneNumber,"",it.pubKey,"",it.countryCode,it.isVerified)
+                        Contact(
+                            0,
+                            it.name,
+                            it.phoneNumber,
+                            "",
+                            "",
+                            it.pubKey,
+                            "",
+                            it.countryCode,
+                            it.isVerified
+                        )
                     } as ArrayList<Contact>)
 
                 }
@@ -178,43 +192,29 @@ class Contacts(private var ctx: Context) {
 
             val db = DbConnect.getDatabase()
 
-//        transaction {
-//            SchemaUtils.create(ContactsModel)
+
             val contacts: ArrayList<Contact> = arrayListOf<Contact>()
-            Log.d("Valid contacts",validContacts.size.toString())
+            Log.d("Valid contacts", validContacts.size.toString())
             validContacts.forEach { contact ->
                 run {
-                    val index =
-                        this@Contacts.contactList?.indexOfFirst { it.phoneNumber == contact.phoneNumber }
-                    if (index != null) {
-                        this@Contacts.contactList?.get(index)?.pubKey?.let { it ->
-                            Log.d(
-                                index.let { this@Contacts.contactList?.get(it)?.name }, it
+                    val contactSaved = db.contactDao().findByNumber(contact.phoneNumber)
+
+
+                    if (contact.isVerified) {
+
+                        contacts.add(
+                            Contact(
+                                name = contact.name,
+                                phoneNumber = contact.phoneNumber,
+                                key = contactSaved.key,
+                                image = contact.image,
+                                status = contact.status,
+                                countryCode = contact.countryCode,
+                                uuid = contact.uuid,
+                                pubKey = contact.pubKey,
+                                isVerified = contact.isVerified
                             )
-                        }
-                    }
-                    if (index != null && this@Contacts.contactList?.get(index)?.pubKey?.replace(
-                            "-----BEGIN PUBLIC KEY-----", ""
-                        )?.replace("-----END PUBLIC KEY-----", "")?.replace(
-                            "\n", ""
-                        ) != contact.pubKey?.replace("-----BEGIN PRIVATE KEY-----", "")
-                            ?.replace("-----END PRIVATE KEY-----", "")?.replace("\n", "")
-                    ) {
-//                        ContactsModel.insert {
-//                            it[name] = contact.name!!
-//                            it[phoneNumber] = contact.phoneNumber
-//                            it[pubKey] = contact.pubKey
-//                            it[uuid] = contact.uuid!!
-//                            it[isVerified] = true
-                        contacts.add(Contact(
-                            name = contact.name,
-                            phoneNumber = contact.phoneNumber,
-                            key = contact.key,
-                            countryCode = contact.countryCode,
-                            uuid = contact.uuid,
-                            pubKey = contact.pubKey,
-                            isVerified = contact.isVerified
-                        ) as Contact)
+                        )
 
                     }
 
@@ -222,55 +222,42 @@ class Contacts(private var ctx: Context) {
 
 
             }
-            Log.d("Insert contacts",contacts.size.toString())
+            Log.d("Update", contacts.size.toString())
 
-            db.contactDao().insertAll(*contacts.toTypedArray())
+            db.contactDao().updateAll(*contacts.toTypedArray())
 
-//        }
 
         }
     }
 
 
-  suspend  fun getAllVerifiedContacts(): ArrayList<Contact> {
-      val contacts:ArrayList<Contact>
-      withContext(Dispatchers.IO) {
-          val db = DbConnect.getDatabase()
-          contacts=db.contactDao().loadAllVerified()  as ArrayList<Contact>
-          Log.d("contact size",contacts.size.toString())
+    suspend fun getAllVerifiedContacts(): ArrayList<Contact> {
+        val contacts: ArrayList<Contact>
+        withContext(Dispatchers.IO) {
+            val db = DbConnect.getDatabase()
+            contacts = db.contactDao().loadAllVerified() as ArrayList<Contact>
 
-          contacts.map {
-              Log.d("contact",it.name.toString())
-          }
-          db.contactDao().getAll().map {
-              Log.d("contact",it.name.toString())
-          }
-      }
-      return  contacts
-  }
 
-//        ArrayList(ContactsModel.selectAll().where { ContactsModel.isVerified eq true }.map {
-//            Contact(
-//                it[id].toString(),
-//                it[name],
-//                it[phoneNumber],
-//                it[image],
-//                it[pubKey],
-//                it[chatPublickey],
-//                it[chatPrivateKey],
-//                it[countryCode],
-//                it[isVerified],
-//                it[uuid],
-//                it[createdAt]
-//            )
-//        })
-//    }
+        }
+        return contacts
+    }
+
+    suspend fun getAllContacts(): ArrayList<Contact> {
+        val contacts: ArrayList<Contact>
+        withContext(Dispatchers.IO) {
+            val db = DbConnect.getDatabase()
+            contacts = db.contactDao().getAll() as ArrayList<Contact>
+
+
+        }
+        return contacts
+    }
+
 }
 
 
-
-class ContactChats (
-    val contact:Contact,
-    val messageCount:Int,
-    val latestMessage: Chat?=null
+class ContactChats(
+    val contact: Contact,
+    var messageCount: Int,
+    var latestMessage: Chat? = null
 )

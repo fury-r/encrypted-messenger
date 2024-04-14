@@ -11,7 +11,6 @@ import (
 )
 
 func ContactService(ctx context.Context, req *pb.ContactsList) (*pb.ContactsList, error) {
-	log.Default().Println("Validating  contacts")
 	app, err := firebase.InitFirebase().Firestore(ctx)
 	if err != nil {
 		return nil, err
@@ -45,24 +44,26 @@ func ContactService(ctx context.Context, req *pb.ContactsList) (*pb.ContactsList
 				break
 			}
 			if err != nil {
-				log.Fatalf("Failed to iterate over query results: %v", err)
+				log.Default().Println("Failed to iterate over query results:", err)
 			}
 			if doc == nil {
 				log.Default().Println("Document is nil")
 			} else {
 				verified := true
 				data := doc.Data()
-				log.Default().Println("looping over iter " + data["phoneNumber"].(string))
 				pubKey, ok := data["pubKey"]
 				key := ""
 				if ok == true {
 					key = pubKey.(string)
 				}
+
 				value := pb.Contact{
 					Id:          " ",
 					Name:        data["username"].(string),
 					PhoneNumber: data["phoneNumber"].(string),
 					PubKey:      &key,
+					Image:       data["image"].(string),
+					Status:      data["status"].(string),
 					Uuid:        &doc.Ref.ID,
 					IsVerified:  &verified,
 				}

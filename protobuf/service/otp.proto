@@ -8,6 +8,10 @@ option java_package = "com.services";
 
 message OtpRequest {
    string otp = 1;
-  optional  string email = 2;
+   optional  string email = 2;
    optional string phoneNumber=3;
+}
+
+message ReSendOtpRequest {
+   optional string phoneNumber=1;
 }

@@ -3,6 +3,8 @@ This code is an improvement over my old project which is private:[link](https://
 
 [![Workflow status](https://github.com/fury-dev/erp/actions/workflows/actions.yaml/badge.svg?branch=master)](https://github.com/fury-dev/erp/actions/workflows/actions.yaml)
 
+![messenger](https://github.com/fury-r/encrypted-messenger/assets/79844581/66a70d5b-6978-4114-9a72-cd559901d8fd)
+
 
 SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging application designed to prioritize user privacy and data security. The application is written in Kotlin for the Android platform, utilizes gRPC for communication, employs Protocol Buffers for efficient data serialization, and includes middleware written in Node.js using TypeScript. The backend server is implemented in the Go programming language.
 
@@ -20,8 +22,8 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
 
 - **Go Backend Server:** The backend server is implemented in the Go programming language, providing a robust and performant infrastructure for managing user accounts, storing messages, and handling various application functionalities.
 
-## Architechure
-![ArchitechureMessenger drawio (4)](https://github.com/fury-r/encrypted-messenger/assets/79844581/8928de14-1a11-4258-aa4a-7690aa6dc10d)
+## Architecture
+![Architecture drawio (5)](https://github.com/fury-r/encrypted-messenger/assets/79844581/52ad568b-6c70-47e2-8a0a-9d7bdab76c7d)
 
 ### Description
 - Client: This refers to the mobile application that users interact with to send and receive messages. Written Kotlin(Android App).
@@ -44,7 +46,7 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
 ### Dependecies for proto
 - Backend:
 
-``sh
+``
  go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 ``
 
@@ -56,7 +58,7 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
    - Open the SecureMessenger Android project in Android Studio.
    - Open terminal in wsl or in your linux os
    - generate the types if not you have made any change
-   ``sh
+   ``
       sh linux_proto.sh
    ``
    - Build and run the application on an emulator or physical device.
@@ -75,6 +77,8 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
    - Installation:[link](https://www.rabbitmq.com/docs/install-windows-manual)
    - Make sure rabbitMQ is running.
    - Configure client and admin credetials at [link](http://localhost:15672/)
+4. **Protobufs**
+   - Installation:[link](https://protobuf.dev/)
 
 ### End to End encryption
 ## How It Works
@@ -138,6 +142,15 @@ This setup ensures end-to-end encryption of communication between users, providi
 ## Configuration
 
 - Update the necessary configuration parameters in the Android app, middleware, and backend server to match your environment, such as API endpoints, database connections, and encryption keys.
+
+### Notice
+- Might have some bugs
+
+### Further Enhancements
+
+- Save voice messages in the firestore db.Show user that message is recieved, give a option to download the voice message so the user can decide when to download.(Types have been already declared)
+- Send other forms of media
+- Send otp To Device using sms
 
 ## Contact
 

@@ -2,7 +2,6 @@ package com.fury.messenger.Validater
 
 import android.Manifest
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -11,7 +10,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.fury.messenger.R
 import com.fury.messenger.helper.user.CurrentUser
@@ -20,7 +18,6 @@ import com.fury.messenger.manageBuilder.ManageChanelBuilder
 import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.fury.messenger.ui.login.LoginActivity
 import com.fury.messenger.utils.TokenManager
-import com.google.firebase.auth.FirebaseAuth
 import com.services.Auth.AuthRequest
 import io.grpc.ManagedChannel
 import kotlinx.coroutines.CoroutineScope
@@ -31,7 +28,6 @@ import kotlinx.coroutines.withContext
 class VerifyTokenActivity : AppCompatActivity() {
     private lateinit var editPhoneNumber: EditText
     private lateinit var loginBtn: Button
-    private lateinit var mAuth: FirebaseAuth
     private lateinit var signupBtn: Button
     private lateinit var channel: ManagedChannel
     private var hasReadContactPermission: Boolean = false
@@ -42,7 +38,6 @@ class VerifyTokenActivity : AppCompatActivity() {
     lateinit var message: String
     private var scope = CoroutineScope(Dispatchers.Main)
 
-    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loading)
@@ -69,26 +64,37 @@ class VerifyTokenActivity : AppCompatActivity() {
 
 
             val ctx = this
-            var intent: Intent
+            var intent: Intent?=null
             scope.launch {
 
                 withContext(Dispatchers.IO) {
                     val request = AuthRequest.newBuilder().build()
 
-                    val response = client.verifyToken(request)
-                    Log.d("setting user details", response.token)
-                    val tokenManager = TokenManager(this@VerifyTokenActivity)
+                 try{
+                     val response = client.verifyToken(request)
+                     Log.d("setting user details", response.token)
+                     val tokenManager = TokenManager(this@VerifyTokenActivity)
 
-                    intent = if (response.hasError()) {
-                        tokenManager.deleteToken()
-                        Intent(ctx, LoginActivity::class.java)
+                     intent = if (response.hasError()) {
+                         tokenManager.deleteToken()
+                         Intent(ctx, LoginActivity::class.java)
 
 
-                    } else {
-                        CurrentUser.saveUserDetails(this@VerifyTokenActivity, token, response)
-                        Intent(ctx, MainActivity::class.java)
+                     } else {
+                         CurrentUser.saveUserDetails(this@VerifyTokenActivity, token, response)
+                         Intent(ctx, MainActivity::class.java)
+                     }
+                 }catch (e:Exception){
+                     tokenManager.deleteToken()
+
+                     intent = Intent(ctx, LoginActivity::class.java)
+
+                 }finally {
+
+                       if(intent!=null){
+                           startActivity(intent)
+                       }
                     }
-                    startActivity(intent)
 
                 }
 

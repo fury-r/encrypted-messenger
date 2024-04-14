@@ -1,52 +1,20 @@
 package com.fury.messenger.data.db.model
 
-//import org.jetbrains.exposed.dao.id.IntIdTable
-//import org.jetbrains.exposed.sql.javatime.CurrentDateTime
-//import org.jetbrains.exposed.sql.javatime.datetime
 import androidx.room.ColumnInfo
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.Update
 import java.time.OffsetDateTime
 
-//data class Chat(
-//    val id: Int,
-//    val sender: String,
-//    val receiver: String,
-//    val message: String,
-//    val messageId: String,
-//    val contentType: String,
-//    val isDelivered: Boolean,
-//    var isSeen: Boolean,
-//    val type: Message.MessageType,
-//    val createdAt: LocalDateTime?
-//
-//)
 
-//object Chats : IntIdTable("Chats") {
-//    val sender = varchar("sender", 50)
-//    val receiver = varchar("receiver", 50)
-//    val receiver_id = integer("receiver_id").references(ContactsModel.id)
-//    val messageId = varchar("messageId", 50).uniqueIndex()
-//    val message = varchar("message", 999999999)
-//    val type = varchar("type", 100)
-//    val contentType = varchar("contentType", 100)
-//    val isDelivered = bool("isDelivered")
-//    val isSeen = bool("isSeen")
-//    val createdAt = datetime("createdAt").defaultExpression(CurrentDateTime)
-//    val updatedAt = datetime("updatedAt").defaultExpression(CurrentDateTime)
-//
-//    init {
-//        index(true, messageId)
-//    }
-//}
 
-//indices = [Index(value = ["messageId"], unique = true)]
-@Entity(tableName = "chats")
+//
+@Entity(tableName = "chats",indices = [Index(value = ["messageId"], unique = true)])
 data class Chat(
     @ColumnInfo(name = "sender") var sender: String,
     @ColumnInfo(name = "receiver") var receiver: String,
@@ -83,7 +51,7 @@ interface ChatsDao {
     fun findByReceiversUnreadMessage(receiver: String): Int
     @Query("SELECT * FROM chats WHERE receiver LIKE :receiver or  sender LIKE :receiver Order by createdAt  DESC Limit 1")
     fun findLastMessageByReciever(receiver: String): Chat
-    @Query("SELECT * FROM chats WHERE receiver = :number  or sender=:number  Order by createdAt")
+    @Query("SELECT * FROM chats WHERE receiver = :number  or sender=:number  Order by createdAt DESC")
     fun loadChatsByNumber(number: String): List<Chat>
 
     @Query("SELECT COUNT(*) FROM chats WHERE receiver = :number  or sender=:number  Order by createdAt")

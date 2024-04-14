@@ -10,6 +10,8 @@ export interface Contact {
   'isVerified'?: (boolean);
   'uuid'?: (string);
   'pubKey'?: (string);
+  'image'?: (string);
+  'status'?: (string);
   '_countryCode'?: "countryCode";
   '_profilePicture'?: "profilePicture";
   '_isVerified'?: "isVerified";
@@ -26,4 +28,6 @@ export interface Contact__Output {
   'isVerified'?: (boolean);
   'uuid'?: (string);
   'pubKey'?: (string);
+  'image'?: (string);
+  'status'?: (string);
 }

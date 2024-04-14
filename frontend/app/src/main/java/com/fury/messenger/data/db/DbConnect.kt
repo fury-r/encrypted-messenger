@@ -2,6 +2,7 @@ package com.fury.messenger.data.db
 import android.content.Context
 import androidx.room.Room
 import com.fury.messenger.helper.user.AppDatabase
+
 //import org.jetbrains.exposed.sql.Database
 
 //fun connectToDb(){
@@ -28,7 +29,8 @@ import com.fury.messenger.helper.user.AppDatabase
                     context!!.applicationContext,
                     AppDatabase::class.java,
                     "main.db"
-                ).build()
+                ).fallbackToDestructiveMigration()
+                    .build()
                 INSTANCE = instance
                 instance
             }

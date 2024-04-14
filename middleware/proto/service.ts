@@ -27,6 +27,7 @@ export interface ProtoGrpcType {
   MessageUpdateRequest: MessageTypeDefinition
   MessageUpdateResponse: MessageTypeDefinition
   OtpRequest: MessageTypeDefinition
+  ReSendOtpRequest: MessageTypeDefinition
   RegisterRequest: MessageTypeDefinition
   RegisterResponse: MessageTypeDefinition
   Services: SubtypeConstructor<typeof grpc.Client, _ServicesClient> & { service: _ServicesDefinition }

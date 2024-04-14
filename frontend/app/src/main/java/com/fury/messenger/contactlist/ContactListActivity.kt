@@ -17,22 +17,19 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fury.messenger.R
+import com.fury.messenger.crypto.Crypto.initRSA
 import com.fury.messenger.data.db.DBMessage
 import com.fury.messenger.data.db.DBUser
 import com.fury.messenger.data.db.DbConnect.getDatabase
 import com.fury.messenger.editprofile.EditProfile
 import com.fury.messenger.helper.contact.ContactChats
-import com.fury.messenger.helper.contact.Contacts
 import com.fury.messenger.helper.user.AppDatabase
-import com.fury.messenger.helper.user.CurrentUser
 import com.fury.messenger.main.UserAdapter
-import com.fury.messenger.crypto.Crypto.initRSA
 import com.fury.messenger.ui.login.LoginActivity
 import com.fury.messenger.utils.TokenManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ContactListActivity : AppCompatActivity() {
 
@@ -49,13 +46,11 @@ class ContactListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contacts)
 
-        val contacts = Contacts(this)
         progressBar = findViewById(R.id.progressBar)
         searchView = findViewById(R.id.searchView)
         db = getDatabase(this)
         val ctx = this
         initRSA(ctx)
-        this@ContactListActivity.progressBar.isVisible = true
         searchView.clearFocus()
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -72,11 +67,16 @@ class ContactListActivity : AppCompatActivity() {
                             ?: false
                     }
                     if (filteredList.isEmpty()) {
-                        Toast.makeText(this@ContactListActivity, "No contacts found", Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            this@ContactListActivity,
+                            "No contacts found",
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
 
                     } else {
-                        this@ContactListActivity.adapter.userList = filteredList as ArrayList<ContactChats>
+                        this@ContactListActivity.adapter.userList =
+                            filteredList as ArrayList<ContactChats>
                     }
 
 
@@ -88,47 +88,14 @@ class ContactListActivity : AppCompatActivity() {
                 return true
             }
         })
-        scope.launch {
-
-            withContext(Dispatchers.IO) {
-                try {
-
-                    contacts.getContactsFromPhone()
-                    contacts.validateContacts()
-                    val data = contacts.getAllVerifiedContacts()
-                    val contactsList = DBUser.getAllLastMessagesForContact(
-                        this@ContactListActivity,
-                        data
-                    )
-
-                    runOnUiThread {
-                        this@ContactListActivity.setContactList(
-                            contactsList
-                        )
-
-                    }
-                } catch (e: Error) {
-                    Log.d("Error", e.toString())
-
-                } finally {
-                    runOnUiThread {
-                        this@ContactListActivity.progressBar.isVisible = false
-
-                    }
-
-                }
-
-            }
-        }
 
 
-        Log.d("Contact-z", userList.size.toString())
-
+        getContacts()
         tokenManager = TokenManager(this)
         supportActionBar!!.setBackgroundDrawable(ColorDrawable(Color.parseColor("#696969")))
-        adapter = UserAdapter(this, userList,fun(pos:Int?){
-            this.selected=pos
-        },true)
+        adapter = UserAdapter(this, userList, fun(pos: Int?) {
+            this.selected = pos
+        }, true)
         userListView = findViewById(R.id.contactlist)
         userListView.layoutManager = LinearLayoutManager(this)
 
@@ -138,35 +105,32 @@ class ContactListActivity : AppCompatActivity() {
         userListView.adapter = adapter
 
 
-
     }
 
 
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
-
 
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val selectedItem = this.selected?.let { userList[it] }
 
-        if(selectedItem!=null){
+        if (selectedItem != null) {
 
             when (item.itemId) {
 
-                R.id.pin->{
+                R.id.pin -> {
 
                     scope.launch {
-                        if(selectedItem.contact.isPinned==true){
-                            selectedItem.contact.isPinned=false
+                        if (selectedItem.contact.isPinned == true) {
+                            selectedItem.contact.isPinned = false
                             db.contactDao().update(selectedItem.contact)
 
-                        }
-                        else{
-                            selectedItem.contact.isPinned=true
+                        } else {
+                            selectedItem.contact.isPinned = true
                             db.contactDao().update(selectedItem.contact)
 
                         }
@@ -174,8 +138,9 @@ class ContactListActivity : AppCompatActivity() {
                     }
 
                 }
-                R.id.block->{
-                    Log.d("onContextItemSelected","isPinned")
+
+                R.id.block -> {
+                    Log.d("onContextItemSelected", "isPinned")
 
                     scope.launch {
                         DBMessage.blockUser(selectedItem.contact.phoneNumber)
@@ -187,19 +152,25 @@ class ContactListActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.logout) {
-            tokenManager.deleteToken()
-            val intent = Intent(this, LoginActivity::class.java)
+        when (item.itemId) {
+            R.id.logout -> {
+                val intent = Intent(this, LoginActivity::class.java)
 
-            // finish()
-            startActivity(intent)
-            return true
-        } else if (item.itemId == R.id.editProfile) {
-            val intent = Intent(this, EditProfile::class.java)
+                startActivity(intent)
+                return true
+            }
 
-            // finish()
-            startActivity(intent)
-            return true
+            R.id.editProfile -> {
+                val intent = Intent(this, EditProfile::class.java)
+
+                startActivity(intent)
+                return true
+            }
+
+            R.id.refresh -> {
+                getContacts(true)
+            }
+
         }
         return super.onOptionsItemSelected(item)
     }
@@ -216,4 +187,48 @@ class ContactListActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
 
     }
+
+    private fun getContacts(api:Boolean=false) {
+        scope.launch {
+            try {
+                runOnUiThread {
+                    this@ContactListActivity.progressBar.isVisible = true
+
+                }
+                val contactList =
+                    DBUser.getAllContactsWithMessages(this@ContactListActivity, all = true,api)
+
+                val contacts= arrayListOf<ContactChats>()
+                val verified = contactList.filter {
+                      it.contact.isVerified
+                 }.sortedBy { it.contact.createdAt }
+                    contacts.addAll(verified)
+
+
+                val unverified =
+                    contactList.filter { !it.contact.isVerified }.sortedBy { it.contact.name }.toList()
+                contacts.addAll(unverified)
+
+
+                runOnUiThread {
+                    if (verified != null) {
+                        this@ContactListActivity.setContactList(
+                            contacts
+                        )
+                    }
+
+                }
+            } catch (e: Error) {
+                e.printStackTrace()
+
+            } finally {
+                runOnUiThread {
+                    this@ContactListActivity.progressBar.isVisible = false
+
+                }
+
+            }
+        }
+    }
+
 }

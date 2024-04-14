@@ -178,6 +178,30 @@ public final class UserOuterClass {
      */
     com.google.protobuf.ByteString
         getBlockedUsersBytes(int index);
+
+    /**
+     * <code>string status = 11;</code>
+     * @return The status.
+     */
+    java.lang.String getStatus();
+    /**
+     * <code>string status = 11;</code>
+     * @return The bytes for status.
+     */
+    com.google.protobuf.ByteString
+        getStatusBytes();
+
+    /**
+     * <code>string image = 12;</code>
+     * @return The image.
+     */
+    java.lang.String getImage();
+    /**
+     * <code>string image = 12;</code>
+     * @return The bytes for image.
+     */
+    com.google.protobuf.ByteString
+        getImageBytes();
   }
   /**
    * Protobuf type {@code User}
@@ -201,6 +225,8 @@ public final class UserOuterClass {
       token_ = "";
       pubKey_ = "";
       blockedUsers_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      status_ = "";
+      image_ = "";
     }
 
     @java.lang.Override
@@ -302,6 +328,18 @@ public final class UserOuterClass {
                 mutable_bitField0_ |= 0x00000040;
               }
               blockedUsers_.add(s);
+              break;
+            }
+            case 90: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              status_ = s;
+              break;
+            }
+            case 98: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              image_ = s;
               break;
             }
             default: {
@@ -745,6 +783,82 @@ public final class UserOuterClass {
       return blockedUsers_.getByteString(index);
     }
 
+    public static final int STATUS_FIELD_NUMBER = 11;
+    private volatile java.lang.Object status_;
+    /**
+     * <code>string status = 11;</code>
+     * @return The status.
+     */
+    @java.lang.Override
+    public java.lang.String getStatus() {
+      java.lang.Object ref = status_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        status_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string status = 11;</code>
+     * @return The bytes for status.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getStatusBytes() {
+      java.lang.Object ref = status_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        status_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int IMAGE_FIELD_NUMBER = 12;
+    private volatile java.lang.Object image_;
+    /**
+     * <code>string image = 12;</code>
+     * @return The image.
+     */
+    @java.lang.Override
+    public java.lang.String getImage() {
+      java.lang.Object ref = image_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        image_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string image = 12;</code>
+     * @return The bytes for image.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getImageBytes() {
+      java.lang.Object ref = image_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        image_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -788,6 +902,12 @@ public final class UserOuterClass {
       }
       for (int i = 0; i < blockedUsers_.size(); i++) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 10, blockedUsers_.getRaw(i));
+      }
+      if (!getStatusBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, status_);
+      }
+      if (!getImageBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 12, image_);
       }
       unknownFields.writeTo(output);
     }
@@ -833,6 +953,12 @@ public final class UserOuterClass {
         }
         size += dataSize;
         size += 1 * getBlockedUsersList().size();
+      }
+      if (!getStatusBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, status_);
+      }
+      if (!getImageBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(12, image_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -887,6 +1013,10 @@ public final class UserOuterClass {
       }
       if (!getBlockedUsersList()
           .equals(other.getBlockedUsersList())) return false;
+      if (!getStatus()
+          .equals(other.getStatus())) return false;
+      if (!getImage()
+          .equals(other.getImage())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -932,6 +1062,10 @@ public final class UserOuterClass {
         hash = (37 * hash) + BLOCKEDUSERS_FIELD_NUMBER;
         hash = (53 * hash) + getBlockedUsersList().hashCode();
       }
+      hash = (37 * hash) + STATUS_FIELD_NUMBER;
+      hash = (53 * hash) + getStatus().hashCode();
+      hash = (37 * hash) + IMAGE_FIELD_NUMBER;
+      hash = (53 * hash) + getImage().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1090,6 +1224,10 @@ public final class UserOuterClass {
         bitField0_ = (bitField0_ & ~0x00000020);
         blockedUsers_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000040);
+        status_ = "";
+
+        image_ = "";
+
         return this;
       }
 
@@ -1154,6 +1292,8 @@ public final class UserOuterClass {
           bitField0_ = (bitField0_ & ~0x00000040);
         }
         result.blockedUsers_ = blockedUsers_;
+        result.status_ = status_;
+        result.image_ = image_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1251,6 +1391,14 @@ public final class UserOuterClass {
             ensureBlockedUsersIsMutable();
             blockedUsers_.addAll(other.blockedUsers_);
           }
+          onChanged();
+        }
+        if (!other.getStatus().isEmpty()) {
+          status_ = other.status_;
+          onChanged();
+        }
+        if (!other.getImage().isEmpty()) {
+          image_ = other.image_;
           onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -2152,6 +2300,158 @@ public final class UserOuterClass {
   checkByteStringIsUtf8(value);
         ensureBlockedUsersIsMutable();
         blockedUsers_.add(value);
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object status_ = "";
+      /**
+       * <code>string status = 11;</code>
+       * @return The status.
+       */
+      public java.lang.String getStatus() {
+        java.lang.Object ref = status_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          status_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string status = 11;</code>
+       * @return The bytes for status.
+       */
+      public com.google.protobuf.ByteString
+          getStatusBytes() {
+        java.lang.Object ref = status_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          status_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string status = 11;</code>
+       * @param value The status to set.
+       * @return This builder for chaining.
+       */
+      public Builder setStatus(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        status_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string status = 11;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearStatus() {
+        
+        status_ = getDefaultInstance().getStatus();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string status = 11;</code>
+       * @param value The bytes for status to set.
+       * @return This builder for chaining.
+       */
+      public Builder setStatusBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        status_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object image_ = "";
+      /**
+       * <code>string image = 12;</code>
+       * @return The image.
+       */
+      public java.lang.String getImage() {
+        java.lang.Object ref = image_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          image_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string image = 12;</code>
+       * @return The bytes for image.
+       */
+      public com.google.protobuf.ByteString
+          getImageBytes() {
+        java.lang.Object ref = image_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          image_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string image = 12;</code>
+       * @param value The image to set.
+       * @return This builder for chaining.
+       */
+      public Builder setImage(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        image_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string image = 12;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearImage() {
+        
+        image_ = getDefaultInstance().getImage();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string image = 12;</code>
+       * @param value The bytes for image to set.
+       * @return This builder for chaining.
+       */
+      public Builder setImageBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        image_ = value;
         onChanged();
         return this;
       }
@@ -3510,18 +3810,18 @@ public final class UserOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\nuser.proto\032\037google/protobuf/timestamp." +
-      "proto\"\300\002\n\004User\022\025\n\010username\030\001 \001(\tH\000\210\001\001\022\025\n" +
+      "proto\"\337\002\n\004User\022\025\n\010username\030\001 \001(\tH\000\210\001\001\022\025\n" +
       "\010password\030\002 \001(\tH\001\210\001\001\022\022\n\005email\030\003 \001(\tH\002\210\001\001" +
       "\022\023\n\013phoneNumber\030\004 \001(\t\022\030\n\013countryCode\030\005 \001" +
       "(\tH\003\210\001\001\0222\n\tupdatedAt\030\006 \001(\0132\032.google.prot" +
       "obuf.TimestampH\004\210\001\001\022\014\n\004uuid\030\007 \001(\t\022\r\n\005tok" +
       "en\030\010 \001(\t\022\023\n\006pubKey\030\t \001(\tH\005\210\001\001\022\024\n\014blocked" +
-      "Users\030\n \003(\tB\013\n\t_usernameB\013\n\t_passwordB\010\n" +
-      "\006_emailB\016\n\014_countryCodeB\014\n\n_updatedAtB\t\n" +
-      "\007_pubKey\"-\n\014BlockRequest\022\r\n\005block\030\001 \001(\010\022" +
-      "\016\n\006number\030\002 \001(\t\"%\n\rBlockResponse\022\024\n\014bloc" +
-      "kedUsers\030\001 \003(\tB\023\n\014com.servicesZ\003/pbb\006pro" +
-      "to3"
+      "Users\030\n \003(\t\022\016\n\006status\030\013 \001(\t\022\r\n\005image\030\014 \001" +
+      "(\tB\013\n\t_usernameB\013\n\t_passwordB\010\n\006_emailB\016" +
+      "\n\014_countryCodeB\014\n\n_updatedAtB\t\n\007_pubKey\"" +
+      "-\n\014BlockRequest\022\r\n\005block\030\001 \001(\010\022\016\n\006number" +
+      "\030\002 \001(\t\"%\n\rBlockResponse\022\024\n\014blockedUsers\030" +
+      "\001 \003(\tB\023\n\014com.servicesZ\003/pbb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -3533,7 +3833,7 @@ public final class UserOuterClass {
     internal_static_User_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_User_descriptor,
-        new java.lang.String[] { "Username", "Password", "Email", "PhoneNumber", "CountryCode", "UpdatedAt", "Uuid", "Token", "PubKey", "BlockedUsers", "Username", "Password", "Email", "CountryCode", "UpdatedAt", "PubKey", });
+        new java.lang.String[] { "Username", "Password", "Email", "PhoneNumber", "CountryCode", "UpdatedAt", "Uuid", "Token", "PubKey", "BlockedUsers", "Status", "Image", "Username", "Password", "Email", "CountryCode", "UpdatedAt", "PubKey", });
     internal_static_BlockRequest_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_BlockRequest_fieldAccessorTable = new

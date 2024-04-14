@@ -1,7 +1,6 @@
 package com.fury.messenger.signup
 
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,100 +10,88 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.fury.messenger.R
 import com.fury.messenger.helper.user.CurrentUser
-import com.fury.messenger.main.MainActivity
 import com.fury.messenger.manageBuilder.ManageChanelBuilder
 import com.fury.messenger.manageBuilder.createAuthenticationStub
 import com.fury.messenger.otp.OtpActivity
 import com.fury.messenger.utils.Constants
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.services.Register.RegisterRequest
+import com.services.Register
 import io.grpc.ManagedChannel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
-class SignupActivity: AppCompatActivity() {
+class SignupActivity : AppCompatActivity() {
 
     private lateinit var edtPhoneNumber: EditText
     private lateinit var edtusername: EditText
-    private  lateinit var editEmail:EditText
+    private lateinit var editEmail: EditText
     private lateinit var edtPassword: EditText
     private lateinit var loginBtn: Button
     private lateinit var signupBtn: Button
-    private lateinit var mAuth: FirebaseAuth
-    private lateinit var dbRef: DatabaseReference
-    private lateinit var channel:ManagedChannel
+
+    private lateinit var channel: ManagedChannel
+    private var scope: CoroutineScope = CoroutineScope(Dispatchers.IO)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
 
-        mAuth = FirebaseAuth.getInstance()
-        edtPhoneNumber= findViewById(R.id.phoneNumber)
+        edtPhoneNumber = findViewById(R.id.phoneNumber)
         edtusername = findViewById(R.id.username)
-        editEmail=findViewById(R.id.email)
+        editEmail = findViewById(R.id.email)
         edtPassword = findViewById(R.id.password)
-        signupBtn = findViewById(R.id.signupBtn)
-        channel=ManageChanelBuilder.channel
-        val client= createAuthenticationStub(CurrentUser.getToken())
+        signupBtn = findViewById(R.id.submitBtn)
+        channel = ManageChanelBuilder.channel
+        val client = createAuthenticationStub(CurrentUser.getToken())
         signupBtn.setOnClickListener {
-            signupBtn.setEnabled(false)
-//            val email = edtEmail.text.toString()
-//            val username = edtusername.text.toString()
-//            val password = edtPassword.text.toString()
-//            sign(email, password,username)
-            var number=edtPhoneNumber.text.toString()
-            val countryCode= number?.let { Constants.getCountryCodeFromPhone(it) }
-            if(countryCode!=null) {
-                number = number.replace("+$countryCode", "")
+            scope.launch {
+                Log.d("Register", "register user")
+                runOnUiThread {
+                    signupBtn.isEnabled = false
+                }
+
+                var number = edtPhoneNumber.text.toString()
+                val countryCode = number?.let { Constants.getCountryCodeFromPhone(it) }
+                if (countryCode != null) {
+                    number = number.replace("+$countryCode", "")
+                }
+                val request =
+                    Register.RegisterRequest.newBuilder().setEmail(editEmail.text.toString())
+                        .setPassword(edtPassword.text.toString()).setPhoneNumber(number)
+                        .setCountryCode(countryCode).setUsername(edtusername.text.toString())
+                        .build()
+                val response = (async { client.register(request) }).await()
+
+                runOnUiThread{
+                    Toast.makeText(
+                        this@SignupActivity,
+                        if (response.hasError()) response.error + "." + response.message else (response.message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                if (!response.hasError()) {
+                 runOnUiThread {
+
+                     val intent = Intent(this@SignupActivity, OtpActivity::class.java)
+                     intent.putExtra("phoneNumber", number)
+                     intent.putExtra("email", editEmail.text.toString())
+
+                     startActivity(intent)
+                 }
+                }
+
+
+
+                runOnUiThread {
+                    signupBtn.isEnabled = true
+                }
             }
-            val request=RegisterRequest.newBuilder().setEmail(editEmail.text.toString()).setPassword( edtPassword.text.toString()).setPhoneNumber(number).setCountryCode(countryCode).setUsername( edtusername.text.toString()).build()
-            val response=client.register(request)
-
-            Toast.makeText(this,if (response.hasError() )response.error+"."+response.message else (response.message),Toast.LENGTH_SHORT).show()
-            Log.d("response",response.message+"1111")
-            if(!response.hasError()){
-                val intent=Intent(this,OtpActivity::class.java)
-                intent.putExtra("phoneNumber",number)
-                intent.putExtra("email",editEmail.text.toString())
-
-                startActivity(intent)
-            }
-
-
-
-            signupBtn.setEnabled(true)
-
-
 
 
         }
     }
 
-    private fun sign(email: String, password: String,username:String) {
-        Log.d("myTag",email+" "+password)
-        mAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                Log.d("Mytag", task.isSuccessful.toString())
-                Log.d("Check",task.exception.toString())
-                if (task.isSuccessful) {
-                    addUserToFirestore(username,email,mAuth.currentUser?.uid!!)
-                    val intent = Intent(this, MainActivity::class.java)
-                    finish()
-
-                    startActivity(intent)
-
-                } else {
-                    print(task)
-                    Toast.makeText(this, "Some error occured", Toast.LENGTH_SHORT).show()
-
-                }
 
 
-            }
-    }
-    private fun addUserToFirestore(username: String,email: String,uid:String){
-        Log.d("database",username+" "+email+" "+uid)
-//
-//    dbRef=FirebaseDatabase.getInstance().getReference()
-//        dbRef.child("user").child(uid).setValue(Contact(username,email,uid))
-    }
 }

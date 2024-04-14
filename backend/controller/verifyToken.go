@@ -57,7 +57,10 @@ func VerifyTokenService(ctx context.Context, req *pb.AuthRequest) (*pb.AuthRespo
 				PhoneNumber:  data.GetPhoneNumber(),
 				Uuid:         id,
 				PubKey:       data.PubKey,
+				Image:        data.Image,
 				BlockedUsers: data.BlockedUsers,
+				Status:       data.Status,
+				Username:     data.Username,
 			},
 		}, nil
 	}

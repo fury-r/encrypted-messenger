@@ -1544,7 +1544,7 @@ public final class Service {
       "proto\032\nauth.proto\032\nuser.proto\"\"\n\013UserReq" +
       "uest\022\023\n\013phoneNumber\030\001 \001(\t\"J\n\014UserRespons" +
       "e\022\023\n\013phoneNumber\030\001 \001(\t\022\016\n\006pubKey\030\002 \001(\t\022\025" +
-      "\n\rblocked_users\030\003 \003(\t2\346\003\n\010Services\022(\n\005Lo" +
+      "\n\rblocked_users\030\003 \003(\t2\275\004\n\010Services\022(\n\005Lo" +
       "gin\022\r.LoginRequest\032\016.LoginResponse\"\000\0221\n\010" +
       "Register\022\020.RegisterRequest\032\021.RegisterRes" +
       "ponse\"\000\022#\n\003Otp\022\013.OtpRequest\032\r.AuthRespon" +
@@ -1556,8 +1556,10 @@ public final class Service {
       "vePubKey\022\005.User\032\005.User\"\000\022$\n\020handShakeReq" +
       "uest\022\006.Event\032\006.Event\"\000\022(\n\007getUser\022\014.User" +
       "Request\032\r.UserResponse\"\000\022,\n\tblockUser\022\r." +
-      "BlockRequest\032\016.BlockResponse\"\000B\023\n\014com.se" +
-      "rvicesZ\003/pbb\006proto3"
+      "BlockRequest\032\016.BlockResponse\"\000\022\034\n\nupdate" +
+      "User\022\005.User\032\005.User\"\000\0227\n\rRegenerateOtp\022\021." +
+      "ReSendOtpRequest\032\021.ReSendOtpRequest\"\000B\023\n" +
+      "\014com.servicesZ\003/pbb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
