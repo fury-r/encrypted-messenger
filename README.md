@@ -1,7 +1,7 @@
 # SecureMessenger App
 This code is an improvement over my old project which is private:[link](https://github.com/fury-r/messenger)
 
-[![Workflow status](https://github.com/fury-dev/erp/actions/workflows/actions.yaml/badge.svg?branch=master)](https://github.com/fury-dev/erp/actions/workflows/actions.yaml)
+[![Workflow status](https://github.com/fury-r/encrypted-messenger/actions/workflows/actions.yaml/badge.svg?branch=master)](https://github.com/fury-r/encrypted-messenger/workflows/actions.yaml)
 
 ![messenger](https://github.com/fury-r/encrypted-messenger/assets/79844581/66a70d5b-6978-4114-9a72-cd559901d8fd)
 
