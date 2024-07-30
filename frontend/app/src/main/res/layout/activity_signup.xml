@@ -136,8 +136,10 @@
             android:layout_marginStart="107dp"
             android:layout_marginEnd="102dp"
             android:elevation="10dp"
-            android:text="SIGN UP"
+            android:text="@string/sign_up"
             android:textColor="@color/white"
+            style="@style/MyCustomButton"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/password"
             tools:layout_editor_absoluteX="135dp" />

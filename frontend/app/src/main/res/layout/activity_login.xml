@@ -60,43 +60,52 @@
 
         </LinearLayout>
 
-
-        <EditText
-            android:id="@+id/phoneNumber"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/phoneNumberLayout"
             android:layout_width="221dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_centerHorizontal='true'
+            android:layout_centerHorizontal="true"
             android:layout_marginStart="50dp"
             android:layout_marginTop="100dp"
             android:layout_marginEnd="50dp"
-
             android:layout_marginBottom="20dp"
-            android:gravity="top"
+            app:layout_constraintTop_toBottomOf="@+id/button_toggle"
+            tools:ignore="LabelFor"
+            android:background="@drawable/rounded">
 
-            android:inputType="phone"
-            android:selectAllOnFocus="true"
-            app:layout_constraintTop_toBottomOf="@+id/button_toggle" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/phoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:gravity="top"
+                android:inputType="phone"
+                android:selectAllOnFocus="true"
+                android:textColor="@color/white"
+                android:background="@color/dark_500"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
 
         <Button
             android:id="@+id/loginBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/phoneNumber"
+            android:layout_below="@+id/phoneNumberLayout"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_centerHorizontal='true'
             android:layout_marginStart="128dp"
-
+            style="@style/MyCustomButton"
             android:layout_marginTop="72dp"
             android:layout_marginEnd="107dp"
             android:elevation="10dp"
             android:gravity="center"
-            android:text="Login"
-            android:textColor="@color/white"
-            app:layout_constraintTop_toBottomOf="@+id/phoneNumber" />
+            android:text="@string/login"
+            app:layout_constraintTop_toBottomOf="@+id/phoneNumberLayout" />
 
         <ProgressBar
             android:id="@+id/loading"
