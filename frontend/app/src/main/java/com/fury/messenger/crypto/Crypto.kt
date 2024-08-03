@@ -11,8 +11,6 @@ import com.fury.messenger.utils.Constants.byteArrayToString
 import com.fury.messenger.utils.Constants.stringToByteArray
 import com.fury.messenger.utils.TokenManager
 import com.services.UserOuterClass
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -38,9 +36,7 @@ object Crypto {
     private lateinit var privateKey: PrivateKey;
     private lateinit var publicKey: PublicKey;
     private lateinit var sign: Signature;
-    private var cipher: Cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
     private lateinit var tokenManager: TokenManager
-    private var scope = CoroutineScope(Dispatchers.IO)
     private  var ALGORITHM="DESede"
     private fun generateEncryptionKeys(): List<Key> {
         keyPairGen = KeyPairGenerator.getInstance("RSA");
@@ -52,10 +48,7 @@ object Crypto {
     }
 
     fun getAES(): SecretKey {
-//        val keyGen = KeyGenerator.getInstance("AES")
-//        keyGen.init(256)
-//
-//        return keyGen.generateKey();
+
 
         val keyData = byteArrayOf(
             0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
@@ -96,7 +89,6 @@ object Crypto {
 
             submitPublicKey(publicKeyString)
 
-            Log.d("Messenger-x", " setting keys to the user")
 
 
         }

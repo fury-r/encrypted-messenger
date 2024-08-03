@@ -1,114 +1,132 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/grey_500"
-    tools:context=".ui.login.LoginActivity">
+<?xml version="1.0" encoding="utf-8" ?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/container"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/grey_500"
+  tools:context=".ui.login.LoginActivity"
+>
 
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="555dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="309dp"
-        android:background="@drawable/messages_background"
-        android:gravity="center"
-        android:padding="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="0dp">
+    android:layout_width="match_parent"
+    android:layout_height="555dp"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentBottom="true"
+    android:layout_gravity="bottom"
+    android:layout_marginTop="309dp"
+    android:background="@drawable/messages_background"
+    android:gravity="center"
+    android:padding="20dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    tools:layout_editor_absoluteX="0dp"
+  >
 
         <LinearLayout
-            android:id="@+id/button_toggle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal='true'
-            android:layout_marginBottom="120dp"
-            android:background="@drawable/slider_button_bg"
-            android:elevation="10dp"
-            android:gravity="top">
+      android:id="@+id/button_toggle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      android:layout_centerHorizontal='true'
+      android:layout_marginBottom="120dp"
+      android:background="@drawable/slider_button_bg"
+      android:elevation="10dp"
+      android:gravity="top"
+    >
 
             <Button
-                android:id="@+id/signInBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/button_capsule"
-                android:elevation="10dp"
-                android:gravity="center"
-                android:text="Login"
-                android:textColor="@color/white"
-                tools:layout_editor_absoluteX="332dp"
-                tools:layout_editor_absoluteY="146dp" />
+        android:id="@+id/signInBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/button_capsule"
+        android:elevation="10dp"
+        android:gravity="center"
+        android:text="Login"
+        android:textColor="@color/white"
+        tools:layout_editor_absoluteX="332dp"
+        tools:layout_editor_absoluteY="146dp"
+      />
 
             <Button
-                android:id="@+id/signupBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/inactive_button"
-                android:elevation="10dp"
-                android:gravity="center"
-                android:text="@string/signup"
-                android:textColor="@color/white"
-
-                />
+        android:id="@+id/signupBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/inactive_button"
+        android:elevation="10dp"
+        android:gravity="center"
+        android:text="@string/signup"
+        android:textColor="@color/white"
+      />
 
 
         </LinearLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/phoneNumberLayout"
+      android:layout_width="221dp"
+      android:layout_height="wrap_content"
+      android:layout_alignParentStart="true"
+      android:layout_alignParentEnd="true"
+      android:layout_centerHorizontal="true"
+      android:layout_marginStart="50dp"
+      android:layout_marginTop="100dp"
+      android:layout_marginEnd="50dp"
+      android:layout_marginBottom="20dp"
+      app:layout_constraintTop_toBottomOf="@+id/button_toggle"
+      android:labelFor="@+id/phoneNumber"
+      app:placeholderText="Phone number"
+      android:background="@drawable/rounded"
+    >
 
-        <EditText
-            android:id="@+id/phoneNumber"
-            android:layout_width="221dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_centerHorizontal='true'
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="100dp"
-            android:layout_marginEnd="50dp"
+            <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/phoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:gravity="top"
+        android:inputType="phone"
+        android:selectAllOnFocus="true"
+        android:textColor="@color/white"
+        android:background="@color/dark_500"
+      />
 
-            android:layout_marginBottom="20dp"
-            android:gravity="top"
-
-            android:inputType="phone"
-            android:selectAllOnFocus="true"
-            app:layout_constraintTop_toBottomOf="@+id/button_toggle" />
+        </com.google.android.material.textfield.TextInputLayout>
 
 
         <Button
-            android:id="@+id/loginBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/phoneNumber"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_centerHorizontal='true'
-            android:layout_marginStart="128dp"
-
-            android:layout_marginTop="72dp"
-            android:layout_marginEnd="107dp"
-            android:elevation="10dp"
-            android:gravity="center"
-            android:text="Login"
-            android:textColor="@color/white"
-            app:layout_constraintTop_toBottomOf="@+id/phoneNumber" />
+      android:id="@+id/loginBtn"
+      style="@style/MyCustomButton"
+      android:layout_width="119dp"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/phoneNumberLayout"
+      android:layout_alignParentStart="true"
+      android:layout_alignParentEnd="true"
+      android:layout_centerHorizontal='true'
+      android:layout_marginStart="128dp"
+      android:layout_marginTop="137dp"
+      android:layout_marginEnd="165dp"
+      android:elevation="10dp"
+      android:gravity="center"
+      android:text="@string/login"
+      android:textSize="15sp"
+      app:layout_constraintTop_toBottomOf="@+id/phoneNumberLayout"
+    />
 
         <ProgressBar
-            android:id="@+id/loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="64dp"
-            android:layout_marginBottom="64dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.3" />
+      android:id="@+id/loading"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_marginTop="64dp"
+      android:layout_marginBottom="64dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.3"
+    />
     </RelativeLayout>
 
 
