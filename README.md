@@ -6,6 +6,8 @@ This code is an improvement over my old project which is private:[link](https://
 ![messenger](https://github.com/fury-r/encrypted-messenger/assets/79844581/66a70d5b-6978-4114-9a72-cd559901d8fd)
 
 
+[Figma Design](https://www.figma.com/design/fH70DbWMR9o77InBPWfeQT/Chat-App-UI)
+
 SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging application designed to prioritize user privacy and data security. The application is written in Kotlin for the Android platform, utilizes gRPC for communication, employs Protocol Buffers for efficient data serialization, and includes middleware written in Node.js using TypeScript. The backend server is implemented in the Go programming language.
 
 ## Features
