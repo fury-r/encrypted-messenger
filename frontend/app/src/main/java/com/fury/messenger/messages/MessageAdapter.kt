@@ -18,9 +18,10 @@ import com.fury.messenger.R
 import com.fury.messenger.crypto.Crypto
 import com.fury.messenger.data.db.model.Chat
 import com.fury.messenger.helper.audio.AudioPlayer
+import com.fury.messenger.helper.audio.AudioWaveformExtractor
+import com.fury.messenger.helper.ui.VoiceNoteWaveformView
 import com.fury.messenger.helper.user.CurrentUser
 import com.fury.messenger.utils.formatMilliSeconds
-import com.google.android.material.slider.Slider
 import com.services.Message.ContentType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,9 +45,23 @@ class MessageAdapter(
     }
     private val hostActivity = context as? Activity
     private val uid2 = uid
+    private val waveformCache = mutableMapOf<String, List<Float>>()
 
     private fun runOnUiThread(action: () -> Unit) {
         hostActivity?.runOnUiThread(action) ?: action()
+    }
+
+    private fun bindWaveformSeek(
+        waveform: VoiceNoteWaveformView,
+        durationTextView: TextView
+    ) {
+        waveform.onSeekRequested = { seekTo ->
+            player.seekTo(seekTo)
+            val totalDuration = (durationTextView.tag as? String)?.toIntOrNull() ?: 0
+            val remaining = (totalDuration - seekTo).coerceAtLeast(0)
+            durationTextView.text = formatMilliSeconds(remaining.toLong())
+            waveform.setPlaybackState(seekTo, totalDuration)
+        }
     }
 
     inner class SentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
@@ -79,7 +94,7 @@ class MessageAdapter(
         val audioHint = itemView.findViewById<TextView>(R.id.audioHint)
         val status = itemView.findViewById<TextView>(R.id.status)
         val time = itemView.findViewById<TextView>(R.id.time)
-        val slider = itemView.findViewById<Slider>(R.id.playSlider)
+        val waveform = itemView.findViewById<VoiceNoteWaveformView>(R.id.playWaveform)
         val duration = itemView.findViewById<TextView>(R.id.duration)
 
         override fun onCreateContextMenu(
@@ -128,7 +143,7 @@ class MessageAdapter(
         val audioHint = itemView.findViewById<TextView>(R.id.audioHint)
         val time = itemView.findViewById<TextView>(R.id.time)
         val duration = itemView.findViewById<TextView>(R.id.duration)
-        val slider = itemView.findViewById<Slider>(R.id.playSlider)
+        val waveform = itemView.findViewById<VoiceNoteWaveformView>(R.id.playWaveform)
 
         override fun onCreateContextMenu(
             menu: ContextMenu,
@@ -203,16 +218,17 @@ class MessageAdapter(
 
     private fun updateDuration(view: View, timer: Timer) {
         val durationTextView = view.findViewById<TextView>(R.id.duration)
-        val slider = view.findViewById<Slider>(R.id.playSlider)
+        val waveform = view.findViewById<VoiceNoteWaveformView>(R.id.playWaveform)
         timer.schedule(object : TimerTask() {
             override fun run() {
                 if (player.isPlaying()) {
                     val position = player.getPosition()
                     if (durationTextView.tag != null) {
-                        val duration = ((durationTextView.tag as? String) ?: "0").toInt() - position
+                        val totalDuration = ((durationTextView.tag as? String) ?: "0").toInt()
+                        val duration = totalDuration - position
                         view.context.runCatching {
                             durationTextView.text = formatMilliSeconds(duration.toLong())
-                            slider.value = position.toFloat()
+                            waveform.setPlaybackState(position, totalDuration)
                         }
                     }
                 }
@@ -222,7 +238,7 @@ class MessageAdapter(
 
     private fun populateDuration(view: View, currentMessage: Chat) {
         val localFile = resolveLocalAudio(currentMessage) ?: return
-        val playSlider = view.findViewById<Slider>(R.id.playSlider)
+        val waveform = view.findViewById<VoiceNoteWaveformView>(R.id.playWaveform)
         val durationTextView = view.findViewById<TextView>(R.id.duration)
         scope.launch {
             val mmr = MediaMetadataRetriever()
@@ -232,10 +248,15 @@ class MessageAdapter(
                     mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
                 mmr.release()
                 if (milliseconds != null) {
+                    val bars = waveformCache[currentMessage.messageId]
+                        ?: AudioWaveformExtractor.extractWaveform(localFile).also {
+                            waveformCache[currentMessage.messageId] = it
+                        }
                     runOnUiThread {
                         durationTextView.text = formatMilliSeconds(milliseconds.toLong())
                         durationTextView.tag = milliseconds
-                        playSlider.valueTo = milliseconds.toFloat()
+                        waveform.setWaveformData(bars)
+                        waveform.setPlaybackState(0, milliseconds.toInt())
                     }
                 }
             }
@@ -246,14 +267,14 @@ class MessageAdapter(
         currentMessage: Chat,
         playButton: Button,
         downloadButton: Button,
-        slider: Slider,
+        waveform: VoiceNoteWaveformView,
         duration: TextView,
         audioTitle: TextView,
         audioHint: TextView
     ) {
         val hasLocalAudio = resolveLocalAudio(currentMessage) != null
         playButton.visibility = if (hasLocalAudio) View.VISIBLE else View.GONE
-        slider.visibility = if (hasLocalAudio) View.VISIBLE else View.GONE
+        waveform.visibility = if (hasLocalAudio) View.VISIBLE else View.GONE
         downloadButton.visibility = if (hasLocalAudio) View.GONE else View.VISIBLE
         playButton.setBackgroundResource(R.drawable.play_circle)
         if (hasLocalAudio) {
@@ -264,7 +285,7 @@ class MessageAdapter(
             audioHint.text = context.getString(R.string.download_voice_message_hint)
             duration.tag = null
             duration.text = context.getString(R.string.voice_note_not_downloaded)
-            slider.value = 0f
+            waveform.reset()
         }
     }
 
@@ -273,7 +294,7 @@ class MessageAdapter(
         currentMessage: Chat,
         playButton: Button,
         downloadButton: Button,
-        slider: Slider,
+        waveform: VoiceNoteWaveformView,
         duration: TextView,
         audioTitle: TextView,
         audioHint: TextView
@@ -301,7 +322,7 @@ class MessageAdapter(
                         currentMessage,
                         playButton,
                         downloadButton,
-                        slider,
+                        waveform,
                         duration,
                         audioTitle,
                         audioHint
@@ -318,38 +339,36 @@ class MessageAdapter(
         }
     }
 
-    private fun formatProgressLabel(position: Float, duration: TextView): String {
-        val formattedString = formatMilliSeconds(position.toLong())
-        player.seekTo(position.toInt())
-        duration.text = formattedString
-        return formattedString
-    }
-
     private fun audioPlayback(view: View, currentMessage: Chat) {
-        val slider = view.findViewById<Slider>(R.id.playSlider)
+        val waveform = view.findViewById<VoiceNoteWaveformView>(R.id.playWaveform)
         val button = view.findViewById<Button>(R.id.play)
+        val durationTextView = view.findViewById<TextView>(R.id.duration)
         val localFile = resolveLocalAudio(currentMessage)
         if (localFile == null) {
             Toast.makeText(context, R.string.voice_message_not_ready, Toast.LENGTH_SHORT).show()
             return
         }
+        val seekPosition = waveform.getSeekPosition()
 
         scope.launch {
             if (!player.isPlaying()) {
                 if (!player.init) {
                     val timer = Timer()
-                    player.playFile(localFile, 0, {
+                    player.playFile(localFile, seekPosition, {
                         context.runCatching {
                             updateDuration(view, timer)
                         }
                     }, {
                         runOnUiThread {
                             button.setBackgroundResource(R.drawable.play_circle)
-                            slider.value = 0f
+                            waveform.reset()
+                            val totalDuration = (durationTextView.tag as? String)?.toLong() ?: 0L
+                            durationTextView.text = formatMilliSeconds(totalDuration)
                             timer.cancel()
                         }
                     })
                 } else {
+                    player.seekTo(seekPosition)
                     player.resume()
                 }
                 runOnUiThread {
@@ -402,12 +421,13 @@ class MessageAdapter(
                     currentMessage,
                     viewHolder.playButton,
                     viewHolder.downloadButton,
-                    viewHolder.slider,
+                    viewHolder.waveform,
                     viewHolder.duration,
                     viewHolder.audioTitle,
                     viewHolder.audioHint
                 )
                 populateDuration(viewHolder.itemView, currentMessage)
+                bindWaveformSeek(viewHolder.waveform, viewHolder.duration)
 
                 viewHolder.playButton.setOnClickListener {
                     audioPlayback(viewHolder.itemView, currentMessage)
@@ -418,14 +438,11 @@ class MessageAdapter(
                         currentMessage,
                         viewHolder.playButton,
                         viewHolder.downloadButton,
-                        viewHolder.slider,
+                        viewHolder.waveform,
                         viewHolder.duration,
                         viewHolder.audioTitle,
                         viewHolder.audioHint
                     )
-                }
-                viewHolder.slider.setLabelFormatter {
-                    formatProgressLabel(it, viewHolder.duration)
                 }
             }
 
@@ -440,12 +457,13 @@ class MessageAdapter(
                     currentMessage,
                     viewHolder.playButton,
                     viewHolder.downloadButton,
-                    viewHolder.slider,
+                    viewHolder.waveform,
                     viewHolder.duration,
                     viewHolder.audioTitle,
                     viewHolder.audioHint
                 )
                 populateDuration(viewHolder.itemView, currentMessage)
+                bindWaveformSeek(viewHolder.waveform, viewHolder.duration)
 
                 viewHolder.playButton.setOnClickListener {
                     audioPlayback(viewHolder.itemView, currentMessage)
@@ -456,14 +474,11 @@ class MessageAdapter(
                         currentMessage,
                         viewHolder.playButton,
                         viewHolder.downloadButton,
-                        viewHolder.slider,
+                        viewHolder.waveform,
                         viewHolder.duration,
                         viewHolder.audioTitle,
                         viewHolder.audioHint
                     )
-                }
-                viewHolder.slider.setLabelFormatter {
-                    formatProgressLabel(it, viewHolder.duration)
                 }
             }
         }
