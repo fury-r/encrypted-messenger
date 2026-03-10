@@ -33,20 +33,6 @@ The following previews cover the current Android UI flows in the app.
   </tr>
 </table>
 
-### Security and integrations
-
-<table>
-  <tr>
-    <td align="center"><strong>Key rotation</strong><br><img src="docs/screenshots/key-rotation.svg" alt="Key rotation screen" width="220"></td>
-    <td align="center"><strong>UPI integration</strong><br><img src="docs/screenshots/upi-integration.svg" alt="UPI integration screen" width="220"></td>
-  </tr>
-  <tr>
-    <td align="center"><strong>Ecommerce integration</strong><br><img src="docs/screenshots/ecommerce-integration.svg" alt="Ecommerce integration screen" width="220"></td>
-    <td align="center"><strong>End-to-end encryption</strong><br><img src="docs/screenshots/chat.svg" alt="Encrypted chat screen" width="220"></td>
-  </tr>
-</table>
-
-
 [Figma Design](https://www.figma.com/design/fH70DbWMR9o77InBPWfeQT/Chat-App-UI)
 
 SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging application designed to prioritize user privacy and data security. The application is written in Kotlin for the Android platform, utilizes gRPC for communication, employs Protocol Buffers for efficient data serialization, and includes middleware written in Node.js using TypeScript. The backend server is implemented in the Go programming language.
