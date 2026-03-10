@@ -148,6 +148,36 @@ func (s *Server) RegenerateOtp(ctx context.Context, req *pb.ReSendOtpRequest) (*
 	return message, err
 }
 
+func (s *Server) RotateKey(ctx context.Context, req *pb.KeyRotationRequest) (*pb.KeyRotationResponse, error) {
+	log.Default().Println("RotateKey Started.")
+
+	message, err := service.RotateKeyService(ctx, req)
+
+	log.Default().Println("RotateKey Ended.")
+
+	return message, err
+}
+
+func (s *Server) UpdateUpiIntegration(ctx context.Context, req *pb.UpiIntegrationRequest) (*pb.UpiIntegrationResponse, error) {
+	log.Default().Println("UpdateUpiIntegration Started.")
+
+	message, err := service.UpdateUpiIntegrationService(ctx, req)
+
+	log.Default().Println("UpdateUpiIntegration Ended.")
+
+	return message, err
+}
+
+func (s *Server) UpdateEcommerceIntegration(ctx context.Context, req *pb.EcommerceIntegrationRequest) (*pb.EcommerceIntegrationResponse, error) {
+	log.Default().Println("UpdateEcommerceIntegration Started.")
+
+	message, err := service.UpdateEcommerceIntegrationService(ctx, req)
+
+	log.Default().Println("UpdateEcommerceIntegration Ended.")
+
+	return message, err
+}
+
 func main() {
 	// mux := http.NewServeMux()
 

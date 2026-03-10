@@ -15,9 +15,13 @@ export interface ProtoGrpcType {
   Contact: MessageTypeDefinition
   ContactsList: MessageTypeDefinition
   ContentType: EnumTypeDefinition
+  EcommerceIntegrationRequest: MessageTypeDefinition
+  EcommerceIntegrationResponse: MessageTypeDefinition
   Event: MessageTypeDefinition
   EventType: EnumTypeDefinition
   KeyExchange: MessageTypeDefinition
+  KeyRotationRequest: MessageTypeDefinition
+  KeyRotationResponse: MessageTypeDefinition
   LoginRequest: MessageTypeDefinition
   LoginResponse: MessageTypeDefinition
   MessageInfo: MessageTypeDefinition
@@ -30,7 +34,11 @@ export interface ProtoGrpcType {
   ReSendOtpRequest: MessageTypeDefinition
   RegisterRequest: MessageTypeDefinition
   RegisterResponse: MessageTypeDefinition
+  RequestDownload: MessageTypeDefinition
+  ResponseDownload: MessageTypeDefinition
   Services: SubtypeConstructor<typeof grpc.Client, _ServicesClient> & { service: _ServicesDefinition }
+  UpiIntegrationRequest: MessageTypeDefinition
+  UpiIntegrationResponse: MessageTypeDefinition
   User: MessageTypeDefinition
   UserRequest: MessageTypeDefinition
   UserResponse: MessageTypeDefinition
