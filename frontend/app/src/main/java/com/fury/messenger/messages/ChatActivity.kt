@@ -211,7 +211,7 @@ class ChatActivity : AppCompatActivity() {
                         key = recipientDetails.key!!
                     }
 
-                    setMessages(ArrayList(messages.filterNotNull()))
+                    setMessages(ArrayList(messages))
 
                 } catch (err: Error) {
                     Log.d("Error", err.toString())

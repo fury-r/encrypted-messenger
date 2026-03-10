@@ -56,4 +56,5 @@
     <string name="unread_messages">Unread messages</string>
     <string name="login_tagline">Private messaging with end-to-end encryption.</string>
     <string name="phone_number">Phone number</string>
+    <string name="secure_voice_note">Secure voice note</string>
 </resources>

@@ -127,14 +127,14 @@ class UserAdapter(val context: Context, var userList: ArrayList<ContactChats>, s
             )
 
         }else if(currentUser.latestMessage!!.contentType==ContentType.Audio.name) {
-            message="Secure voice note"
+            message=context.getString(R.string.secure_voice_note)
 
         }
         if(currentUser.latestMessage!!.sender!= CurrentUser.phoneNumber){
             holder.lastMessage.setTypeface(null, Typeface.BOLD);
         } else {
             holder.lastMessage.setTypeface(null, Typeface.NORMAL)
-            message="You · $message"
+            message="You: $message"
         }
         holder.lastMessage.text = message
     }

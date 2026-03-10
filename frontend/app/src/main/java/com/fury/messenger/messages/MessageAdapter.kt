@@ -183,8 +183,8 @@ class MessageAdapter(
     }
 
     private fun audioCacheFile(currentMessage: Chat): File {
-        val safeFileName = currentMessage.messageId.replace(Regex("[^A-Za-z0-9._-]"), "_")
-        return File(audioDirectory(), "$safeFileName.mp3")
+        val sanitizedMessageId = currentMessage.messageId.replace(Regex("[^A-Za-z0-9._-]"), "_")
+        return File(audioDirectory(), "$sanitizedMessageId.mp3")
     }
 
     private fun resolveLocalAudio(currentMessage: Chat): File? {
