@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: ["master"]
   workflow_dispatch:
+
+permissions:
+  contents: read
+
 jobs:
   run-lint-middleware:
     runs-on: ubuntu-latest

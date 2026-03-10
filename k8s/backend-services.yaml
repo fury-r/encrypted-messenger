@@ -4,7 +4,6 @@ metadata:
   name: messenger-config
 data:
   GRPC_BACKEND_ADDR: backend:8082
-  RABBITMQ_URL: amqp://test:test@rabbitmq:5672/
   MIDDLEWARE_PORT: "8081"
   SOCKET_PORT: "3001"
 ---
@@ -14,7 +13,10 @@ metadata:
   name: messenger-secrets
 type: Opaque
 stringData:
-  JWT_SECRET_KEY: change-me
+  JWT_SECRET_KEY: replace-with-a-real-secret
+  RABBITMQ_DEFAULT_USER: replace-rabbitmq-user
+  RABBITMQ_DEFAULT_PASS: replace-rabbitmq-password
+  RABBITMQ_URL: amqp://replace-rabbitmq-user:replace-rabbitmq-password@rabbitmq:5672/
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -38,9 +40,15 @@ spec:
             - containerPort: 15672
           env:
             - name: RABBITMQ_DEFAULT_USER
-              value: test
+              valueFrom:
+                secretKeyRef:
+                  name: messenger-secrets
+                  key: RABBITMQ_DEFAULT_USER
             - name: RABBITMQ_DEFAULT_PASS
-              value: test
+              valueFrom:
+                secretKeyRef:
+                  name: messenger-secrets
+                  key: RABBITMQ_DEFAULT_PASS
           readinessProbe:
             tcpSocket:
               port: 5672
@@ -147,8 +155,8 @@ spec:
                   key: GRPC_BACKEND_ADDR
             - name: RABBITMQ_URL
               valueFrom:
-                configMapKeyRef:
-                  name: messenger-config
+                secretKeyRef:
+                  name: messenger-secrets
                   key: RABBITMQ_URL
           readinessProbe:
             tcpSocket:
@@ -205,8 +213,8 @@ spec:
                   key: GRPC_BACKEND_ADDR
             - name: RABBITMQ_URL
               valueFrom:
-                configMapKeyRef:
-                  name: messenger-config
+                secretKeyRef:
+                  name: messenger-secrets
                   key: RABBITMQ_URL
           readinessProbe:
             tcpSocket:

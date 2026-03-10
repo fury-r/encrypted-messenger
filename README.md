@@ -47,7 +47,7 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
 - Install Docker and Docker Compose if you want to run the backend stack locally in containers.
 - Install kubectl if you want to deploy the backend stack to Kubernetes.
 
-### Dependecies for proto
+### Dependencies for proto
 - Backend:
 
 ``
@@ -80,7 +80,7 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
 4. **RabbitMQ server**
    - Installation:[link](https://www.rabbitmq.com/docs/install-windows-manual)
    - Make sure rabbitMQ is running.
-   - Configure client and admin credetials at [link](http://localhost:15672/)
+   - Configure client and admin credentials at [link](http://localhost:15672/)
 4. **Protobufs**
     - Installation:[link](https://protobuf.dev/)
 
@@ -107,6 +107,7 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
 - Deploy the stack with:
   `kubectl apply -k ./k8s`
 - Update image names/tags in `k8s/kustomization.yaml` for your registry before applying in a shared cluster
+- Replace the placeholder values in the `messenger-secrets` Secret before deploying to a real cluster
 
 ### End to End encryption
 ## How It Works
