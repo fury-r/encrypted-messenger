@@ -1,0 +1,40 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='420' height='860' viewBox='0 0 420 860' fill='none'>
+<style>
+  text { font-family: Arial, Helvetica, sans-serif; }
+  .title { fill: #FFFFFF; font-size: 24px; font-weight: 700; }
+  .subtitle { fill: #C4CCE1; font-size: 13px; }
+  .label { fill: #FFFFFF; font-size: 13px; font-weight: 600; }
+  .input { fill: #90A0C0; font-size: 13px; }
+  .body { fill: #FFFFFF; font-size: 14px; }
+  .small { fill: #90A0C0; font-size: 11px; }
+  .screen-label { fill: #FFFFFF; font-size: 18px; font-weight: 700; }
+</style>
+<rect x='18' y='18' width='384' height='824' rx='44' fill='#0B1020'/>
+<rect x='36' y='60' width='348' height='746' rx='32' fill='#121826'/>
+<rect x='156' y='32' width='108' height='18' rx='9' fill='#243047'/>
+<text x='58' y='118' class='title' text-anchor='start'>Secure conversations</text>
+<text x='58' y='144' class='subtitle' text-anchor='start'>Encrypted chats, voice notes, and presence updates in one place.</text>
+<rect x='56' y='174' width='308' height='52' rx='18' fill='#1B2436' />
+<text x='84' y='206' class='input' text-anchor='start'>Search conversations</text>
+<rect x='56' y='252' width='308' height='86' rx='22' fill='#1B2436' />
+<circle cx='92' cy='295' r='26' fill='#394764'/>
+<text x='130' y='286' class='label' text-anchor='start'>Luna</text>
+<text x='130' y='308' class='small' text-anchor='start'>Online • tap to start a secure chat</text>
+<text x='325' y='280' class='small' text-anchor='end'>now</text>
+<rect x='56' y='346' width='308' height='86' rx='22' fill='#1B2436' />
+<circle cx='92' cy='389' r='26' fill='#394764'/>
+<text x='130' y='380' class='label' text-anchor='start'>Ezra</text>
+<text x='130' y='402' class='small' text-anchor='start'>Available for encrypted voice notes</text>
+<text x='325' y='374' class='small' text-anchor='end'>2m</text>
+<rect x='56' y='440' width='308' height='86' rx='22' fill='#1B2436' />
+<circle cx='92' cy='483' r='26' fill='#394764'/>
+<text x='130' y='474' class='label' text-anchor='start'>Ivy</text>
+<text x='130' y='496' class='small' text-anchor='start'>Presence updated a moment ago</text>
+<text x='325' y='468' class='small' text-anchor='end'>5m</text>
+<rect x='56' y='534' width='308' height='86' rx='22' fill='#1B2436' />
+<circle cx='92' cy='577' r='26' fill='#394764'/>
+<text x='130' y='568' class='label' text-anchor='start'>Mason</text>
+<text x='130' y='590' class='small' text-anchor='start'>Shared secure contact details</text>
+<text x='325' y='562' class='small' text-anchor='end'>12m</text>
+<text x='210' y='792' class='screen-label' text-anchor='middle'>Contacts screen</text>
+</svg>

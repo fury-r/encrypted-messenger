@@ -5,11 +5,33 @@ This code is an improvement over my old project which is private:[link](https://
 
 ## Screenshots
 
-### App preview
-![SecureMessenger app screenshot](https://github.com/fury-r/encrypted-messenger/assets/79844581/66a70d5b-6978-4114-9a72-cd559901d8fd)
+The following previews cover the current Android UI flows in the app.
 
-### Architecture overview
-![SecureMessenger architecture diagram](https://github.com/fury-r/encrypted-messenger/assets/79844581/52ad568b-6c70-47e2-8a0a-9d7bdab76c7d)
+### Authentication
+
+<table>
+  <tr>
+    <td align="center"><strong>Login</strong><br><img src="docs/screenshots/login.svg" alt="Login screen" width="220"></td>
+    <td align="center"><strong>Signup</strong><br><img src="docs/screenshots/signup.svg" alt="Signup screen" width="220"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>OTP verification</strong><br><img src="docs/screenshots/otp.svg" alt="OTP verification screen" width="220"></td>
+    <td align="center"><strong>Token verification</strong><br><img src="docs/screenshots/loading.svg" alt="Token verification loading screen" width="220"></td>
+  </tr>
+</table>
+
+### Messaging and profile
+
+<table>
+  <tr>
+    <td align="center"><strong>Home</strong><br><img src="docs/screenshots/home.svg" alt="Home screen" width="220"></td>
+    <td align="center"><strong>Chat</strong><br><img src="docs/screenshots/chat.svg" alt="Chat screen" width="220"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Contacts</strong><br><img src="docs/screenshots/contacts.svg" alt="Contacts screen" width="220"></td>
+    <td align="center"><strong>Edit profile</strong><br><img src="docs/screenshots/edit-profile.svg" alt="Edit profile screen" width="220"></td>
+  </tr>
+</table>
 
 
 [Figma Design](https://www.figma.com/design/fH70DbWMR9o77InBPWfeQT/Chat-App-UI)
@@ -31,6 +53,8 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
 - **Go Backend Server:** The backend server is implemented in the Go programming language, providing a robust and performant infrastructure for managing user accounts, storing messages, and handling various application functionalities.
 
 ## Architecture
+
+![Architecture drawio (5)](https://github.com/fury-r/encrypted-messenger/assets/79844581/52ad568b-6c70-47e2-8a0a-9d7bdab76c7d)
 
 ### Description
 - Client: This refers to the mobile application that users interact with to send and receive messages. Written Kotlin(Android App).

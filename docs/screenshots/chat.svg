@@ -1,0 +1,53 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='420' height='860' viewBox='0 0 420 860' fill='none'>
+<style>
+  text { font-family: Arial, Helvetica, sans-serif; }
+  .title { fill: #FFFFFF; font-size: 24px; font-weight: 700; }
+  .subtitle { fill: #C4CCE1; font-size: 13px; }
+  .label { fill: #FFFFFF; font-size: 13px; font-weight: 600; }
+  .input { fill: #90A0C0; font-size: 13px; }
+  .body { fill: #FFFFFF; font-size: 14px; }
+  .small { fill: #90A0C0; font-size: 11px; }
+  .screen-label { fill: #FFFFFF; font-size: 18px; font-weight: 700; }
+</style>
+<rect x='18' y='18' width='384' height='824' rx='44' fill='#0B1020'/>
+<rect x='36' y='60' width='348' height='746' rx='32' fill='#121826'/>
+<rect x='156' y='32' width='108' height='18' rx='9' fill='#243047'/>
+<rect x='56' y='92' width='308' height='44' rx='18' fill='#1B2436' />
+<text x='84' y='120' class='input' text-anchor='start'>Search</text>
+<rect x='56' y='168' width='178' height='72' rx='18' fill='#1B2436' />
+<text x='70' y='192' class='body' text-anchor='start'>Hey, your voice note</text>
+<text x='70' y='210' class='body' text-anchor='start'>is ready to download.</text>
+<text x='70' y='228' class='small' text-anchor='start'>09:18</text>
+<rect x='188' y='258' width='176' height='72' rx='18' fill='#6E7BFF' />
+<text x='350' y='282' class='body' text-anchor='end'>Nice — sending a</text>
+<text x='350' y='300' class='body' text-anchor='end'>secure reply now.</text>
+<text x='350' y='318' class='small' text-anchor='end'>sent • 09:19</text>
+<rect x='56' y='352' width='194' height='88' rx='18' fill='#243047' />
+<text x='70' y='376' class='body' text-anchor='start'>Encrypted voice note</text>
+<text x='70' y='394' class='body' text-anchor='start'>Tap play to listen or</text>
+<text x='70' y='412' class='body' text-anchor='start'>scrub the waveform.</text>
+<text x='70' y='428' class='small' text-anchor='start'>download</text>
+<rect x='70' y='456' width='180' height='32' rx='18' fill='#1B2436' />
+<line x1='86' y1='467.0' x2='86' y2='477.0' stroke='#9EAAFF' stroke-width='4' opacity='1' stroke-linecap='round'/>
+<line x1='98' y1='464.0' x2='98' y2='480.0' stroke='#9EAAFF' stroke-width='4' opacity='1' stroke-linecap='round'/>
+<line x1='110' y1='460.0' x2='110' y2='484.0' stroke='#9EAAFF' stroke-width='4' opacity='1' stroke-linecap='round'/>
+<line x1='122' y1='465.0' x2='122' y2='479.0' stroke='#9EAAFF' stroke-width='4' opacity='1' stroke-linecap='round'/>
+<line x1='134' y1='462.0' x2='134' y2='482.0' stroke='#9EAAFF' stroke-width='4' opacity='1' stroke-linecap='round'/>
+<line x1='146' y1='466.0' x2='146' y2='478.0' stroke='#9EAAFF' stroke-width='4' opacity='1' stroke-linecap='round'/>
+<line x1='158' y1='463.0' x2='158' y2='481.0' stroke='#9EAAFF' stroke-width='4' opacity='1' stroke-linecap='round'/>
+<line x1='170' y1='467.5' x2='170' y2='476.5' stroke='#9EAAFF' stroke-width='4' opacity='1' stroke-linecap='round'/>
+<line x1='182' y1='461.0' x2='182' y2='483.0' stroke='#9EAAFF' stroke-width='4' opacity='1' stroke-linecap='round'/>
+<line x1='194' y1='464.5' x2='194' y2='479.5' stroke='#9EAAFF' stroke-width='4' opacity='1' stroke-linecap='round'/>
+<line x1='206' y1='466.5' x2='206' y2='477.5' stroke='#9EAAFF' stroke-width='4' opacity='1' stroke-linecap='round'/>
+<line x1='218' y1='463.5' x2='218' y2='480.5' stroke='#9EAAFF' stroke-width='4' opacity='1' stroke-linecap='round'/>
+<rect x='196' y='520' width='168' height='72' rx='18' fill='#6E7BFF' />
+<text x='350' y='544' class='body' text-anchor='end'>See you in the main</text>
+<text x='350' y='562' class='body' text-anchor='end'>conversation list.</text>
+<text x='350' y='580' class='small' text-anchor='end'>09:21</text>
+<rect x='52' y='680' width='316' height='62' rx='24' fill='#1B2436' />
+<text x='78' y='716' class='input' text-anchor='start'>Type a secure message</text>
+<circle cx='302' cy='711' r='18' fill='#394764'/>
+<circle cx='340' cy='711' r='18' fill='#6E7BFF'/>
+<text x='340' y='718' class='label' text-anchor='middle'>➜</text>
+<text x='210' y='792' class='screen-label' text-anchor='middle'>Chat screen</text>
+</svg>
