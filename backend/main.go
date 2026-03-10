@@ -139,11 +139,11 @@ func (s *Server) UpdateUser(ctx context.Context, req *pb.User) (*pb.User, error)
 }
 
 func (s *Server) RegenerateOtp(ctx context.Context, req *pb.ReSendOtpRequest) (*pb.ReSendOtpRequest, error) {
-	log.Default().Println("UpdateUser Started.")
+	log.Default().Println("RegenerateOtp Started.")
 
 	message, err := service.RegenerateOtpService(ctx, req)
 
-	log.Default().Println("UpdateUser Ended.")
+	log.Default().Println("RegenerateOtp Ended.")
 
 	return message, err
 }
