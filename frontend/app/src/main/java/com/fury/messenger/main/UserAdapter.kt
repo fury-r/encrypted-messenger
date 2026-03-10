@@ -45,13 +45,16 @@ class UserAdapter(val context: Context, var userList: ArrayList<ContactChats>, s
 
         }
         if(view) {
-            holder.count.text=""
-
-            holder.datetime.text=""
+            holder.count.visibility = View.GONE
+            holder.datetime.visibility = View.GONE
             holder.lastMessage.text=currentUser.contact.status
+            holder.lastMessage.setTypeface(null, Typeface.NORMAL)
             holder.itemView.isEnabled=currentUser.contact.isVerified
+            holder.itemView.alpha = if (currentUser.contact.isVerified) 1f else 0.55f
 
         }else{
+            holder.count.visibility = View.VISIBLE
+            holder.datetime.visibility = View.VISIBLE
             if (currentUser.messageCount > 0) {
                 holder.count.text = currentUser.messageCount.toString()
 
@@ -124,13 +127,14 @@ class UserAdapter(val context: Context, var userList: ArrayList<ContactChats>, s
             )
 
         }else if(currentUser.latestMessage!!.contentType==ContentType.Audio.name) {
-            message="Voice Message"
+            message=context.getString(R.string.secure_voice_note)
 
         }
         if(currentUser.latestMessage!!.sender!= CurrentUser.phoneNumber){
             holder.lastMessage.setTypeface(null, Typeface.BOLD);
         } else {
-            message="You:${message}"
+            holder.lastMessage.setTypeface(null, Typeface.NORMAL)
+            message="You: $message"
         }
         holder.lastMessage.text = message
     }

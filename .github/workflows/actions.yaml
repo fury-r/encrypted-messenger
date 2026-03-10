@@ -5,6 +5,11 @@ on:
     branches: ["master"]
   pull_request:
     branches: ["master"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
 jobs:
   run-lint-middleware:
     runs-on: ubuntu-latest
@@ -19,7 +24,7 @@ jobs:
         shell: bash
         working-directory: ./middleware
       - name: Cache npm dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: |
             ~/.npm
@@ -42,7 +47,7 @@ jobs:
         shell: bash
         working-directory: ./messsage-socket
       - name: Cache npm dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: |
             ~/.npm
@@ -84,12 +89,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go-version: ["1.18.1"]
+        go-version: ["1.20"]
     steps:
       - uses: actions/checkout@v2
 
       - name: Set up Go
         uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go-version }}
       - name: Verify dependencies
         run: go mod verify
         shell: bash
@@ -103,3 +110,36 @@ jobs:
         run: go vet ./...
         shell: bash
         working-directory: ./backend
+  validate-docker-compose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate docker compose file
+        run: docker compose config
+        shell: bash
+  build-service-images:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - name: backend
+            context: ./backend
+            dockerfile: ./backend/DockerFile
+          - name: middleware
+            context: ./middleware
+            dockerfile: ./middleware/DockerFile
+          - name: socket-server
+            context: ./messsage-socket
+            dockerfile: ./messsage-socket/DockerFile
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build ${{ matrix.name }} image
+        run: docker build -t ${{ matrix.name }}:ci -f ${{ matrix.dockerfile }} ${{ matrix.context }}
+        shell: bash
+  validate-k8s-manifests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Render kubernetes manifests
+        run: kubectl kustomize ./k8s > /tmp/backend-services.yaml
+        shell: bash

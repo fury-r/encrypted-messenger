@@ -5,7 +5,10 @@ import { Metadata } from "@grpc/grpc-js";
 
 export const handShakeRequest = async (req: any, callback: any) => {
   const client = new GrpcClientService().getClient();
-  const rabbitMQ = new RabbitMQ("amqp://guest:guest@localhost:5672", "chat");
+  const rabbitMQ = new RabbitMQ(
+    process.env.RABBITMQ_URL || "amqp://guest:guest@localhost:5672/",
+    "chat"
+  );
   const metadata = new Metadata();
   metadata.add("authorization", req.metadata.get("authorization")[0]);
   const isValidUser = await client.verifyToken({}, metadata, (e, _) => {

@@ -213,8 +213,7 @@ object DBMessage {
     fun getMessageByTableName(
         ctx: Context,
         reciever: String
-    ): List<Chat?> {
-        val messageList: ArrayList<Chat> = arrayListOf<Chat>()
+    ): List<Chat> {
         Log.d("Messages-z", "start thread")
         val db = Room.databaseBuilder(
             ctx,

@@ -51,7 +51,7 @@ class AudioPlayer(private val ctx: Context) : IAudioPlayer, SensorEventListener 
                 file.setReadable(true)
                 setDataSource(file.absolutePath)
                 prepare()
-                seekTo(0)
+                seekTo(seek)
                 mediaPlayer = this
 
 
@@ -73,6 +73,7 @@ class AudioPlayer(private val ctx: Context) : IAudioPlayer, SensorEventListener 
 
             }
         } else {
+            mediaPlayer?.seekTo(seek)
             mediaPlayer?.start()
         }
     }

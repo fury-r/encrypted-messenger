@@ -1,46 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginTop="6dp"
         android:background="@drawable/send_text"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:padding="10dp"
         android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:gravity="end"
+        android:orientation="vertical"
+        android:paddingHorizontal="14dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="10dp"
         tools:ignore="UselessParent">
 
         <TextView
             android:id="@+id/sentMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxWidth="260dp"
             android:text="@string/this_is_sent_message"
             android:textColor="@color/white"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/sentMessage"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="end"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="-15dp"
-                android:layout_weight="1"
-                android:gravity="left"
+                android:layout_marginEnd="12dp"
                 android:text="@string/status"
-                android:textColor="@color/black"
+                android:textColor="@color/text_secondary"
                 android:textSize="10sp"
                 tools:ignore="RtlHardcoded" />
 
@@ -48,15 +49,10 @@
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="-15dp"
-                android:layout_weight="1"
-                android:gravity="right"
                 android:text="@string/time"
-                android:textColor="@color/black"
+                android:textColor="@color/text_secondary"
                 android:textSize="10sp"
                 tools:ignore="RtlHardcoded" />
         </LinearLayout>
-
-
-    </RelativeLayout>
+    </LinearLayout>
 </RelativeLayout>

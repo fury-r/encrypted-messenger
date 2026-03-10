@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - backend-services.yaml
+
+images:
+  - name: ghcr.io/fury-r/encrypted-messenger/backend
+    newTag: latest
+  - name: ghcr.io/fury-r/encrypted-messenger/middleware
+    newTag: latest
+  - name: ghcr.io/fury-r/encrypted-messenger/socket-server
+    newTag: latest

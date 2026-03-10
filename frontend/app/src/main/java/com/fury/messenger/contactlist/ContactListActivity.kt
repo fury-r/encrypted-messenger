@@ -11,7 +11,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ProgressBar
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -60,26 +59,13 @@ class ContactListActivity : AppCompatActivity() {
 
             @SuppressLint("NotifyDataSetChanged")
             override fun onQueryTextChange(newText: String?): Boolean {
-                // Filter the list based on the search query
-                if (newText != null) {
+                val query = newText?.trim().orEmpty()
+                if (query.isNotEmpty()) {
                     val filteredList = this@ContactListActivity.userList.filter {
-                        it.contact.name?.contains(newText, ignoreCase = true)
-                            ?: false
+                        (it.contact.name?.contains(query, ignoreCase = true) ?: false) ||
+                            it.contact.phoneNumber.contains(query, ignoreCase = true)
                     }
-                    if (filteredList.isEmpty()) {
-                        Toast.makeText(
-                            this@ContactListActivity,
-                            "No contacts found",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
-
-                    } else {
-                        this@ContactListActivity.adapter.userList =
-                            filteredList as ArrayList<ContactChats>
-                    }
-
-
+                    this@ContactListActivity.adapter.userList = ArrayList(filteredList)
                 } else {
                     this@ContactListActivity.adapter.userList = this@ContactListActivity.userList
                 }

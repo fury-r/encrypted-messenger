@@ -6,7 +6,9 @@ export class RabbitMQ {
   connection: amqp.Connection | null = null;
   channel: amqp.Channel | null = null;
   constructor(queue: string) {
-    this.url = `amqp://${process.env.RABBITMQ_USERNAME}:${process.env.RABBITMQ_PASSWORD}@localhost:5672/`;
+    this.url =
+      process.env.RABBITMQ_URL ||
+      `amqp://${process.env.RABBITMQ_USERNAME || "guest"}:${process.env.RABBITMQ_PASSWORD || "guest"}@${process.env.RABBITMQ_HOST || "localhost"}:5672/`;
     this.queue = queue;
     this.setConnection();
   }

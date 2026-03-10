@@ -211,25 +211,7 @@ class ChatActivity : AppCompatActivity() {
                         key = recipientDetails.key!!
                     }
 
-                    setMessages(messages.map {
-
-                        if (it?.contentType == ContentType.Audio.name) {
-
-                            val filePath = "${this@ChatActivity.filesDir}/audio/${it?.sender}-${
-                                it.createdAt.toString().replace("+", "-").replace(":", "-")
-                            }.mp3"
-                            (async {
-                                key.let { key ->
-                                    Crypto.decryptAudio(
-                                        it.message, convertAESstringToKey(key)!!, filePath
-                                    )
-                                }
-                            }).await()
-                            it.message = filePath
-
-                        }
-                        return@map it
-                    } as ArrayList<Chat>)
+                    setMessages(ArrayList(messages))
 
                 } catch (err: Error) {
                     Log.d("Error", err.toString())
@@ -264,7 +246,10 @@ class ChatActivity : AppCompatActivity() {
         }
 
         sendBtn.setOnClickListener {
-            val messageText = messageBox.text.toString()
+            val messageText = messageBox.text.toString().trim()
+            if (messageText.isEmpty()) {
+                return@setOnClickListener
+            }
             scope.launch {
                 sendProcessMessage(messageText, recipientDetails!!, ContentType.Text)
             }
@@ -299,7 +284,7 @@ class ChatActivity : AppCompatActivity() {
                     MotionEvent.ACTION_UP -> {
                         recorder.stop()
                         stopTimer()
-                        messageBox.hint = "Type a Message"
+                        messageBox.hint = getString(R.string.secure_message_hint)
 
 
 
@@ -329,8 +314,6 @@ class ChatActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         listeners = presenfunc
-
-        for (child in directory.listFiles()!!) child.delete()
         stopTimer()
     }
 

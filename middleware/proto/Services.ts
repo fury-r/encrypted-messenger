@@ -7,7 +7,11 @@ import type { AuthResponse as _AuthResponse, AuthResponse__Output as _AuthRespon
 import type { BlockRequest as _BlockRequest, BlockRequest__Output as _BlockRequest__Output } from './BlockRequest';
 import type { BlockResponse as _BlockResponse, BlockResponse__Output as _BlockResponse__Output } from './BlockResponse';
 import type { ContactsList as _ContactsList, ContactsList__Output as _ContactsList__Output } from './ContactsList';
+import type { EcommerceIntegrationRequest as _EcommerceIntegrationRequest, EcommerceIntegrationRequest__Output as _EcommerceIntegrationRequest__Output } from './EcommerceIntegrationRequest';
+import type { EcommerceIntegrationResponse as _EcommerceIntegrationResponse, EcommerceIntegrationResponse__Output as _EcommerceIntegrationResponse__Output } from './EcommerceIntegrationResponse';
 import type { Event as _Event, Event__Output as _Event__Output } from './Event';
+import type { KeyRotationRequest as _KeyRotationRequest, KeyRotationRequest__Output as _KeyRotationRequest__Output } from './KeyRotationRequest';
+import type { KeyRotationResponse as _KeyRotationResponse, KeyRotationResponse__Output as _KeyRotationResponse__Output } from './KeyRotationResponse';
 import type { LoginRequest as _LoginRequest, LoginRequest__Output as _LoginRequest__Output } from './LoginRequest';
 import type { LoginResponse as _LoginResponse, LoginResponse__Output as _LoginResponse__Output } from './LoginResponse';
 import type { MessageUpdateRequest as _MessageUpdateRequest, MessageUpdateRequest__Output as _MessageUpdateRequest__Output } from './MessageUpdateRequest';
@@ -16,6 +20,10 @@ import type { OtpRequest as _OtpRequest, OtpRequest__Output as _OtpRequest__Outp
 import type { ReSendOtpRequest as _ReSendOtpRequest, ReSendOtpRequest__Output as _ReSendOtpRequest__Output } from './ReSendOtpRequest';
 import type { RegisterRequest as _RegisterRequest, RegisterRequest__Output as _RegisterRequest__Output } from './RegisterRequest';
 import type { RegisterResponse as _RegisterResponse, RegisterResponse__Output as _RegisterResponse__Output } from './RegisterResponse';
+import type { RequestDownload as _RequestDownload, RequestDownload__Output as _RequestDownload__Output } from './RequestDownload';
+import type { ResponseDownload as _ResponseDownload, ResponseDownload__Output as _ResponseDownload__Output } from './ResponseDownload';
+import type { UpiIntegrationRequest as _UpiIntegrationRequest, UpiIntegrationRequest__Output as _UpiIntegrationRequest__Output } from './UpiIntegrationRequest';
+import type { UpiIntegrationResponse as _UpiIntegrationResponse, UpiIntegrationResponse__Output as _UpiIntegrationResponse__Output } from './UpiIntegrationResponse';
 import type { User as _User, User__Output as _User__Output } from './User';
 import type { UserRequest as _UserRequest, UserRequest__Output as _UserRequest__Output } from './UserRequest';
 import type { UserResponse as _UserResponse, UserResponse__Output as _UserResponse__Output } from './UserResponse';
@@ -93,6 +101,15 @@ export interface ServicesClient extends grpc.Client {
   blockUser(argument: _BlockRequest, options: grpc.CallOptions, callback: grpc.requestCallback<_BlockResponse__Output>): grpc.ClientUnaryCall;
   blockUser(argument: _BlockRequest, callback: grpc.requestCallback<_BlockResponse__Output>): grpc.ClientUnaryCall;
   
+  downloadFromServer(argument: _RequestDownload, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_ResponseDownload__Output>): grpc.ClientUnaryCall;
+  downloadFromServer(argument: _RequestDownload, metadata: grpc.Metadata, callback: grpc.requestCallback<_ResponseDownload__Output>): grpc.ClientUnaryCall;
+  downloadFromServer(argument: _RequestDownload, options: grpc.CallOptions, callback: grpc.requestCallback<_ResponseDownload__Output>): grpc.ClientUnaryCall;
+  downloadFromServer(argument: _RequestDownload, callback: grpc.requestCallback<_ResponseDownload__Output>): grpc.ClientUnaryCall;
+  downloadFromServer(argument: _RequestDownload, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_ResponseDownload__Output>): grpc.ClientUnaryCall;
+  downloadFromServer(argument: _RequestDownload, metadata: grpc.Metadata, callback: grpc.requestCallback<_ResponseDownload__Output>): grpc.ClientUnaryCall;
+  downloadFromServer(argument: _RequestDownload, options: grpc.CallOptions, callback: grpc.requestCallback<_ResponseDownload__Output>): grpc.ClientUnaryCall;
+  downloadFromServer(argument: _RequestDownload, callback: grpc.requestCallback<_ResponseDownload__Output>): grpc.ClientUnaryCall;
+  
   getUser(argument: _UserRequest, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_UserResponse__Output>): grpc.ClientUnaryCall;
   getUser(argument: _UserRequest, metadata: grpc.Metadata, callback: grpc.requestCallback<_UserResponse__Output>): grpc.ClientUnaryCall;
   getUser(argument: _UserRequest, options: grpc.CallOptions, callback: grpc.requestCallback<_UserResponse__Output>): grpc.ClientUnaryCall;
@@ -120,6 +137,15 @@ export interface ServicesClient extends grpc.Client {
   messageUpdate(argument: _MessageUpdateRequest, options: grpc.CallOptions, callback: grpc.requestCallback<_MessageUpdateResponse__Output>): grpc.ClientUnaryCall;
   messageUpdate(argument: _MessageUpdateRequest, callback: grpc.requestCallback<_MessageUpdateResponse__Output>): grpc.ClientUnaryCall;
   
+  rotateKey(argument: _KeyRotationRequest, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_KeyRotationResponse__Output>): grpc.ClientUnaryCall;
+  rotateKey(argument: _KeyRotationRequest, metadata: grpc.Metadata, callback: grpc.requestCallback<_KeyRotationResponse__Output>): grpc.ClientUnaryCall;
+  rotateKey(argument: _KeyRotationRequest, options: grpc.CallOptions, callback: grpc.requestCallback<_KeyRotationResponse__Output>): grpc.ClientUnaryCall;
+  rotateKey(argument: _KeyRotationRequest, callback: grpc.requestCallback<_KeyRotationResponse__Output>): grpc.ClientUnaryCall;
+  rotateKey(argument: _KeyRotationRequest, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_KeyRotationResponse__Output>): grpc.ClientUnaryCall;
+  rotateKey(argument: _KeyRotationRequest, metadata: grpc.Metadata, callback: grpc.requestCallback<_KeyRotationResponse__Output>): grpc.ClientUnaryCall;
+  rotateKey(argument: _KeyRotationRequest, options: grpc.CallOptions, callback: grpc.requestCallback<_KeyRotationResponse__Output>): grpc.ClientUnaryCall;
+  rotateKey(argument: _KeyRotationRequest, callback: grpc.requestCallback<_KeyRotationResponse__Output>): grpc.ClientUnaryCall;
+  
   savePubKey(argument: _User, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_User__Output>): grpc.ClientUnaryCall;
   savePubKey(argument: _User, metadata: grpc.Metadata, callback: grpc.requestCallback<_User__Output>): grpc.ClientUnaryCall;
   savePubKey(argument: _User, options: grpc.CallOptions, callback: grpc.requestCallback<_User__Output>): grpc.ClientUnaryCall;
@@ -128,6 +154,24 @@ export interface ServicesClient extends grpc.Client {
   savePubKey(argument: _User, metadata: grpc.Metadata, callback: grpc.requestCallback<_User__Output>): grpc.ClientUnaryCall;
   savePubKey(argument: _User, options: grpc.CallOptions, callback: grpc.requestCallback<_User__Output>): grpc.ClientUnaryCall;
   savePubKey(argument: _User, callback: grpc.requestCallback<_User__Output>): grpc.ClientUnaryCall;
+  
+  updateEcommerceIntegration(argument: _EcommerceIntegrationRequest, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_EcommerceIntegrationResponse__Output>): grpc.ClientUnaryCall;
+  updateEcommerceIntegration(argument: _EcommerceIntegrationRequest, metadata: grpc.Metadata, callback: grpc.requestCallback<_EcommerceIntegrationResponse__Output>): grpc.ClientUnaryCall;
+  updateEcommerceIntegration(argument: _EcommerceIntegrationRequest, options: grpc.CallOptions, callback: grpc.requestCallback<_EcommerceIntegrationResponse__Output>): grpc.ClientUnaryCall;
+  updateEcommerceIntegration(argument: _EcommerceIntegrationRequest, callback: grpc.requestCallback<_EcommerceIntegrationResponse__Output>): grpc.ClientUnaryCall;
+  updateEcommerceIntegration(argument: _EcommerceIntegrationRequest, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_EcommerceIntegrationResponse__Output>): grpc.ClientUnaryCall;
+  updateEcommerceIntegration(argument: _EcommerceIntegrationRequest, metadata: grpc.Metadata, callback: grpc.requestCallback<_EcommerceIntegrationResponse__Output>): grpc.ClientUnaryCall;
+  updateEcommerceIntegration(argument: _EcommerceIntegrationRequest, options: grpc.CallOptions, callback: grpc.requestCallback<_EcommerceIntegrationResponse__Output>): grpc.ClientUnaryCall;
+  updateEcommerceIntegration(argument: _EcommerceIntegrationRequest, callback: grpc.requestCallback<_EcommerceIntegrationResponse__Output>): grpc.ClientUnaryCall;
+  
+  updateUpiIntegration(argument: _UpiIntegrationRequest, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_UpiIntegrationResponse__Output>): grpc.ClientUnaryCall;
+  updateUpiIntegration(argument: _UpiIntegrationRequest, metadata: grpc.Metadata, callback: grpc.requestCallback<_UpiIntegrationResponse__Output>): grpc.ClientUnaryCall;
+  updateUpiIntegration(argument: _UpiIntegrationRequest, options: grpc.CallOptions, callback: grpc.requestCallback<_UpiIntegrationResponse__Output>): grpc.ClientUnaryCall;
+  updateUpiIntegration(argument: _UpiIntegrationRequest, callback: grpc.requestCallback<_UpiIntegrationResponse__Output>): grpc.ClientUnaryCall;
+  updateUpiIntegration(argument: _UpiIntegrationRequest, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_UpiIntegrationResponse__Output>): grpc.ClientUnaryCall;
+  updateUpiIntegration(argument: _UpiIntegrationRequest, metadata: grpc.Metadata, callback: grpc.requestCallback<_UpiIntegrationResponse__Output>): grpc.ClientUnaryCall;
+  updateUpiIntegration(argument: _UpiIntegrationRequest, options: grpc.CallOptions, callback: grpc.requestCallback<_UpiIntegrationResponse__Output>): grpc.ClientUnaryCall;
+  updateUpiIntegration(argument: _UpiIntegrationRequest, callback: grpc.requestCallback<_UpiIntegrationResponse__Output>): grpc.ClientUnaryCall;
   
   updateUser(argument: _User, metadata: grpc.Metadata, options: grpc.CallOptions, callback: grpc.requestCallback<_User__Output>): grpc.ClientUnaryCall;
   updateUser(argument: _User, metadata: grpc.Metadata, callback: grpc.requestCallback<_User__Output>): grpc.ClientUnaryCall;
@@ -157,13 +201,21 @@ export interface ServicesHandlers extends grpc.UntypedServiceImplementation {
   
   blockUser: grpc.handleUnaryCall<_BlockRequest__Output, _BlockResponse>;
   
+  downloadFromServer: grpc.handleUnaryCall<_RequestDownload__Output, _ResponseDownload>;
+  
   getUser: grpc.handleUnaryCall<_UserRequest__Output, _UserResponse>;
   
   handShakeRequest: grpc.handleUnaryCall<_Event__Output, _Event>;
   
   messageUpdate: grpc.handleUnaryCall<_MessageUpdateRequest__Output, _MessageUpdateResponse>;
   
+  rotateKey: grpc.handleUnaryCall<_KeyRotationRequest__Output, _KeyRotationResponse>;
+  
   savePubKey: grpc.handleUnaryCall<_User__Output, _User>;
+  
+  updateEcommerceIntegration: grpc.handleUnaryCall<_EcommerceIntegrationRequest__Output, _EcommerceIntegrationResponse>;
+  
+  updateUpiIntegration: grpc.handleUnaryCall<_UpiIntegrationRequest__Output, _UpiIntegrationResponse>;
   
   updateUser: grpc.handleUnaryCall<_User__Output, _User>;
   
@@ -178,9 +230,13 @@ export interface ServicesDefinition extends grpc.ServiceDefinition {
   ValidateContacts: MethodDefinition<_ContactsList, _ContactsList, _ContactsList__Output, _ContactsList__Output>
   VerifyToken: MethodDefinition<_AuthRequest, _AuthResponse, _AuthRequest__Output, _AuthResponse__Output>
   blockUser: MethodDefinition<_BlockRequest, _BlockResponse, _BlockRequest__Output, _BlockResponse__Output>
+  downloadFromServer: MethodDefinition<_RequestDownload, _ResponseDownload, _RequestDownload__Output, _ResponseDownload__Output>
   getUser: MethodDefinition<_UserRequest, _UserResponse, _UserRequest__Output, _UserResponse__Output>
   handShakeRequest: MethodDefinition<_Event, _Event, _Event__Output, _Event__Output>
   messageUpdate: MethodDefinition<_MessageUpdateRequest, _MessageUpdateResponse, _MessageUpdateRequest__Output, _MessageUpdateResponse__Output>
+  rotateKey: MethodDefinition<_KeyRotationRequest, _KeyRotationResponse, _KeyRotationRequest__Output, _KeyRotationResponse__Output>
   savePubKey: MethodDefinition<_User, _User, _User__Output, _User__Output>
+  updateEcommerceIntegration: MethodDefinition<_EcommerceIntegrationRequest, _EcommerceIntegrationResponse, _EcommerceIntegrationRequest__Output, _EcommerceIntegrationResponse__Output>
+  updateUpiIntegration: MethodDefinition<_UpiIntegrationRequest, _UpiIntegrationResponse, _UpiIntegrationRequest__Output, _UpiIntegrationResponse__Output>
   updateUser: MethodDefinition<_User, _User, _User__Output, _User__Output>
 }

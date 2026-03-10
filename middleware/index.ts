@@ -18,6 +18,9 @@ import {
   verifyToken,
   updateUser,
   regenerateOtp,
+  rotateKey,
+  updateUpiIntegration,
+  updateEcommerceIntegration,
 } from "./src/services";
 
 const main = async () => {
@@ -66,6 +69,9 @@ function getServer() {
     blockUser,
     updateUser,
     regenerateOtp,
+    rotateKey,
+    updateUpiIntegration,
+    updateEcommerceIntegration,
   });
   return server;
 }

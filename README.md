@@ -3,8 +3,35 @@ This code is an improvement over my old project which is private:[link](https://
 
 [![Workflow status](https://github.com/fury-r/encrypted-messenger/actions/workflows/actions.yaml/badge.svg?branch=master)](https://github.com/fury-r/encrypted-messenger/workflows/actions.yaml)
 
-![messenger](https://github.com/fury-r/encrypted-messenger/assets/79844581/66a70d5b-6978-4114-9a72-cd559901d8fd)
+## Screenshots
 
+The following previews cover the current Android UI flows in the app.
+
+### Authentication
+
+<table>
+  <tr>
+    <td align="center"><strong>Login</strong><br><img src="docs/screenshots/login.svg" alt="Login screen" width="220"></td>
+    <td align="center"><strong>Signup</strong><br><img src="docs/screenshots/signup.svg" alt="Signup screen" width="220"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>OTP verification</strong><br><img src="docs/screenshots/otp.svg" alt="OTP verification screen" width="220"></td>
+    <td align="center"><strong>Token verification</strong><br><img src="docs/screenshots/loading.svg" alt="Token verification loading screen" width="220"></td>
+  </tr>
+</table>
+
+### Messaging and profile
+
+<table>
+  <tr>
+    <td align="center"><strong>Home</strong><br><img src="docs/screenshots/home.svg" alt="Home screen" width="220"></td>
+    <td align="center"><strong>Chat</strong><br><img src="docs/screenshots/chat.svg" alt="Chat screen" width="220"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Contacts</strong><br><img src="docs/screenshots/contacts.svg" alt="Contacts screen" width="220"></td>
+    <td align="center"><strong>Edit profile</strong><br><img src="docs/screenshots/edit-profile.svg" alt="Edit profile screen" width="220"></td>
+  </tr>
+</table>
 
 [Figma Design](https://www.figma.com/design/fH70DbWMR9o77InBPWfeQT/Chat-App-UI)
 
@@ -25,6 +52,7 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
 - **Go Backend Server:** The backend server is implemented in the Go programming language, providing a robust and performant infrastructure for managing user accounts, storing messages, and handling various application functionalities.
 
 ## Architecture
+
 ![Architecture drawio (5)](https://github.com/fury-r/encrypted-messenger/assets/79844581/52ad568b-6c70-47e2-8a0a-9d7bdab76c7d)
 
 ### Description
@@ -44,8 +72,10 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
 - Install the latest version of Android Studio for Android development.
 - Install Node.js for running the middleware.
 - Ensure Go is installed for the backend server.
+- Install Docker and Docker Compose if you want to run the backend stack locally in containers.
+- Install kubectl if you want to deploy the backend stack to Kubernetes.
 
-### Dependecies for proto
+### Dependencies for proto
 - Backend:
 
 ``
@@ -78,9 +108,34 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
 4. **RabbitMQ server**
    - Installation:[link](https://www.rabbitmq.com/docs/install-windows-manual)
    - Make sure rabbitMQ is running.
-   - Configure client and admin credetials at [link](http://localhost:15672/)
+   - Configure client and admin credentials at [link](http://localhost:15672/)
 4. **Protobufs**
-   - Installation:[link](https://protobuf.dev/)
+    - Installation:[link](https://protobuf.dev/)
+
+### Docker workflow
+
+- Build and start the backend services locally:
+  `docker compose up --build`
+- Middleware is exposed on `localhost:8081`
+- Backend gRPC is exposed on `localhost:8082`
+- Message socket is exposed on `localhost:3001`
+
+### Git workflow
+
+- Create a short-lived feature branch from `master`
+- Open a pull request back to `master`
+- Ensure the GitHub workflow passes before merging
+- Keep infrastructure changes validated with `docker compose config` and `kubectl kustomize ./k8s`
+
+### Kubernetes deployment
+
+- Base manifests for the backend services live in `k8s/`
+- Render the manifests with:
+  `kubectl kustomize ./k8s`
+- Deploy the stack with:
+  `kubectl apply -k ./k8s`
+- Update image names/tags in `k8s/kustomization.yaml` for your registry before applying in a shared cluster
+- Replace the placeholder values in the `messenger-secrets` Secret before deploying to a real cluster
 
 ### End to End encryption
 ## How It Works

@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+option go_package = "/pb";
+option java_package = "com.services";
+
+message KeyRotationRequest {
+  string pubKey = 1;
+}
+
+message KeyRotationResponse {
+  bool rotated = 1;
+  string pubKey = 2;
+  int32 keyVersion = 3;
+  string rotatedAt = 4;
+  string message = 5;
+}
+
+message UpiIntegrationRequest {
+  string upiId = 1;
+  string provider = 2;
+  bool enabled = 3;
+}
+
+message UpiIntegrationResponse {
+  bool enabled = 1;
+  string upiId = 2;
+  string provider = 3;
+  string message = 4;
+}
+
+message EcommerceIntegrationRequest {
+  string merchantId = 1;
+  string catalogUrl = 2;
+  bool enabled = 3;
+}
+
+message EcommerceIntegrationResponse {
+  bool enabled = 1;
+  string merchantId = 2;
+  string catalogUrl = 3;
+  string message = 4;
+}

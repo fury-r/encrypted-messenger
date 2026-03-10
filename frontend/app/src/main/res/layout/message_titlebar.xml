@@ -1,59 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/RelativeLayout01"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/RelativeLayout01"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:layout_centerHorizontal="true"
-    android:layout_marginTop="20dp"
-    android:gravity="center"
+    android:layout_height="64dp"
     android:background="@color/dark_500"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="4dp"
+    android:paddingEnd="8dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/ImageView01"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:cardCornerRadius="50dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_margin="5dp"
-        android:elevation="15dp">
+        app:cardCornerRadius="24dp">
 
         <ImageView
             android:id="@+id/profilePicture"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
-            android:background="@color/grey_500"
+            android:background="@color/surface_700"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_person_white_24dp" />
     </androidx.cardview.widget.CardView>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
         <TextView
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/person"
-            android:textSize="20sp"
             android:textColor="@color/white"
-            android:textStyle="bold" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/username"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/poppins_semibold"
-            android:gravity="bottom"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/poppins_regular"
             android:text="@string/last_seen"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-            android:textColor="@color/white"
-            android:textSize="10sp"
-            android:textStyle="bold"
-            android:layout_marginEnd="5dp"/>
-    </RelativeLayout>
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+    </LinearLayout>
 </LinearLayout>

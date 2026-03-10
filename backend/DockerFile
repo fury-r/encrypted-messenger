@@ -1,9 +1,20 @@
-FROM golang:1.19
-ENV JWT_SECRET_KEY  test
+FROM golang:1.20-alpine AS builder
+
 WORKDIR /app
+
 COPY go.mod go.sum ./
 RUN go mod download
-COPY *.go ./
-RUN CGO_ENABLED=0 GOOS=linux go build -o /backend
+
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -o /backend .
+
+FROM alpine:3.20
+
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+COPY --from=builder /backend /usr/local/bin/backend
+
+USER nobody
+
 EXPOSE 8082
-CMD [ "/backend" ]
+
+CMD ["/usr/local/bin/backend"]

@@ -10,6 +10,7 @@ import "message.proto";
 import "auth.proto";
 // import "hello.proto";
 import "user.proto";
+import "integration.proto";
 
 message UserRequest{
         string phoneNumber=1;
@@ -36,6 +37,9 @@ service Services{
         rpc updateUser(User) returns (User) {}
         rpc RegenerateOtp(ReSendOtpRequest) returns (ReSendOtpRequest) {}
         rpc downloadFromServer(RequestDownload) returns (ResponseDownload) {}
+        rpc rotateKey(KeyRotationRequest) returns (KeyRotationResponse) {}
+        rpc updateUpiIntegration(UpiIntegrationRequest) returns (UpiIntegrationResponse) {}
+        rpc updateEcommerceIntegration(EcommerceIntegrationRequest) returns (EcommerceIntegrationResponse) {}
 
         // rpc SayHello (HelloRequest) returns (HelloReply) {}
 }

@@ -4,7 +4,10 @@ import { GrpcClientService } from "../common/GrpcClientService";
 export const send = async (req: any, callback: any) => {
   const client = new GrpcClientService().getClient();
   // const producer = new KafkaSetup().getKafkaProducer();
-  const rabbitMQ = new RabbitMQ("amqp://guest:guest@localhost:5672", "chat");
+  const rabbitMQ = new RabbitMQ(
+    process.env.RABBITMQ_URL || "amqp://guest:guest@localhost:5672/",
+    "chat"
+  );
   // const data: Event = req.request as Event;
 
   const metadata = new Metadata();
