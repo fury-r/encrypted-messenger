@@ -1,13 +1,8 @@
 FROM node:20-alpine
 WORKDIR /app
-
-ENV  RABBITMQ_USERNAME test
-ENV  RABBITMQ_PASSWORD test123
-ENV  RABBITMQ_VIRTUAL_HOST /
-ENV  SERVER_PORT 3001
-
-COPY package.json .
-RUN npm install
+COPY package*.json ./
+RUN npm ci
 COPY . .
+ENV SERVER_PORT=3001
 EXPOSE 3001
 CMD [ "npm", "start" ]

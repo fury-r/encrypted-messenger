@@ -44,6 +44,8 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
 - Install the latest version of Android Studio for Android development.
 - Install Node.js for running the middleware.
 - Ensure Go is installed for the backend server.
+- Install Docker and Docker Compose if you want to run the backend stack locally in containers.
+- Install kubectl if you want to deploy the backend stack to Kubernetes.
 
 ### Dependecies for proto
 - Backend:
@@ -80,7 +82,31 @@ SecureMessenger is a secure and end-to-end encrypted (E2EE) messaging applicatio
    - Make sure rabbitMQ is running.
    - Configure client and admin credetials at [link](http://localhost:15672/)
 4. **Protobufs**
-   - Installation:[link](https://protobuf.dev/)
+    - Installation:[link](https://protobuf.dev/)
+
+### Docker workflow
+
+- Build and start the backend services locally:
+  `docker compose up --build`
+- Middleware is exposed on `localhost:8081`
+- Backend gRPC is exposed on `localhost:8082`
+- Message socket is exposed on `localhost:3001`
+
+### Git workflow
+
+- Create a short-lived feature branch from `master`
+- Open a pull request back to `master`
+- Ensure the GitHub workflow passes before merging
+- Keep infrastructure changes validated with `docker compose config` and `kubectl kustomize ./k8s`
+
+### Kubernetes deployment
+
+- Base manifests for the backend services live in `k8s/`
+- Render the manifests with:
+  `kubectl kustomize ./k8s`
+- Deploy the stack with:
+  `kubectl apply -k ./k8s`
+- Update image names/tags in `k8s/kustomization.yaml` for your registry before applying in a shared cluster
 
 ### End to End encryption
 ## How It Works

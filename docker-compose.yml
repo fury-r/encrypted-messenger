@@ -1,5 +1,3 @@
-version: "3.7"
-
 services:
   rabbitmq:
     image: rabbitmq:3-management
@@ -15,37 +13,51 @@ services:
       - service
   socket-server:
     build:
-      context: .
-      dockerfile: ./message-socket
+      context: ./messsage-socket
+      dockerfile: DockerFile
     container_name: socket-server
     restart: always
-    image: socket-server:v1
+    image: encrypted-messenger/socket-server:local
     ports:
       - 3001:3001
+    environment:
+      SERVER_PORT: 3001
+      GRPC_BACKEND_ADDR: backend:8082
+      RABBITMQ_URL: amqp://test:test@rabbitmq:5672/
     depends_on:
       - backend
+      - rabbitmq
     networks:
       - service
   middleware:
     build:
-      context: .
-      dockerfile: ./middleware
+      context: ./middleware
+      dockerfile: DockerFile
     container_name: middleware
     restart: always
-    image: middleware:v1
+    image: encrypted-messenger/middleware:local
     ports:
-      - 3001:8001
+      - 8081:8081
+    environment:
+      SERVER_PORT: 8081
+      GRPC_BACKEND_ADDR: backend:8082
+      RABBITMQ_URL: amqp://test:test@rabbitmq:5672/
+    depends_on:
+      - backend
+      - rabbitmq
     networks:
       - service
   backend:
     build:
-      context: .
-      dockerfile: ./backend
+      context: ./backend
+      dockerfile: DockerFile
     container_name: backend
     restart: always
-    image: backend:v1
+    image: encrypted-messenger/backend:local
     ports:
-      - 3001:8002
+      - 8082:8082
+    environment:
+      JWT_SECRET_KEY: test
     networks:
       - service
 networks:

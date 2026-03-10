@@ -28,7 +28,7 @@ export class GrpcClientService {
     ).Services;
 
     this.client = new this.grpcService(
-      url || "localhost:8082",
+      process.env.GRPC_BACKEND_ADDR || url || "localhost:8082",
       grpc.credentials.createInsecure()
       // options
     );
