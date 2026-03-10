@@ -1,88 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:weightSum="2"
-   >
+    android:gravity="start"
+    android:orientation="horizontal">
 
-   <RelativeLayout
-       android:background="@drawable/receive_text"
-       android:layout_height="wrap_content"
-       android:layout_margin="5dp"
-       android:clickable="true"
-       android:layout_weight="1"
-       android:padding="5dp"
-       android:foreground="?android:attr/selectableItemBackground"
-       tools:ignore="UselessParent"
-       android:layout_width="0dp">
-       <LinearLayout
-           android:id="@+id/top"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-        >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/receive_text"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:orientation="vertical"
+        android:paddingHorizontal="14dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="10dp">
 
+        <TextView
+            android:id="@+id/audioTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/encrypted_voice_note"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
 
-           <RelativeLayout
-               android:id="@+id/layout_top"
-               android:layout_width="wrap_content"
-               android:layout_height="match_parent"
-               android:orientation="vertical">
+        <TextView
+            android:id="@+id/audioHint"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="@string/download_voice_message_hint"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-               <Button
-                   android:id="@+id/play"
-                   android:layout_width="30dp"
-                   android:layout_height="30dp"
-                   android:layout_margin="2dp"
-                   android:background="@drawable/circle"
-                   android:layout_marginBottom="20dp"
-                   android:padding="5dp"
-                   android:layout_centerVertical="true"
-                   />
+            <Button
+                android:id="@+id/play"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/circle"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:padding="6dp" />
 
-           </RelativeLayout>
+            <com.google.android.material.slider.Slider
+                android:id="@+id/playSlider"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:valueFrom="0.0"
+                android:valueTo="100.0" />
 
-           <RelativeLayout
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/voice_note_not_downloaded"
+                android:textColor="@color/text_secondary"
+                android:textSize="10sp"
+                tools:ignore="SmallSp" />
 
-               <com.google.android.material.slider.Slider
-                   android:id="@+id/playSlider"
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
+            <Button
+                android:id="@+id/downloadButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/audio_action_button"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="8dp"
+                android:text="@string/download_voice_message"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </LinearLayout>
 
-                   android:valueFrom="0.0"
-                   android:valueTo="100.0" />
-               <TextView
-                   android:id="@+id/duration"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_marginStart="10dp"
-                   android:text="@string/duration"
-                   android:textSize="10sp"
-                   android:layout_alignBottom="@+id/playSlider"
-                   tools:ignore="SmallSp" />
-
-
-           </RelativeLayout>
-
-
-
-       </LinearLayout>
-
-       <TextView
-           android:id="@+id/time"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="@string/time"
-           android:textColor="@color/black"
-           android:layout_below="@id/top"
-           android:layout_alignParentEnd="true"
-           android:textSize="10sp"
-           tools:ignore="SmallSp" />
-   </RelativeLayout>
-
-
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="8dp"
+            android:text="@string/time"
+            android:textColor="@color/text_secondary"
+            android:textSize="10sp"
+            tools:ignore="SmallSp" />
+    </LinearLayout>
 </LinearLayout>

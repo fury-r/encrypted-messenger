@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Messenger</string>
+    <string name="app_name">SecureMessenger</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -39,4 +39,21 @@
     <string name="resend_otp">Resend Otp</string>
     <string name="login">Login</string>
     <string name="sign_up">SIGN UP</string>
+    <string name="secure_conversations">Secure conversations</string>
+    <string name="private_inbox_subtitle">Encrypted chats, voice notes, and presence updates in one place.</string>
+    <string name="search_conversations">Search conversations</string>
+    <string name="secure_message_hint">Type a secure message</string>
+    <string name="voice_note_ready_title">Voice note ready</string>
+    <string name="voice_note_ready_hint">Tap play to listen or scrub the waveform.</string>
+    <string name="encrypted_voice_note">Encrypted voice note</string>
+    <string name="download_voice_message">Download</string>
+    <string name="download_voice_message_hint">Download only when you are ready to decrypt it on this device.</string>
+    <string name="downloading_voice_message">Decrypting…</string>
+    <string name="voice_note_not_downloaded">Awaiting download</string>
+    <string name="voice_message_download_failed">Unable to prepare this voice note.</string>
+    <string name="voice_message_not_ready">Download the voice note before playing it.</string>
+    <string name="hold_to_record">Hold to record</string>
+    <string name="unread_messages">Unread messages</string>
+    <string name="login_tagline">Private messaging with end-to-end encryption.</string>
+    <string name="phone_number">Phone number</string>
 </resources>
